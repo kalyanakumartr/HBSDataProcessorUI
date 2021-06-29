@@ -25,7 +25,8 @@ export class AuthHTTPService {
     headers.set('Password', 'Kalam@151031');
 
     console.log(API_USERS_URL + 'core-oauth/oauth/token', body)
-    return this.http.post<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token', body, { headers, withCredentials: true });
+    //return this.http.post<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token', body, { headers, withCredentials: true });
+    return this.http.get<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token');
   }
 
   // CREATE =>  POST: add a new user to the server
@@ -44,7 +45,7 @@ export class AuthHTTPService {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<UserModel>(`${API_USERS_URL}`, {
+    return this.http.get<UserModel>(`${API_USERS_URL}user`, {
       headers: httpHeaders,
     });
   }

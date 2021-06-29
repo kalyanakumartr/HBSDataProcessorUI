@@ -18,6 +18,7 @@ export class Subheader1Component implements OnInit {
   breadcrumbs$: Observable<BreadcrumbItemModel[]>;
   breadcrumbs: BreadcrumbItemModel[] = [];
   description$: Observable<string>;
+  todayDate:Date;
   @Input() title: string;
 
   constructor(
@@ -26,6 +27,7 @@ export class Subheader1Component implements OnInit {
     private cdr: ChangeDetectorRef
   ) {
     this.title$ = this.subheader.titleSubject.asObservable();
+    this.todayDate = new Date;
   }
 
   ngOnInit() {
