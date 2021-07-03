@@ -10,6 +10,7 @@ export class StatsWidget11Component implements OnInit {
   @Input() symbolShape;
   @Input() baseColor;
   chartOptions: any = {};
+  chartOptionsRB: any = {};
   fontFamily = '';
   colorsGrayGray500 = '';
   colorsGrayGray200 = '';
@@ -18,8 +19,22 @@ export class StatsWidget11Component implements OnInit {
   colorsThemeLight = '';
   symbolCSSClasses = '';
   svgCSSClasses = '';
+  colorsGrayGray100: string;
+  colorsGrayGray700: string;
+  colorsThemeBaseSuccess: string;
+  colorsThemeLightSuccess: string;
 
-  constructor(private layout: LayoutService) { }
+
+  constructor(private layout: LayoutService) {
+   this.colorsGrayGray100 = this.layout.getProp('js.colors.gray.gray100');
+  this.colorsGrayGray700 = this.layout.getProp('js.colors.gray.gray700');
+  this.colorsThemeBaseSuccess = this.layout.getProp(
+    'js.colors.theme.base.success'
+  );
+  this.colorsThemeLightSuccess = this.layout.getProp(
+    'js.colors.theme.light.success'
+  );
+  this.fontFamily = this.layout.getProp('js.fontFamily'); }
 
   loadLayoutView() {
     this.fontFamily = this.layout.getProp('js.fontFamily');
@@ -47,13 +62,14 @@ export class StatsWidget11Component implements OnInit {
     this.symbolCSSClasses = `symbol ${this.symbolShape} symbol-50 symbol-light-${this.baseColor} mr-2`;
     this.svgCSSClasses = `svg-icon svg-icon-xl svg-icon-${this.baseColor}`;
     this.chartOptions = this.getChartOptions();
+    this.chartOptionsRB = this.getChartOptionsRB();
   }
 
   getChartOptions() {
     return {
       series: [{
-        name: 'Net Profit',
-        data: [40, 40, 30, 30, 35, 35, 50]
+        name: 'Work Completed',
+        data: [20, 30, 40, 50, 30, 50, 0]
       }],
       chart: {
         type: 'area',
@@ -86,7 +102,7 @@ export class StatsWidget11Component implements OnInit {
         colors: [this.colorsThemeBase]
       },
       xaxis: {
-        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Aug', 'Sep'],
+        categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         axisBorder: {
           show: false,
         },
@@ -160,7 +176,7 @@ export class StatsWidget11Component implements OnInit {
         },
         y: {
           formatter: (val) => {
-            return `$ ${val} thousands`;
+            return ` ${val} %`;
           }
         }
       },
@@ -170,6 +186,55 @@ export class StatsWidget11Component implements OnInit {
         strokeColor: [this.colorsThemeBase],
         strokeWidth: 3
       }
+    };
+  }
+  getChartOptionsRB() {
+    const strokeColor = '#D13647';
+    return {
+      series: [40],
+      chart: {
+        type: 'radialBar',
+        height: 200,
+      },
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            margin: 0,
+            size: '65%',
+          },
+          dataLabels: {
+            showOn: 'always',
+            name: {
+              show: false,
+              fontWeight: '700',
+            },
+            value: {
+              color: this.colorsGrayGray700,
+              fontSize: '30px',
+              fontWeight: '700',
+              offsetY: 12,
+              show: true,
+            },
+          },
+          track: {
+            background: this.colorsThemeLightSuccess,
+            strokeWidth: '100%',
+          },
+        },
+      },
+      colors: [this.colorsThemeBaseSuccess],
+      stroke: {
+        lineCap: 'round',
+      },
+      labels: ['Progress'],
+      legend: {},
+      dataLabels: {},
+      fill: {},
+      xaxis: {},
+      yaxis: {},
+      states: {},
+      tooltip: {},
+      markers: {},
     };
   }
 }

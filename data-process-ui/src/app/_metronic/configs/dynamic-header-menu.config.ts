@@ -32,22 +32,7 @@ export const DynamicHeaderMenuConfig = {
             },
           ]
         },
-        {
-          title: 'User Management',
-          bullet: 'dot',
-          icon: 'flaticon-user',
-          page: '/user-management',
-          submenu: [
-            {
-              title: 'Users',
-              page: '/user-management/users'
-            },
-            {
-              title: 'Roles',
-              page: '/user-management/roles'
-            }
-          ]
-        },
+        
         {
           title: 'Error Pages',
           bullet: 'dot',

@@ -1,20 +1,38 @@
+<div class="card card-custom bg-gray-100 card-stretch gutter-b">
+  <!-- Header -->
+  <div class="card-header border-0 bg-danger py-5">
+    <h3 class="card-title font-weight-bolder text-white">My Performance</h3>
+    <div class="card-toolbar">
+     
+    </div>
+  </div>
+  
 <div class="card card-custom" [ngClass]="cssClass">
   <!-- Body -->
   <div class="card-body p-0">
     <div
       class="d-flex align-items-center justify-content-between card-spacer flex-grow-1"
     >
-      <span [ngClass]="symbolCSSClasses">
-        <span class="symbol-label">
-          <span
-            [inlineSVG]="'./assets/media/svg/icons/Layout/Layout-4-blocks.svg'"
-            [ngClass]="svgCSSClasses"
-          ></span>
-        </span>
-      </span>
+      
       <div class="d-flex flex-column text-right">
-        <span class="text-dark-75 font-weight-bolder font-size-h3">750$</span>
-        <span class="text-muted font-weight-bold mt-2">Weekly Income</span>
+        <div id="kt_mixed_widget_14_chart" style="height: '200px';">
+          <apx-chart
+            [series]="chartOptionsRB.series"
+            [chart]="chartOptionsRB.chart"
+            [xaxis]="chartOptionsRB.xaxis"
+            [yaxis]="chartOptionsRB.yaxis"
+            [dataLabels]="chartOptionsRB.dataLabels"
+            [stroke]="chartOptionsRB.stroke"
+            [legend]="chartOptionsRB.legend"
+            [fill]="chartOptionsRB.fill"
+            [states]="chartOptionsRB.states"
+            [tooltip]="chartOptionsRB.tooltip"
+            [colors]="chartOptionsRB.colors"
+            [markers]="chartOptionsRB.markers"
+            [plotOptions]="chartOptionsRB.plotOptions"
+          ></apx-chart>
+        </div>
+        <span class="text-muted font-weight-bold mt-2">Last 7 days Performance</span>
       </div>
     </div>
     <!--begin::Chart-->

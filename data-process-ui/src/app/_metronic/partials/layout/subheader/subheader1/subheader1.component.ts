@@ -28,6 +28,7 @@ export class Subheader1Component implements OnInit {
   ) {
     this.title$ = this.subheader.titleSubject.asObservable();
     this.todayDate = new Date;
+    
   }
 
   ngOnInit() {

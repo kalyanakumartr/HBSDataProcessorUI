@@ -6,6 +6,7 @@ import { environment } from '../../../../../environments/environment';
 import { AuthModel } from '../../_models/auth.model';
 
 const API_USERS_URL = `${environment.apiUrl}`;
+const API_USERS_Json_URL = `${environment.apiJsonUrl}`;
 
 @Injectable({
   providedIn: 'root',
@@ -21,12 +22,12 @@ export class AuthHTTPService {
     body.set('grant_type', 'password');
     let headers = new HttpHeaders();
     headers.set('Authorization', 'Basic SEJTQVBQTElDQVRJT046S2FsYW1AMTUxMDMx');
-    headers.set('Username', 'HBSAPPLICATION');
+    headers.set('Username', 'EDRAPPLICATION');
     headers.set('Password', 'Kalam@151031');
 
     console.log(API_USERS_URL + 'core-oauth/oauth/token', body)
     //return this.http.post<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token', body, { headers, withCredentials: true });
-    return this.http.get<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token');
+   return this.http.get<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token');
   }
 
   // CREATE =>  POST: add a new user to the server
@@ -45,7 +46,7 @@ export class AuthHTTPService {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<UserModel>(`${API_USERS_URL}user`, {
+    return this.http.get<UserModel>(`${API_USERS_Json_URL}user`, {
       headers: httpHeaders,
     });
   }
