@@ -6,6 +6,7 @@ import { environment } from '../../../../../environments/environment';
 import { AuthModel } from '../../_models/auth.model';
 
 const API_USERS_URL = `${environment.apiUrl}`;
+const API_ADMIN_URL = `${environment.adminApiUrl}`;
 const API_USERS_Json_URL = `${environment.apiJsonUrl}`;
 
 @Injectable({
@@ -14,20 +15,22 @@ const API_USERS_Json_URL = `${environment.apiJsonUrl}`;
 export class AuthHTTPService {
   constructor(private http: HttpClient) { }
 
-  // public methods
   login(username: string, password: string): Observable<any> {
-    let body = new URLSearchParams();
-    body.set('username', username);
-    body.set('password', password);
-    body.set('grant_type', 'password');
-    let headers = new HttpHeaders();
-    headers.set('Authorization', 'Basic SEJTQVBQTElDQVRJT046S2FsYW1AMTUxMDMx');
-    headers.set('Username', 'EDRAPPLICATION');
-    headers.set('Password', 'Kalam@151031');
+       
+    let body = `username=${username}&password=${password}&grant_type=password`;
 
-    console.log(API_USERS_URL + 'core-oauth/oauth/token', body)
-    //return this.http.post<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token', body, { headers, withCredentials: true });
-   return this.http.get<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token');
+    return this.http.post<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token', 
+    body, 
+    { headers:{'Access-Control-Allow-Origin': 'http://localhost:4200',
+               'Access-Control-Allow-Credentials': 'true',
+               'Content-Type':'application/x-www-form-urlencoded',
+               'Authorization': 'Basic RURSQVBQTElDQVRJT046S2FsYW1AMTUxMDMx',
+               'Username': 'EDRAPPLICATION','Password': 'Kalam@151031' ,
+               'grant_type': 'password'             
+              },
+              withCredentials: true
+    });
+   //return this.http.get<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token');
   }
 
   // CREATE =>  POST: add a new user to the server
@@ -42,11 +45,14 @@ export class AuthHTTPService {
     });
   }
 
-  getUserByToken(token): Observable<UserModel> {
+  getUserByToken(token,loginId): Observable<UserModel> {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<UserModel>(`${API_USERS_Json_URL}user`, {
+    console.log("LoginId",loginId);
+    return this.http.post<UserModel>(`${API_ADMIN_URL}getActiveUser`, {
+      "searchParam": loginId+""
+    },{
       headers: httpHeaders,
     });
   }

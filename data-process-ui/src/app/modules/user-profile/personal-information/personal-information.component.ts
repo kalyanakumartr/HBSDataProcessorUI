@@ -43,8 +43,7 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
       lastname: [this.user.lastname, Validators.required],
       companyName: [this.user.companyName, Validators.required],
       phone: [this.user.phone, Validators.required],
-      email: [this.user.email, Validators.compose([Validators.required, Validators.email])],
-      website: [this.user.website, Validators.required]
+      email: [this.user.email, Validators.compose([Validators.required, Validators.email])]
     });
   }
 

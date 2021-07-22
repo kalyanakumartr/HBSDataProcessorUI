@@ -7,9 +7,10 @@ export const environment = {
   appVersion: 'v717demo1',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: false,
-  //apiUrl: 'http://localhost:8090/',
+  apiUrl: 'http://localhost:9000/',
+  adminApiUrl: 'http://localhost:9100/core-admin/',
   apiJsonUrl:'http://localhost:3000/',
-  apiUrl: 'http://localhost:3000/'
+  //apiUrl: 'http://localhost:3000/'
   //apiUrl: 'http://localhost:8090/',
 };
 
