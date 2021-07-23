@@ -62,7 +62,7 @@ export abstract class TableService<T> {
 
   protected http: HttpClient;
   // API URL has to be overrided
-  API_URL = `${environment.apiUrl}/endpoint`;
+  API_URL = `${environment.adminApiUrl}/user`;
   constructor(http: HttpClient) {
     this.http = http;
   }
@@ -84,7 +84,7 @@ export abstract class TableService<T> {
 
   // READ (Returning filtered list of entities)
   find(tableState: ITableState): Observable<TableResponseModel<T>> {
-    const url = this.API_URL + '/find';
+    const url = this.API_URL + '/searchUser';
     this._errorMessage.next('');
     return this.http.post<TableResponseModel<T>>(url, tableState).pipe(
       catchError(err => {

@@ -21,12 +21,11 @@ export class AuthHTTPService {
 
     return this.http.post<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token', 
     body, 
-    { headers:{'Access-Control-Allow-Origin': 'http://localhost:4200',
+    { headers:{
                'Access-Control-Allow-Credentials': 'true',
                'Content-Type':'application/x-www-form-urlencoded',
                'Authorization': 'Basic RURSQVBQTElDQVRJT046S2FsYW1AMTUxMDMx',
-               'Username': 'EDRAPPLICATION','Password': 'Kalam@151031' ,
-               'grant_type': 'password'             
+               'Username': 'EDRAPPLICATION','Password': 'Kalam@151031'           
               },
               withCredentials: true
     });
@@ -52,6 +51,17 @@ export class AuthHTTPService {
     console.log("LoginId",loginId);
     return this.http.post<UserModel>(`${API_ADMIN_URL}getActiveUser`, {
       "searchParam": loginId+""
+    },{
+      headers: httpHeaders,
+    });
+  }
+  getUserList(token) {
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    console.log();
+    return this.http.post<UserModel>(`${API_ADMIN_URL}searchUser`, {
+      "searchParam": ""
     },{
       headers: httpHeaders,
     });
