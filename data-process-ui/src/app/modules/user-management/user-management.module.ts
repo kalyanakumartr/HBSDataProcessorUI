@@ -7,7 +7,7 @@ import { UserManagementRoutingModule } from './user-management-routing.module';
 import { UserListComponent } from './user-list/user-list.component';
 
 @NgModule({
-  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent],
+  declarations: [UsersComponent, RolesComponent, UserManagementComponent],
   imports: [CommonModule, UserManagementRoutingModule],
 })
 export class UserManagementModule {}

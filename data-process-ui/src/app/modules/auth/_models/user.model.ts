@@ -4,7 +4,7 @@ import { SocialNetworksModel } from './social-networks.model';
 import { Media } from './media.model';
 
 export class UserModel extends AuthModel {
-  id: number;
+  id: string;
   userName: string;
   password: string;
   fullname: string;
@@ -31,8 +31,8 @@ export class UserModel extends AuthModel {
   address?: AddressModel;
   socialNetworks?: SocialNetworksModel;
   // personal information
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   mediaList:Media[];
   language: string;
   timeZone: string;

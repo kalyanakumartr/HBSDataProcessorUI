@@ -1,10 +1,8 @@
-import { OnDestroy } from '@angular/core';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { FormGroup } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   GroupingState,
   PaginatorState,
@@ -22,6 +20,7 @@ import {
 } from '../../../_metronic/shared/crud-table';
 import { AuthService, UserModel } from '../../auth';
 import { UsersService } from '../../auth/_services/user.service';
+import { AuthModel } from '../../auth/_models/auth.model';
 
 @Component({
   selector: 'app-user-list',
@@ -47,29 +46,32 @@ sorting: SortState;
 grouping: GroupingState;
 isLoading: boolean;
 filterGroup: FormGroup;
-searchGroup: FormGroup; 
+searchGroup: FormGroup;
 
   userList: any;
   subscriptions: any;
+  authModel:AuthModel;
   constructor(private fb: FormBuilder,
     private modalService: NgbModal, public userService: UsersService) {
-    
+
   }
 
   ngOnInit(): void {
-    this.filterForm();
-    this.searchForm();
+    //this.filterForm();
+    //this.searchForm();
+
     this.userService.fetch();
+    console.log("UserList :", this.subscriptions)
     this.grouping = this.userService.grouping;
     this.paginator = this.userService.paginator;
     this.sorting = this.userService.sorting;
     const sb = this.userService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
-  }  
+  }
   public getUsers() {
     console.log("Inside get Users")
-    this.userList = this.userService.getUserList();
-    console.log(this.userList);
+    this.subscriptions = this.userService.getUserList();
+    console.log(this.subscriptions );
   }
   ngOnDestroy() {
     this.subscriptions.forEach((sb) => sb.unsubscribe());

@@ -18,10 +18,12 @@ import {TaxInformationComponent} from './tax-information/tax-information.compone
 import {StatementsComponent} from './statements/statements.component';
 import {UserProfileRoutingModule} from './user-profile-routing.module';
 import {ProfileCardComponent} from './_components/profile-card/profile-card.component';
+import { UserListComponent } from '../user-management/user-list/user-list.component';
 
 @NgModule({
   declarations: [
     UserProfileComponent,
+    UserListComponent,
     ProfileOverviewComponent,
     PersonalInformationComponent,
     AccountInformationComponent,

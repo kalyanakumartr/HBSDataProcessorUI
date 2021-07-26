@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserModel } from '../../_models/user.model';
 import { environment } from '../../../../../environments/environment';
 import { AuthModel } from '../../_models/auth.model';
+import { ObjectModel } from '../../_models/object.model';
+import { TableResponseModel } from 'src/app/_metronic/shared/crud-table';
 
 const API_USERS_URL = `${environment.apiUrl}`;
 const API_ADMIN_URL = `${environment.adminApiUrl}`;
@@ -16,16 +18,16 @@ export class AuthHTTPService {
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string): Observable<any> {
-       
+
     let body = `username=${username}&password=${password}&grant_type=password`;
 
-    return this.http.post<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token', 
-    body, 
+    return this.http.post<AuthModel>(API_USERS_URL + '/core-oauth/oauth/token',
+    body,
     { headers:{
                'Access-Control-Allow-Credentials': 'true',
                'Content-Type':'application/x-www-form-urlencoded',
                'Authorization': 'Basic RURSQVBQTElDQVRJT046S2FsYW1AMTUxMDMx',
-               'Username': 'EDRAPPLICATION','Password': 'Kalam@151031'           
+               'Username': 'EDRAPPLICATION','Password': 'Kalam@151031'
               },
               withCredentials: true
     });
@@ -49,7 +51,7 @@ export class AuthHTTPService {
       Authorization: `Bearer ${token}`,
     });
     console.log("LoginId",loginId);
-    return this.http.post<UserModel>(`${API_ADMIN_URL}getActiveUser`, {
+    return this.http.post<UserModel>(`${API_ADMIN_URL}/getActiveUser`, {
       "searchParam": loginId+""
     },{
       headers: httpHeaders,
@@ -59,9 +61,10 @@ export class AuthHTTPService {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    console.log();
-    return this.http.post<UserModel>(`${API_ADMIN_URL}searchUser`, {
-      "searchParam": ""
+    console.log("url",`${API_ADMIN_URL}/searchUser`);
+    console.log("token", token);
+    return this.http.post(`${API_ADMIN_URL}/searchUser`, {
+      "searchTerm": "ananth.malbal@gmail.com"
     },{
       headers: httpHeaders,
     });

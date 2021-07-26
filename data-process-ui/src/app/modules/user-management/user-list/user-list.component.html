@@ -1,10 +1,10 @@
 <div class="card card-custom gutter-b">
     <div class="card-header">
       <div class="card-title">
-        <h3 class="card-label">Customers list</h3>
+        <h3 class="card-label">Users list</h3>
       </div>
       <div class="card-toolbar">
-        <button type="button" class="btn btn-primary" (click)="create()">New Customer</button>
+        <button type="button" class="btn btn-primary" (click)="create()">New User</button>
       </div>
     </div>
     <div class="card-body">
@@ -37,7 +37,7 @@
         </div>
       </div>
       <!-- end: Filtration form -->
-  
+
       <!-- begin: Grouping -->
       <ng-container *ngIf="grouping.getSelectedRowsCount()">
         <div class="form">
@@ -68,7 +68,7 @@
         </div>
       </ng-container>
       <!-- end: Grouping -->
-  
+
       <!-- begin:Table -->
       <div class="table-responsive angular-bootstrap-table">
         <table class="table table-head-custom table-vertical-center overflow-hidden">
@@ -84,7 +84,7 @@
             </th>
             <th>
               FIRSTNAME
-              <app-sort-icon column="firstName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              <app-sort-icon column="userName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
                 (sort)="sort($event)"></app-sort-icon>
             </th>
             <th>
@@ -123,7 +123,7 @@
                 </label>
               </td>
               <td>{{ customer.id }}</td>
-              <td>{{ customer.firstName }}</td>
+              <td>{{ customer.userName }}</td>
               <td>{{ customer.lastName }}</td>
               <td>{{ customer.email }}</td>
               <td>{{ customer.gender }}</td>
@@ -143,14 +143,14 @@
                 </span>
               </td>
               <td>
-  
+
                 <a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                   (click)="edit(customer.id)">
                   <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
                     class="svg-icon svg-icon-md svg-icon-primary">
                   </span>
                 </a>
-  
+
                 <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
                   (click)="delete(customer.id)">
                   <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"

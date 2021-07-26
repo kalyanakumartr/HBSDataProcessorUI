@@ -1,5 +1,5 @@
 // tslint:disable:variable-name
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 import { PaginatorState } from '../models/paginator.model';
@@ -8,6 +8,7 @@ import { BaseModel } from '../models/base.model';
 import { SortState } from '../models/sort.model';
 import { GroupingState } from '../models/grouping.model';
 import { environment } from '../../../../../environments/environment';
+import { AuthModel } from 'src/app/modules/auth/_models/auth.model';
 
 const DEFAULT_STATE: ITableState = {
   filter: {},
@@ -26,6 +27,7 @@ export abstract class TableService<T> {
   private _tableState$ = new BehaviorSubject<ITableState>(DEFAULT_STATE);
   private _errorMessage = new BehaviorSubject<string>('');
   private _subscriptions: Subscription[] = [];
+  private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
 
   // Getters
   get items$() {
@@ -62,7 +64,7 @@ export abstract class TableService<T> {
 
   protected http: HttpClient;
   // API URL has to be overrided
-  API_URL = `${environment.adminApiUrl}/user`;
+  API_URL = `${environment.adminApiUrl}`;
   constructor(http: HttpClient) {
     this.http = http;
   }
@@ -84,9 +86,14 @@ export abstract class TableService<T> {
 
   // READ (Returning filtered list of entities)
   find(tableState: ITableState): Observable<TableResponseModel<T>> {
+    console.log("Inside find >>>");
+
     const url = this.API_URL + '/searchUser';
     this._errorMessage.next('');
-    return this.http.post<TableResponseModel<T>>(url, tableState).pipe(
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<TableResponseModel<T>>(url, tableState,{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMessage.next(err);
         console.error('FIND ITEMS', err);
@@ -95,7 +102,7 @@ export abstract class TableService<T> {
     );
   }
 
-  getItemById(id: number): Observable<BaseModel> {
+  getItemById(id: string): Observable<BaseModel> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
     const url = `${this.API_URL}/${id}`;
@@ -125,7 +132,7 @@ export abstract class TableService<T> {
   }
 
   // UPDATE Status
-  updateStatusForItems(ids: number[], status: number): Observable<any> {
+  updateStatusForItems(ids: string[], status: number): Observable<any> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
     const body = { ids, status };
@@ -156,7 +163,7 @@ export abstract class TableService<T> {
   }
 
   // delete list of items
-  deleteItems(ids: number[] = []): Observable<any> {
+  deleteItems(ids: string[] = []): Observable<any> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
     const url = this.API_URL + '/deleteItems';
@@ -229,5 +236,16 @@ export abstract class TableService<T> {
   public patchStateWithoutFetch(patch: Partial<ITableState>) {
     const newState = Object.assign(this._tableState$.value, patch);
     this._tableState$.next(newState);
+  }
+  public getAuthFromLocalStorage(): AuthModel {
+    try {
+      const authData = JSON.parse(
+        localStorage.getItem(this.authLocalStorageToken)
+      );
+      return authData;
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
   }
 }

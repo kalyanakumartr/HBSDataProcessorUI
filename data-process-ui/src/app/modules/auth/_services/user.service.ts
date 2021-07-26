@@ -13,11 +13,11 @@ import { AuthHTTPService } from './auth-http';
   providedIn: 'root'
 })
 export class UsersService extends TableService<UserModel> implements OnDestroy {
-    private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
+
     // public fields
     isLoadingSubject: BehaviorSubject<boolean>;
 
-  API_URL = `${environment.apiUrl}/customers`;
+  API_URL = `${environment.adminApiUrl}`;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
   }
@@ -41,15 +41,5 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
-  private getAuthFromLocalStorage(): AuthModel {
-    try {
-      const authData = JSON.parse(
-        localStorage.getItem(this.authLocalStorageToken)
-      );
-      return authData;
-    } catch (error) {
-      console.error(error);
-      return undefined;
-    }
-  }
+
 }
