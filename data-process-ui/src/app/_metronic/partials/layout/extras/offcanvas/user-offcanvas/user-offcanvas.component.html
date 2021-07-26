@@ -18,12 +18,17 @@
       <!--begin::Header-->
       <div class="d-flex align-items-center mt-5">
         <div class="symbol symbol-100 mr-5">
-          <div class="symbol-label" style="background-image: url('./assets/media/users/Ananth.jpg');"></div>
+          <ng-container *ngIf="_user.sex ==='Female'">
+          <div class="symbol-label" style="background-image: url('./assets/media/users/300_16.jpg');"></div>
+        </ng-container>
+        <ng-container *ngIf="_user.sex ==='Male'">
+          <div class="symbol-label" style="background-image: url('./assets/media/users/300_15.jpg');"></div>
+        </ng-container>
           <i class="symbol-badge bg-success"></i>
         </div>
         <div class="d-flex flex-column">
           <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">
-            {{ _user.firstname }} {{ _user.lastname }}
+            {{ _user.userName }} {{ _user.lastname }}
           </a>
           <div class="text-muted mt-1">
             Project Manager
@@ -37,7 +42,7 @@
                     " cacheSVG="true" class="svg-icon svg-icon-lg svg-icon-primary"></span>
                 </span>
                 <span class="navi-text text-muted text-hover-primary">{{
-                  _user.email
+                  _user.mediaList[0].emailId
                 }}</span>
               </span>
             </a>

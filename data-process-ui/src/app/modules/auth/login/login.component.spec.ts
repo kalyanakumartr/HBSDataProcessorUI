@@ -44,7 +44,7 @@ class FakeAuthService {
     }
 
     const user = new UserModel();
-    user.username = 'admin';
+    user.userName = 'admin';
     user.password = 'demo';
     user.email = 'admin@demo.com';
     return of(user);

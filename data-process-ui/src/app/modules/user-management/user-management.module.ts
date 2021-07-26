@@ -4,6 +4,7 @@ import { UsersComponent } from './users/users.component';
 import { RolesComponent } from './roles/roles.component';
 import { UserManagementComponent } from './user-management.component';
 import { UserManagementRoutingModule } from './user-management-routing.module';
+import { UserListComponent } from './user-list/user-list.component';
 
 @NgModule({
   declarations: [UsersComponent, RolesComponent, UserManagementComponent],

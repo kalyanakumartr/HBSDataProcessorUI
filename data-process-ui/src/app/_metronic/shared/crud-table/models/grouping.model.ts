@@ -1,18 +1,18 @@
 export interface IGroupingState {
-  selectedRowIds: Set<number>;
-  itemIds: number[];
+  selectedRowIds: Set<string>;
+  itemIds: string[];
   checkAreAllRowsSelected(): boolean;
-  selectRow(id: number): IGroupingState;
+  selectRow(id: string): IGroupingState;
   // tslint:disable-next-line:variable-name
-  clearRows(_itemIds: number[]): IGroupingState;
-  isRowSelected(id: number): boolean;
+  clearRows(_itemIds: string[]): IGroupingState;
+  isRowSelected(id: string): boolean;
   selectAllRows(): IGroupingState;
-  getSelectedRows(): number[];
+  getSelectedRows(): string[];
   getSelectedRowsCount(): number;
 }
 
 export class GroupingState implements IGroupingState {
-  selectedRowIds: Set<number> = new Set<number>();
+  selectedRowIds: Set<string> = new Set<string>();
   itemIds = [];
 
 
@@ -24,7 +24,7 @@ export class GroupingState implements IGroupingState {
     return this.selectedRowIds.size === this.itemIds.length;
   }
 
-  selectRow(id: number): GroupingState {
+  selectRow(id: string): GroupingState {
     if (this.selectedRowIds.has(id)) {
       this.selectedRowIds.delete(id);
     } else {
@@ -34,28 +34,28 @@ export class GroupingState implements IGroupingState {
   }
 
   // tslint:disable-next-line:variable-name
-  clearRows(_itemIds: number[]): GroupingState {
+  clearRows(_itemIds: string[]): GroupingState {
     this.itemIds = _itemIds;
-    this.selectedRowIds = new Set<number>();
+    this.selectedRowIds = new Set<string>();
     return this;
   }
 
-  isRowSelected(id: number): boolean {
+  isRowSelected(id: string): boolean {
     return this.selectedRowIds.has(id);
   }
 
   selectAllRows(): GroupingState {
     const areAllSelected = this.itemIds.length === this.selectedRowIds.size;
     if (areAllSelected) {
-      this.selectedRowIds = new Set<number>();
+      this.selectedRowIds = new Set<string>();
     } else {
-      this.selectedRowIds = new Set<number>();
+      this.selectedRowIds = new Set<string>();
       this.itemIds.forEach(id => this.selectedRowIds.add(id));
     }
     return this;
   }
 
-  getSelectedRows(): number[] {
+  getSelectedRows(): string[] {
     return Array.from(this.selectedRowIds);
   }
 

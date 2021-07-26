@@ -4,8 +4,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserModel } from '../../_models/user.model';
 import { environment } from '../../../../../environments/environment';
 import { AuthModel } from '../../_models/auth.model';
+import { ObjectModel } from '../../_models/object.model';
+import { TableResponseModel } from 'src/app/_metronic/shared/crud-table';
 
 const API_USERS_URL = `${environment.apiUrl}`;
+const API_ADMIN_URL = `${environment.adminApiUrl}`;
 const API_USERS_Json_URL = `${environment.apiJsonUrl}`;
 
 @Injectable({
@@ -14,20 +17,21 @@ const API_USERS_Json_URL = `${environment.apiJsonUrl}`;
 export class AuthHTTPService {
   constructor(private http: HttpClient) { }
 
-  // public methods
   login(username: string, password: string): Observable<any> {
-    let body = new URLSearchParams();
-    body.set('username', username);
-    body.set('password', password);
-    body.set('grant_type', 'password');
-    let headers = new HttpHeaders();
-    headers.set('Authorization', 'Basic SEJTQVBQTElDQVRJT046S2FsYW1AMTUxMDMx');
-    headers.set('Username', 'EDRAPPLICATION');
-    headers.set('Password', 'Kalam@151031');
 
-    console.log(API_USERS_URL + 'core-oauth/oauth/token', body)
-    //return this.http.post<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token', body, { headers, withCredentials: true });
-   return this.http.get<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token');
+    let body = `username=${username}&password=${password}&grant_type=password`;
+
+    return this.http.post<AuthModel>(API_USERS_URL + '/core-oauth/oauth/token',
+    body,
+    { headers:{
+               'Access-Control-Allow-Credentials': 'true',
+               'Content-Type':'application/x-www-form-urlencoded',
+               'Authorization': 'Basic RURSQVBQTElDQVRJT046S2FsYW1AMTUxMDMx',
+               'Username': 'EDRAPPLICATION','Password': 'Kalam@151031'
+              },
+              withCredentials: true
+    });
+   //return this.http.get<AuthModel>(API_USERS_URL + 'core-oauth/oauth/token');
   }
 
   // CREATE =>  POST: add a new user to the server
@@ -42,11 +46,26 @@ export class AuthHTTPService {
     });
   }
 
-  getUserByToken(token): Observable<UserModel> {
+  getUserByToken(token,loginId): Observable<UserModel> {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<UserModel>(`${API_USERS_Json_URL}user`, {
+    console.log("LoginId",loginId);
+    return this.http.post<UserModel>(`${API_ADMIN_URL}/getActiveUser`, {
+      "searchParam": loginId+""
+    },{
+      headers: httpHeaders,
+    });
+  }
+  getUserList(token) {
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    console.log("url",`${API_ADMIN_URL}/searchUser`);
+    console.log("token", token);
+    return this.http.post(`${API_ADMIN_URL}/searchUser`, {
+      "searchTerm": "ananth.malbal@gmail.com"
+    },{
       headers: httpHeaders,
     });
   }
