@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UserListComponent } from '../user-management/user-list/user-list.component';
 import { AccountInformationComponent } from './account-information/account-information.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { EmailSettingsComponent } from './email-settings/email-settings.component';
@@ -37,10 +36,7 @@ const routes: Routes = [
         path: 'email-settings',
         component: EmailSettingsComponent
       },
-      {
-        path:'user-list',
-        component:UserListComponent
-      },
+
       {
         path: 'saved-credic-cards',
         component: SavedCreditCardsComponent
