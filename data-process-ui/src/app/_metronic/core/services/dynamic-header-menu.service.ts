@@ -28,8 +28,10 @@ export class DynamicHeaderMenuService {
   private loadMenu() {
     var access_token =this.getAuthFromLocalStorage().access_token;
     console.log("Load Menu");
-   // this.setMenu(this.getMenuFromUrl(access_token));
+    this.setMenu(this.getMenuFromUrl(access_token));
+    console.log("Menu", this.getMenu());
    this.setMenu(DynamicHeaderMenuConfig);
+   console.log("Menu1", this.getMenu());
   }
 
   private setMenu(menuConfig) {
@@ -44,8 +46,9 @@ export class DynamicHeaderMenuService {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    console.log("token",token);
-    return this.http.post(`${API_VIEW_URL}/getHeaderMenu`,{
+    console.log("tokenssssss",token);
+    console.log("ssss",`${API_VIEW_URL}`);
+    return this.http.post(`${API_VIEW_URL}/getHeaderMenu`,'',{
       headers: httpHeaders,
     });
   }
