@@ -1,95 +1,92 @@
 export const DynamicHeaderMenuConfig = {
-  items: [
-    {
-      title: 'Dashboards',
-      root: true,
-      alignment: 'left',
-      page: '/dashboard',
-      translate: 'MENU.DASHBOARD',
-    },
-    
-    {
-      title: 'Custom',
-      root: true,
-      alignment: 'left',
-      toggle: 'click',
-      page: '',
-      submenu: [
-        {
-          title: 'eCommerce',
-          bullet: 'dot',
-          icon: 'flaticon-business',
-          permission: 'accessToECommerceModule',
-          page: '/ecommerce',
-          submenu: [
-            {
-              title: 'Customers',
-              page: '/ecommerce/customers'
-            },
-            {
-              title: 'Products',
-              page: '/ecommerce/products'
-            },
+  "items": [
+      {
+          "menuName": "Dashboard",
+          "alignment": "left",
+          "bullet": "dot",
+          "icon": "icon-home",
+          "page": "/dashboard",
+          "permission": null,
+          "root": true,
+          "title": "Dashboard",
+          "toggle": "click",
+          "translate": "MENU.DASHBOARD"
+      },
+      {
+          "menuName": "WorkAllocation",
+          "alignment": "left",
+          "bullet": "",
+          "icon": "icon-settings",
+          "page": "javascript:;",
+          "permission": null,
+          "root": true,
+          "title": "WorkAllocation",
+          "toggle": "click",
+          "translate": "MENU.WORKALLOCATION",
+          "submenu": [
+              {
+                  "menuName": "Work Upload",
+                  "alignment": "left",
+                  "bullet": "",
+                  "icon": "icon-tag",
+                  "page": "javascript:loadContent('a9dc3f7729b51d26dc20af48c03dfee6', '','false');",
+                  "permission": null,
+                  "root": false,
+                  "title": "Work Upload",
+                  "toggle": "click",
+                  "translate": "MENU.WORK UPLOAD",
+                  "submenu": [
+                      {
+                          "menuName": "Attendance",
+                          "alignment": "left",
+                          "bullet": "",
+                          "icon": "icon-tag",
+                          "page": "javascript:loadContent('a9dc3f7729b51d26dc20af48c03dfee6', '','false');",
+                          "permission": null,
+                          "root": false,
+                          "title": "Attendance",
+                          "toggle": "click",
+                          "translate": "MENU.ATTENDANCE"
+                      },
+                      {
+                          "menuName": "Performance",
+                          "alignment": "left",
+                          "bullet": "",
+                          "icon": "icon-bar-chart",
+                          "page": "javascript:loadContent('bcca2120ed2c00bcf732c74ca8026490/Consumer', '','false');",
+                          "permission": null,
+                          "root": false,
+                          "title": "Performance",
+                          "toggle": "click",
+                          "translate": "MENU.PERFORMANCE"
+                      }
+                  ]
+              },
+              {
+                  "menuName": "Daily Log",
+                  "alignment": "left",
+                  "bullet": "",
+                  "icon": "icon-pencil",
+                  "page": "javascript:;",
+                  "permission": null,
+                  "root": false,
+                  "title": "Daily Log",
+                  "toggle": "click",
+                  "translate": "MENU.DAILY LOG"
+              }
           ]
-        },
-        
-        {
-          title: 'Error Pages',
-          bullet: 'dot',
-          icon: 'flaticon2-list-2',
-          page: '/error',
-          submenu: [
-            {
-              title: 'Error 1',
-              page: '/error/error-1'
-            },
-            {
-              title: 'Error 2',
-              page: '/error/error-2'
-            },
-            {
-              title: 'Error 3',
-              page: '/error/error-3'
-            },
-            {
-              title: 'Error 4',
-              page: '/error/error-4'
-            },
-            {
-              title: 'Error 5',
-              page: '/error/error-5'
-            },
-            {
-              title: 'Error 6',
-              page: '/error/error-6'
-            },
-          ]
-        },
-        {
-          title: 'Wizards',
-          bullet: 'dot',
-          icon: 'flaticon2-mail-1',
-          page: '/wizards',
-          submenu: [
-            {
-              title: 'Wizard 1',
-              page: '/wizards/wizard-1'
-            },
-            {
-              title: 'Wizard 2',
-              page: '/wizards/wizard-2'
-            },
-            {
-              title: 'Wizard 3',
-              page: '/wizards/wizard-3'
-            },
-            {
-              title: 'Wizard 4',
-              page: '/wizards/wizard-4'
-            },
-          ]
-        }
-      ]
-    }
+      },
+      {
+          "menuName": "Reports",
+          "alignment": "left",
+          "bullet": "",
+          "icon": "icon-bar-chart",
+          "page": "javascript:loadContent('bcca2120ed2c00bcf732c74ca8026490/Employee', '','false');",
+          "permission": null,
+          "root": true,
+          "title": "Reports",
+          "toggle": "click",
+          "translate": "MENU.REPORTS"
+      }
   ]
 };

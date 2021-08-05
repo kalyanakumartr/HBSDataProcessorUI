@@ -10,10 +10,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InlineSVGModule } from 'ng-inline-svg';
+import { EditUserModalComponent } from './users/component/edit-user-modal/edit-user-modal.component';
+import { NgbDatepickerModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent],
+  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent, EditUserModalComponent],
   imports: [CommonModule, UserManagementRoutingModule,   CommonModule,   HttpClientModule,
-     CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule],
+     CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule],
 })
 export class UserManagementModule {}

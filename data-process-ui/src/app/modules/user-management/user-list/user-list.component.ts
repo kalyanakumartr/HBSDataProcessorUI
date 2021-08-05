@@ -21,6 +21,7 @@ import {
 import { AuthService, UserModel } from '../../auth';
 import { UsersService } from '../../auth/_services/user.service';
 import { AuthModel } from '../../auth/_models/auth.model';
+import { EditUserModalComponent } from '../users/component/edit-user-modal/edit-user-modal.component';
 
 @Component({
   selector: 'app-user-list',
@@ -153,12 +154,12 @@ searchGroup: FormGroup;
   }
 
   edit(id: number) {
-    // const modalRef = this.modalService.open(EditCustomerModalComponent, { size: 'xl' });
-    // modalRef.componentInstance.id = id;
-    // modalRef.result.then(() =>
-    //   this.userService.fetch(),
-    //   () => { }
-    // );
+     const modalRef = this.modalService.open(EditUserModalComponent, { size: 'xl' });
+     modalRef.componentInstance.id = id;
+     modalRef.result.then(() =>
+       this.userService.fetch(),
+       () => { }
+     );
   }
 
   delete(id: number) {
