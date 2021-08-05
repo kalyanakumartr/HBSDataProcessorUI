@@ -18,7 +18,10 @@ export const locale = {
       ATTENDANCE:'Attendance',
       PERFORMANCE:'Performance',
       'DAILY LOG':'Daily Log',
-      REPORTS:'Reports'
+      REPORTS:'Reports',
+      USERMANAGEMENT:'User Management',
+      USERS:'Users',
+      ROLES:'Roles'
 
 
     },

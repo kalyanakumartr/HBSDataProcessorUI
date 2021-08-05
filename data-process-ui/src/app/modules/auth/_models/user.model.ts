@@ -2,8 +2,11 @@ import { AuthModel } from './auth.model';
 import { AddressModel } from './address.model';
 import { SocialNetworksModel } from './social-networks.model';
 import { Media } from './media.model';
+import { BaseModel } from 'src/app/_metronic/shared/crud-table';
+import { Producer } from './producer.model';
+import { Country } from './country.model';
 
-export class UserModel extends AuthModel {
+export class UserModel implements BaseModel {
   id: string;
   userName: string;
   password: string;
@@ -14,7 +17,7 @@ export class UserModel extends AuthModel {
   occupation: string;
   companyName: string;
   dateOfJoin:string;
-  dob:string;
+  dob:any;
   phone: string;
   employeeId:string;
   fatherName:string;
@@ -37,39 +40,10 @@ export class UserModel extends AuthModel {
   language: string;
   timeZone: string;
   uniqueId:string;
+  producer: Producer;
+  country: Country;
   // email settings
-  emailSettings: {
-    emailNotification: boolean,
-    sendCopyToPersonalEmail: boolean,
-    activityRelatesEmail: {
-      youHaveNewNotifications: boolean,
-      youAreSentADirectMessage: boolean,
-      someoneAddsYouAsAsAConnection: boolean,
-      uponNewOrder: boolean,
-      newMembershipApproval: boolean,
-      memberRegistration: boolean
-    },
-    updatesFromKeenthemes: {
-      newsAboutKeenthemesProductsAndFeatureUpdates: boolean,
-      tipsOnGettingMoreOutOfKeen: boolean,
-      thingsYouMissedSindeYouLastLoggedIntoKeen: boolean,
-      newsAboutMetronicOnPartnerProductsAndOtherServices: boolean,
-      tipsOnMetronicBusinessProducts: boolean
-    }
-  };
 
-  setUser(user: any) {
-    this.id = user.id;
-    this.userName = user.userName || '';
-    this.password = user.password || '';
-    this.fullname = user.userName || '';
-    this.email = user.email || '';
-    this.pic = user.pic || './assets/media/users/default.jpg';
-    this.roles = user.roles || [];
-    this.occupation = user.occupation || '';
-    this.companyName = user.companyName || '';
-    this.phone = user.phone || '';
-    this.address = user.address;
-    this.socialNetworks = user.socialNetworks;
-  }
+
+
 }

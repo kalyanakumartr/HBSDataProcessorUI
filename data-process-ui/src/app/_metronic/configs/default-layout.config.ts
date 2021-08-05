@@ -169,7 +169,7 @@ export const DefaultLayoutConfig = {
 
   // Footer
   footer: {
-    display: true,
+    display: false,
     width: 'fluid',
     fixed: true,
   },

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { AuthModel } from 'src/app/modules/auth/_models/auth.model';
 import { environment } from 'src/environments/environment';
 import { DynamicHeaderMenuConfig } from '../../configs/dynamic-header-menu.config';
@@ -28,13 +29,19 @@ export class DynamicHeaderMenuService {
   private loadMenu() {
     var access_token =this.getAuthFromLocalStorage().access_token;
     console.log("Load Menu");
-    this.setMenu(this.getMenuFromUrl(access_token));
+    this.getMenuFromUrl(access_token)
+    .pipe(
+      tap((res: any) => {
+        console.log("RES",res);
+        this.setMenu(res);
+      })).subscribe();
     console.log("Menu", this.getMenu());
-   this.setMenu(DynamicHeaderMenuConfig);
+   //this.setMenu(DynamicHeaderMenuConfig);
    console.log("Menu1", this.getMenu());
   }
 
   private setMenu(menuConfig) {
+    console.log("Menu Config ",menuConfig);
     this.menuConfigSubject.next(menuConfig);
   }
 
@@ -42,15 +49,18 @@ export class DynamicHeaderMenuService {
     return this.menuConfigSubject.value;
   }
 
-  getMenuFromUrl(token) {
+  getMenuFromUrl(token) : Observable<any> {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
     console.log("tokenssssss",token);
-    console.log("ssss",`${API_VIEW_URL}`);
-    return this.http.post(`${API_VIEW_URL}/getHeaderMenu`,'',{
-      headers: httpHeaders,
-    });
+    console.log("ssssAAAAAA",`${API_VIEW_URL}`);
+
+
+      return this.http.post(`${API_VIEW_URL}/getHeaderMenu`,{},{
+        headers: httpHeaders,
+      });
+
   }
   private getAuthFromLocalStorage(): AuthModel {
     try {

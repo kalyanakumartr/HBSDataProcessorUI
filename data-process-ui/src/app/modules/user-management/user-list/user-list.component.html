@@ -11,23 +11,21 @@
       <!-- begin: Filtration form -->
       <div class="form form-label-right">
         <div class="form-group row">
-          <div class="col-lg-4">
-            <div class="row" [formGroup]="filterGroup">
-              <div class="col-lg-6">
-                <select class="form-control" name="status" placeholder="Filter by Status" formControlName="status">
-                  <option value="">All</option>
-                  <option value="1">Susspended</option>
-                  <option value="2">Active</option>
-                  <option value="3">Pending</option>
-                </select><small class="form-text text-muted"><b>Filter</b> by Status</small>
-              </div>
-              <div class="col-lg-6">
-                <select class="form-control" placeholder="Filter by Type" name="type" formControlName="type">
-                  <option value="">All</option>
-                  <option value="1">Business</option>
-                  <option value="2">Individual</option>
-                </select><small class="form-text text-muted"><b>Filter</b> by Type</small>
-              </div>
+          <div class="row" [formGroup]="filterGroup">
+            <div class="col-lg-6">
+              <select class="form-control" name="employmentStatus" placeholder="Filter by Status" formControlName="employmentStatus">
+                <option value="">All</option>
+                <option value="Susspended">Susspended</option>
+                <option value="Active">Active</option>
+                <option value="Pending">Pending</option>
+              </select><small class="form-text text-muted"><b>Filter</b> by Status</small>
+            </div>
+            <div class="col-lg-6">
+              <select class="form-control" placeholder="Filter by Type" name="workMode" formControlName="workMode">
+                <option value="">All</option>
+                <option value="WFO">Work from Office</option>
+                <option value="WFH">Work from Home</option>
+              </select><small class="form-text text-muted"><b>Filter</b> by Type</small>
             </div>
           </div>
           <div class="col-lg-2" [formGroup]="searchGroup">
@@ -89,7 +87,7 @@
             </th>
             <th>
               LASTNAME
-              <app-sort-icon column="lastName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              <app-sort-icon column="customer.user.lastName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
                 (sort)="sort($event)"></app-sort-icon>
             </th>
             <th>
@@ -98,8 +96,8 @@
                 (sort)="sort($event)"></app-sort-icon>
             </th>
             <th>
-              GENDER
-              <app-sort-icon column="gender" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              TEAM-GROUP
+              <app-sort-icon column="team" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
                 (sort)="sort($event)"></app-sort-icon>
             </th>
             <th>
@@ -122,37 +120,38 @@
                   <span></span>
                 </label>
               </td>
-              <td>{{ customer.id }}</td>
-              <td>{{ customer.userName }}</td>
-              <td>{{ customer.lastName }}</td>
-              <td>{{ customer.email }}</td>
-              <td>{{ customer.gender }}</td>
+              <td>{{ customer.user.userId }}</td>
+              <td>{{ customer.user.userName }}</td>
+              <td>{{ customer.user.lastName }}</td>
+              <td>{{ customer.user.mediaList[0].emailId }}</td>
+              <td>{{ customer.user.team.teamName }}-{{ customer.user.team.groupName }}</td>
               <td>
-                <span class="label label-lg label-inline" [class.label-light-danger]="customer.status === 1"
-                  [class.label-light-success]="customer.status === 2" [class.label-light-primary]="customer.status === 3">
-                  <ng-container *ngIf="customer.status === 1">Suspended</ng-container>
-                  <ng-container *ngIf="customer.status === 2">Active</ng-container>
-                  <ng-container *ngIf="customer.status === 3">Pending</ng-container>
+                <span class="label label-lg label-inline" [class.label-light-danger]="customer.employmentStatus === 'Suspended'"
+                  [class.label-light-success]="customer.employmentStatus === 'Active'" [class.label-light-primary]="customer.employmentStatus === 'Pending'">
+                  <ng-container *ngIf="customer.employmentStatus === 'Suspended'">Suspended</ng-container>
+                  <ng-container *ngIf="customer.employmentStatus === 'ResetPassword'">ResetPassword</ng-container>
+                  <ng-container *ngIf="customer.employmentStatus === 'Active'">Active</ng-container>
+                  <ng-container *ngIf="customer.employmentStatus === 'Pending'">Pending</ng-container>
                 </span>
               </td>
               <td>
-                <span class="label label-dot label-primary mr-2" [class.label-success]="customer.type === 1"
-                  [class.label-primary]="customer.type === 2"></span>&nbsp;<span class="font-bold font-primary">
-                  <ng-container *ngIf="customer.type === 1">Business</ng-container>
-                  <ng-container *ngIf="customer.type === 2">Individual</ng-container>
+                <span class="label label-dot label-primary mr-2" [class.label-success]="customer.workMode === 'WFO'"
+                  [class.label-primary]="customer.workMode === 'WFH'"></span>&nbsp;<span class="font-bold font-primary">
+                  <ng-container *ngIf="customer.workMode === 'WFO'">Work from Office</ng-container>
+                  <ng-container *ngIf="customer.workMode === 'WFH'">Work from Home</ng-container>
                 </span>
               </td>
               <td>
 
                 <a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-                  (click)="edit(customer.id)">
+                  (click)="edit(customer.user.id)">
                   <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
                     class="svg-icon svg-icon-md svg-icon-primary">
                   </span>
                 </a>
 
                 <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
-                  (click)="delete(customer.id)">
+                  (click)="delete(customer.user.id)">
                   <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
                     class="svg-icon svg-icon-md svg-icon-danger">
                   </span>
