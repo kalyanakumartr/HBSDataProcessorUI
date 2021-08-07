@@ -22,6 +22,8 @@ import { AuthService, UserModel } from '../../auth';
 import { UsersService } from '../../auth/_services/user.service';
 import { AuthModel } from '../../auth/_models/auth.model';
 import { EditUserModalComponent } from '../users/component/edit-user-modal/edit-user-modal.component';
+import { UserITModalComponent } from '../users/component/user-it-modal/user-it-modal.component';
+import { UserHRModalComponent } from '../users/component/user-hr-modal/user-hr-modal.component';
 
 @Component({
   selector: 'app-user-list',
@@ -61,7 +63,7 @@ searchGroup: FormGroup;
     //this.filterForm();
     //this.searchForm();
 
-    this.userService.fetch();
+    this.userService.fetch("/searchUser");
     console.log("UserList :", this.subscriptions)
     this.grouping = this.userService.grouping;
     this.paginator = this.userService.paginator;
@@ -81,8 +83,6 @@ searchGroup: FormGroup;
   // filtration
   filterForm() {
     this.filterGroup = this.fb.group({
-      status: [''],
-      type: [''],
       searchTerm: [''],
     });
     this.subscriptions.push(
@@ -97,7 +97,7 @@ searchGroup: FormGroup;
 
   filter() {
     const filter = {};
-    const status = this.filterGroup.get('status').value;
+    /*const status = this.filterGroup.get('status').value;
     if (status) {
       filter['status'] = status;
     }
@@ -105,8 +105,8 @@ searchGroup: FormGroup;
     const type = this.filterGroup.get('type').value;
     if (type) {
       filter['type'] = type;
-    }
-    this.userService.patchState({ filter });
+    }*/
+    this.userService.patchState({ filter },"/searchUser");
   }
 
   // search
@@ -128,7 +128,7 @@ searchGroup: FormGroup;
   }
 
   search(searchTerm: string) {
-    this.userService.patchState({ searchTerm });
+    this.userService.patchState({ searchTerm },"/searchUser");
   }
 
   // sorting
@@ -141,12 +141,12 @@ searchGroup: FormGroup;
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.userService.patchState({ sorting });
+    this.userService.patchState({ sorting },"/searchUser");
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.userService.patchState({ paginator });
+    this.userService.patchState({ paginator },"/searchUser");
   }
   // form actions
   create() {
@@ -157,11 +157,27 @@ searchGroup: FormGroup;
      const modalRef = this.modalService.open(EditUserModalComponent, { size: 'xl' });
      modalRef.componentInstance.id = id;
      modalRef.result.then(() =>
-       this.userService.fetch(),
+       this.userService.fetch(""),
        () => { }
      );
   }
 
+  addHR(id: string) {
+    const modalRef = this.modalService.open(UserHRModalComponent, { size: 'xl' });
+    modalRef.componentInstance.id = id;
+    modalRef.result.then(() =>
+      this.userService.fetchHR(id),
+      () => { }
+    );
+ }
+ addIT(id: string) {
+  const modalRef = this.modalService.open(UserITModalComponent, { size: 'xl' });
+  modalRef.componentInstance.id = id;
+  modalRef.result.then(() =>
+    this.userService.fetchIT(id),
+    () => { }
+  );
+}
   delete(id: number) {
     // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
     // modalRef.componentInstance.id = id;

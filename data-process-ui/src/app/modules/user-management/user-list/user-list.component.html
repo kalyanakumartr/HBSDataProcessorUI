@@ -12,7 +12,7 @@
       <div class="form form-label-right">
         <div class="form-group row">
           <div class="row" [formGroup]="filterGroup">
-            <div class="col-lg-6">
+            <!--<div class="col-lg-6">
               <select class="form-control" name="employmentStatus" placeholder="Filter by Status" formControlName="employmentStatus">
                 <option value="">All</option>
                 <option value="Susspended">Susspended</option>
@@ -23,10 +23,10 @@
             <div class="col-lg-6">
               <select class="form-control" placeholder="Filter by Type" name="workMode" formControlName="workMode">
                 <option value="">All</option>
-                <option value="WFO">Work from Office</option>
-                <option value="WFH">Work from Home</option>
-              </select><small class="form-text text-muted"><b>Filter</b> by Type</small>
-            </div>
+                <option value="WFO">Office</option>
+                <option value="WFH">Home</option>
+              </select><small class="form-text text-muted"><b>Filter</b> by Work From </small>
+            </div>-->
           </div>
           <div class="col-lg-2" [formGroup]="searchGroup">
             <input type="text" class="form-control" name="searchText" placeholder="Search" value=""
@@ -37,7 +37,7 @@
       <!-- end: Filtration form -->
 
       <!-- begin: Grouping -->
-      <ng-container *ngIf="grouping.getSelectedRowsCount()">
+     <!-- <ng-container *ngIf="grouping.getSelectedRowsCount()">
         <div class="form">
           <div class="row align-items-center form-group-actions margin-top-20 margin-bottom-20">
             <div class="col-xl-12">
@@ -64,40 +64,41 @@
             </div>
           </div>
         </div>
-      </ng-container>
+      </ng-container>-->
       <!-- end: Grouping -->
 
       <!-- begin:Table -->
       <div class="table-responsive angular-bootstrap-table">
         <table class="table table-head-custom table-vertical-center overflow-hidden">
           <thead>
-            <th class="selection-cell-header" data-row-selection="true">
-              <label class="checkbox checkbox-single"><input type="checkbox" (click)="grouping.selectAllRows()"
-                  [checked]="grouping.checkAreAllRowsSelected()" /><span></span></label>
-            </th>
+
             <th>
               ID
               <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
                 (sort)="sort($event)"></app-sort-icon>
             </th>
             <th>
-              FIRSTNAME
+              USER NAME
               <app-sort-icon column="userName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
                 (sort)="sort($event)"></app-sort-icon>
             </th>
-            <th>
-              LASTNAME
-              <app-sort-icon column="customer.user.lastName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
-                (sort)="sort($event)"></app-sort-icon>
-            </th>
+
             <th>
               EMAIL
-              <app-sort-icon column="email" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+
+            </th>
+            <th>
+              MOBILE No
+
+            </th>
+            <th>
+              TEAM
+              <app-sort-icon column="team" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
                 (sort)="sort($event)"></app-sort-icon>
             </th>
             <th>
-              TEAM-GROUP
-              <app-sort-icon column="team" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              GROUP
+              <app-sort-icon column="team.groupName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
                 (sort)="sort($event)"></app-sort-icon>
             </th>
             <th>
@@ -106,25 +107,20 @@
                 (sort)="sort($event)"></app-sort-icon>
             </th>
             <th>
-              TYPE
-              <app-sort-icon column="type" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
-                (sort)="sort($event)"></app-sort-icon>
+              Work From
+
             </th>
             <th>ACTIONS</th>
           </thead>
           <tbody>
             <tr *ngFor="let customer of userService.items$ | async">
-              <td class="selection-cell">
-                <label class="checkbox checkbox-single"><input type="checkbox" (click)="grouping.selectRow(customer.id)"
-                    [checked]="grouping.isRowSelected(customer.id)" />
-                  <span></span>
-                </label>
-              </td>
+
               <td>{{ customer.user.userId }}</td>
-              <td>{{ customer.user.userName }}</td>
-              <td>{{ customer.user.lastName }}</td>
+              <td>{{ customer.user.userName }} {{ customer.user.lastName }}</td>
               <td>{{ customer.user.mediaList[0].emailId }}</td>
-              <td>{{ customer.user.team.teamName }}-{{ customer.user.team.groupName }}</td>
+              <td>{{ customer.user.mediaList[0].mobileNo }}</td>
+              <td>{{ customer.user.team.teamName }}</td>
+              <td>{{ customer.user.team.groupName }}</td>
               <td>
                 <span class="label label-lg label-inline" [class.label-light-danger]="customer.employmentStatus === 'Suspended'"
                   [class.label-light-success]="customer.employmentStatus === 'Active'" [class.label-light-primary]="customer.employmentStatus === 'Pending'">
@@ -137,21 +133,32 @@
               <td>
                 <span class="label label-dot label-primary mr-2" [class.label-success]="customer.workMode === 'WFO'"
                   [class.label-primary]="customer.workMode === 'WFH'"></span>&nbsp;<span class="font-bold font-primary">
-                  <ng-container *ngIf="customer.workMode === 'WFO'">Work from Office</ng-container>
-                  <ng-container *ngIf="customer.workMode === 'WFH'">Work from Home</ng-container>
+                  <ng-container *ngIf="customer.workMode === 'WFO'">Office</ng-container>
+                  <ng-container *ngIf="customer.workMode === 'WFH'">Home</ng-container>
                 </span>
               </td>
               <td>
 
-                <a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-                  (click)="edit(customer.user.id)">
+                <a title="Edit User" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                  (click)="edit(customer.user.userId)">
                   <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
                     class="svg-icon svg-icon-md svg-icon-primary">
                   </span>
                 </a>
-
+                <a title="Add HR Details for User" class="btn btn-icon btn-light btn-hover-primary btn-sm"
+                (click)="addHR(customer.user.userId)">
+                <span [inlineSVG]="'./assets/media/svg/icons/Communication/Contact1.svg'" cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary">
+                </span>
+              </a>
+              <a title="Add IT Records for User" class="btn btn-icon btn-light btn-hover-primary btn-sm"
+                  (click)="addIT(customer.user.userId)">
+                  <span [inlineSVG]="'./assets/media/svg/icons/Communication/Contact1.svg'" cacheSVG="true"
+                    class="svg-icon svg-icon-md svg-icon-primary">
+                  </span>
+                </a>
                 <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
-                  (click)="delete(customer.user.id)">
+                  (click)="delete(customer.user.userId)">
                   <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
                     class="svg-icon svg-icon-md svg-icon-danger">
                   </span>

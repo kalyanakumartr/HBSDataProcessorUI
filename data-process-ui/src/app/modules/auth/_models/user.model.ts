@@ -5,6 +5,8 @@ import { Media } from './media.model';
 import { BaseModel } from 'src/app/_metronic/shared/crud-table';
 import { Producer } from './producer.model';
 import { Country } from './country.model';
+import { Team } from './team.model';
+import { Deployment } from './deployment.model';
 
 export class UserModel implements BaseModel {
   id: string;
@@ -30,7 +32,7 @@ export class UserModel implements BaseModel {
   producerName:string;
   parentProducerId:string;
   parentProducerName:string;
-
+  loginRFDB_BPS:string
   address?: AddressModel;
   socialNetworks?: SocialNetworksModel;
   // personal information
@@ -42,6 +44,8 @@ export class UserModel implements BaseModel {
   uniqueId:string;
   producer: Producer;
   country: Country;
+  team:Team;
+  deploy:Deployment;
   // email settings
 
 

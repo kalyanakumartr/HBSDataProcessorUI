@@ -1,1 +1,65 @@
-<p><b>Roles:</b> - Coming soon in the following updates (ETA [v8.x.x]).</p>
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Roles list</h3>
+    </div>
+
+  </div>
+  <div class="card-body">
+
+
+    <!-- begin:Table -->
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden">
+        <thead>
+
+          <th>
+            ID
+            <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              (sort)="sort($event)"></app-sort-icon>
+          </th>
+          <th>
+            Role Name
+            <app-sort-icon column="roleName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              (sort)="sort($event)"></app-sort-icon>
+          </th>
+          <th>
+            DESCRIPTION
+            <app-sort-icon column="description" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              (sort)="sort($event)"></app-sort-icon>
+          </th>
+          <th>
+            ROLE TYPE
+            <app-sort-icon column="roletype" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              (sort)="sort($event)"></app-sort-icon>
+          </th>
+
+          <th>ACTIONS</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let obj of roleService.items$ | async">
+
+            <td>{{ obj.roleId }}</td>
+            <td>{{ obj.roleName }}</td>
+            <td>{{ obj.description }}</td>
+            <td>{{ obj.roletype }}</td>
+
+            <td>
+
+
+              <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                (click)="delete(obj.id)">
+                <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-danger">
+                </span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end: Table -->
+    <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator"
+      [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+  </div>
+</div>

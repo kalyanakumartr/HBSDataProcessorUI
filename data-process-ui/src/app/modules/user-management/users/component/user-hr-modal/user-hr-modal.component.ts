@@ -5,8 +5,7 @@ import { of, Subscription } from 'rxjs';
 import { catchError, finalize, first, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter, getDateFromString } from '../../../../../_metronic/core';
 import { UsersService } from 'src/app/modules/auth/_services/user.service';
-import { AuthService, UserModel } from 'src/app/modules/auth';
-import { RoleService } from 'src/app/modules/auth/_services/role.services';
+import { UserModel } from 'src/app/modules/auth';
 
 
 const EMPTY_CUSTOMER: UserModel = {
@@ -69,11 +68,12 @@ const EMPTY_CUSTOMER: UserModel = {
     deploymentId: '',
     deploymentTaskName: ''
   }
+
 };
 @Component({
-  selector: 'app-edit-user-modal',
-  templateUrl: './edit-user-modal.component.html',
-  styleUrls: ['./edit-user-modal.component.scss'],
+  selector: 'app-hr-user-modal',
+  templateUrl: './user-hr-modal.component.html',
+  styleUrls: ['./user-hr-modal.component.scss'],
   // NOTE: For this example we are only providing current component, but probably
   // NOTE: you will w  ant to provide your main App Module
   providers: [
@@ -81,89 +81,59 @@ const EMPTY_CUSTOMER: UserModel = {
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
   ]
 })
-export class EditUserModalComponent implements OnInit, OnDestroy {
+export class UserHRModalComponent implements OnInit, OnDestroy {
   @Input() id: string;
   isLoading$;
-  customer: UserModel;
-  roleList:any[];
-  deploy:string;
+  userHrModal: UserModel;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
   constructor(
     private usersService: UsersService,
-    private roleService: RoleService,
-    private authService: AuthService,
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
-      this.customer =new UserModel;
+      this.userHrModal =new UserModel;
     }
 
   ngOnInit(): void {
     this.isLoading$ = this.usersService.isLoading$;
-    this.roleService.getActiveRoleList().pipe(
-      tap((res: any) => {
-        this.roleList = res.items;
-        console.log("RoleList", this.roleList)
-      }),
-      catchError((err) => {
-        console.log(err);
-        return of({
-          items: []
-        });
-      })).subscribe();
     this.loadCustomer();
   }
 
   loadCustomer() {
     if (!this.id) {
-      this.customer = EMPTY_CUSTOMER;
+      this.userHrModal = EMPTY_CUSTOMER;
       this.loadForm();
     } else {
       console.log("this.id", this.id);
-
       const sb = this.usersService.getItemById(this.id).pipe(
         first(),
         catchError((errorMessage) => {
-          console.log("errorMessage", errorMessage);
           this.modal.dismiss(errorMessage);
           return of(EMPTY_CUSTOMER);
         })
       ).subscribe((customer: UserModel) => {
-        this.customer = customer;
-        console.log(this.customer);
-        this.loadEditForm();
+        this.userHrModal = customer;
         this.loadForm();
-
-
       });
       this.subscriptions.push(sb);
     }
   }
-  loadEditForm(){
-    this.customer.email=this.customer.mediaList[0].emailId;
-    //this.customer.roles=this.roleList[2];
-  }
+
   loadForm() {
     this.formGroup = this.fb.group({
-      userName: [this.customer.userName, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      lastName: [this.customer.lastName, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(100)])],
-      userId: [this.customer.userId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      email: [this.customer.email, Validators.compose([Validators.email])],
-      dob: [this.customer.dob, Validators.compose([Validators.nullValidator])],
-      sex: [this.customer.sex, Validators.compose([Validators.required])],
-      team: [this.customer.team, Validators.compose([Validators.required])],
-      deploy: [this.customer.deploy, Validators.compose([Validators.required])],
-      roles: [this.customer.roles, Validators.compose([Validators.required])],
-      loginRFDB_BPS: [this.customer.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      password: [this.customer.password, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      firstName: [this.userHrModal.firstName, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      lastName: [this.userHrModal.lastName, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      email: [this.userHrModal.email, Validators.compose([Validators.required, Validators.email])],
+      dob: [this.userHrModal.dob, Validators.compose([Validators.nullValidator])],
+      userName: [this.userHrModal.userName, Validators.compose([Validators.required])],
+      sex: [this.userHrModal.sex, Validators.compose([Validators.required])],
 
     });
-
   }
 
   save() {
     this.prepareCustomer();
-    if (this.customer.id) {
+    if (this.userHrModal.id) {
       this.edit();
     } else {
       this.create();
@@ -171,49 +141,41 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    const sbUpdate = this.usersService.update(this.customer).pipe(
+    const sbUpdate = this.usersService.update(this.userHrModal).pipe(
       tap(() => {
         this.modal.close();
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
-        return of(this.customer);
+        return of(this.userHrModal);
       }),
-    ).subscribe(res => this.customer = res);
+    ).subscribe(res => this.userHrModal = res);
     this.subscriptions.push(sbUpdate);
   }
 
   create() {
-    console.log("Add User");
-    const sbCreate = this.usersService.create(this.customer,"/addUser","formUser").pipe(
+    const sbCreate = this.usersService.create(this.userHrModal,"/addUser","formUser").pipe(
       tap(() => {
         this.modal.close();
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
-        return of(this.customer);
+        return of(this.userHrModal);
       }),
-    ).subscribe((res: UserModel) => this.customer = res);
+    ).subscribe((res: UserModel) => this.userHrModal = res);
     this.subscriptions.push(sbCreate);
   }
 
   private prepareCustomer() {
     const formData = this.formGroup.value;
-    this.customer.dob = new Date(formData.dob);
-    this.customer.mediaList[0].emailId = formData.email;
-    this.customer.firstName = formData.userName;
-    this.customer.dob = formData.dob;
-    this.customer.lastName = formData.lastName;
-    this.customer.loginRFDB_BPS = formData.loginRFDB_BPS;
-    this.customer.team.teamId = formData.team;
-    this.customer.deploy.deploymentId = formData.deploy;
-    this.customer.userName = formData.userName;
-    this.customer.userStatus =null;
-    this.customer.userType=null;
-    this.customer.userId=formData.userId;
-    this.customer.employeeId=formData.userId;
-    this.customer.producer=null;
+    this.userHrModal.dob = new Date(formData.dob);
+    this.userHrModal.email = formData.email;
+    this.userHrModal.firstName = formData.firstName;
+    this.userHrModal.dob = formData.dob;
 
+    this.userHrModal.lastName = formData.lastName;
+
+    this.userHrModal.userName = formData.userName;
   }
 
   ngOnDestroy(): void {

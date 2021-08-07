@@ -71,13 +71,13 @@ export abstract class TableService<T> {
 
   // CREATE
   // server should return the object with ID
-  create(item: BaseModel): Observable<BaseModel> {
+  create(item: BaseModel,path: string, formUser:string): Observable<BaseModel> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post<BaseModel>(this.API_URL+"/addUser", {"formUser":item},{headers: httpHeaders}).pipe(
+    return this.http.post<BaseModel>(this.API_URL+path, {formUser: item},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMessage.next(err);
         console.error('CREATE ITEM', err);
@@ -88,10 +88,10 @@ export abstract class TableService<T> {
   }
 
   // READ (Returning filtered list of entities)
-  find(tableState: ITableState): Observable<TableResponseModel<T>> {
+  find(tableState: ITableState ,path: string): Observable<TableResponseModel<T>> {
     console.log("Inside find >>>");
 
-    const url = this.API_URL + '/searchUser';
+    const url = this.API_URL + path;//'/searchUser';
     this._errorMessage.next('');
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
@@ -181,10 +181,14 @@ export abstract class TableService<T> {
     );
   }
 
-  public fetch() {
+  public fetch(path:string) {
+    console.log("Inside Fetch Path is >>>>" , path);
+    if(path==""){
+      path="/searchUser"
+    }
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    const request = this.find(this._tableState$.value)
+    const request = this.find(this._tableState$.value, path)
       .pipe(
         tap((res: TableResponseModel<T>) => {
           this._items$.next(res.items);
@@ -231,9 +235,10 @@ export abstract class TableService<T> {
   }
 
   // Base Methods
-  public patchState(patch: Partial<ITableState>) {
+  public patchState(patch: Partial<ITableState>, path:string) {
+    console.log("PatchState",path);
     this.patchStateWithoutFetch(patch);
-    this.fetch();
+    this.fetch(path);
   }
 
   public patchStateWithoutFetch(patch: Partial<ITableState>) {
