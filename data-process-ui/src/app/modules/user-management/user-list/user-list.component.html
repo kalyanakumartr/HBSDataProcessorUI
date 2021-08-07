@@ -140,25 +140,25 @@
               <td>
 
                 <a title="Edit User" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-                  (click)="edit(customer.user.id)">
+                  (click)="edit(customer.user.userId)">
                   <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
                     class="svg-icon svg-icon-md svg-icon-primary">
                   </span>
                 </a>
                 <a title="Add HR Details for User" class="btn btn-icon btn-light btn-hover-primary btn-sm"
-                (click)="addHR(customer.user.id)">
+                (click)="addHR(customer.user.userId)">
                 <span [inlineSVG]="'./assets/media/svg/icons/Communication/Contact1.svg'" cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-primary">
                 </span>
               </a>
               <a title="Add IT Records for User" class="btn btn-icon btn-light btn-hover-primary btn-sm"
-                  (click)="addIT(customer.user.id)">
+                  (click)="addIT(customer.user.userId)">
                   <span [inlineSVG]="'./assets/media/svg/icons/Communication/Contact1.svg'" cacheSVG="true"
                     class="svg-icon svg-icon-md svg-icon-primary">
                   </span>
                 </a>
                 <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
-                  (click)="delete(customer.user.id)">
+                  (click)="delete(customer.user.userId)">
                   <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
                     class="svg-icon svg-icon-md svg-icon-danger">
                   </span>

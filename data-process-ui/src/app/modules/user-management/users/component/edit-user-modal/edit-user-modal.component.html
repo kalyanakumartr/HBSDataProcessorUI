@@ -53,7 +53,25 @@
           </div>
         </div>
         <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label">Enter Password</label>
+            <input type="password" class="form-control form-control-lg form-control-solid" name="password" placeholder="password"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('password')"
+              [class.is-valid]="isControlValid('password')" formControlName="password" />
+            <div class="valid-feedback" *ngIf="isControlValid('password')">Password was entered correct</div>
 
+          </div>
+          <div class="col-lg-4">
+            <label>Select Roles</label>
+            <select  class="form-control form-control-lg form-control-solid" name="roles"
+              [class.is-invalid]="isControlInvalid('roles')" formControlName="roles">
+              <option [ngValue]="null" disabled>Choose Role</option>
+              <option *ngFor="let role of roleList" [ngValue]="role">
+              {{ role.roleName }}
+              </option>
+            </select>
+            <div class="feedback">Please select <b>Role</b></div>
+          </div>
           <div class="col-lg-4">
             <label class="form-label">Enter BPS Login      </label>
             <input type="text" class="form-control form-control-lg form-control-solid" name="loginRFDB_BPS"
@@ -66,6 +84,11 @@
             <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'loginRFDB_BPS')">Login RFDB BPS Id should have
               maximum 100 symbols</div>
           </div>
+
+        </div>
+        <div class="form-group row">
+
+
           <div class="col-lg-4">
             <label>Select Team</label>
             <select class="form-control form-control-lg form-control-solid" name="team"
@@ -134,6 +157,7 @@
           </div>
 
         </div>
+
       </form>
     </ng-container>
   </div>

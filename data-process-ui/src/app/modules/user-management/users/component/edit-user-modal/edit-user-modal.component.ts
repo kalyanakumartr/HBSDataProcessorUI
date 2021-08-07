@@ -5,7 +5,8 @@ import { of, Subscription } from 'rxjs';
 import { catchError, finalize, first, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter, getDateFromString } from '../../../../../_metronic/core';
 import { UsersService } from 'src/app/modules/auth/_services/user.service';
-import { UserModel } from 'src/app/modules/auth';
+import { AuthService, UserModel } from 'src/app/modules/auth';
+import { RoleService } from 'src/app/modules/auth/_services/role.services';
 
 
 const EMPTY_CUSTOMER: UserModel = {
@@ -84,10 +85,14 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   @Input() id: string;
   isLoading$;
   customer: UserModel;
+  roleList:any[];
+  deploy:string;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
   constructor(
     private usersService: UsersService,
+    private roleService: RoleService,
+    private authService: AuthService,
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
       this.customer =new UserModel;
@@ -95,30 +100,49 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isLoading$ = this.usersService.isLoading$;
+    this.roleService.getActiveRoleList().pipe(
+      tap((res: any) => {
+        this.roleList = res.items;
+        console.log("RoleList", this.roleList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
     this.loadCustomer();
   }
 
   loadCustomer() {
-    this.id="";
     if (!this.id) {
       this.customer = EMPTY_CUSTOMER;
       this.loadForm();
     } else {
       console.log("this.id", this.id);
+
       const sb = this.usersService.getItemById(this.id).pipe(
         first(),
         catchError((errorMessage) => {
+          console.log("errorMessage", errorMessage);
           this.modal.dismiss(errorMessage);
           return of(EMPTY_CUSTOMER);
         })
       ).subscribe((customer: UserModel) => {
         this.customer = customer;
+        console.log(this.customer);
+        this.loadEditForm();
         this.loadForm();
+
+
       });
       this.subscriptions.push(sb);
     }
   }
-
+  loadEditForm(){
+    this.customer.email=this.customer.mediaList[0].emailId;
+    //this.customer.roles=this.roleList[2];
+  }
   loadForm() {
     this.formGroup = this.fb.group({
       userName: [this.customer.userName, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
@@ -129,9 +153,12 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       sex: [this.customer.sex, Validators.compose([Validators.required])],
       team: [this.customer.team, Validators.compose([Validators.required])],
       deploy: [this.customer.deploy, Validators.compose([Validators.required])],
+      roles: [this.customer.roles, Validators.compose([Validators.required])],
       loginRFDB_BPS: [this.customer.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      password: [this.customer.password, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
 
     });
+
   }
 
   save() {

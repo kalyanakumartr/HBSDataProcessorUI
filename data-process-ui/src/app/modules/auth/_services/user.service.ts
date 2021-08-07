@@ -64,6 +64,22 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
       })
     );
   }
+  getItemById(id: string): Observable<UserModel> {
+
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    return this.authHttpService.getUserByToken(auth.access_token, id).pipe(
+      map((user: UserModel) => {
+
+        return user;
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
   fetchIT(id:string){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
