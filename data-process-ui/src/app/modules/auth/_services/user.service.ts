@@ -1,5 +1,5 @@
 import { Injectable, Inject, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TableService } from '../../../_metronic/shared/crud-table';
 import { environment } from '../../../../environments/environment';
 import { UserModel } from '../_models/user.model';
@@ -7,6 +7,8 @@ import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { AuthModel } from '../_models/auth.model';
 import { AuthHTTPService } from './auth-http';
+import { UserITModel } from '../_models/user-it.model';
+import { UserHRModel } from '../_models/user-hr.model';
 
 
 @Injectable({
@@ -16,6 +18,7 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
 
     // public fields
     isLoadingSubject: BehaviorSubject<boolean>;
+    private _errorMsg = new BehaviorSubject<string>('');
 
   API_URL = `${environment.adminApiUrl}`;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
@@ -41,5 +44,85 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
+  fetchHR(id:string){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
 
+    this.isLoadingSubject.next(true);
+    console.log("Inside fetch HR");
+    const url = this.API_URL + '/updateHRRecord';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<UserHRModel>(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  fetchIT(id:string){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    this.isLoadingSubject.next(true);
+    console.log("Inside fetch IT");
+    const url = this.API_URL + '/updateITRecord';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<UserITModel>(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+
+  saveHR(){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    this.isLoadingSubject.next(true);
+    console.log("Inside Save HR");
+    const url = this.API_URL + '/updateHRRecord';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  saveIT(){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    this.isLoadingSubject.next(true);
+    console.log("Inside Save IT");
+    const url = this.API_URL + '/saveITUser';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
 }

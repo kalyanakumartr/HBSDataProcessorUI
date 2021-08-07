@@ -1,0 +1,104 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <ng-container *ngIf="userITModel">
+        <ng-container *ngIf="userITModel.id">Edit</ng-container>
+        <ng-container *ngIf="!userITModel.id">Create</ng-container>
+        IT User Details
+        <ng-container *ngIf="userITModel.id"></ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="userITModel">
+      <form action="#" class="form form-label-right" [formGroup]="formGroup">
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label">Enter BroadBand Account</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="broadBandAccount"
+              placeholder="Broadband Account" autocomplete="off" [class.is-invalid]="isControlInvalid('broadBandAccount')"
+              [class.is-valid]="isControlValid('broadBandAccount')" formControlName="broadBandAccount" />
+
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'broadBandAccount')">BroadBand Account should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'broadBandAccount')">BroadBand Account should have
+              maximum 100 symbols</div>
+          </div>
+          <div class="col-lg-4">
+              <label>Select BroadBand By</label>
+              <select class="form-control form-control-lg form-control-solid" name="broadBandBy"
+                [class.is-invalid]="isControlInvalid('broadBandBy')" formControlName="broadBandBy">
+                <option value="BSNL">BSNL</option>
+                <option value="AirTel">AirTel</option>
+                <option value="JIO">JIO</option>
+                <option value="ACT">ACT</option>
+                <option value="Hathway">Hathway</option>
+              </select>
+              <div class="feedback">Please select <b>BroadBand</b></div>
+
+          </div>
+          <div class="col-lg-4">
+            <label class="form-label">Enter internetPlan</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="internetPlan"
+              placeholder="Internet Plan" autocomplete="off" [class.is-invalid]="isControlInvalid('internetPlan')"
+              [class.is-valid]="isControlValid('internetPlan')" formControlName="internetPlan" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label">Enter ISP Name</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="ispName" placeholder="ISPName"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('ispName')"
+              [class.is-valid]="isControlValid('ispName')" formControlName="ispName" />
+
+
+          </div>
+          <div class="col-lg-4">
+            <label>Static IP Address</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="staticIPAddress" placeholder="staticIPAddress"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('staticIPAddress')"
+              [class.is-valid]="isControlValid('staticIPAddress')" formControlName="staticIPAddress" />
+
+          </div>
+
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label>System Serial No</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="systemSerialNo" placeholder="systemSerialNo"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('systemSerialNo')"
+              [class.is-valid]="isControlValid('systemSerialNo')" formControlName="systemSerialNo" />
+
+          </div>
+          <div class="col-lg-4">
+            <label>Select Work From</label>
+            <select class="form-control form-control-lg form-control-solid" name="workMode"
+              [class.is-invalid]="isControlInvalid('workMode')" formControlName="workMode">
+              <option value="WFH">Home</option>
+              <option value="WFO">Office</option>
+            </select>
+            <div class="feedback">Please select <b>Work From</b></div>
+
+        </div>
+
+          </div>
+
+
+      </form>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+    <ng-container *ngIf="userITModel">
+
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+        [disabled]="formGroup.invalid">Save</button>
+    </ng-container>
+  </div>
+</div>
