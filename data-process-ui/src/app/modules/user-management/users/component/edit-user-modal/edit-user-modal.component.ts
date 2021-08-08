@@ -7,6 +7,7 @@ import { CustomAdapter, CustomDateParserFormatter, getDateFromString } from '../
 import { UsersService } from 'src/app/modules/auth/_services/user.service';
 import { AuthService, UserModel } from 'src/app/modules/auth';
 import { RoleService } from 'src/app/modules/auth/_services/role.services';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 const EMPTY_CUSTOMER: UserModel = {
@@ -28,8 +29,8 @@ const EMPTY_CUSTOMER: UserModel = {
   sex:'Male',
   userId:'',
   userImage:'',
-  userStatus:'',
-  userType:'',
+  userStatus:'Pending',
+  userType:'Employee',
   producerId:'100000DRP',
   producerName:'',
   parentProducerId:'100000DRP',
@@ -90,6 +91,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
   constructor(
+    private snackBar: MatSnackBar,
     private usersService: UsersService,
     private roleService: RoleService,
     private authService: AuthService,
@@ -103,6 +105,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     this.roleService.getActiveRoleList().pipe(
       tap((res: any) => {
         this.roleList = res.items;
+        this.loadCustomer();
         console.log("RoleList", this.roleList)
       }),
       catchError((err) => {
@@ -111,7 +114,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
           items: []
         });
       })).subscribe();
-    this.loadCustomer();
+
   }
 
   loadCustomer() {
@@ -133,15 +136,19 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         console.log(this.customer);
         this.loadEditForm();
         this.loadForm();
-
-
+        this.assignControlValues();
+        console.log("Check");
       });
-      this.subscriptions.push(sb);
+
     }
   }
   loadEditForm(){
     this.customer.email=this.customer.mediaList[0].emailId;
-    //this.customer.roles=this.roleList[2];
+  }
+  assignControlValues(){
+    this.assignControlValue("deployId",this.customer.deploy.deploymentId);
+    this.assignControlValue("teamId",this.customer.team.teamId);
+
   }
   loadForm() {
     this.formGroup = this.fb.group({
@@ -151,8 +158,8 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       email: [this.customer.email, Validators.compose([Validators.email])],
       dob: [this.customer.dob, Validators.compose([Validators.nullValidator])],
       sex: [this.customer.sex, Validators.compose([Validators.required])],
-      team: [this.customer.team, Validators.compose([Validators.required])],
-      deploy: [this.customer.deploy, Validators.compose([Validators.required])],
+      teamId: [this.customer.team, Validators.compose([Validators.required])],
+      deployId: [this.customer.deploy, Validators.compose([Validators.required])],
       roles: [this.customer.roles, Validators.compose([Validators.required])],
       loginRFDB_BPS: [this.customer.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
       password: [this.customer.password, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
@@ -182,7 +189,12 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     ).subscribe(res => this.customer = res);
     this.subscriptions.push(sbUpdate);
   }
-
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition:"top"
+    });
+  }
   create() {
     console.log("Add User");
     const sbCreate = this.usersService.create(this.customer,"/addUser","formUser").pipe(
@@ -190,10 +202,10 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         this.modal.close();
       }),
       catchError((errorMessage) => {
-        this.modal.dismiss(errorMessage);
+        this.openSnackBar(errorMessage,"X");
         return of(this.customer);
       }),
-    ).subscribe((res: UserModel) => this.customer = res);
+    ).subscribe((res: UserModel) => res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
     this.subscriptions.push(sbCreate);
   }
 
@@ -205,11 +217,9 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     this.customer.dob = formData.dob;
     this.customer.lastName = formData.lastName;
     this.customer.loginRFDB_BPS = formData.loginRFDB_BPS;
-    this.customer.team.teamId = formData.team;
-    this.customer.deploy.deploymentId = formData.deploy;
+    this.customer.team.teamId = formData.teamId;
+    this.customer.deploy.deploymentId = formData.deployId;
     this.customer.userName = formData.userName;
-    this.customer.userStatus =null;
-    this.customer.userType=null;
     this.customer.userId=formData.userId;
     this.customer.employeeId=formData.userId;
     this.customer.producer=null;
@@ -240,4 +250,10 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
   }
+  assignControlValue(controlName, value) {
+    const control = this.formGroup.controls[controlName];
+    console.log("Control", control, "Value", value);
+    control.setValue(value);
+  }
+
 }

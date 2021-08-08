@@ -7,6 +7,8 @@ import { CustomAdapter, CustomDateParserFormatter, getDateFromString } from '../
 import { UsersService } from 'src/app/modules/auth/_services/user.service';
 import { UserModel } from 'src/app/modules/auth';
 import { UserITModel } from 'src/app/modules/auth/_models/user-it.model';
+import { BaseModel } from 'src/app/_metronic/shared/crud-table';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 const EMPTY_CUSTOMER: UserITModel = {
@@ -20,7 +22,7 @@ const EMPTY_CUSTOMER: UserITModel = {
   staticIPAddress:'',
   staticWhiteList:false,
   systemSerialNo:'',
-  systemToHome:'',
+  systemToHome:false,
   workMode:''
 
 };
@@ -39,20 +41,29 @@ export class UserITModalComponent implements OnInit, OnDestroy {
   @Input() id: string;
   isLoading$;
   userITModel: UserITModel;
+  userId: BaseModel;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
   constructor(
+    private snackBar: MatSnackBar,
     private usersService: UsersService,
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
       this.userITModel =new UserITModel;
+      this.userId= new UserITModel;
     }
 
   ngOnInit(): void {
     this.isLoading$ = this.usersService.isLoading$;
+    this.userId.id=this.id;
     this.loadCustomer();
   }
-
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition:"top"
+    });
+  }
   loadCustomer() {
 
     this.id="";
@@ -93,29 +104,33 @@ export class UserITModalComponent implements OnInit, OnDestroy {
 
   save() {
     this.prepareCustomer();
-    if (this.userITModel.id) {
+    if (this.userId.id) {
       this.edit();
     }
   }
 
   edit() {
-    const sbUpdate = this.usersService.update(this.userITModel).pipe(
+
+    const sbUpdate = this.usersService.saveIT(this.userITModel, this.userId).pipe(
       tap(() => {
+
         this.modal.close();
+
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
+        this.openSnackBar(errorMessage,"X");
         return of(this.userITModel);
       }),
-    ).subscribe(res => this.userITModel = res);
-    this.subscriptions.push(sbUpdate);
+    ).subscribe(res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
+
   }
 
 
   private prepareCustomer() {
     const formData = this.formGroup.value;
     this.userITModel.broadBandAccount = formData.broadBandAccount;
-    this.userITModel.broadBandBy = formData.broadBandBy;
+    this.userITModel.broadBandBy =formData.broadBandBy;
     this.userITModel.internetPlan = formData.internetPlan;
     this.userITModel.isDowngraded = formData.isDowngraded;
     this.userITModel.ispName = formData.ispName;

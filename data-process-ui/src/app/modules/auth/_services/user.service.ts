@@ -121,23 +121,22 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
       })
     );
   }
-  saveIT(){
+  saveIT(itRecord,formUser){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
       return of(undefined);
     }
 
-    this.isLoadingSubject.next(true);
     console.log("Inside Save IT");
-    const url = this.API_URL + '/saveITUser';
+    const url = this.API_URL + '/updateITRecord';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post(url, {},{headers: httpHeaders}).pipe(
+    return this.http.post(url, {"formUser":formUser,"formITRecord":itRecord},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMsg.next(err);
-        console.error('FIND ITEMS', err);
-        return of({ items: [], total: 0 });
+        console.error('Error in Saving IT Records', err);
+        return of("Error in Saving IT Records");
       })
     );
   }

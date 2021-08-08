@@ -137,11 +137,11 @@ export const DefaultLayoutConfig = {
   aside: {
     self: {
       theme: 'dark', // light/dark
-      display: true,
+      display: false,
       fixed: true,
       minimize: {
         toggle: true, // allow toggle
-        default: false, // default state
+        default: true, // default state
         hoverable: true, // allow hover
       },
     },
@@ -154,7 +154,8 @@ export const DefaultLayoutConfig = {
 
     menu: {
      // static: true, // static => true | dynamic => true
-      dynamic: true,
+     static: false,
+     dynamic:true,
       dropdown: false, // ok
       scroll: true, // ok
       iconStyle: 'duotone', // duotone, line, bold, solid

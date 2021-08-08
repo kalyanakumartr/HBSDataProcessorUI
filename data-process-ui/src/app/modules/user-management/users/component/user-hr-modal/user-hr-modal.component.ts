@@ -67,7 +67,7 @@ const EMPTY_CUSTOMER: UserModel = {
   deploy:{
     deploymentId: '',
     deploymentTaskName: ''
-  }
+  },
 
 };
 @Component({
