@@ -1,9 +1,11 @@
+import { BaseModel } from "src/app/_metronic/shared/crud-table";
 
-export class UserHRModel {
+export class UserHRModel implements BaseModel  {
+id: any;
 bankAccounts: BankAccounts;
 employmentInfo:EmploymentInfo;
-educationalInfo:any;
-taxInfo:any;
+educationalInfo:EducationalInfo;
+taxInfo:taxInfo;
 
 }
 export class BankAccounts {

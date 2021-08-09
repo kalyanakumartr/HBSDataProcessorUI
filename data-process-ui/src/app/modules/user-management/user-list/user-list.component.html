@@ -146,13 +146,13 @@
                   </span>
                 </a>
                 <a title="Add HR Details for User" class="btn btn-icon btn-light btn-hover-primary btn-sm"
-                (click)="addHR(customer.user.userId)">
+                (click)="addHR(customer.user.id, customer.user.userName)">
                 <span [inlineSVG]="'./assets/media/svg/icons/Communication/Contact1.svg'" cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-primary">
                 </span>
               </a>
               <a title="Add IT Records for User" class="btn btn-icon btn-light btn-hover-primary btn-sm"
-                  (click)="addIT(customer.user.id)">
+                  (click)="addIT(customer.user.id, customer.user.userName)">
                   <span [inlineSVG]="'./assets/media/svg/icons/Devices/LTE2.svg'" cacheSVG="true"
                     class="svg-icon svg-icon-md svg-icon-primary">
                   </span>

@@ -5,7 +5,7 @@ import { of, Subscription } from 'rxjs';
 import { catchError, finalize, first, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter, getDateFromString } from '../../../../../_metronic/core';
 import { UsersService } from 'src/app/modules/auth/_services/user.service';
-import { UserModel } from 'src/app/modules/auth';
+
 import { UserITModel } from 'src/app/modules/auth/_models/user-it.model';
 import { BaseModel } from 'src/app/_metronic/shared/crud-table';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -39,6 +39,7 @@ const EMPTY_CUSTOMER: UserITModel = {
 })
 export class UserITModalComponent implements OnInit, OnDestroy {
   @Input() id: string;
+  @Input() name: string;
   isLoading$;
   userITModel: UserITModel;
   userId: BaseModel;
@@ -65,8 +66,8 @@ export class UserITModalComponent implements OnInit, OnDestroy {
     });
   }
   loadCustomer() {
+    console.log("loadCustomer this.id", this.id);
 
-    this.id="";
     if (!this.id) {
       this.userITModel = EMPTY_CUSTOMER;
       this.loadForm();
@@ -75,14 +76,15 @@ export class UserITModalComponent implements OnInit, OnDestroy {
       const sb = this.usersService.fetchIT(this.id).pipe(
         first(),
         catchError((errorMessage) => {
-          this.modal.dismiss(errorMessage);
+          console.log("errorMessage", errorMessage);
           return of(EMPTY_CUSTOMER);
         })
       ).subscribe((userITModal: UserITModel) => {
+        console.log("UserITModel", userITModal);
         this.userITModel = userITModal;
         this.loadForm();
       });
-      this.subscriptions.push(sb);
+
     }
   }
 

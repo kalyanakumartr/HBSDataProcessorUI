@@ -162,17 +162,19 @@ searchGroup: FormGroup;
      );
   }
 
-  addHR(id: string) {
+  addHR(id: string, name:string) {
     const modalRef = this.modalService.open(UserHRModalComponent, { size: 'xl' });
     modalRef.componentInstance.id = id;
+    modalRef.componentInstance.name =name;
     modalRef.result.then(() =>
       this.userService.fetchHR(id),
       () => { }
     );
  }
- addIT(id: string) {
+ addIT(id: string, name:string) {
   const modalRef = this.modalService.open(UserITModalComponent, { size: 'xl' });
   modalRef.componentInstance.id = id;
+  modalRef.componentInstance.name =name;
   modalRef.result.then(() =>
     this.userService.fetchIT(id),
     () => { }

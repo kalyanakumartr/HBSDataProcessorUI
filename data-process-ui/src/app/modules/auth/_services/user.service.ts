@@ -50,13 +50,13 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
       return of(undefined);
     }
 
-    this.isLoadingSubject.next(true);
+
     console.log("Inside fetch HR");
-    const url = this.API_URL + '/updateHRRecord';
+    const url = this.API_URL + '/getHRRecord';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post<UserHRModel>(url, {},{headers: httpHeaders}).pipe(
+    return this.http.post<UserHRModel>(url, {"formUser": { "id": id }},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMsg.next(err);
         console.error('FIND ITEMS', err);
@@ -86,13 +86,13 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
       return of(undefined);
     }
 
-    this.isLoadingSubject.next(true);
+
     console.log("Inside fetch IT");
-    const url = this.API_URL + '/updateITRecord';
+    const url = this.API_URL + '/getITRecord';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post<UserITModel>(url, {},{headers: httpHeaders}).pipe(
+    return this.http.post<UserITModel>(url, {"formUser": { "id": id }},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMsg.next(err);
         console.error('FIND ITEMS', err);
@@ -101,19 +101,18 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
     );
   }
 
-  saveHR(){
+  saveHR(hrRecord,formUser){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
       return of(undefined);
     }
 
-    this.isLoadingSubject.next(true);
     console.log("Inside Save HR");
     const url = this.API_URL + '/updateHRRecord';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post(url, {},{headers: httpHeaders}).pipe(
+    return this.http.post(url, {"formUser":formUser,"formHRRecord":hrRecord},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMsg.next(err);
         console.error('FIND ITEMS', err);
