@@ -34,7 +34,7 @@
               (sort)="sort($event)"></app-sort-icon>
           </th>
 
-          <th>ACTIONS</th>
+
         </thead>
         <tbody>
           <tr *ngFor="let obj of roleService.items$ | async">
@@ -44,16 +44,7 @@
             <td>{{ obj.description }}</td>
             <td>{{ obj.roletype }}</td>
 
-            <td>
 
-
-              <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
-                (click)="delete(obj.id)">
-                <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
-                  class="svg-icon svg-icon-md svg-icon-danger">
-                </span>
-              </a>
-            </td>
           </tr>
         </tbody>
       </table>
