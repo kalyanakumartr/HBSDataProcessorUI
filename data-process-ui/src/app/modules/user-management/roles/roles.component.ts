@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { GroupingState, ICreateAction, IDeleteAction, IDeleteSelectedAction, IEditAction, IFetchSelectedAction, IFilterView, IGroupingView, ISearchView, ISortView, IUpdateStatusForSelectedAction, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
+import { GroupingState,   ISortView, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
 import { RoleService } from '../../auth/_services/role.services';
 
 @Component({
@@ -15,17 +16,7 @@ import { RoleService } from '../../auth/_services/role.services';
 export class RolesComponent implements
 OnInit,
 OnDestroy,
-ICreateAction,
-IEditAction,
-IDeleteAction,
-IDeleteSelectedAction,
-IFetchSelectedAction,
-IUpdateStatusForSelectedAction,
-ISortView,
-IFilterView,
-IGroupingView,
-ISearchView,
-IFilterView {
+ISortView {
 paginator: PaginatorState;
 sorting: SortState;
 grouping: GroupingState;
@@ -34,7 +25,7 @@ filterGroup: FormGroup;
 searchGroup: FormGroup;
 
   userList: any;
-  subscriptions: any;
+  private subscriptions: Subscription[] = [];
 
   constructor(private fb: FormBuilder,
     private modalService: NgbModal, public roleService: RoleService) {
@@ -42,10 +33,7 @@ searchGroup: FormGroup;
   }
 
   ngOnInit(): void {
-    //this.filterForm();
-    //this.searchForm();
-
-    this.roleService.fetch("/getActiveRoleList");
+     this.roleService.fetch("/getActiveRoleList");
     console.log("Roles List :", this.subscriptions)
     this.grouping = this.roleService.grouping;
     this.paginator = this.roleService.paginator;
@@ -55,37 +43,6 @@ searchGroup: FormGroup;
   }
   ngOnDestroy() {
     this.subscriptions.forEach((sb) => sb.unsubscribe());
-  }
-
-  // filtration
-  filterForm() {
-    this.filterGroup = this.fb.group({
-      status: [''],
-      type: [''],
-      searchTerm: [''],
-    });
-    this.subscriptions.push(
-      this.filterGroup.controls.status.valueChanges.subscribe(() =>
-        this.filter()
-      )
-    );
-    this.subscriptions.push(
-      this.filterGroup.controls.type.valueChanges.subscribe(() => this.filter())
-    );
-  }
-
-  filter() {
-    const filter = {};
-    const status = this.filterGroup.get('status').value;
-    if (status) {
-      filter['status'] = status;
-    }
-
-    const type = this.filterGroup.get('type').value;
-    if (type) {
-      filter['type'] = type;
-    }
-    this.roleService.patchState({ filter },"/getActiveRoleList");
   }
 
   // search
@@ -126,43 +83,6 @@ searchGroup: FormGroup;
   // pagination
   paginate(paginator: PaginatorState) {
     this.roleService.patchState({ paginator },"/getActiveRoleList");
-  }
-  // form actions
-  create() {
-    this.edit(undefined);
-  }
-
-  edit(id: number) {
-    //  const modalRef = this.modalService.open(EditUserModalComponent, { size: 'xl' });
-    //  modalRef.componentInstance.id = id;
-    //  modalRef.result.then(() =>
-    //    this.userService.fetch(),
-    //    () => { }
-    //  );
-  }
-
-  delete(id: number) {
-    // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
-    // modalRef.componentInstance.id = id;
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
-  }
-
-  deleteSelected() {
-    // const modalRef = this.modalService.open(DeleteCustomersModalComponent);
-    // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
-  }
-
-  updateStatusForSelected() {
-    // const modalRef = this.modalService.open(UpdateCustomersStatusModalComponent);
-    // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
-  }
-
-  fetchSelected() {
-    // const modalRef = this.modalService.open(FetchCustomersModalComponent);
-    // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
   }
 }
 

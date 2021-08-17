@@ -27,10 +27,10 @@ import { UserHRModalComponent } from '../users/component/user-hr-modal/user-hr-m
 
 @Component({
   selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.scss']
+  templateUrl: './all-user-obj-list.component.html',
+  styleUrls: ['./all-user-obj-list.component.scss']
 })
-export class UserListComponent implements
+export class AllUserObjListComponent implements
 OnInit,
 OnDestroy,
 ICreateAction,
