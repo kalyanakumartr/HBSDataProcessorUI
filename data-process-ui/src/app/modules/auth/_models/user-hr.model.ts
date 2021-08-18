@@ -5,7 +5,7 @@ id: any;
 bankAccounts: BankAccounts;
 employmentInfo:EmploymentInfo;
 educationalInfo:EducationalInfo;
-taxInfo:taxInfo;
+taxInfo:TaxInfo;
 
 }
 export class BankAccounts {
@@ -16,6 +16,7 @@ export class BankAccounts {
 }
 
 export class EmploymentInfo {
+  dateOfJoin:any;
   infoAPL: string;
   employmentStatus:string;
   experienceInEDR:string;
@@ -37,7 +38,7 @@ export class EducationalInfo {
   markGrade:string;
   year:string;
 }
-export class taxInfo {
+export class TaxInfo {
   aadhar: string;
   esic: string;
   providentFund:string;

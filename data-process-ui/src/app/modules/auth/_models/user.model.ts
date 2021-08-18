@@ -7,6 +7,8 @@ import { Producer } from './producer.model';
 import { Country } from './country.model';
 import { Team } from './team.model';
 import { Deployment } from './deployment.model';
+import { UserHRModel } from './user-hr.model';
+import { UserITModel } from './user-it.model';
 
 export class UserModel implements BaseModel {
   id: string;
@@ -23,6 +25,7 @@ export class UserModel implements BaseModel {
   phone: string;
   employeeId:string;
   fatherName:string;
+  spouseName:string;
   sex:string;
   userId:string;
   userImage:string;
@@ -48,7 +51,10 @@ export class UserModel implements BaseModel {
   deploy:Deployment;
   // email settings
 
-
-
+  assignedRole:string;
+  status :string;
+  trainingBatch:string;
+  itRecord:UserITModel;
+  hrRecord:UserHRModel;
 
 }

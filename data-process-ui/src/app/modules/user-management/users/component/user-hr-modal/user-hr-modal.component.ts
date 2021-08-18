@@ -22,6 +22,7 @@ const EMPTY_HR_MODEL: UserHRModel = {
     ifscCode:''
   },
 employmentInfo:{
+  dateOfJoin:'',
   infoAPL: '',
   employmentStatus: '',
   experienceInEDR: '',

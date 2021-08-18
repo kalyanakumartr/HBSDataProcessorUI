@@ -129,9 +129,9 @@ const EMPTY_CUSTOMER: UserModel = {
   }
 };
 @Component({
-  selector: 'app-edit-user-modal',
-  templateUrl: './edit-user-modal.component.html',
-  styleUrls: ['./edit-user-modal.component.scss'],
+  selector: 'app-operational-user-modal',
+  templateUrl: './operational-user-modal.component.html',
+  styleUrls: ['./operational-user-modal.component.scss'],
   // NOTE: For this example we are only providing current component, but probably
   // NOTE: you will w  ant to provide your main App Module
   providers: [
@@ -139,7 +139,7 @@ const EMPTY_CUSTOMER: UserModel = {
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
   ]
 })
-export class EditUserModalComponent implements OnInit, OnDestroy {
+export class OperationalUserModalComponent implements OnInit, OnDestroy {
   @Input() id: string;
   isLoading$;
   customer: UserModel;
@@ -151,7 +151,6 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private usersService: UsersService,
     private roleService: RoleService,
-    private authService: AuthService,
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
       this.customer =new UserModel;
@@ -209,26 +208,16 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   }
   loadForm() {
     this.formGroup = this.fb.group({
-      userName: [this.customer.userName, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      fatherName: [this.customer.fatherName, Validators.compose([ Validators.minLength(1), Validators.maxLength(100)])],
-      spouseName: [this.customer.spouseName, Validators.compose([ Validators.minLength(1), Validators.maxLength(100)])],
-      userId: [this.customer.userId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
 
-      dob: [this.customer.dob, Validators.compose([Validators.nullValidator])],
-      sex: [this.customer.sex, Validators.compose([Validators.required])],
-      phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.minLength(10), Validators.maxLength(12)])],
-      address: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(3), Validators.maxLength(200)])],
-
-      department: [this.customer.deploy, Validators.compose([Validators.required])],
       roles: [this.customer.roles, Validators.compose([Validators.required])],
-      status: [this.customer.hrRecord.employmentInfo.employmentStatus, Validators.compose([Validators.required])],
-      doj: [this.customer.hrRecord.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
+      teamId: [this.customer.team, Validators.compose([Validators.required])],
+      department: [this.customer.deploy, Validators.compose([Validators.required])],
+      //Change Reporting to
+      reportingTo: [this.customer.spouseName, Validators.compose([Validators.required])],
+      loginRFDB_BPS: [this.customer.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      projectId: [this.customer.producerId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      trainingBatch: [this.customer.trainingBatch, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
 
-      //teamId: [this.customer.team, Validators.compose([Validators.required])],
-      //deployId: [this.customer.deploy, Validators.compose([Validators.required])],
-      //email: [this.customer.email, Validators.compose([Validators.email])],
-      //loginRFDB_BPS: [this.customer.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      //password: [this.customer.password, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
 
     });
 
@@ -278,26 +267,13 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   private prepareCustomer() {
     const formData = this.formGroup.value;
 
-
-    this.customer.userName = formData.userName;
-    this.customer.fatherName = formData.fatherName;
-    this.customer.spouseName = formData.spouseName;
-    this.customer.userId=formData.userId;
-
-    this.customer.dob = new Date(formData.dob);
-    this.customer.sex = formData.sex;
-    this.customer.mediaList[0].mobileNo =formData.phoneno;
-    this.customer.mediaList[0].communicationAddress = formData.address;
-
-
-
-    this.customer.deploy.deploymentId = formData.department;
-    this.customer.hrRecord.employmentInfo.employmentStatus= formData.status;
-    this.customer.hrRecord.employmentInfo.dateOfJoin = new Date(formData.doj);
-    this.customer.roles =formData.roles;
-
-    this.customer.employeeId=formData.userId;
-    this.customer.producer=null;
+    this.customer.trainingBatch = formData.trainingBatch;
+    this.customer.loginRFDB_BPS = formData.loginRFDB_BPS;
+    this.customer.team.teamId = formData.teamId;
+    this.customer.deploy.deploymentId = formData.deployId;
+    this.customer.spouseName=formData.reportingTo;
+    this.customer.producerId=formData.projectId;
+    this.customer.roles=formData.roles;
 
   }
 
