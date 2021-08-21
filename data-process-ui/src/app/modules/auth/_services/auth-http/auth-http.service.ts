@@ -51,7 +51,7 @@ export class AuthHTTPService {
       Authorization: `Bearer ${token}`,
     });
     console.log("LoginId",loginId);
-    return this.http.post<UserModel>(`${API_ADMIN_URL}/getActiveUser`, {
+    return this.http.post<UserModel>(`${API_ADMIN_URL}/getUser`, {
       "searchParam": loginId+""
     },{
       headers: httpHeaders,

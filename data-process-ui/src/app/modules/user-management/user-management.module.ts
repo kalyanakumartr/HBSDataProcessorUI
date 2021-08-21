@@ -14,10 +14,13 @@ import { EditUserModalComponent } from './users/component/edit-user-modal/edit-u
 import { NgbDatepickerModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserHRModalComponent } from './users/component/user-hr-modal/user-hr-modal.component';
 import { UserITModalComponent } from './users/component/user-it-modal/user-it-modal.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { OperationalUserModalComponent } from './users/component/operational-user-modal/operational-user-modal.component';
+import { HrUserObjListComponent } from './hr-user-obj-list/hr-user-obj-list.component';
 
 @NgModule({
-  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent, EditUserModalComponent, UserITModalComponent, UserHRModalComponent],
+  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent,HrUserObjListComponent, EditUserModalComponent, UserITModalComponent, UserHRModalComponent,OperationalUserModalComponent],
   imports: [CommonModule, UserManagementRoutingModule,   CommonModule,   HttpClientModule,
-     CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule],
+     CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule],
 })
 export class UserManagementModule {}

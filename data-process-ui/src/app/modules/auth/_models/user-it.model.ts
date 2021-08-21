@@ -10,6 +10,6 @@ ispName:string;
 staticIPAddress:string;
 staticWhiteList:boolean;
 systemSerialNo:string;
-systemToHome:string;
+systemToHome:boolean;
 workMode:string;
 }

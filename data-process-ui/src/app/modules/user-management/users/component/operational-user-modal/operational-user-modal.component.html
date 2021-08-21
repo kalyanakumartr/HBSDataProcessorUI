@@ -1,0 +1,112 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <ng-container *ngIf="customer">
+        <ng-container *ngIf="customer.id">Edit</ng-container>
+        Operational Employee Data
+        <ng-container *ngIf="customer.id">'{{customer.userName}} {{ customer.lastName }}'</ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="customer">
+      <form action="#" class="form form-label-right" [formGroup]="formGroup">
+        <div class="col-lg-4">
+          <label>Select Department</label>
+          <select class="form-control form-control-lg form-control-solid" name="department"
+            [class.is-invalid]="isControlInvalid('department')" formControlName="department">
+            <option value="DLP0001">Access Ramp</option>
+          </select>
+          <div class="feedback">Please select <b>Department</b></div>
+        </div>
+        <div class="col-lg-4">
+          <label>Select Roles</label>
+          <select  class="form-control form-control-lg form-control-solid" name="roles"
+            [class.is-invalid]="isControlInvalid('roles')" formControlName="roles">
+            <option [ngValue]="null" disabled>Choose Role</option>
+            <option *ngFor="let role of roleList" [ngValue]="role">
+            {{ role.roleName }}
+            </option>
+          </select>
+          <div class="feedback">Please select <b>Role</b></div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label>Select Team</label>
+            <select class="form-control form-control-lg form-control-solid" name="teamId"
+              [class.is-invalid]="isControlInvalid('teamId')" formControlName="teamId">
+              <option value="GRP0008">SILOC Team - SILOC_Group</option>
+              <option value="GRP0009">RFDB_Training - RFDB_Training_Group</option>
+              <option value="GRP0010">CR43_Team - CR43_Natraj_Group</option>
+              <option value="GRP0011">CR43_Team - CR43_Jeeva_Group</option>
+              <option value="GRP0012">CR43_Team - CR43_Gandeeban_Group</option>
+              <option value="GRP0013">CR43_Team - CR43_Ayyappan_Group</option>
+              <option value="GRP0014">Ushr_Projects - Special Task Team </option>
+              <option value="GRP0015">CSAV2_Team - Special Task Team</option>
+              <option value="GRP0016">CSAV3_Team - Special Task Team</option>
+            </select>
+            <div class="feedback">Please select <b>Team</b></div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label">Enter Reporting To   </label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="reportingTo"
+              placeholder="Reporting To" autocomplete="off" [class.is-invalid]="isControlInvalid('reportingTo')"
+              [class.is-valid]="isControlValid('reportingTo')" formControlName="reportingTo" />
+
+          </div>
+          <div class="col-lg-4">
+            <label class="form-label">Enter BPS Login      </label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="loginRFDB_BPS"
+              placeholder="BPS Login" autocomplete="off" [class.is-invalid]="isControlInvalid('loginRFDB_BPS')"
+              [class.is-valid]="isControlValid('loginRFDB_BPS')" formControlName="loginRFDB_BPS" />
+            <div class="valid-feedback" *ngIf="isControlValid('loginRFDB_BPS')">Login RFDB BPS Id was entered correct</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'loginRFDB_BPS')">Login RFDB BPS Id is required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'loginRFDB_BPS')">Login RFDB BPS Id should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'loginRFDB_BPS')">Login RFDB BPS Id should have
+              maximum 100 symbols</div>
+          </div>
+
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label">Enter Project Id   </label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="projectId"
+              placeholder="Project Id" autocomplete="off" [class.is-invalid]="isControlInvalid('projectId')"
+              [class.is-valid]="isControlValid('projectId')" formControlName="projectId" />
+
+          </div>
+          <div class="col-lg-4">
+            <label class="form-label">Enter Training Batch   </label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="trainingBatch"
+              placeholder="Training Batch" autocomplete="off" [class.is-invalid]="isControlInvalid('trainingBatch')"
+              [class.is-valid]="isControlValid('trainingBatch')" formControlName="trainingBatch" />
+
+          </div>
+
+
+
+
+        </div>
+
+
+      </form>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+    <ng-container *ngIf="customer">
+
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+        [disabled]="formGroup.invalid">Save</button>
+    </ng-container>
+  </div>
+</div>

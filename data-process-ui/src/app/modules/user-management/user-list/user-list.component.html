@@ -1,33 +1,17 @@
 <div class="card card-custom gutter-b">
     <div class="card-header">
       <div class="card-title">
-        <h3 class="card-label">Users list</h3>
+        <h3 class="card-label">Employee list</h3>
       </div>
       <div class="card-toolbar">
-        <button type="button" class="btn btn-primary" (click)="create()">New User</button>
+        <button type="button" class="btn btn-primary" (click)="create()">Add Employee</button>
       </div>
     </div>
     <div class="card-body">
       <!-- begin: Filtration form -->
       <div class="form form-label-right">
         <div class="form-group row">
-          <div class="row" [formGroup]="filterGroup">
-            <!--<div class="col-lg-6">
-              <select class="form-control" name="employmentStatus" placeholder="Filter by Status" formControlName="employmentStatus">
-                <option value="">All</option>
-                <option value="Susspended">Susspended</option>
-                <option value="Active">Active</option>
-                <option value="Pending">Pending</option>
-              </select><small class="form-text text-muted"><b>Filter</b> by Status</small>
-            </div>
-            <div class="col-lg-6">
-              <select class="form-control" placeholder="Filter by Type" name="workMode" formControlName="workMode">
-                <option value="">All</option>
-                <option value="WFO">Office</option>
-                <option value="WFH">Home</option>
-              </select><small class="form-text text-muted"><b>Filter</b> by Work From </small>
-            </div>-->
-          </div>
+
           <div class="col-lg-2" [formGroup]="searchGroup">
             <input type="text" class="form-control" name="searchText" placeholder="Search" value=""
               formControlName="searchTerm" /><small class="form-text text-muted"><b>Search</b> in all fields</small>
@@ -36,36 +20,6 @@
       </div>
       <!-- end: Filtration form -->
 
-      <!-- begin: Grouping -->
-     <!-- <ng-container *ngIf="grouping.getSelectedRowsCount()">
-        <div class="form">
-          <div class="row align-items-center form-group-actions margin-top-20 margin-bottom-20">
-            <div class="col-xl-12">
-              <div class="form-group form-group-inline">
-                <div class="form-label form-label-no-wrap">
-                  <label class="font-bold font-danger"><span>Selected records count:
-                      <b>{{ grouping.getSelectedRowsCount() }}</b></span></label>
-                </div>
-                <div>
-                  <button type="button" class="btn btn-danger font-weight-bolder font-size-sm mr-1"
-                    (click)="deleteSelected()">
-                    <i class="fa fa-trash"></i> Delete All
-                  </button>&nbsp;
-                  <button type="button" class="btn btn-light-primary font-weight-bolder font-size-sm mr-1"
-                    (click)="fetchSelected()">
-                    <i class="fa fa-stream"></i> Fetch Selected
-                  </button>&nbsp;
-                  <button type="button" class="btn btn-light-primary font-weight-bolder font-size-sm mr-1"
-                    (click)="updateStatusForSelected()">
-                    <i class="fa fa-sync-alt"></i> Update Status
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-container>-->
-      <!-- end: Grouping -->
 
       <!-- begin:Table -->
       <div class="table-responsive angular-bootstrap-table">
@@ -146,14 +100,14 @@
                   </span>
                 </a>
                 <a title="Add HR Details for User" class="btn btn-icon btn-light btn-hover-primary btn-sm"
-                (click)="addHR(customer.user.userId)">
+                (click)="addHR(customer.user.id, customer.user.userName)">
                 <span [inlineSVG]="'./assets/media/svg/icons/Communication/Contact1.svg'" cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-primary">
                 </span>
               </a>
               <a title="Add IT Records for User" class="btn btn-icon btn-light btn-hover-primary btn-sm"
-                  (click)="addIT(customer.user.userId)">
-                  <span [inlineSVG]="'./assets/media/svg/icons/Communication/Contact1.svg'" cacheSVG="true"
+                  (click)="addIT(customer.user.id, customer.user.userName)">
+                  <span [inlineSVG]="'./assets/media/svg/icons/Devices/LTE2.svg'" cacheSVG="true"
                     class="svg-icon svg-icon-md svg-icon-primary">
                   </span>
                 </a>

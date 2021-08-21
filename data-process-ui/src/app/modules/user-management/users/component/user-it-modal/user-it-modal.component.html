@@ -2,9 +2,8 @@
   <div class="modal-header">
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
       <ng-container *ngIf="userITModel">
-        <ng-container *ngIf="userITModel.id">Edit</ng-container>
-        <ng-container *ngIf="!userITModel.id">Create</ng-container>
-        IT User Details
+
+        IT User Details  of {{name}}
         <ng-container *ngIf="userITModel.id"></ng-container>
       </ng-container>
     </div>
@@ -34,11 +33,10 @@
               <label>Select BroadBand By</label>
               <select class="form-control form-control-lg form-control-solid" name="broadBandBy"
                 [class.is-invalid]="isControlInvalid('broadBandBy')" formControlName="broadBandBy">
-                <option value="BSNL">BSNL</option>
-                <option value="AirTel">AirTel</option>
-                <option value="JIO">JIO</option>
-                <option value="ACT">ACT</option>
-                <option value="Hathway">Hathway</option>
+                <option value="EDR_Active">EDR Active</option>
+                <option value="OWN">OWN</option>
+                <option value="EDR_Disconnected">EDR Disconnected</option>
+
               </select>
               <div class="feedback">Please select <b>BroadBand</b></div>
 
@@ -53,10 +51,15 @@
         <div class="form-group row">
           <div class="col-lg-4">
             <label class="form-label">Enter ISP Name</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="ispName" placeholder="ISPName"
-              autocomplete="off" [class.is-invalid]="isControlInvalid('ispName')"
-              [class.is-valid]="isControlValid('ispName')" formControlName="ispName" />
-
+           <select class="form-control form-control-lg form-control-solid" name="ispName"
+                [class.is-invalid]="isControlInvalid('ispName')" formControlName="ispName">
+                <option value="BSNL">BSNL</option>
+                <option value="AirTel">AirTel</option>
+                <option value="JIO">JIO</option>
+                <option value="ACT">ACT</option>
+                <option value="Hathway">Hathway</option>
+              </select>
+              <div class="feedback">Please select <b>ISP</b></div>
 
           </div>
           <div class="col-lg-4">
