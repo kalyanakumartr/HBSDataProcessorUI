@@ -9,7 +9,7 @@ import { DynamicAsideMenuConfig } from '../../configs/dynamic-aside-menu.config'
 const emptyMenuConfig = {
   items: []
 };
-const API_VIEW_URL = `${environment.viewApiUrl}`;
+const API_ADMIN_URL = `${environment.adminApiUrl}`;
 @Injectable({
   providedIn: 'root'
 })
@@ -52,10 +52,10 @@ export class DynamicAsideMenuService {
       Authorization: `Bearer ${token}`,
     });
     console.log("tokenssssss",token);
-    console.log("ssssAAAAAA",`${API_VIEW_URL}`);
 
 
-      return this.http.post(`${API_VIEW_URL}/getHeaderMenu`,{},{
+
+      return this.http.post(`${API_ADMIN_URL}/getHeaderMenu`,{},{
         headers: httpHeaders,
       });
 

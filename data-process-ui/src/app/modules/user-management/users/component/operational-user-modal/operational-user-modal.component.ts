@@ -76,6 +76,7 @@ const EMPTY_CUSTOMER: UserModel = {
   assignedRole:'',
   status:'',
   trainingBatch:'',
+  reportingTo:'',
   itRecord:{
     id: '',
     broadBandAccount:'',

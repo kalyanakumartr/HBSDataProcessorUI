@@ -15,11 +15,11 @@ import { NgbDatepickerModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap'
 import { UserHRModalComponent } from './users/component/user-hr-modal/user-hr-modal.component';
 import { UserITModalComponent } from './users/component/user-it-modal/user-it-modal.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AllUserObjListComponent } from './all-user-obj-list/all-user-obj-list.component';
 import { OperationalUserModalComponent } from './users/component/operational-user-modal/operational-user-modal.component';
+import { HrUserObjListComponent } from './hr-user-obj-list/hr-user-obj-list.component';
 
 @NgModule({
-  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent,AllUserObjListComponent, EditUserModalComponent, UserITModalComponent, UserHRModalComponent,OperationalUserModalComponent],
+  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent,HrUserObjListComponent, EditUserModalComponent, UserITModalComponent, UserHRModalComponent,OperationalUserModalComponent],
   imports: [CommonModule, UserManagementRoutingModule,   CommonModule,   HttpClientModule,
      CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule],
 })

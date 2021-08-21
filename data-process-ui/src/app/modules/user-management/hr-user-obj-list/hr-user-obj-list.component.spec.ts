@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AllUserObjListComponent } from './all-user-obj-list.component';
+import { HrUserObjListComponent } from './hr-user-obj-list.component';
 
 describe('UserListComponent', () => {
-  let component: AllUserObjListComponent;
-  let fixture: ComponentFixture<AllUserObjListComponent>;
+  let component: HrUserObjListComponent;
+  let fixture: ComponentFixture<HrUserObjListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AllUserObjListComponent ]
+      declarations: [ HrUserObjListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AllUserObjListComponent);
+    fixture = TestBed.createComponent(HrUserObjListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

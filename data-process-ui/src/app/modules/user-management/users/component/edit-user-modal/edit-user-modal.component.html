@@ -95,8 +95,7 @@
               [class.is-valid]="isControlValid('phoneno')" formControlName="phoneno" />
               <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'phoneno')">Phone Number should have at
                 least 10 symbols</div>
-              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'phoneno')">Phone Number should have at
-                least 13 symbols</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'phoneno')">Phone Number should not be morethan 13 symbols</div>
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter Address</label>

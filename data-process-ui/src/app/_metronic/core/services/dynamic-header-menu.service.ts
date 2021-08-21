@@ -9,7 +9,7 @@ import { DynamicHeaderMenuConfig } from '../../configs/dynamic-header-menu.confi
 const emptyMenuConfig = {
   items: []
 };
-const API_VIEW_URL = `${environment.viewApiUrl}`;
+const API_ADMIN_URL = `${environment.adminApiUrl}`;
 
 
 @Injectable({
@@ -54,10 +54,10 @@ export class DynamicHeaderMenuService {
       Authorization: `Bearer ${token}`,
     });
     console.log("tokenssssss",token);
-    console.log("ssssAAAAAA",`${API_VIEW_URL}`);
+    console.log("ssssAAAAAA",`${API_ADMIN_URL}`);
 
 
-      return this.http.post(`${API_VIEW_URL}/getHeaderMenu`,{},{
+      return this.http.post(`${API_ADMIN_URL}/getHeaderMenu`,{},{
         headers: httpHeaders,
       });
 

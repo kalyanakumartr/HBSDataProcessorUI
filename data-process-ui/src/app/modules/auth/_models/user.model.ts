@@ -56,5 +56,6 @@ export class UserModel implements BaseModel {
   trainingBatch:string;
   itRecord:UserITModel;
   hrRecord:UserHRModel;
+  reportingTo:string;
 
 }
