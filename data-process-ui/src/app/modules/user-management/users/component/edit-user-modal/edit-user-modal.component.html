@@ -114,7 +114,7 @@
             <label>Select Department</label>
             <select class="form-control form-control-lg form-control-solid" name="department"
               [class.is-invalid]="isControlInvalid('department')" formControlName="department">
-              <option value="DLP0001">Access Ramp</option>
+              <option value="RFDB">RFDB Training</option>
             </select>
             <div class="feedback">Please select <b>Department</b></div>
           </div>
@@ -144,9 +144,9 @@
             <label>Date of Joining</label>
             <div class="input-group input-group-solid">
               <input type="text" name="doj" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                placeholder="dd/mm/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('doj')"
+                placeholder="dd/mm/yyyy" ngbDatepicker #doj="ngbDatepicker" [class.is-invalid]="isControlInvalid('doj')"
                 [class.is-valid]="isControlValid('doj')" formControlName="doj" readonly="true" />
-              <div class="input-group-append" (click)="d.toggle()">
+              <div class="input-group-append" (click)="doj.toggle()">
                 <span class="input-group-text">
                   <i class="text-dark-50 flaticon-calendar"></i>
                 </span>

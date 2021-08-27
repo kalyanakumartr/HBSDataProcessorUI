@@ -173,15 +173,7 @@ authModel:AuthModel;
       () => { }
     );
  }
- addIT(id: string, name:string) {
-  const modalRef = this.modalService.open(UserITModalComponent, { size: 'xl' });
-  modalRef.componentInstance.id = id;
-  modalRef.componentInstance.name =name;
-  modalRef.result.then(() =>
-    this.userService.fetchIT(id),
-    () => { }
-  );
-}
+
   delete(id: number) {
     // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
     // modalRef.componentInstance.id = id;

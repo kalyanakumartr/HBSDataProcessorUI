@@ -9,6 +9,8 @@ import { Team } from './team.model';
 import { Deployment } from './deployment.model';
 import { UserHRModel } from './user-hr.model';
 import { UserITModel } from './user-it.model';
+import { UserOperationalModel } from './user-operational.model';
+import { UserRoles } from './user-roles.model';
 
 export class UserModel implements BaseModel {
   id: string;
@@ -17,7 +19,7 @@ export class UserModel implements BaseModel {
   fullname: string;
   email: string;
   pic: string;
-  roles: number[];
+  userRoleses: UserRoles[];
   occupation: string;
   companyName: string;
   dateOfJoin:string;
@@ -35,7 +37,7 @@ export class UserModel implements BaseModel {
   producerName:string;
   parentProducerId:string;
   parentProducerName:string;
-  loginRFDB_BPS:string
+
   address?: AddressModel;
   socialNetworks?: SocialNetworksModel;
   // personal information
@@ -47,15 +49,14 @@ export class UserModel implements BaseModel {
   uniqueId:string;
   producer: Producer;
   country: Country;
-  team:Team;
-  deploy:Deployment;
+
   // email settings
 
   assignedRole:string;
   status :string;
-  trainingBatch:string;
+
   itRecord:UserITModel;
   hrRecord:UserHRModel;
-  reportingTo:string;
+  operationalRecord:UserOperationalModel;
 
 }

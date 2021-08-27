@@ -45,6 +45,25 @@
             <app-sort-icon column="status" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
               (sort)="sort($event)"></app-sort-icon>
           </th>
+          <th nowrap >
+            Work From
+
+          </th>
+          <th nowrap >System To Home</th>
+          <th nowrap >System Serial No</th>
+          <th nowrap >Broadband By</th>
+          <th nowrap >ispName</th>
+          <th nowrap >broadBandAccount</th>
+          <th nowrap >internetPlan</th>
+          <th nowrap >isDowngraded</th>
+          <th nowrap >staticIPAddress</th>
+          <th nowrap >Static White List</th>
+
+          <th nowrap >Designation</th>
+          <th nowrap >Current Address</th>
+          <th nowrap >Permanant Address</th>
+          <th nowrap >Contact Number</th>
+          <th nowrap >Alternate Number</th>
           <th nowrap >Department Name</th>
 
           <th nowrap >
@@ -69,20 +88,13 @@
 
           <th nowrap >Training Batch</th>
 
-          <th nowrap >Designation</th>
-          <th nowrap >Current Address</th>
-          <th nowrap >Permanant Address</th>
-          <th nowrap >Contact Number</th>
-          <th nowrap >Alternate Number</th>
-
-
         </tr>
         </thead>
         <tbody>
           <tr *ngFor="let customer of userService.items$ | async">
             <td>
               <a title="Edit IT Employee Details" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-              (click)="addOPR(customer.user.id, customer.user.userName)">
+              (click)="addIT(customer.user.id, customer.user.userName)">
               <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
                 class="svg-icon svg-icon-md svg-icon-primary">
               </span>
@@ -100,14 +112,41 @@
                 <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'Pending'">Pending</ng-container>
               </span>
             </td>
+            <td>
+              <span class="label label-dot label-primary mr-2" [class.label-success]="customer.user.itRecord.workMode === 'WFO'"
+                [class.label-primary]="customer.user.itRecord.workMode === 'WFH'"></span>&nbsp;<span class="font-bold font-primary">
+                <ng-container *ngIf="customer.user.itRecord.workMode === 'WFO'">Office</ng-container>
+                <ng-container *ngIf="customer.user.itRecord.workMode === 'WFH'">Home</ng-container>
+              </span>
+            </td>
+            <td>
+              {{ customer.user.itRecord.systemToHome }}
+            </td>
+            <td>
+              {{ customer.user.itRecord.systemSerialNo }}
+            </td>
 
-            <td>{{ customer.user.operationalRecord.department.departmentName }}</td>
-            <td>{{ customer.user.operationalRecord.team.teamName }}</td>
-            <td>{{ customer.user.operationalRecord.team.groupName }}</td>
-            <td>{{ customer.user.reportingTo }} </td>
-            <td>{{ customer.user.operationalRecord.loginRFDB_BPS }}</td>
-            <td>{{ customer.user.operationalRecord.project.projectName }}</td>
-            <td>{{ customer.user.trainingBatch }} </td>
+            <td>
+              {{ customer.user.itRecord.broadBandBy }}
+            </td>
+            <td>
+              {{ customer.user.itRecord.ispName }}
+            </td>
+            <td>
+              {{ customer.user.itRecord.broadBandAccount }}
+            </td>
+            <td>
+              {{ customer.user.itRecord.internetPlan }}
+            </td>
+            <td>
+              {{ customer.user.itRecord.isDowngraded }}
+            </td>
+            <td>
+              {{ customer.user.itRecord.staticIPAddress }}
+            </td>
+            <td>
+              {{ customer.user.itRecord.staticWhiteList }}
+            </td>
             <td>
               {{ customer.user.roleName }}
             </td>
@@ -115,7 +154,13 @@
             <td>{{ customer.user.mediaList[0].permanentAddress }}</td>
             <td>{{ customer.user.mediaList[0].mobileNo }}</td>
             <td>{{ customer.user.mediaList[0].alternateMobile }}</td>
-
+            <td>{{ customer.user.operationalRecord.department.departmentName }}</td>
+            <td>{{ customer.user.operationalRecord.team.teamName }}</td>
+            <td>{{ customer.user.operationalRecord.team.groupName }}</td>
+            <td>{{ customer.user.reportingTo }} </td>
+            <td>{{ customer.user.operationalRecord.loginRFDB_BPS }}</td>
+            <td>{{ customer.user.operationalRecord.project.projectName }}</td>
+            <td>{{ customer.user.trainingBatch }} </td>
           </tr>
         </tbody>
       </table>

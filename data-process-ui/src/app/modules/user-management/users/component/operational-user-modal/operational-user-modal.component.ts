@@ -18,7 +18,15 @@ const EMPTY_CUSTOMER: UserModel = {
   userName: '',
   fullname: '',
   pic: '',
-  roles: [],
+  userRoleses: [
+    {
+      roles:{
+        id:'',
+        roleId:'',
+        isAdminRole:false
+      }
+    }
+  ],
   occupation: '',
   companyName: '',
   dateOfJoin:'',
@@ -52,7 +60,6 @@ const EMPTY_CUSTOMER: UserModel = {
   timeZone: '',
   uniqueId:'',
   password:'',
-  loginRFDB_BPS:'',
   producer:{
     producerId:'100000DRP',
     producerName:'',
@@ -63,24 +70,15 @@ const EMPTY_CUSTOMER: UserModel = {
     country: 'Asia/Kolkata',
     countryName: 'India'
   },
-  team:{
-    teamId: '',
-    teamName: '',
-    groupId: '',
-    groupName: '',
-  },
-  deploy:{
-    deploymentId: '',
-    deploymentTaskName: ''
-  },
+
+
   assignedRole:'',
   status:'',
-  trainingBatch:'',
-  reportingTo:'',
+
   itRecord:{
     id: '',
     broadBandAccount:'',
-    broadBandBy:'',
+    broadBandBy:'OWN',
     internetPlan:'',
     isDowngraded:false,
     ispName:'',
@@ -88,7 +86,7 @@ const EMPTY_CUSTOMER: UserModel = {
     staticWhiteList:false,
     systemSerialNo:'',
     systemToHome:false,
-    workMode:'',
+    workMode:'WFO',
   },
   hrRecord:{
     id:'',
@@ -127,6 +125,30 @@ const EMPTY_CUSTOMER: UserModel = {
       pan:'',
       uan:''
     }
+  },
+  operationalRecord:{
+    team:{
+      teamId: '',
+      teamName: '',
+      groupId: '',
+      groupName: ''
+    },
+    deploy:{
+      deploymentId: '',
+      deploymentTaskName: ''
+    },
+    department:{
+      departmentId: '',
+      departmentName: ''
+    },
+    project:{
+      projectId: '',
+      projectName: ''
+    },
+    trainingBatch:'',
+    reportingTo:'',
+    reportingToId:'',
+    loginRFDB_BPS:''
   }
 };
 @Component({
@@ -203,21 +225,21 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     this.customer.email=this.customer.mediaList[0].emailId;
   }
   assignControlValues(){
-    this.assignControlValue("deployId",this.customer.deploy.deploymentId);
-    this.assignControlValue("teamId",this.customer.team.teamId);
+    this.assignControlValue("deployId",this.customer.operationalRecord.deploy.deploymentId);
+    this.assignControlValue("teamId",this.customer.operationalRecord.team.teamId);
 
   }
   loadForm() {
     this.formGroup = this.fb.group({
 
-      roles: [this.customer.roles, Validators.compose([Validators.required])],
-      teamId: [this.customer.team, Validators.compose([Validators.required])],
-      department: [this.customer.deploy, Validators.compose([Validators.required])],
+      roles: [this.customer.userRoleses[0].roles.roleId, Validators.compose([Validators.required])],
+      teamId: [this.customer.operationalRecord.team, Validators.compose([Validators.required])],
+      department: [this.customer.operationalRecord.deploy, Validators.compose([Validators.required])],
       //Change Reporting to
       reportingTo: [this.customer.spouseName, Validators.compose([Validators.required])],
-      loginRFDB_BPS: [this.customer.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      loginRFDB_BPS: [this.customer.operationalRecord.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
       projectId: [this.customer.producerId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      trainingBatch: [this.customer.trainingBatch, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      trainingBatch: [this.customer.operationalRecord.trainingBatch, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
 
 
     });
@@ -268,14 +290,14 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   private prepareCustomer() {
     const formData = this.formGroup.value;
 
-    this.customer.trainingBatch = formData.trainingBatch;
-    this.customer.loginRFDB_BPS = formData.loginRFDB_BPS;
-    this.customer.team.teamId = formData.teamId;
-    this.customer.deploy.deploymentId = formData.deployId;
+    this.customer.operationalRecord.trainingBatch = formData.trainingBatch;
+    this.customer.operationalRecord.loginRFDB_BPS = formData.loginRFDB_BPS;
+    this.customer.operationalRecord.team.teamId = formData.teamId;
+    this.customer.operationalRecord.department.departmentId = formData.deployId;
     this.customer.spouseName=formData.reportingTo;
-    this.customer.producerId=formData.projectId;
-    this.customer.roles=formData.roles;
-
+    this.customer.operationalRecord.project.projectId=formData.projectId;
+    this.customer.userRoleses[0].roles.roleId=formData.roles.roleId;
+    this.customer.userRoleses[0].roles.isAdminRole =formData.roles.isAdminRole;
   }
 
   ngOnDestroy(): void {
