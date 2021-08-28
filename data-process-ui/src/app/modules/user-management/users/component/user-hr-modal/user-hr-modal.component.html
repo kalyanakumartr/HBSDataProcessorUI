@@ -115,9 +115,145 @@
               placeholder="Uan" autocomplete="off" [class.is-invalid]="isControlInvalid('uan')"
               [class.is-valid]="isControlValid('uan')" formControlName="uan" />
           </div>
+          <div class="col-lg-3">
+            <label class="form-label">Date of Joining</label>
+            <div class="input-group input-group-solid">
+              <input type="text" name="dob" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                placeholder="dd/mm/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('dateOfJoin')"
+                [class.is-valid]="isControlValid('dateOfJoin')" formControlName="dateOfJoin" readonly="true" />
+              <div class="input-group-append" (click)="d.toggle()">
+                <span class="input-group-text">
+                  <i class="text-dark-50 flaticon-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <div class="valid-feedback" *ngIf="isControlValid('dateOfJoin')">Date of Joining was entered correct</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'dateOfJoin')">Please enter <b>Date of Joining</b>
+              in 'mm/dd/yyyy' format</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Info APL</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="infoAPL"
+              placeholder="Info APL" autocomplete="off" [class.is-invalid]="isControlInvalid('infoAPL')"
+              [class.is-valid]="isControlValid('infoAPL')" formControlName="infoAPL" />
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Employment Status</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="employmentStatus"
+              placeholder="Employment Status" autocomplete="off" [class.is-invalid]="isControlInvalid('employmentStatus')"
+              [class.is-valid]="isControlValid('employmentStatus')" formControlName="employmentStatus" />
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Experience In EDR</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="experienceInEDR"
+              placeholder="Eperience In EDR Status" autocomplete="off" [class.is-invalid]="isControlInvalid('experienceInEDR')"
+              [class.is-valid]="isControlValid('experienceInEDR')" formControlName="experienceInEDR" />
+          </div>
+
+        <div class="col-lg-3">
+          <label class="form-label">Experience Out EDR</label>
+          <input type="text" class="form-control form-control-lg form-control-solid" name="experienceOutEDR"
+            placeholder="Eperience Out EDR Status" autocomplete="off" [class.is-invalid]="isControlInvalid('experienceOutEDR')"
+            [class.is-valid]="isControlValid('experienceOutEDR')" formControlName="experienceOutEDR" />
         </div>
 
+      <div class="col-lg-3">
+        <label class="form-label">From Notice Period</label>
 
+          <div class="input-group input-group-solid">
+            <input type="text" name="fromNoticePeriod" class="form-control form-control-lg form-control-solid" autocomplete="off"
+              placeholder="dd/mm/yyyy" ngbDatepicker #z="ngbDatepicker" [class.is-invalid]="isControlInvalid('fromNoticePeriod')"
+              [class.is-valid]="isControlValid('fromNoticePeriod')" formControlName="fromNoticePeriod" readonly="true" />
+            <div class="input-group-append" (click)="z.toggle()">
+              <span class="input-group-text">
+                <i class="text-dark-50 flaticon-calendar"></i>
+              </span>
+            </div>
+          </div>
+          <div class="valid-feedback" *ngIf="isControlValid('fromNoticePeriod')">From Notice Period was entered correct</div>
+          <div class="invalid-feedback" *ngIf="controlHasError('required', 'fromNoticePeriod')">Please enter <b>From Notice Period</b>
+            in 'mm/dd/yyyy' format</div>
+      </div>
+      <div class="col-lg-3">
+        <label class="form-label">To Notice Period</label>
+
+          <div class="input-group input-group-solid">
+            <input type="text" name="toNoticePeriod" class="form-control form-control-lg form-control-solid" autocomplete="off"
+              placeholder="dd/mm/yyyy" ngbDatepicker #y="ngbDatepicker" [class.is-invalid]="isControlInvalid('toNoticePeriod')"
+              [class.is-valid]="isControlValid('toNoticePeriod')" formControlName="toNoticePeriod" readonly="true" />
+            <div class="input-group-append" (click)="y.toggle()">
+              <span class="input-group-text">
+                <i class="text-dark-50 flaticon-calendar"></i>
+              </span>
+            </div>
+          </div>
+          <div class="valid-feedback" *ngIf="isControlValid('toNoticePeriod')">From Notice Period was entered correct</div>
+          <div class="invalid-feedback" *ngIf="controlHasError('required', 'toNoticePeriod')">Please enter <b>From Notice Period</b>
+            in 'mm/dd/yyyy' format</div>
+      </div>
+      <div class="col-lg-3">
+        <label class="form-label">ID Card Number</label>
+        <input type="text" class="form-control form-control-lg form-control-solid" name="idCardEDR"
+          placeholder="ID Card Number" autocomplete="off" [class.is-invalid]="isControlInvalid('idCardEDR')"
+          [class.is-valid]="isControlValid('idCardEDR')" formControlName="idCardEDR" />
+      </div>
+      <div class="col-lg-3">
+        <label class="form-label">Last Work Day</label>
+
+          <div class="input-group input-group-solid">
+            <input type="text" name="lastWorkDay" class="form-control form-control-lg form-control-solid" autocomplete="off"
+              placeholder="dd/mm/yyyy" ngbDatepicker #x="ngbDatepicker" [class.is-invalid]="isControlInvalid('lastWorkDay')"
+              [class.is-valid]="isControlValid('lastWorkDay')" formControlName="lastWorkDay" readonly="true" />
+            <div class="input-group-append" (click)="x.toggle()">
+              <span class="input-group-text">
+                <i class="text-dark-50 flaticon-calendar"></i>
+              </span>
+            </div>
+          </div>
+          <div class="valid-feedback" *ngIf="isControlValid('lastWorkDay')">Last Work Day was entered correct</div>
+          <div class="invalid-feedback" *ngIf="controlHasError('required', 'lastWorkDay')">Please enter <b>Last Work Day</b>
+            in 'mm/dd/yyyy' format</div>
+      </div>
+      <div class="col-lg-3">
+        <label class="form-label">Last Employer</label>
+        <input type="text" class="form-control form-control-lg form-control-solid" name="lastEmployer"
+          placeholder="Last Employer" autocomplete="off" [class.is-invalid]="isControlInvalid('lastEmployer')"
+          [class.is-valid]="isControlValid('lastEmployer')" formControlName="lastEmployer" />
+      </div>
+      <div class="col-lg-3">
+        <label class="form-label">Last Designation</label>
+        <input type="text" class="form-control form-control-lg form-control-solid" name="lastDesignation"
+          placeholder="Last Designation" autocomplete="off" [class.is-invalid]="isControlInvalid('lastDesignation')"
+          [class.is-valid]="isControlValid('lastDesignation')" formControlName="lastDesignation" />
+      </div>
+      <div class="col-lg-3">
+        <label>Offer Issued</label>
+        <select class="form-control form-control-lg form-control-solid" name="isOfferIssued"
+          [class.is-invalid]="isControlInvalid('isOfferIssued')" formControlName="isOfferIssued">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+
+      </div>
+      <div class="col-lg-3">
+        <label>Apprentice</label>
+        <select class="form-control form-control-lg form-control-solid" name="isApprentice"
+          [class.is-invalid]="isControlInvalid('isApprentice')" formControlName="isApprentice">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+
+      </div>
+      <div class="col-lg-3">
+        <label>File Created</label>
+        <select class="form-control form-control-lg form-control-solid" name="isFileCreated"
+          [class.is-invalid]="isControlInvalid('isFileCreated')" formControlName="isFileCreated">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+
+      </div>
+    </div>
       </form>
     </ng-container>
   </div>

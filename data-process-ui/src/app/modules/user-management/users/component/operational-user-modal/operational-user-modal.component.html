@@ -17,11 +17,14 @@
 
     <ng-container *ngIf="customer">
       <form action="#" class="form form-label-right" [formGroup]="formGroup">
+        <div class="form-group row">
         <div class="col-lg-4">
           <label>Select Department</label>
           <select class="form-control form-control-lg form-control-solid" name="department"
             [class.is-invalid]="isControlInvalid('department')" formControlName="department">
-            <option value="DLP0001">Access Ramp</option>
+            <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
+              {{ department.departmentName }}
+            </option>
           </select>
           <div class="feedback">Please select <b>Department</b></div>
         </div>
@@ -30,18 +33,21 @@
           <select  class="form-control form-control-lg form-control-solid" name="roles"
             [class.is-invalid]="isControlInvalid('roles')" formControlName="roles">
             <option [ngValue]="null" disabled>Choose Role</option>
-            <option *ngFor="let role of roleList" [ngValue]="role">
+            <option *ngFor="let role of roleList" [ngValue]="role.roleId">
             {{ role.roleName }}
             </option>
           </select>
           <div class="feedback">Please select <b>Role</b></div>
         </div>
-        <div class="form-group row">
+
           <div class="col-lg-4">
             <label>Select Team</label>
             <select class="form-control form-control-lg form-control-solid" name="teamId"
               [class.is-invalid]="isControlInvalid('teamId')" formControlName="teamId">
-              <option value="GRP0008">SILOC Team - SILOC_Group</option>
+              <option *ngFor="let team of teamList" [ngValue]="team.teamId">
+                {{ team.teamName }} - {{ team.groupName }}
+              </option>
+              <!--<option value="GRP0008">SILOC Team - SILOC_Group</option>
               <option value="GRP0009">RFDB_Training - RFDB_Training_Group</option>
               <option value="GRP0010">CR43_Team - CR43_Natraj_Group</option>
               <option value="GRP0011">CR43_Team - CR43_Jeeva_Group</option>
@@ -50,6 +56,7 @@
               <option value="GRP0014">Ushr_Projects - Special Task Team </option>
               <option value="GRP0015">CSAV2_Team - Special Task Team</option>
               <option value="GRP0016">CSAV3_Team - Special Task Team</option>
+              <option value="GRT9999">Bench - Admin</option>-->
             </select>
             <div class="feedback">Please select <b>Team</b></div>
           </div>
@@ -79,9 +86,13 @@
         <div class="form-group row">
           <div class="col-lg-4">
             <label class="form-label">Enter Project Id   </label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="projectId"
-              placeholder="Project Id" autocomplete="off" [class.is-invalid]="isControlInvalid('projectId')"
-              [class.is-valid]="isControlValid('projectId')" formControlName="projectId" />
+            <select class="form-control form-control-lg form-control-solid" name="projectId"
+            [class.is-invalid]="isControlInvalid('projectId')" formControlName="projectId">
+            <option *ngFor="let project of projectList" [ngValue]="project.projectId">
+              {{ project.projectName }}
+            </option>
+          </select>
+          <div class="feedback">Please select <b>Department</b></div>
 
           </div>
           <div class="col-lg-4">
@@ -91,13 +102,7 @@
               [class.is-valid]="isControlValid('trainingBatch')" formControlName="trainingBatch" />
 
           </div>
-
-
-
-
         </div>
-
-
       </form>
     </ng-container>
   </div>

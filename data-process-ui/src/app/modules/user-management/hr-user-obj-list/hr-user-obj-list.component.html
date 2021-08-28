@@ -3,7 +3,9 @@
       <div class="card-title">
         <h3 class="card-label">Employee list</h3>
       </div>
-
+      <div class="card-toolbar">
+        <button type="button" class="btn btn-primary" (click)="create()">Add Employee</button>
+      </div>
     </div>
     <div class="card-body">
       <!-- begin: Filtration form -->
@@ -21,9 +23,10 @@
 
       <!-- begin:Table -->
       <div class="table-responsive angular-bootstrap-table">
-        <table class="table table-head-custom table-vertical-center ">
+        <table id="tablebox" class="table table-head-custom table-vertical-center ">
           <thead>
-            <th>Edit</th>
+            <tr>
+            <th class="sticky-header">Edit</th>
             <th nowrap >
               ID
               <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
@@ -36,12 +39,13 @@
             </th>
 
             <th nowrap >
-              EMAIL
+              Date of Joining
 
             </th>
             <th nowrap >
-              MOBILE No
-
+              STATUS
+              <app-sort-icon column="status" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                (sort)="sort($event)"></app-sort-icon>
             </th>
             <th nowrap >
               TEAM
@@ -53,11 +57,7 @@
               <app-sort-icon column="team.groupName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
                 (sort)="sort($event)"></app-sort-icon>
             </th>
-            <th nowrap >
-              STATUS
-              <app-sort-icon column="status" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
-                (sort)="sort($event)"></app-sort-icon>
-            </th>
+
             <th nowrap >
               Work From
 
@@ -122,13 +122,19 @@
             <th nowrap >Offer Letter issue Status</th>
             <th nowrap >Employee File create status</th>
 
-
+          </tr>
           </thead>
           <tbody>
             <tr *ngFor="let customer of userService.items$ | async">
               <td>
-                <a title="Edit User" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                <a title="Edit Employee" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                 (click)="edit(customer.user.userId)">
+                <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary">
+                </span>
+              </a>
+                <a title="Edit HR Employee" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                (click)="addHR(customer.user.id, customer.user.userName)">
                 <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-primary">
                 </span>
@@ -136,19 +142,19 @@
               </td>
               <td>{{ customer.user.userId }}</td>
               <td>{{ customer.user.userName }} {{ customer.user.lastName }}</td>
-              <td>{{ customer.user.mediaList[0].emailId }}</td>
-              <td>{{ customer.user.mediaList[0].mobileNo }}</td>
-              <td>{{ customer.user.team.teamName }}</td>
-              <td>{{ customer.user.team.groupName }}</td>
-              <td>
-                <span class="label label-lg label-inline" [class.label-light-danger]="customer.user.hrRecord.employmentInfo.employmentStatus === 'Suspended'"
-                  [class.label-light-success]="customer.user.hrRecord.employmentInfo.employmentStatus === 'Active'" [class.label-light-primary]="customer.employmentStatus === 'Pending'">
-                  <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'Suspended'">Suspended</ng-container>
-                  <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'ResetPassword'">ResetPassword</ng-container>
-                  <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'Active'">Active</ng-container>
-                  <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'Pending'">Pending</ng-container>
-                </span>
-              </td>
+              <td>{{ customer.user.hrRecord.employmentInfo.dateOfJoin | date: 'dd-MMM-yyyy'}} </td>
+            <td>
+              <span class="label label-lg label-inline" [class.label-light-danger]="customer.user.hrRecord.employmentInfo.employmentStatus === 'Suspended'"
+                [class.label-light-success]="customer.user.hrRecord.employmentInfo.employmentStatus === 'Active'" [class.label-light-primary]="customer.employmentStatus === 'Pending'">
+                <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'Suspended'">Suspended</ng-container>
+                <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'ResetPassword'">ResetPassword</ng-container>
+                <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'Active'">Active</ng-container>
+                <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'Pending'">Pending</ng-container>
+              </span>
+            </td>
+              <td>{{ customer.user.operationalRecord.team.teamName }}</td>
+              <td>{{ customer.user.operationalRecord.team.groupName }}</td>
+
               <td>
                 <span class="label label-dot label-primary mr-2" [class.label-success]="customer.user.itRecord.workMode === 'WFO'"
                   [class.label-primary]="customer.user.itRecord.workMode === 'WFH'"></span>&nbsp;<span class="font-bold font-primary">
@@ -160,7 +166,7 @@
                 {{ customer.user.reportingTo }}
               </td>
               <td>
-                {{ customer.user.assignedRole }}
+                {{ customer.user.roleName }}
               </td>
               <td>
                 {{ customer.user.trainingBatch }}
@@ -206,13 +212,13 @@
               </td>
 
               <td>
-                {{ customer.user.hrRecord.employmentInfo.lastWorkDay }}
+                {{ customer.user.hrRecord.employmentInfo.lastWorkDay | date: 'dd-MMM-yyyy'}}
               </td>
               <td>
-                {{ customer.user.hrRecord.employmentInfo.fromNoticePeriod }}
+                {{ customer.user.hrRecord.employmentInfo.fromNoticePeriod | date: 'dd-MMM-yyyy'}}
               </td>
               <td>
-                {{ customer.user.hrRecord.employmentInfo.toNoticePeriod }}
+                {{ customer.user.hrRecord.employmentInfo.toNoticePeriod | date: 'dd-MMM-yyyy'}}
               </td>
 
               <td>{{ customer.user.mediaList[0].emailId }}</td>

@@ -21,10 +21,10 @@ export class EmploymentInfo {
   employmentStatus:string;
   experienceInEDR:string;
   experienceOutEDR:string;
-  fromNoticePeriod:string;
-  toNoticePeriod:string;
+  fromNoticePeriod:any;
+  toNoticePeriod:any;
   idCardEDR:string;
-  lastWorkDay:string;
+  lastWorkDay:any;
   lastEmployer:string;
   lastDesignation:string;
   isOfferIssued:boolean;

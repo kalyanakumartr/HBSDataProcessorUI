@@ -132,6 +132,22 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       pan: [this.userHRModel.taxInfo.pan, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       uan: [this.userHRModel.taxInfo.uan, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
 
+
+      dateOfJoin: [this.userHRModel.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
+      infoAPL: [this.userHRModel.employmentInfo.infoAPL, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
+      employmentStatus: [this.userHRModel.employmentInfo.employmentStatus, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
+      experienceInEDR: [this.userHRModel.employmentInfo.experienceInEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
+      experienceOutEDR: [this.userHRModel.employmentInfo.experienceOutEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
+      fromNoticePeriod: [this.userHRModel.employmentInfo.fromNoticePeriod, Validators.compose([])],
+      toNoticePeriod: [this.userHRModel.employmentInfo.toNoticePeriod, Validators.compose([])],
+      idCardEDR: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
+      lastWorkDay: [this.userHRModel.employmentInfo.lastWorkDay, Validators.compose([])],
+      lastEmployer: [this.userHRModel.employmentInfo.lastEmployer, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
+      lastDesignation: [this.userHRModel.employmentInfo.lastDesignation, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
+      isOfferIssued: [this.userHRModel.employmentInfo.isOfferIssued, Validators.compose([])],
+      isApprentice: [this.userHRModel.employmentInfo.isApprentice, Validators.compose([])],
+      isFileCreated: [this.userHRModel.employmentInfo.isFileCreated, Validators.compose([])],
+
     });
   }
 
@@ -174,6 +190,22 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     this.userHRModel.taxInfo.pan = formData.pan;
     this.userHRModel.taxInfo.providentFund = formData.providentFund;
     this.userHRModel.taxInfo.uan = formData.uan;
+    this.userHRModel.employmentInfo.dateOfJoin = new Date(formData.dateOfJoin);
+    this.userHRModel.employmentInfo.infoAPL = formData.infoAPL;
+    this.userHRModel.employmentInfo.employmentStatus = formData.employmentStatus;
+    this.userHRModel.employmentInfo.experienceInEDR = formData.experienceInEDR;
+    this.userHRModel.employmentInfo.experienceOutEDR = formData.experienceOutEDR;
+    this.userHRModel.employmentInfo.fromNoticePeriod  = new Date(formData.fromNoticePeriod);
+    this.userHRModel.employmentInfo.toNoticePeriod = new Date(formData.toNoticePeriod);
+    this.userHRModel.employmentInfo.idCardEDR = formData.idCardEDR;
+    this.userHRModel.employmentInfo.lastWorkDay = new Date(formData.lastWorkDay);
+    this.userHRModel.employmentInfo.lastEmployer = formData.lastEmployer;
+    this.userHRModel.employmentInfo.lastDesignation = formData.lastDesignation;
+    this.userHRModel.employmentInfo.isOfferIssued = formData.isOfferIssued;
+    this.userHRModel.employmentInfo.isApprentice = formData.isApprentice;
+    this.userHRModel.employmentInfo.isFileCreated = formData.isFileCreated;
+
+
   }
 
   ngOnDestroy(): void {

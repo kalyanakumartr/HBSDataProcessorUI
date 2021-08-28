@@ -8,7 +8,8 @@ import { UsersService } from 'src/app/modules/auth/_services/user.service';
 import { AuthService, UserModel } from 'src/app/modules/auth';
 import { RoleService } from 'src/app/modules/auth/_services/role.services';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { formatDate } from '@angular/common';
+import { ProjectService } from 'src/app/modules/auth/_services/project.services';
 
 const EMPTY_CUSTOMER: UserModel = {
   id: undefined,
@@ -18,7 +19,13 @@ const EMPTY_CUSTOMER: UserModel = {
   userName: '',
   fullname: '',
   pic: '',
-  roles: [],
+  userRoleses: [
+    {
+        id:'',
+        roleId:'',
+        isAdminRole:false
+    }
+  ],
   occupation: '',
   companyName: '',
   dateOfJoin:'',
@@ -52,7 +59,6 @@ const EMPTY_CUSTOMER: UserModel = {
   timeZone: '',
   uniqueId:'',
   password:'',
-  loginRFDB_BPS:'',
   producer:{
     producerId:'100000DRP',
     producerName:'',
@@ -63,24 +69,15 @@ const EMPTY_CUSTOMER: UserModel = {
     country: 'Asia/Kolkata',
     countryName: 'India'
   },
-  team:{
-    teamId: '',
-    teamName: '',
-    groupId: '',
-    groupName: '',
-  },
-  deploy:{
-    deploymentId: '',
-    deploymentTaskName: ''
-  },
+
+
   assignedRole:'',
   status:'',
-  trainingBatch:'',
-  reportingTo:'',
+
   itRecord:{
     id: '',
     broadBandAccount:'',
-    broadBandBy:'',
+    broadBandBy:'OWN',
     internetPlan:'',
     isDowngraded:false,
     ispName:'',
@@ -88,7 +85,7 @@ const EMPTY_CUSTOMER: UserModel = {
     staticWhiteList:false,
     systemSerialNo:'',
     systemToHome:false,
-    workMode:'',
+    workMode:'WFO',
   },
   hrRecord:{
     id:'',
@@ -127,6 +124,30 @@ const EMPTY_CUSTOMER: UserModel = {
       pan:'',
       uan:''
     }
+  },
+  operationalRecord:{
+    team:{
+      teamId: 'GRT9999',
+      teamName: '',
+      groupId: 'GRP0000',
+      groupName: ''
+    },
+    deploy:{
+      deploymentId: 'DLP0001',
+      deploymentTaskName: ''
+    },
+    department:{
+      departmentId: '',
+      departmentName: ''
+    },
+    project:{
+      projectId: 'CSAV1CM',
+      projectName: ''
+    },
+    trainingBatch:'',
+    reportingTo:'',
+    reportingToId:'user1',
+    loginRFDB_BPS:''
   }
 };
 @Component({
@@ -145,6 +166,9 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   isLoading$;
   customer: UserModel;
   roleList:any[];
+  projectList:any[];
+  teamList:any[];
+  departmentList:any[];
   deploy:string;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
@@ -152,6 +176,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private usersService: UsersService,
     private roleService: RoleService,
+    private projectService: ProjectService,
     private authService: AuthService,
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
@@ -172,6 +197,39 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
           items: []
         });
       })).subscribe();
+      this.projectService.getProjectList().pipe(
+        tap((res: any) => {
+          this.projectList = res;
+          console.log("projectList", this.projectList)
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: []
+          });
+        })).subscribe();
+        this.projectService.getDepartmentList().pipe(
+          tap((res: any) => {
+            this.departmentList = res;
+            console.log("departmentList", this.departmentList)
+          }),
+          catchError((err) => {
+            console.log(err);
+            return of({
+              items: []
+            });
+          })).subscribe();
+          this.projectService.getTeamList().pipe(
+            tap((res: any) => {
+              this.teamList = res;
+              console.log("teamList", this.teamList)
+            }),
+            catchError((err) => {
+              console.log(err);
+              return of({
+                items: []
+              });
+            })).subscribe();
 
   }
 
@@ -195,6 +253,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         this.loadEditForm();
         this.loadForm();
         this.assignControlValues();
+
         console.log("Check");
       });
 
@@ -204,8 +263,9 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     this.customer.email=this.customer.mediaList[0].emailId;
   }
   assignControlValues(){
-    this.assignControlValue("deployId",this.customer.deploy.deploymentId);
-    this.assignControlValue("teamId",this.customer.team.teamId);
+    this.assignControlValue("deployId",this.customer.operationalRecord.deploy.deploymentId);
+    this.assignControlValue("teamId",this.customer.operationalRecord.team.teamId);
+    //this.assignControlValue("roles",this.customer.userRoleses[0].roleId);
 
   }
   loadForm() {
@@ -220,8 +280,8 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.minLength(10), Validators.maxLength(12)])],
       address: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(3), Validators.maxLength(200)])],
 
-      department: [this.customer.deploy, Validators.compose([Validators.required])],
-      roles: [this.customer.roles, Validators.compose([Validators.required])],
+      department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
+      roles: [this.customer.userRoleses[0].roleId, Validators.compose([Validators.required])],
       status: [this.customer.hrRecord.employmentInfo.employmentStatus, Validators.compose([Validators.required])],
       doj: [this.customer.hrRecord.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
 
@@ -237,6 +297,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
 
   save() {
     this.prepareCustomer();
+    alert(this.customer.id);
     if (this.customer.id) {
       this.edit();
     } else {
@@ -292,10 +353,11 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
 
 
 
-    this.customer.deploy.deploymentId = formData.department;
+    this.customer.operationalRecord.department.departmentId = formData.department;
     this.customer.hrRecord.employmentInfo.employmentStatus= formData.status;
     this.customer.hrRecord.employmentInfo.dateOfJoin = new Date(formData.doj);
-    this.customer.roles =formData.roles;
+    this.customer.userRoleses[0].roleId =formData.roles;
+    this.customer.userRoleses[0].isAdminRole =formData.roles.isAdminRole;
 
     this.customer.employeeId=formData.userId;
     this.customer.producer=null;

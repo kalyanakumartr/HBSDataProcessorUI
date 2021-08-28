@@ -7,6 +7,8 @@ import {
   GroupingState,
   PaginatorState,
   SortState,
+  ICreateAction,
+  IEditAction,
   IDeleteAction,
   IDeleteSelectedAction,
   IFetchSelectedAction,
@@ -22,14 +24,13 @@ import { AuthModel } from '../../auth/_models/auth.model';
 import { EditUserModalComponent } from '../users/component/edit-user-modal/edit-user-modal.component';
 import { UserITModalComponent } from '../users/component/user-it-modal/user-it-modal.component';
 import { UserHRModalComponent } from '../users/component/user-hr-modal/user-hr-modal.component';
-import { OperationalUserModalComponent } from '../users/component/operational-user-modal/operational-user-modal.component';
 
 @Component({
-  selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.scss']
+  selector: 'app-it-user-list',
+  templateUrl: './it-user-obj-list.component.html',
+  styleUrls: ['./it-user-obj-list.component.scss']
 })
-export class UserListComponent implements
+export class ITUserObjListComponent implements
 OnInit,
 OnDestroy,
 IDeleteAction,
@@ -151,8 +152,10 @@ authModel:AuthModel;
 
 
 
- addOPR(id: string, name:string) {
-  const modalRef = this.modalService.open(OperationalUserModalComponent, { size: 'xl' });
+
+
+ addIT(id: string, name:string) {
+  const modalRef = this.modalService.open(UserITModalComponent, { size: 'xl' });
   modalRef.componentInstance.id = id;
   modalRef.componentInstance.name =name;
   modalRef.result.then(() =>
@@ -160,6 +163,7 @@ authModel:AuthModel;
     () => { }
   );
 }
+
   delete(id: number) {
     // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
     // modalRef.componentInstance.id = id;
