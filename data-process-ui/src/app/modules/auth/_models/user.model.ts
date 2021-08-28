@@ -11,6 +11,7 @@ import { UserHRModel } from './user-hr.model';
 import { UserITModel } from './user-it.model';
 import { UserOperationalModel } from './user-operational.model';
 import { UserRoles } from './user-roles.model';
+import { RoleModel } from './role.model';
 
 export class UserModel implements BaseModel {
   id: string;
@@ -19,7 +20,7 @@ export class UserModel implements BaseModel {
   fullname: string;
   email: string;
   pic: string;
-  userRoleses: UserRoles[];
+  userRoleses: RoleModel[];
   occupation: string;
   companyName: string;
   dateOfJoin:string;

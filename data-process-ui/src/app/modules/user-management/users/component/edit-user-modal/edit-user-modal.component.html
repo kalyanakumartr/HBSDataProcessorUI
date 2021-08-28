@@ -67,7 +67,7 @@
             <label>Date of Birth</label>
             <div class="input-group input-group-solid">
               <input type="text" name="dob" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                placeholder="dd/mm/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('dob')"
+                placeholder="mm/dd/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('dob')"
                 [class.is-valid]="isControlValid('dob')" formControlName="dob" readonly="true" />
               <div class="input-group-append" (click)="d.toggle()">
                 <span class="input-group-text">
@@ -114,7 +114,9 @@
             <label>Select Department</label>
             <select class="form-control form-control-lg form-control-solid" name="department"
               [class.is-invalid]="isControlInvalid('department')" formControlName="department">
-              <option value="RFDB">RFDB Training</option>
+              <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
+                {{ department.departmentName }}
+              </option>
             </select>
             <div class="feedback">Please select <b>Department</b></div>
           </div>
@@ -123,7 +125,7 @@
             <select  class="form-control form-control-lg form-control-solid" name="roles"
               [class.is-invalid]="isControlInvalid('roles')" formControlName="roles">
               <option [ngValue]="null" disabled>Choose Role</option>
-              <option *ngFor="let role of roleList" [ngValue]="role">
+              <option *ngFor="let role of roleList" [ngValue]="role.roleId">
               {{ role.roleName }}
               </option>
             </select>
@@ -143,8 +145,8 @@
           <div class="col-lg-3">
             <label>Date of Joining</label>
             <div class="input-group input-group-solid">
-              <input type="text" name="doj" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                placeholder="dd/mm/yyyy" ngbDatepicker #doj="ngbDatepicker" [class.is-invalid]="isControlInvalid('doj')"
+              <input type="text" name="doj"  class="form-control form-control-lg form-control-solid" autocomplete="off"
+                placeholder="mm/dd/yyyy" ngbDatepicker #doj="ngbDatepicker" [class.is-invalid]="isControlInvalid('doj')"
                 [class.is-valid]="isControlValid('doj')" formControlName="doj" readonly="true" />
               <div class="input-group-append" (click)="doj.toggle()">
                 <span class="input-group-text">

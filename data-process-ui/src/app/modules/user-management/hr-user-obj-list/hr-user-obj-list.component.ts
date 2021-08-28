@@ -158,10 +158,6 @@ authModel:AuthModel;
   edit(id: number) {
      const modalRef = this.modalService.open(EditUserModalComponent, { size: 'xl' });
      modalRef.componentInstance.id = id;
-     modalRef.result.then(() =>
-       this.userService.fetch(""),
-       () => { }
-     );
   }
 
   addHR(id: string, name:string) {

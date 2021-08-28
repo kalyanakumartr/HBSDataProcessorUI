@@ -8,6 +8,7 @@ import { UsersService } from 'src/app/modules/auth/_services/user.service';
 import { AuthService, UserModel } from 'src/app/modules/auth';
 import { RoleService } from 'src/app/modules/auth/_services/role.services';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ProjectService } from 'src/app/modules/auth/_services/project.services';
 
 
 const EMPTY_CUSTOMER: UserModel = {
@@ -20,11 +21,9 @@ const EMPTY_CUSTOMER: UserModel = {
   pic: '',
   userRoleses: [
     {
-      roles:{
         id:'',
         roleId:'',
         isAdminRole:false
-      }
     }
   ],
   occupation: '',
@@ -167,6 +166,9 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   isLoading$;
   customer: UserModel;
   roleList:any[];
+  projectList:any[];
+  teamList:any[];
+  departmentList:any[];
   deploy:string;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
@@ -174,6 +176,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private usersService: UsersService,
     private roleService: RoleService,
+    private projectService: ProjectService,
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
       this.customer =new UserModel;
@@ -218,6 +221,39 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
         this.assignControlValues();
         console.log("Check");
       });
+      this.projectService.getProjectList().pipe(
+        tap((res: any) => {
+          this.projectList = res;
+          console.log("projectList", this.projectList)
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: []
+          });
+        })).subscribe();
+        this.projectService.getDepartmentList().pipe(
+          tap((res: any) => {
+            this.departmentList = res;
+            console.log("departmentList", this.departmentList)
+          }),
+          catchError((err) => {
+            console.log(err);
+            return of({
+              items: []
+            });
+          })).subscribe();
+          this.projectService.getTeamList().pipe(
+            tap((res: any) => {
+              this.teamList = res;
+              console.log("teamList", this.teamList)
+            }),
+            catchError((err) => {
+              console.log(err);
+              return of({
+                items: []
+              });
+            })).subscribe();
 
     }
   }
@@ -232,13 +268,13 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   loadForm() {
     this.formGroup = this.fb.group({
 
-      roles: [this.customer.userRoleses[0].roles.roleId, Validators.compose([Validators.required])],
-      teamId: [this.customer.operationalRecord.team, Validators.compose([Validators.required])],
-      department: [this.customer.operationalRecord.deploy, Validators.compose([Validators.required])],
+      roles: [this.customer.userRoleses[0].roleId, Validators.compose([Validators.required])],
+      teamId: [this.customer.operationalRecord.team.teamId, Validators.compose([Validators.required])],
+      department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
       //Change Reporting to
-      reportingTo: [this.customer.spouseName, Validators.compose([Validators.required])],
+      reportingTo: [this.customer.operationalRecord.reportingToId, Validators.compose([Validators.required])],
       loginRFDB_BPS: [this.customer.operationalRecord.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      projectId: [this.customer.producerId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      projectId: [this.customer.operationalRecord.project.projectId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
       trainingBatch: [this.customer.operationalRecord.trainingBatch, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
 
 
@@ -286,18 +322,21 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     ).subscribe((res: UserModel) => res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
     this.subscriptions.push(sbCreate);
   }
-
+  setReportingTo(value){
+    alert(value)
+  }
   private prepareCustomer() {
     const formData = this.formGroup.value;
 
     this.customer.operationalRecord.trainingBatch = formData.trainingBatch;
     this.customer.operationalRecord.loginRFDB_BPS = formData.loginRFDB_BPS;
     this.customer.operationalRecord.team.teamId = formData.teamId;
-    this.customer.operationalRecord.department.departmentId = formData.deployId;
-    this.customer.spouseName=formData.reportingTo;
+    this.customer.operationalRecord.department.departmentId = formData.department;
+    this.customer.operationalRecord.reportingTo=formData.reportingTo;
+    this.customer.operationalRecord.reportingToId=formData.reportingToId;
     this.customer.operationalRecord.project.projectId=formData.projectId;
-    this.customer.userRoleses[0].roles.roleId=formData.roles.roleId;
-    this.customer.userRoleses[0].roles.isAdminRole =formData.roles.isAdminRole;
+    this.customer.userRoleses[0].roleId=formData.roles;
+    this.customer.userRoleses[0].isAdminRole =formData.roles.isAdminRole;
   }
 
   ngOnDestroy(): void {

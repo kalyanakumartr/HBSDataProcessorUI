@@ -8,7 +8,8 @@ import { UsersService } from 'src/app/modules/auth/_services/user.service';
 import { AuthService, UserModel } from 'src/app/modules/auth';
 import { RoleService } from 'src/app/modules/auth/_services/role.services';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { formatDate } from '@angular/common';
+import { ProjectService } from 'src/app/modules/auth/_services/project.services';
 
 const EMPTY_CUSTOMER: UserModel = {
   id: undefined,
@@ -20,11 +21,9 @@ const EMPTY_CUSTOMER: UserModel = {
   pic: '',
   userRoleses: [
     {
-      roles:{
         id:'',
         roleId:'',
         isAdminRole:false
-      }
     }
   ],
   occupation: '',
@@ -147,7 +146,7 @@ const EMPTY_CUSTOMER: UserModel = {
     },
     trainingBatch:'',
     reportingTo:'',
-    reportingToId:'user4',
+    reportingToId:'user1',
     loginRFDB_BPS:''
   }
 };
@@ -167,6 +166,9 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   isLoading$;
   customer: UserModel;
   roleList:any[];
+  projectList:any[];
+  teamList:any[];
+  departmentList:any[];
   deploy:string;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
@@ -174,6 +176,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private usersService: UsersService,
     private roleService: RoleService,
+    private projectService: ProjectService,
     private authService: AuthService,
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
@@ -194,6 +197,39 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
           items: []
         });
       })).subscribe();
+      this.projectService.getProjectList().pipe(
+        tap((res: any) => {
+          this.projectList = res;
+          console.log("projectList", this.projectList)
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: []
+          });
+        })).subscribe();
+        this.projectService.getDepartmentList().pipe(
+          tap((res: any) => {
+            this.departmentList = res;
+            console.log("departmentList", this.departmentList)
+          }),
+          catchError((err) => {
+            console.log(err);
+            return of({
+              items: []
+            });
+          })).subscribe();
+          this.projectService.getTeamList().pipe(
+            tap((res: any) => {
+              this.teamList = res;
+              console.log("teamList", this.teamList)
+            }),
+            catchError((err) => {
+              console.log(err);
+              return of({
+                items: []
+              });
+            })).subscribe();
 
   }
 
@@ -217,6 +253,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         this.loadEditForm();
         this.loadForm();
         this.assignControlValues();
+
         console.log("Check");
       });
 
@@ -228,6 +265,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   assignControlValues(){
     this.assignControlValue("deployId",this.customer.operationalRecord.deploy.deploymentId);
     this.assignControlValue("teamId",this.customer.operationalRecord.team.teamId);
+    //this.assignControlValue("roles",this.customer.userRoleses[0].roleId);
 
   }
   loadForm() {
@@ -242,8 +280,8 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.minLength(10), Validators.maxLength(12)])],
       address: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(3), Validators.maxLength(200)])],
 
-      department: [this.customer.operationalRecord.deploy, Validators.compose([Validators.required])],
-      roles: [this.customer.userRoleses[0].roles.roleId, Validators.compose([Validators.required])],
+      department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
+      roles: [this.customer.userRoleses[0].roleId, Validators.compose([Validators.required])],
       status: [this.customer.hrRecord.employmentInfo.employmentStatus, Validators.compose([Validators.required])],
       doj: [this.customer.hrRecord.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
 
@@ -318,8 +356,8 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     this.customer.operationalRecord.department.departmentId = formData.department;
     this.customer.hrRecord.employmentInfo.employmentStatus= formData.status;
     this.customer.hrRecord.employmentInfo.dateOfJoin = new Date(formData.doj);
-    this.customer.userRoleses[0].roles.roleId =formData.roles.roleId;
-    this.customer.userRoleses[0].roles.isAdminRole =formData.roles.isAdminRole;
+    this.customer.userRoleses[0].roleId =formData.roles;
+    this.customer.userRoleses[0].isAdminRole =formData.roles.isAdminRole;
 
     this.customer.employeeId=formData.userId;
     this.customer.producer=null;
