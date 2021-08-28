@@ -297,7 +297,6 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
 
   save() {
     this.prepareCustomer();
-    alert(this.customer.id);
     if (this.customer.id) {
       this.edit();
     } else {

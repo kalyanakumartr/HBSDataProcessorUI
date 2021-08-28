@@ -43,7 +43,7 @@
           <div class="col-lg-4">
             <label>Select Team</label>
             <select class="form-control form-control-lg form-control-solid" name="teamId"
-              [class.is-invalid]="isControlInvalid('teamId')" formControlName="teamId">
+              [class.is-invalid]="isControlInvalid('teamId')" formControlName="teamId" (change)="setReportingTo($event.target.value)">
               <option *ngFor="let team of teamList" [ngValue]="team.teamId">
                 {{ team.teamName }} - {{ team.groupName }}
               </option>
@@ -64,7 +64,7 @@
         <div class="form-group row">
           <div class="col-lg-4">
             <label class="form-label">Enter Reporting To   </label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="reportingTo"
+            <input type="text" class="form-control form-control-lg form-control-solid" name="reporting" readonly [value]="reporting"
               placeholder="Reporting To" autocomplete="off" [class.is-invalid]="isControlInvalid('reportingTo')"
               [class.is-valid]="isControlValid('reportingTo')" formControlName="reportingTo" />
 
@@ -100,7 +100,12 @@
             <input type="text" class="form-control form-control-lg form-control-solid" name="trainingBatch"
               placeholder="Training Batch" autocomplete="off" [class.is-invalid]="isControlInvalid('trainingBatch')"
               [class.is-valid]="isControlValid('trainingBatch')" formControlName="trainingBatch" />
-
+              <div class="valid-feedback" *ngIf="isControlValid('trainingBatch')">Training Batch was entered correct</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'trainingBatch')">Training Batch is required</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'trainingBatch')">Training Batch should have at
+                least 3 symbols</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'trainingBatch')">Training Batch should have
+                maximum 10 symbols</div>
           </div>
         </div>
       </form>

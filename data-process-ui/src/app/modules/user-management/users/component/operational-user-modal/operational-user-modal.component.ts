@@ -169,6 +169,8 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   projectList:any[];
   teamList:any[];
   departmentList:any[];
+  reporting:string;
+  reportingId:string;
   deploy:string;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
@@ -180,6 +182,8 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
       this.customer =new UserModel;
+      this.reporting='';
+      this.reportingId='';
     }
 
   ngOnInit(): void {
@@ -275,7 +279,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       reportingTo: [this.customer.operationalRecord.reportingToId, Validators.compose([Validators.required])],
       loginRFDB_BPS: [this.customer.operationalRecord.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
       projectId: [this.customer.operationalRecord.project.projectId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      trainingBatch: [this.customer.operationalRecord.trainingBatch, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      trainingBatch: [this.customer.operationalRecord.trainingBatch, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])],
 
 
     });
@@ -323,7 +327,10 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sbCreate);
   }
   setReportingTo(value){
-    alert(value)
+
+    var position =value.split(":")
+    this.reporting=this.teamList[position[0]].fullName;
+    this.reportingId= this.teamList[position[0]].employeeId;
   }
   private prepareCustomer() {
     const formData = this.formGroup.value;
@@ -332,7 +339,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     this.customer.operationalRecord.loginRFDB_BPS = formData.loginRFDB_BPS;
     this.customer.operationalRecord.team.teamId = formData.teamId;
     this.customer.operationalRecord.department.departmentId = formData.department;
-    this.customer.operationalRecord.reportingTo=formData.reportingTo;
+    this.customer.operationalRecord.reportingTo=this.reportingId;
     this.customer.operationalRecord.reportingToId=formData.reportingToId;
     this.customer.operationalRecord.project.projectId=formData.projectId;
     this.customer.userRoleses[0].roleId=formData.roles;
