@@ -21,10 +21,12 @@ const EMPTY_CUSTOMER: UserModel = {
   pic: '',
   userRoleses: [
     {
+    roles:{
         id:'',
         roleId:'',
         isAdminRole:false
     }
+  }
   ],
   occupation: '',
   companyName: '',
@@ -71,7 +73,7 @@ const EMPTY_CUSTOMER: UserModel = {
   },
 
 
-  assignedRole:'',
+  roleId:'',
   status:'',
 
   itRecord:{
@@ -126,11 +128,13 @@ const EMPTY_CUSTOMER: UserModel = {
     }
   },
   operationalRecord:{
+    id:'',
     team:{
-      teamId: 'GRT9999',
+      teamId: 'GRP9999',
       teamName: '',
       groupId: 'GRP0000',
-      groupName: ''
+      groupName: '',
+      employeeId:'',
     },
     deploy:{
       deploymentId: 'DLP0001',
@@ -164,6 +168,7 @@ const EMPTY_CUSTOMER: UserModel = {
 export class EditUserModalComponent implements OnInit, OnDestroy {
   @Input() id: string;
   isLoading$;
+  isAdminRole: boolean;
   customer: UserModel;
   roleList:any[];
   projectList:any[];
@@ -281,7 +286,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       address: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(3), Validators.maxLength(200)])],
 
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
-      roles: [this.customer.userRoleses[0].roleId, Validators.compose([Validators.required])],
+      roles: [this.customer.userRoleses[0].roles.roleId, Validators.compose([Validators.required])],
       status: [this.customer.hrRecord.employmentInfo.employmentStatus, Validators.compose([Validators.required])],
       doj: [this.customer.hrRecord.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
 
@@ -323,7 +328,8 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     });
   }
   create() {
-    console.log("Add User");
+    console.log("Add Employee");
+    this.customer.mediaList[0].mediaId=undefined;
     const sbCreate = this.usersService.create(this.customer,"/addUser","formUser").pipe(
       tap(() => {
         this.modal.close();
@@ -332,7 +338,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         this.openSnackBar(errorMessage,"X");
         return of(this.customer);
       }),
-    ).subscribe((res: UserModel) => res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
+    ).subscribe((res: UserModel) => res =>this.openSnackBar(res.messageCode?"Employee Created Successful":res,"!!"));
     this.subscriptions.push(sbCreate);
   }
 
@@ -345,7 +351,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     this.customer.spouseName = formData.spouseName;
     this.customer.userId=formData.userId;
 
-    this.customer.dob = new Date(formData.dob);
+    this.customer.dob = formData.dob;
     this.customer.sex = formData.sex;
     this.customer.mediaList[0].mobileNo =formData.phoneno;
     this.customer.mediaList[0].communicationAddress = formData.address;
@@ -354,9 +360,10 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
 
     this.customer.operationalRecord.department.departmentId = formData.department;
     this.customer.hrRecord.employmentInfo.employmentStatus= formData.status;
-    this.customer.hrRecord.employmentInfo.dateOfJoin = new Date(formData.doj);
-    this.customer.userRoleses[0].roleId =formData.roles;
-    this.customer.userRoleses[0].isAdminRole =formData.roles.isAdminRole;
+    this.customer.hrRecord.employmentInfo.dateOfJoin =formData.doj;
+    this.customer.userRoleses[0].roles.roleId =formData.roles;
+    this.isAdminRole =((formData.roles.isAdminRole==undefined || !formData.roles.isAdminRole)?false:true);
+    this.customer.userRoleses[0].roles.isAdminRole =this.isAdminRole;
 
     this.customer.employeeId=formData.userId;
     this.customer.producer=null;

@@ -55,7 +55,7 @@ export class ProjectService  {
   }
   getTeamList(){
 
-    const url = this.API_URL + "/getGroupList";
+    const url = this.API_URL + "/getGroupList/TeamLead";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });

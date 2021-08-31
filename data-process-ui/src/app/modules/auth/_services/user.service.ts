@@ -139,4 +139,23 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
       })
     );
   }
+  saveOPR(oprRecord,formUser){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    console.log("Inside Save OPR");
+    const url = this.API_URL + '/updateOperationalRecord';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"formUser":formUser,"formOperationalRecord":oprRecord},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
 }

@@ -82,7 +82,7 @@
           <tr *ngFor="let customer of userService.items$ | async">
             <td>
               <a title="Edit IT Employee Details" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-              (click)="addOPR(customer.user.userId, customer.user.userName)">
+              (click)="addOPR(customer.user.userId,customer.user.id, customer.user.userName)">
               <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
                 class="svg-icon svg-icon-md svg-icon-primary">
               </span>

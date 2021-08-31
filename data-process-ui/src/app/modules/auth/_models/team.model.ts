@@ -3,4 +3,5 @@ export class Team {
   teamName: string;
   groupId: string;
   groupName: string;
+  employeeId:string;
 }
