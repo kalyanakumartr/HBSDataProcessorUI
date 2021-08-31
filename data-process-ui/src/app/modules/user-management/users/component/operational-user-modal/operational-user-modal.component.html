@@ -30,7 +30,7 @@
         </div>
         <div class="col-lg-4">
           <label>Select Roles</label>
-          <select  class="form-control form-control-lg form-control-solid" name="roles"
+          <select  class="form-control form-control-lg form-control-solid" name="roles" (change)="assignRole($event.target.value)"
             [class.is-invalid]="isControlInvalid('roles')" formControlName="roles">
             <option [ngValue]="null" disabled>Choose Role</option>
             <option *ngFor="let role of roleList" [ngValue]="role.roleId">

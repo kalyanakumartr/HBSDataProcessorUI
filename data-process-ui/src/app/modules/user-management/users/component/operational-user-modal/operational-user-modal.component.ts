@@ -279,6 +279,11 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   }
   loadEditForm(){
     this.customer.email=this.customer.mediaList[0].emailId;
+    this.roleId=this.customer.roleId;
+    for(var role of this.roleList)
+    if(role.roleId == this.roleId ){
+      this.isAdminRole=role.isAdminRole;
+    }
   }
   assignControlValues(){
     this.userOPRModel = EMPTY_CUSTOMER.operationalRecord;
@@ -350,8 +355,8 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     this.reportingId= this.teamList[position[0]].employeeId;
   }
   assignRole(value){
-    var position =value.split(":");
-    if(position.length>2){
+    var position =value.split(": ");
+    if(position.length>1){
       this.isAdminRole= this.roleList[position[0]].isAdminRole;
       this.roleId=position[1];
     }
