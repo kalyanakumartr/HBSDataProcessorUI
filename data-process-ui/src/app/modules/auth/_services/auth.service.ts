@@ -38,7 +38,7 @@ export class AuthService implements OnDestroy {
     this.currentUserSubject = new BehaviorSubject<UserModel>(undefined);
     this.currentUser$ = this.currentUserSubject.asObservable();
     this.isLoading$ = this.isLoadingSubject.asObservable();
-    const subscr = this.getUserByToken("").subscribe();
+    const subscr = this.getUserByToken().subscribe();
     this.unsubscribe.push(subscr);
   }
 
@@ -49,10 +49,11 @@ export class AuthService implements OnDestroy {
       map((auth: AuthModel) => {
         console.log("Auth",auth);
         const result = this.setAuthFromLocalStorage(auth);
+        localStorage.setItem("loginId",loginId);
         console.log(result);
         return result;
       }),
-      switchMap(() => this.getUserByToken(loginId)),
+      switchMap(() => this.getUserByToken()),
       catchError((err) => {
         console.error('err', err);
         return of(undefined);
@@ -68,7 +69,8 @@ export class AuthService implements OnDestroy {
     });
   }
 
-  getUserByToken(loginId): Observable<UserModel> {
+  getUserByToken(): Observable<UserModel> {
+    const loginId =localStorage.getItem("loginId");
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
       return of(undefined);
@@ -137,5 +139,5 @@ export class AuthService implements OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());
   }
-  
+
 }

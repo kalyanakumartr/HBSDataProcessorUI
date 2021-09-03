@@ -1,9 +1,11 @@
 export class Media {
     emailId :string;
     mobileNo:string;
-    phoneNo:string;
-    whatsAppNo: string;
     mediaId: string;
     mediaType:string;
+    alternateMobile:string;
+    communicationAddress:string;
+    permanentAddress:string;
+    personalEmailId:string
+
   }
-  

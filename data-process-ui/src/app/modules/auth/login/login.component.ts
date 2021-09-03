@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   //   password: '',
   // };
   defaultAuth: any = {
-    userId: 'soundaravalli2021@gmail.com',
+    userId: '',
     password: 'Test@1234',
   };
   loginForm: FormGroup;

@@ -10,6 +10,7 @@ export const environment = {
   apiUrl: 'http://localhost:9000',
   adminApiUrl: 'http://localhost:9100/core-admin',
   apiJsonUrl:'http://localhost:3000',
+  viewApiUrl:'http://localhost:9300/edr-view',
   //apiUrl: 'http://localhost:3000/'
   //apiUrl: 'http://localhost:8090/',
 };

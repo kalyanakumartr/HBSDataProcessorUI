@@ -7,8 +7,6 @@ import {
   GroupingState,
   PaginatorState,
   SortState,
-  ICreateAction,
-  IEditAction,
   IDeleteAction,
   IDeleteSelectedAction,
   IFetchSelectedAction,
@@ -21,6 +19,10 @@ import {
 import { AuthService, UserModel } from '../../auth';
 import { UsersService } from '../../auth/_services/user.service';
 import { AuthModel } from '../../auth/_models/auth.model';
+import { EditUserModalComponent } from '../users/component/edit-user-modal/edit-user-modal.component';
+import { UserITModalComponent } from '../users/component/user-it-modal/user-it-modal.component';
+import { UserHRModalComponent } from '../users/component/user-hr-modal/user-hr-modal.component';
+import { OperationalUserModalComponent } from '../users/component/operational-user-modal/operational-user-modal.component';
 
 @Component({
   selector: 'app-user-list',
@@ -30,8 +32,6 @@ import { AuthModel } from '../../auth/_models/auth.model';
 export class UserListComponent implements
 OnInit,
 OnDestroy,
-ICreateAction,
-IEditAction,
 IDeleteAction,
 IDeleteSelectedAction,
 IFetchSelectedAction,
@@ -47,10 +47,9 @@ grouping: GroupingState;
 isLoading: boolean;
 filterGroup: FormGroup;
 searchGroup: FormGroup;
-
-  userList: any;
-  subscriptions: any;
-  authModel:AuthModel;
+userList: any;
+private subscriptions: Subscription[] = [];
+authModel:AuthModel;
   constructor(private fb: FormBuilder,
     private modalService: NgbModal, public userService: UsersService) {
 
@@ -58,9 +57,9 @@ searchGroup: FormGroup;
 
   ngOnInit(): void {
     //this.filterForm();
-    //this.searchForm();
+    this.searchForm();
 
-    this.userService.fetch();
+    this.userService.fetch("/searchUser");
     console.log("UserList :", this.subscriptions)
     this.grouping = this.userService.grouping;
     this.paginator = this.userService.paginator;
@@ -70,7 +69,10 @@ searchGroup: FormGroup;
   }
   public getUsers() {
     console.log("Inside get Users")
-    this.subscriptions = this.userService.getUserList();
+    //this.subscriptions= this.userService.getUserList();
+    this.userService.getUserList().subscribe(users => {
+      this.subscriptions = users;
+    });
     console.log(this.subscriptions );
   }
   ngOnDestroy() {
@@ -80,8 +82,6 @@ searchGroup: FormGroup;
   // filtration
   filterForm() {
     this.filterGroup = this.fb.group({
-      status: [''],
-      type: [''],
       searchTerm: [''],
     });
     this.subscriptions.push(
@@ -96,7 +96,7 @@ searchGroup: FormGroup;
 
   filter() {
     const filter = {};
-    const status = this.filterGroup.get('status').value;
+    /*const status = this.filterGroup.get('status').value;
     if (status) {
       filter['status'] = status;
     }
@@ -104,8 +104,8 @@ searchGroup: FormGroup;
     const type = this.filterGroup.get('type').value;
     if (type) {
       filter['type'] = type;
-    }
-    this.userService.patchState({ filter });
+    }*/
+    this.userService.patchState({ filter },"/searchUser");
   }
 
   // search
@@ -127,7 +127,7 @@ searchGroup: FormGroup;
   }
 
   search(searchTerm: string) {
-    this.userService.patchState({ searchTerm });
+    this.userService.patchState({ searchTerm },"/searchUser");
   }
 
   // sorting
@@ -140,27 +140,27 @@ searchGroup: FormGroup;
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.userService.patchState({ sorting });
+    this.userService.patchState({ sorting },"/searchUser");
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.userService.patchState({ paginator });
+    this.userService.patchState({ paginator },"/searchUser");
   }
   // form actions
-  create() {
-    this.edit(undefined);
-  }
 
-  edit(id: number) {
-    // const modalRef = this.modalService.open(EditCustomerModalComponent, { size: 'xl' });
-    // modalRef.componentInstance.id = id;
-    // modalRef.result.then(() =>
-    //   this.userService.fetch(),
-    //   () => { }
-    // );
-  }
 
+
+ addOPR(id: string,revId:string, name:string) {
+  const modalRef = this.modalService.open(OperationalUserModalComponent, { size: 'xl' });
+  modalRef.componentInstance.id = id;
+  modalRef.componentInstance.revId = revId;
+  modalRef.componentInstance.name =name;
+  modalRef.result.then(() =>
+    this.userService.fetchIT(id),
+    () => { }
+  );
+}
   delete(id: number) {
     // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
     // modalRef.componentInstance.id = id;

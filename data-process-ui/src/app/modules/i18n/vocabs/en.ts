@@ -13,6 +13,20 @@ export const locale = {
       FEATURES: 'Features',
       APPS: 'Apps',
       DASHBOARD: 'Dashboard',
+      WORKALLOCATION: 'WorkAllocation',
+      'WORK UPLOAD':'WORK UPLOAD',
+      ATTENDANCE:'Attendance',
+      PERFORMANCE:'Performance',
+      'DAILY LOG':'Daily Log',
+      REPORTS:'Reports',
+      USERMANAGEMENT:'Employee Management',
+      USERS:'Employees',
+      HROPERATIONS:'HR Operations',
+      OPERATIONALOPERATIONS:'Operational Employees',
+      ITOPERATIONS:'IT Operations',
+      ROLES:'Roles'
+
+
     },
     AUTH: {
       GENERAL: {
