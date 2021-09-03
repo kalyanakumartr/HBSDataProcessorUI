@@ -208,7 +208,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     this.userId.id=this.id;
     this.roleService.getActiveRoleList().pipe(
       tap((res: any) => {
-        this.roleList = res.items;
+        this.roleList = res;
         this.loadCustomer();
         console.log("RoleList", this.roleList)
       }),

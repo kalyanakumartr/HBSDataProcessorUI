@@ -10,6 +10,10 @@ import { RoleService } from 'src/app/modules/auth/_services/role.services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { formatDate } from '@angular/common';
 import { ProjectService } from 'src/app/modules/auth/_services/project.services';
+import { UserRoles } from 'src/app/modules/auth/_models/user-roles.model';
+import { RoleModel } from 'src/app/modules/auth/_models/role.model';
+import { Producer } from 'src/app/modules/auth/_models/producer.model';
+
 
 const EMPTY_CUSTOMER: UserModel = {
   id: undefined,
@@ -176,6 +180,8 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   departmentList:any[];
   deploy:string;
   formGroup: FormGroup;
+  role : RoleModel;
+  producer : Producer;
   private subscriptions: Subscription[] = [];
   constructor(
     private snackBar: MatSnackBar,
@@ -186,13 +192,15 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
       this.customer =new UserModel;
+      this.role = new RoleModel;
+      this.producer = new Producer;
     }
 
   ngOnInit(): void {
     this.isLoading$ = this.usersService.isLoading$;
     this.roleService.getActiveRoleList().pipe(
       tap((res: any) => {
-        this.roleList = res.items;
+        this.roleList = res;
         this.loadCustomer();
         console.log("RoleList", this.roleList)
       }),
@@ -286,7 +294,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       address: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(3), Validators.maxLength(200)])],
 
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
-      roles: [this.customer.userRoleses[0].roles.roleId, Validators.compose([Validators.required])],
+      roles: [this.customer.roleId, Validators.compose([Validators.required])],
       status: [this.customer.hrRecord.employmentInfo.employmentStatus, Validators.compose([Validators.required])],
       doj: [this.customer.hrRecord.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
 
@@ -301,16 +309,18 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.prepareCustomer();
+
     if (this.customer.id) {
+      this.prepareCustomer("Edit");
       this.edit();
     } else {
+      this.prepareCustomer("Create");
       this.create();
     }
   }
 
   edit() {
-    const sbUpdate = this.usersService.update(this.customer).pipe(
+    const sbUpdate = this.usersService.update(this.customer,"/updateUser","formUser").pipe(
       tap(() => {
         this.modal.close();
       }),
@@ -318,8 +328,8 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         this.modal.dismiss(errorMessage);
         return of(this.customer);
       }),
-    ).subscribe(res => this.customer = res);
-    this.subscriptions.push(sbUpdate);
+      ).subscribe(res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
+    //this.subscriptions.push(sbUpdate);
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -339,10 +349,11 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         return of(this.customer);
       }),
     ).subscribe((res: UserModel) => res =>this.openSnackBar(res.messageCode?"Employee Created Successful":res,"!!"));
+
     this.subscriptions.push(sbCreate);
   }
 
-  private prepareCustomer() {
+  private prepareCustomer(createEdit) {
     const formData = this.formGroup.value;
 
 
@@ -361,12 +372,20 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     this.customer.operationalRecord.department.departmentId = formData.department;
     this.customer.hrRecord.employmentInfo.employmentStatus= formData.status;
     this.customer.hrRecord.employmentInfo.dateOfJoin =formData.doj;
-    this.customer.userRoleses[0].roles.roleId =formData.roles;
+    //this.customer.userRoleses[0].roles.roleId =formData.roles;
+    this.role.roleId = formData.roles;
     this.isAdminRole =((formData.roles.isAdminRole==undefined || !formData.roles.isAdminRole)?false:true);
-    this.customer.userRoleses[0].roles.isAdminRole =this.isAdminRole;
+    this.role.isAdminRole =this.isAdminRole;
+    this.customer.userRoleses[0].roles =this.role;
 
     this.customer.employeeId=formData.userId;
+    if(createEdit == "Edit"){
+      this.producer.producerId='PRD000001';
+      this.customer.producer= this.producer;
+    }else{
     this.customer.producer=null;
+    }
+
 
   }
 
