@@ -159,7 +159,7 @@
             <td>{{ customer.user.operationalRecord.team.groupName }}</td>
             <td>{{ customer.user.reportingTo }} </td>
             <td>{{ customer.user.operationalRecord.loginRFDB_BPS }}</td>
-            <td>{{ customer.user.operationalRecord.project.projectName }}</td>
+            <td>{{ customer.user.operationalRecord.project != null ? customer.user.operationalRecord.project.projectName :"" }}</td>
             <td>{{ customer.user.trainingBatch }} </td>
           </tr>
         </tbody>

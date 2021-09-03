@@ -176,11 +176,13 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   roleList:any[];
   projectList:any[];
   teamList:any[];
+  groupList:any[];
   isAdminRole: boolean;
   roleId:string;
   departmentList:any[];
   reporting:string;
   reportingId:string;
+  groupId:string;
   deploy:string;
   userId: BaseModel;
   userOPRModel :UserOperationalModel;
@@ -263,10 +265,11 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
               items: []
             });
           })).subscribe();
-          this.projectService.getTeamList().pipe(
+
+          this.projectService.getGroupList(this.customer.userId,this.roleId).pipe(
             tap((res: any) => {
-              this.teamList = res;
-              console.log("teamList", this.teamList)
+              this.groupList = res;
+              console.log("groupList", this.groupList)
             }),
             catchError((err) => {
               console.log(err);
@@ -274,7 +277,6 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
                 items: []
               });
             })).subscribe();
-
     }
   }
   loadEditForm(){
@@ -296,6 +298,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
 
       roles: [this.customer.roleId, Validators.compose([Validators.required])],
       teamId: [this.customer.operationalRecord.team.teamId, Validators.compose([Validators.required])],
+      groupId: [this.customer.operationalRecord.team.teamId, Validators.compose([Validators.required])],
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
       //Change Reporting to
       reportingTo: [this.customer.operationalRecord.reportingTo, Validators.compose([Validators.required])],
@@ -348,11 +351,20 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     ).subscribe((res: UserModel) => res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
     this.subscriptions.push(sbCreate);
   }
-  setReportingTo(value){
+  setReportingToByGroup(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.reporting=this.groupList[position[0]].fullName;
+      this.reportingId= this.groupList[position[0]].reportingTo;
+      this.groupId= position[1].toString().trim();
+      this.getTeamforGroup();
+    }
+  }
+  setReportingToByTeam(value){
 
     var position =value.split(":")
     this.reporting=this.teamList[position[0]].fullName;
-    this.reportingId= this.teamList[position[0]].employeeId;
+    this.reportingId= this.teamList[position[0]].reportingTo;
   }
   assignRole(value){
     var position =value.split(": ");
@@ -360,6 +372,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       this.isAdminRole= this.roleList[position[0]].isAdminRole;
       this.roleId=position[1];
     }
+    this.getGroupforRole();
   }
   private prepareCustomer() {
     const formData = this.formGroup.value;
@@ -413,5 +426,31 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     console.log("Control", control, "Value", value);
     control.setValue(value);
   }
-
+  getTeamforGroup(){
+    this.teamList=[];
+    this.projectService.getTeamList(this.customer.userId,this.groupId).pipe(
+      tap((res: any) => {
+        this.teamList = res;
+        console.log("teamList", this.teamList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
+  getGroupforRole(){
+    this.projectService.getGroupList(this.customer.userId,this.roleId).pipe(
+      tap((res: any) => {
+        this.groupList = res;
+        console.log("groupList", this.groupList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
 }

@@ -104,9 +104,9 @@
             <td>{{ customer.user.operationalRecord.department.departmentName }}</td>
             <td>{{ customer.user.operationalRecord.team.teamName }}</td>
             <td>{{ customer.user.operationalRecord.team.groupName }}</td>
-            <td>{{ customer.user.reportingTo }} </td>
+            <td>{{ customer.user.reportingTo != null? customer.user.reportingTo :"" }} </td>
             <td>{{ customer.user.operationalRecord.loginRFDB_BPS }}</td>
-            <td>{{ customer.user.operationalRecord.project.projectName }}</td>
+            <td>{{ customer.user.operationalRecord.project != null ? customer.user.operationalRecord.project.projectName :"" }}</td>
             <td>{{ customer.user.trainingBatch }} </td>
             <td>
               {{ customer.user.roleName }}

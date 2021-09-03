@@ -53,9 +53,25 @@ export class ProjectService  {
       })
     );
   }
-  getTeamList(){
 
-    const url = this.API_URL + "/getGroupList/TeamLead";
+  getGroupList(userId, roleId){
+
+    const url = this.API_URL + "/getGroupList/"+userId+"/"+roleId;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<Team[]>(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+
+  getTeamList(userId, groupId){
+
+    const url = this.API_URL + "/getTeamList/"+userId+"/"+groupId;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });

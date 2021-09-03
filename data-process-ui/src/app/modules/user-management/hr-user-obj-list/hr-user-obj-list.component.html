@@ -171,9 +171,7 @@
               <td>
                 {{ customer.user.trainingBatch }}
               </td>
-              <td>
-                {{ customer.user.producerId }}
-              </td>
+              <td>{{ customer.user.operationalRecord.project != null ? customer.user.operationalRecord.project.projectName :"" }}</td>
               <td>
                 {{ customer.user.loginRFDB_BPS }}
               </td>

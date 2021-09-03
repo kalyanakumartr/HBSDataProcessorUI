@@ -150,7 +150,7 @@ const EMPTY_CUSTOMER: UserModel = {
     },
     trainingBatch:'',
     reportingTo:'',
-    reportingToId:'user1',
+    reportingToId:'EDRAdmin',
     loginRFDB_BPS:''
   }
 };
@@ -224,7 +224,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
               items: []
             });
           })).subscribe();
-          this.projectService.getTeamList().pipe(
+          this.projectService.getTeamList("","").pipe(
             tap((res: any) => {
               this.teamList = res;
               console.log("teamList", this.teamList)

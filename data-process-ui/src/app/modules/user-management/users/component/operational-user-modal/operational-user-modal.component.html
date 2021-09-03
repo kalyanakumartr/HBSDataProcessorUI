@@ -40,12 +40,23 @@
           <div class="feedback">Please select <b>Role</b></div>
         </div>
 
+        <div class="col-lg-4">
+          <label>Select Group</label>
+          <select class="form-control form-control-lg form-control-solid" name="groupId"
+            [class.is-invalid]="isControlInvalid('groupId')" formControlName="groupId" (change)="setReportingToByGroup($event.target.value)">
+            <option *ngFor="let group of groupList" [ngValue]="group.teamId">
+              {{ group.teamName }}
+            </option>
+
+          </select>
+          <div class="feedback">Please select <b>Group</b></div>
+        </div>
           <div class="col-lg-4">
             <label>Select Team</label>
             <select class="form-control form-control-lg form-control-solid" name="teamId"
-              [class.is-invalid]="isControlInvalid('teamId')" formControlName="teamId" (change)="setReportingTo($event.target.value)">
+              [class.is-invalid]="isControlInvalid('teamId')" formControlName="teamId" (change)="setReportingToByTeam($event.target.value)">
               <option *ngFor="let team of teamList" [ngValue]="team.teamId">
-                {{ team.teamName }} - {{ team.groupName }}
+                {{ team.teamName }}
               </option>
               <!--<option value="GRP0008">SILOC Team - SILOC_Group</option>
               <option value="GRP0009">RFDB_Training - RFDB_Training_Group</option>
