@@ -9,6 +9,8 @@ import { AuthService, UserModel } from 'src/app/modules/auth';
 import { RoleService } from 'src/app/modules/auth/_services/role.services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectService } from 'src/app/modules/auth/_services/project.services';
+import { BaseModel } from 'src/app/_metronic/shared/crud-table/models/base.model';
+import { UserOperationalModel } from 'src/app/modules/auth/_models/user-operational.model';
 
 
 const EMPTY_CUSTOMER: UserModel = {
@@ -21,10 +23,12 @@ const EMPTY_CUSTOMER: UserModel = {
   pic: '',
   userRoleses: [
     {
+    roles:{
         id:'',
         roleId:'',
         isAdminRole:false
     }
+  }
   ],
   occupation: '',
   companyName: '',
@@ -71,7 +75,7 @@ const EMPTY_CUSTOMER: UserModel = {
   },
 
 
-  assignedRole:'',
+  roleId:'',
   status:'',
 
   itRecord:{
@@ -126,11 +130,13 @@ const EMPTY_CUSTOMER: UserModel = {
     }
   },
   operationalRecord:{
+    id:'',
     team:{
       teamId: '',
       teamName: '',
       groupId: '',
-      groupName: ''
+      groupName: '',
+      employeeId:'',
     },
     deploy:{
       deploymentId: '',
@@ -163,13 +169,23 @@ const EMPTY_CUSTOMER: UserModel = {
 })
 export class OperationalUserModalComponent implements OnInit, OnDestroy {
   @Input() id: string;
+  @Input() revId: string;
   isLoading$;
   customer: UserModel;
+  updateRole:any;
   roleList:any[];
   projectList:any[];
   teamList:any[];
+  groupList:any[];
+  isAdminRole: boolean;
+  roleId:string;
   departmentList:any[];
+  reporting:string;
+  reportingId:string;
+  groupId:string;
   deploy:string;
+  userId: BaseModel;
+  userOPRModel :UserOperationalModel;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
   constructor(
@@ -180,13 +196,19 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
       this.customer =new UserModel;
+      this.reporting='';
+      this.reportingId='';
+      this.userOPRModel =new UserOperationalModel;
+      this.userId= new UserOperationalModel;
+      this.isAdminRole=false;
     }
 
   ngOnInit(): void {
     this.isLoading$ = this.usersService.isLoading$;
+    this.userId.id=this.id;
     this.roleService.getActiveRoleList().pipe(
       tap((res: any) => {
-        this.roleList = res.items;
+        this.roleList = res;
         this.loadCustomer();
         console.log("RoleList", this.roleList)
       }),
@@ -243,10 +265,11 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
               items: []
             });
           })).subscribe();
-          this.projectService.getTeamList().pipe(
+
+          this.projectService.getGroupList(this.customer.userId,this.roleId).pipe(
             tap((res: any) => {
-              this.teamList = res;
-              console.log("teamList", this.teamList)
+              this.groupList = res;
+              console.log("groupList", this.groupList)
             }),
             catchError((err) => {
               console.log(err);
@@ -254,13 +277,18 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
                 items: []
               });
             })).subscribe();
-
     }
   }
   loadEditForm(){
     this.customer.email=this.customer.mediaList[0].emailId;
+    this.roleId=this.customer.roleId;
+    for(var role of this.roleList)
+    if(role.roleId == this.roleId ){
+      this.isAdminRole=role.isAdminRole;
+    }
   }
   assignControlValues(){
+    this.userOPRModel = EMPTY_CUSTOMER.operationalRecord;
     this.assignControlValue("deployId",this.customer.operationalRecord.deploy.deploymentId);
     this.assignControlValue("teamId",this.customer.operationalRecord.team.teamId);
 
@@ -268,23 +296,24 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   loadForm() {
     this.formGroup = this.fb.group({
 
-      roles: [this.customer.userRoleses[0].roleId, Validators.compose([Validators.required])],
+      roles: [this.customer.roleId, Validators.compose([Validators.required])],
       teamId: [this.customer.operationalRecord.team.teamId, Validators.compose([Validators.required])],
+      groupId: [this.customer.operationalRecord.team.teamId, Validators.compose([Validators.required])],
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
       //Change Reporting to
-      reportingTo: [this.customer.operationalRecord.reportingToId, Validators.compose([Validators.required])],
+      reportingTo: [this.customer.operationalRecord.reportingTo, Validators.compose([Validators.required])],
       loginRFDB_BPS: [this.customer.operationalRecord.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
       projectId: [this.customer.operationalRecord.project.projectId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      trainingBatch: [this.customer.operationalRecord.trainingBatch, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      trainingBatch: [this.customer.operationalRecord.trainingBatch, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])],
 
 
     });
-
+    this.reportingId=this.customer.operationalRecord.reportingToId;
   }
 
   save() {
     this.prepareCustomer();
-    if (this.customer.id) {
+    if (this.userId.id) {
       this.edit();
     } else {
       this.create();
@@ -292,7 +321,8 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    const sbUpdate = this.usersService.update(this.customer).pipe(
+    var test ={"id":this.revId, "userRoless":[{roles:{}}]}
+    const sbUpdate = this.usersService.saveOPR(this.userOPRModel, this.updateRole).pipe(
       tap(() => {
         this.modal.close();
       }),
@@ -300,8 +330,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
         this.modal.dismiss(errorMessage);
         return of(this.customer);
       }),
-    ).subscribe(res => this.customer = res);
-    this.subscriptions.push(sbUpdate);
+    ).subscribe(res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -322,8 +351,28 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     ).subscribe((res: UserModel) => res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
     this.subscriptions.push(sbCreate);
   }
-  setReportingTo(value){
-    alert(value)
+  setReportingToByGroup(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.reporting=this.groupList[position[0]].fullName;
+      this.reportingId= this.groupList[position[0]].reportingTo;
+      this.groupId= position[1].toString().trim();
+      this.getTeamforGroup();
+    }
+  }
+  setReportingToByTeam(value){
+
+    var position =value.split(":")
+    this.reporting=this.teamList[position[0]].fullName;
+    this.reportingId= this.teamList[position[0]].reportingTo;
+  }
+  assignRole(value){
+    var position =value.split(": ");
+    if(position.length>1){
+      this.isAdminRole= this.roleList[position[0]].isAdminRole;
+      this.roleId=position[1];
+    }
+    this.getGroupforRole();
   }
   private prepareCustomer() {
     const formData = this.formGroup.value;
@@ -332,11 +381,20 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     this.customer.operationalRecord.loginRFDB_BPS = formData.loginRFDB_BPS;
     this.customer.operationalRecord.team.teamId = formData.teamId;
     this.customer.operationalRecord.department.departmentId = formData.department;
-    this.customer.operationalRecord.reportingTo=formData.reportingTo;
-    this.customer.operationalRecord.reportingToId=formData.reportingToId;
+    this.customer.operationalRecord.reportingTo=this.reportingId;
+    this.customer.operationalRecord.reportingToId=this.reportingId;
     this.customer.operationalRecord.project.projectId=formData.projectId;
-    this.customer.userRoleses[0].roleId=formData.roles;
-    this.customer.userRoleses[0].isAdminRole =formData.roles.isAdminRole;
+
+    this.userOPRModel.trainingBatch= formData.trainingBatch;
+    this.userOPRModel.loginRFDB_BPS = formData.loginRFDB_BPS;
+    this.userOPRModel.team.teamId = formData.teamId;
+    this.userOPRModel.team.employeeId = formData.reportingId;
+    this.userOPRModel.department.departmentId = formData.department;
+    this.userOPRModel.deploy.deploymentId = 'DLP0001';
+    this.userOPRModel.reportingTo=this.reportingId;
+    this.userOPRModel.reportingToId=this.reportingId;
+    this.userOPRModel.project.projectId=formData.projectId;
+    this.updateRole ={"id":this.revId, "userRoleses":[{roles:{ "roleId": this.roleId, "isAdminRole": this.isAdminRole}}]};
   }
 
   ngOnDestroy(): void {
@@ -368,5 +426,31 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     console.log("Control", control, "Value", value);
     control.setValue(value);
   }
-
+  getTeamforGroup(){
+    this.teamList=[];
+    this.projectService.getTeamList(this.customer.userId,this.groupId).pipe(
+      tap((res: any) => {
+        this.teamList = res;
+        console.log("teamList", this.teamList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
+  getGroupforRole(){
+    this.projectService.getGroupList(this.customer.userId,this.roleId).pipe(
+      tap((res: any) => {
+        this.groupList = res;
+        console.log("groupList", this.groupList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
 }

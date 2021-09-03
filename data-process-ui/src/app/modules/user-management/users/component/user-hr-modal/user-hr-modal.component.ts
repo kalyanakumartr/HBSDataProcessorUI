@@ -148,6 +148,16 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       isApprentice: [this.userHRModel.employmentInfo.isApprentice, Validators.compose([])],
       isFileCreated: [this.userHRModel.employmentInfo.isFileCreated, Validators.compose([])],
 
+      personalEmailId: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([ Validators.email])],
+      officialEmailId: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([ Validators.email])],
+      phoneno: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(13)])],
+      alternateNumber: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(13)])],
+      emergencyeNumber: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(13)])],
+      currentAddress: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(200)])],
+      permanentAddress: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(200)])],
+      maritialStatus: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
+      spouseName: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
+
     });
   }
 
@@ -190,20 +200,30 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     this.userHRModel.taxInfo.pan = formData.pan;
     this.userHRModel.taxInfo.providentFund = formData.providentFund;
     this.userHRModel.taxInfo.uan = formData.uan;
-    this.userHRModel.employmentInfo.dateOfJoin = new Date(formData.dateOfJoin);
+    this.userHRModel.employmentInfo.dateOfJoin = formData.dateOfJoin;
     this.userHRModel.employmentInfo.infoAPL = formData.infoAPL;
     this.userHRModel.employmentInfo.employmentStatus = formData.employmentStatus;
     this.userHRModel.employmentInfo.experienceInEDR = formData.experienceInEDR;
     this.userHRModel.employmentInfo.experienceOutEDR = formData.experienceOutEDR;
-    this.userHRModel.employmentInfo.fromNoticePeriod  = new Date(formData.fromNoticePeriod);
-    this.userHRModel.employmentInfo.toNoticePeriod = new Date(formData.toNoticePeriod);
+    this.userHRModel.employmentInfo.fromNoticePeriod  = formData.fromNoticePeriod;
+    this.userHRModel.employmentInfo.toNoticePeriod = formData.toNoticePeriod;
     this.userHRModel.employmentInfo.idCardEDR = formData.idCardEDR;
-    this.userHRModel.employmentInfo.lastWorkDay = new Date(formData.lastWorkDay);
+    this.userHRModel.employmentInfo.lastWorkDay = formData.lastWorkDay;
     this.userHRModel.employmentInfo.lastEmployer = formData.lastEmployer;
     this.userHRModel.employmentInfo.lastDesignation = formData.lastDesignation;
     this.userHRModel.employmentInfo.isOfferIssued = formData.isOfferIssued;
     this.userHRModel.employmentInfo.isApprentice = formData.isApprentice;
     this.userHRModel.employmentInfo.isFileCreated = formData.isFileCreated;
+
+    this.userHRModel.employmentInfo.idCardEDR = formData.personalEmailId;
+    this.userHRModel.employmentInfo.idCardEDR = formData.officialEmailId;
+    this.userHRModel.employmentInfo.idCardEDR = formData.phoneno;
+    this.userHRModel.employmentInfo.idCardEDR = formData.alternateNumber;
+    this.userHRModel.employmentInfo.idCardEDR = formData.emergencyeNumber;
+    this.userHRModel.employmentInfo.idCardEDR = formData.currentAddress;
+    this.userHRModel.employmentInfo.idCardEDR = formData.permanentAddress;
+    this.userHRModel.employmentInfo.idCardEDR = formData.maritialStatus;
+    this.userHRModel.employmentInfo.idCardEDR = formData.spouseName;
 
 
   }

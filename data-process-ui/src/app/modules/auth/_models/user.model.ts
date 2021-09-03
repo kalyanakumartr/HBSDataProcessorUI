@@ -20,7 +20,7 @@ export class UserModel implements BaseModel {
   fullname: string;
   email: string;
   pic: string;
-  userRoleses: RoleModel[];
+  userRoleses: UserRoles[];
   occupation: string;
   companyName: string;
   dateOfJoin:string;
@@ -53,7 +53,7 @@ export class UserModel implements BaseModel {
 
   // email settings
 
-  assignedRole:string;
+  roleId:string;
   status :string;
 
   itRecord:UserITModel;

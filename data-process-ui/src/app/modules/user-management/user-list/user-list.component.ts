@@ -151,9 +151,10 @@ authModel:AuthModel;
 
 
 
- addOPR(id: string, name:string) {
+ addOPR(id: string,revId:string, name:string) {
   const modalRef = this.modalService.open(OperationalUserModalComponent, { size: 'xl' });
   modalRef.componentInstance.id = id;
+  modalRef.componentInstance.revId = revId;
   modalRef.componentInstance.name =name;
   modalRef.result.then(() =>
     this.userService.fetchIT(id),
