@@ -33,7 +33,7 @@ searchGroup: FormGroup;
   }
 
   ngOnInit(): void {
-     this.roleService.fetch("/getActiveRoleList");
+     this.roleService.fetch("/searchRole");
     console.log("Roles List :", this.subscriptions)
     this.grouping = this.roleService.grouping;
     this.paginator = this.roleService.paginator;
@@ -64,7 +64,7 @@ searchGroup: FormGroup;
   }
 
   search(searchTerm: string) {
-    this.roleService.patchState({ searchTerm },"/getActiveRoleList");
+    this.roleService.patchState({ searchTerm },"/searchRole");
   }
 
   // sorting
@@ -77,12 +77,12 @@ searchGroup: FormGroup;
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.roleService.patchState({ sorting },"/getActiveRoleList");
+    this.roleService.patchState({ sorting },"/searchRole");
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.roleService.patchState({ paginator },"/getActiveRoleList");
+    this.roleService.patchState({ paginator },"/searchRole");
   }
 }
 

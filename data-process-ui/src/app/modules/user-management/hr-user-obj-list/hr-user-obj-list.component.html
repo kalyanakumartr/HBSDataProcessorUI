@@ -140,7 +140,9 @@
                 </span>
               </a>
               </td>
-              <td>{{ customer.user.userId }}</td>
+              <td>
+                <a title="Edit Employee"  (click)="edit(customer.user.userId)">{{ customer.user.userId }}</a>
+              </td>
               <td>{{ customer.user.userName }} {{ customer.user.lastName }}</td>
               <td>{{ customer.user.hrRecord.employmentInfo.dateOfJoin | date: 'dd-MMM-yyyy'}} </td>
             <td>
