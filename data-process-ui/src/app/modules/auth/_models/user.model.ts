@@ -55,7 +55,8 @@ export class UserModel implements BaseModel {
 
   roleId:string;
   status :string;
-
+  bloodGroup:string;
+  martial:string;
   itRecord:UserITModel;
   hrRecord:UserHRModel;
   operationalRecord:UserOperationalModel;

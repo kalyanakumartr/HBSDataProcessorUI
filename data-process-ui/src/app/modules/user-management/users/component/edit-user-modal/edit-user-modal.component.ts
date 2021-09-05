@@ -58,7 +58,8 @@ const EMPTY_CUSTOMER: UserModel = {
       permanentAddress:'',
       personalEmailId:'',
       mediaType: 'Primary',
-      mediaId: ''
+      mediaId: '',
+      emergencyNumber:''
     }
 ],
   language: '',
@@ -79,7 +80,8 @@ const EMPTY_CUSTOMER: UserModel = {
 
   roleId:'',
   status:'',
-
+  bloodGroup:'',
+  martial:'',
   itRecord:{
     id: '',
     broadBandAccount:'',
@@ -372,10 +374,19 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     this.customer.operationalRecord.department.departmentId = formData.department;
     this.customer.hrRecord.employmentInfo.employmentStatus= formData.status;
     this.customer.hrRecord.employmentInfo.dateOfJoin =formData.doj;
-    //this.customer.userRoleses[0].roles.roleId =formData.roles;
     this.role.roleId = formData.roles;
-    this.isAdminRole =((formData.roles.isAdminRole==undefined || !formData.roles.isAdminRole)?false:true);
+    for(var role of this.roleList){
+      if(role.roleId == this.role.roleId){
+        this.isAdminRole = role.isAdminRole;
+      }
+    }
     this.role.isAdminRole =this.isAdminRole;
+    for (var key in this.customer.userRoleses[0]) {
+        delete this.customer.userRoleses[0][key];
+    }
+    this.customer.userRoleses[0]= null;
+    this.customer.userRoleses[0]= new UserRoles;
+
     this.customer.userRoleses[0].roles =this.role;
 
     this.customer.employeeId=formData.userId;

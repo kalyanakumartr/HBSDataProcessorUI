@@ -56,7 +56,8 @@ const EMPTY_CUSTOMER: UserModel = {
       permanentAddress:'',
       personalEmailId:'',
       mediaType: 'Primary',
-      mediaId: ''
+      mediaId: '',
+      emergencyNumber:''
     }
 ],
   language: '',
@@ -77,7 +78,8 @@ const EMPTY_CUSTOMER: UserModel = {
 
   roleId:'',
   status:'',
-
+  bloodGroup:'',
+  martial:'',
   itRecord:{
     id: '',
     broadBandAccount:'',

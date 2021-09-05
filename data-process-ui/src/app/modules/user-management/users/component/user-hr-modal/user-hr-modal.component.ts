@@ -10,8 +10,153 @@ import { UserITModel } from 'src/app/modules/auth/_models/user-it.model';
 import { BaseModel } from 'src/app/_metronic/shared/crud-table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserHRModel } from 'src/app/modules/auth/_models/user-hr.model';
+import { UserModel } from 'src/app/modules/auth/_models/user.model';
+
+const EMPTY_CUSTOMER: UserModel = {
+  id: undefined,
+  firstName: '',
+  lastName: '',
+  email: '',
+  userName: '',
+  fullname: '',
+  pic: '',
+  userRoleses: [
+    {
+    roles:{
+        id:'',
+        roleId:'',
+        isAdminRole:false
+    }
+  }
+  ],
+  occupation: '',
+  companyName: '',
+  dateOfJoin:'',
+  dob:'',
+  phone: '',
+  employeeId:'',
+  fatherName:'',
+  spouseName:'',
+  sex:'Male',
+  userId:'',
+  userImage:'',
+  userStatus:'Pending',
+  userType:'Employee',
+  producerId:'100000DRP',
+  producerName:'',
+  parentProducerId:'100000DRP',
+  parentProducerName:'',
+  mediaList:[
+    {
+      alternateMobile:'',
+      communicationAddress:'',
+      emailId: '',
+      mobileNo: '',
+      permanentAddress:'',
+      personalEmailId:'',
+      mediaType: 'Primary',
+      mediaId: '',
+      emergencyNumber:''
+    }
+],
+  language: '',
+  timeZone: '',
+  uniqueId:'',
+  password:'',
+  producer:{
+    producerId:'100000DRP',
+    producerName:'',
+    parentProducerId:'100000DRP',
+    parentProducerName:'',
+  },
+  country: {
+    country: 'Asia/Kolkata',
+    countryName: 'India'
+  },
 
 
+  roleId:'',
+  status:'',
+  bloodGroup:'',
+  martial:'',
+  itRecord:{
+    id: '',
+    broadBandAccount:'',
+    broadBandBy:'OWN',
+    internetPlan:'',
+    isDowngraded:false,
+    ispName:'',
+    staticIPAddress:'',
+    staticWhiteList:false,
+    systemSerialNo:'',
+    systemToHome:false,
+    workMode:'WFO',
+  },
+  hrRecord:{
+    id:'',
+    bankAccounts: {
+      accountNo: '',
+      bankName: '',
+      bankBranch:'',
+      ifscCode:'',
+    },
+    employmentInfo:{
+      dateOfJoin:'',
+      infoAPL: '',
+      employmentStatus:'',
+      experienceInEDR:'',
+      experienceOutEDR:'',
+      fromNoticePeriod:'',
+      toNoticePeriod:'',
+      idCardEDR:'',
+      lastWorkDay:'',
+      lastEmployer:'',
+      lastDesignation:'',
+      isOfferIssued:false,
+      isApprentice:false,
+      isFileCreated:false,
+    },
+    educationalInfo:{
+      highestGraduate: '',
+      institution: '',
+      markGrade:'',
+      year:'',
+    },
+    taxInfo:{
+      aadhar: '',
+      esic: '',
+      providentFund:'',
+      pan:'',
+      uan:''
+    }
+  },
+  operationalRecord:{
+    id:'',
+    team:{
+      teamId: 'GRP9999',
+      teamName: '',
+      groupId: 'GRP0000',
+      groupName: '',
+      employeeId:'',
+    },
+    deploy:{
+      deploymentId: 'DLP0001',
+      deploymentTaskName: ''
+    },
+    department:{
+      departmentId: '',
+      departmentName: ''
+    },
+    project:{
+      projectId: 'CSAV1CM',
+      projectName: ''
+    },
+    trainingBatch:'',
+    reportingTo:'',
+    reportingToId:'EDRAdmin',
+    loginRFDB_BPS:''
+  }
+};
 const EMPTY_HR_MODEL: UserHRModel = {
 
   id: undefined,
@@ -67,6 +212,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
   @Input() id: string;
   @Input() name: string;
   isLoading$;
+  customer: UserModel;
   userHRModel: UserHRModel;
   userId: BaseModel;
   formGroup: FormGroup;
@@ -99,17 +245,32 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       this.loadForm();
     } else {
       console.log("this.id", this.id);
-      const sb = this.usersService.fetchHR(this.id).pipe(
+      const sbUser = this.usersService.getItemById(this.id.split("").reverse().join("")).pipe(
         first(),
         catchError((errorMessage) => {
           console.log("errorMessage", errorMessage);
-          return of(EMPTY_HR_MODEL);
+          this.modal.dismiss(errorMessage);
+          return of(EMPTY_CUSTOMER);
         })
-      ).subscribe((userHRModel: UserHRModel) => {
-        console.log("UserHRModel", userHRModel);
-        this.userHRModel = userHRModel;
+      ).subscribe((customer: UserModel) => {
+        this.customer = customer;
+        console.log(this.customer);
+        this.userHRModel = this.customer.hrRecord;
         this.loadForm();
+
+        console.log("Check");
       });
+      // const sb = this.usersService.fetchHR(this.id).pipe(
+      //   first(),
+      //   catchError((errorMessage) => {
+      //     console.log("errorMessage", errorMessage);
+      //     return of(EMPTY_HR_MODEL);
+      //   })
+      // ).subscribe((userHRModel: UserHRModel) => {
+      //   console.log("UserHRModel", userHRModel);
+      //   this.userHRModel = userHRModel;
+      //   this.loadForm();
+      // });
 
     }
   }
@@ -148,16 +309,16 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       isApprentice: [this.userHRModel.employmentInfo.isApprentice, Validators.compose([])],
       isFileCreated: [this.userHRModel.employmentInfo.isFileCreated, Validators.compose([])],
 
-      personalEmailId: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([ Validators.email])],
-      officialEmailId: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([ Validators.email])],
-      phoneno: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(13)])],
-      alternateNumber: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(13)])],
-      emergencyeNumber: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(13)])],
-      currentAddress: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(200)])],
-      permanentAddress: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(200)])],
-      maritialStatus: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
-      spouseName: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
-
+      personalEmailId: [ this.customer.mediaList[0].personalEmailId, Validators.compose([ Validators.email])],
+      officialEmailId: [this.customer.mediaList[0].emailId, Validators.compose([ Validators.email])],
+      phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.minLength(1), Validators.maxLength(13)])],
+      alternateNumber: [this.customer.mediaList[0].alternateMobile, Validators.compose([Validators.minLength(1), Validators.maxLength(13)])],
+      emergencyNumber: [this.customer.mediaList[0].alternateMobile, Validators.compose([Validators.minLength(1), Validators.maxLength(13)])],
+      currentAddress: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(1), Validators.maxLength(200)])],
+      permanentAddress: [this.customer.mediaList[0].permanentAddress, Validators.compose([Validators.minLength(1), Validators.maxLength(200)])],
+      maritialStatus: [this.customer.martial, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
+      spouseName: [this.customer.spouseName, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
+      bloodGroup: [this.customer.bloodGroup, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
     });
   }
 
@@ -215,15 +376,16 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     this.userHRModel.employmentInfo.isApprentice = formData.isApprentice;
     this.userHRModel.employmentInfo.isFileCreated = formData.isFileCreated;
 
-    this.userHRModel.employmentInfo.idCardEDR = formData.personalEmailId;
-    this.userHRModel.employmentInfo.idCardEDR = formData.officialEmailId;
-    this.userHRModel.employmentInfo.idCardEDR = formData.phoneno;
-    this.userHRModel.employmentInfo.idCardEDR = formData.alternateNumber;
-    this.userHRModel.employmentInfo.idCardEDR = formData.emergencyeNumber;
-    this.userHRModel.employmentInfo.idCardEDR = formData.currentAddress;
-    this.userHRModel.employmentInfo.idCardEDR = formData.permanentAddress;
-    this.userHRModel.employmentInfo.idCardEDR = formData.maritialStatus;
-    this.userHRModel.employmentInfo.idCardEDR = formData.spouseName;
+    this.customer.mediaList[0].personalEmailId = formData.personalEmailId;
+    this.customer.mediaList[0].emailId = formData.officialEmailId;
+    this.customer.mediaList[0].mobileNo = formData.phoneno;
+    this.customer.mediaList[0].alternateMobile = formData.alternateNumber;
+    this.customer.mediaList[0].emergencyNumber = formData.emergencyNumber;
+    this.customer.mediaList[0].communicationAddress = formData.currentAddress;
+    this.customer.mediaList[0].permanentAddress = formData.permanentAddress;
+    this.customer.martial = formData.maritialStatus;
+    this.customer.spouseName = formData.spouseName;
+    this.customer.bloodGroup = formData.bloodGroup;
 
 
   }
