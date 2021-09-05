@@ -11,6 +11,7 @@ import { BaseModel } from 'src/app/_metronic/shared/crud-table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserHRModel } from 'src/app/modules/auth/_models/user-hr.model';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
+import { Media } from 'src/app/modules/auth/_models/media.model';
 
 const EMPTY_CUSTOMER: UserModel = {
   id: undefined,
@@ -213,9 +214,11 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
   @Input() name: string;
   isLoading$;
   customer: UserModel;
+  hrEmp: UserModel;
   userHRModel: UserHRModel;
   userId: BaseModel;
   formGroup: FormGroup;
+  media:Media;
   private subscriptions: Subscription[] = [];
   constructor(
     private snackBar: MatSnackBar,
@@ -224,6 +227,8 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     ) {
       this.userHRModel =new UserHRModel;
       this.userId= new UserHRModel;
+      this.hrEmp= new UserModel;
+      this.media = new Media;
     }
 
   ngOnInit(): void {
@@ -331,7 +336,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
 
   edit() {
 
-    const sbUpdate = this.usersService.saveHR(this.userHRModel, this.userId).pipe(
+    const sbUpdate = this.usersService.saveHR(this.userHRModel, this.hrEmp).pipe(
       tap(() => {
 
         this.modal.close();
@@ -376,17 +381,24 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     this.userHRModel.employmentInfo.isApprentice = formData.isApprentice;
     this.userHRModel.employmentInfo.isFileCreated = formData.isFileCreated;
 
-    this.customer.mediaList[0].personalEmailId = formData.personalEmailId;
-    this.customer.mediaList[0].emailId = formData.officialEmailId;
-    this.customer.mediaList[0].mobileNo = formData.phoneno;
-    this.customer.mediaList[0].alternateMobile = formData.alternateNumber;
-    this.customer.mediaList[0].emergencyNumber = formData.emergencyNumber;
-    this.customer.mediaList[0].communicationAddress = formData.currentAddress;
-    this.customer.mediaList[0].permanentAddress = formData.permanentAddress;
-    this.customer.martial = formData.maritialStatus;
-    this.customer.spouseName = formData.spouseName;
-    this.customer.bloodGroup = formData.bloodGroup;
-
+    this.media.personalEmailId = formData.personalEmailId;
+    this.media.emailId = formData.officialEmailId;
+    this.media.mobileNo = formData.phoneno;
+    this.media.alternateMobile = formData.alternateNumber;
+    this.media.emergencyNumber = formData.emergencyNumber;
+    this.media.communicationAddress = formData.currentAddress;
+    this.media.permanentAddress = formData.permanentAddress;
+    this.hrEmp.martial = formData.maritialStatus;
+    this.hrEmp.spouseName = formData.spouseName;
+    this.hrEmp.bloodGroup = formData.bloodGroup;
+    this.hrEmp.id = this.userId.id;
+    this.hrEmp.userId = this.customer.userId;
+    this.hrEmp.userName = this.customer.userName;
+    this.hrEmp.sex = this.customer.sex;
+    this.hrEmp.dob = this.customer.dob;
+    this.hrEmp.dateOfJoin = this.customer.hrRecord.employmentInfo.dateOfJoin;
+    this.customer.mediaList[0]=this.media;
+    this.hrEmp.mediaList = this.customer.mediaList;
 
   }
 

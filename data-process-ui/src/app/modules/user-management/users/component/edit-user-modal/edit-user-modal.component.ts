@@ -80,8 +80,8 @@ const EMPTY_CUSTOMER: UserModel = {
 
   roleId:'',
   status:'',
-  bloodGroup:'',
-  martial:'',
+  bloodGroup:'AB_Negative',
+  martial:'UnMarried',
   itRecord:{
     id: '',
     broadBandAccount:'',
