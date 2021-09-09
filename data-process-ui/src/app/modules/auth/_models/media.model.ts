@@ -6,6 +6,7 @@ export class Media {
     alternateMobile:string;
     communicationAddress:string;
     permanentAddress:string;
-    personalEmailId:string
+    personalEmailId:string;
+    emergencyNumber:string;
 
   }
