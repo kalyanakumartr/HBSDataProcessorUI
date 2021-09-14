@@ -1,8 +1,12 @@
+import { Input } from '@angular/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, of, Subscription } from 'rxjs';
+import { catchError, first, tap } from 'rxjs/operators';
 import { AuthService, UserModel, ConfirmPasswordValidator } from '../../auth';
+import { UsersService } from '../../auth/_services/user.service';
 
 @Component({
   selector: 'app-change-password',
@@ -10,34 +14,33 @@ import { AuthService, UserModel, ConfirmPasswordValidator } from '../../auth';
   styleUrls: ['./change-password.component.scss']
 })
 export class ChangePasswordComponent implements OnInit, OnDestroy {
+  @Input() id: string;
+  @Input() name: string;
   formGroup: FormGroup;
-  user: UserModel;
+  password:string;
   firstUserState: UserModel;
   subscriptions: Subscription[] = [];
   isLoading$: Observable<boolean>;
 
-  constructor(private userService: AuthService, private fb: FormBuilder) {
-    this.isLoading$ = this.userService.isLoadingSubject.asObservable();
+  constructor(private snackBar: MatSnackBar, private usersService: UsersService, private fb: FormBuilder, public modal: NgbActiveModal) {
+    //this.isLoading$ = this.userService.isLoadingSubject.asObservable();
   }
 
   ngOnInit(): void {
-    const sb = this.userService.currentUserSubject.asObservable().pipe(
-      first(user => !!user)
-    ).subscribe(user => {
-      this.user = Object.assign({}, user);
-      this.firstUserState = Object.assign({}, user);
-      this.loadForm();
-    });
-    this.subscriptions.push(sb);
+    this.loadForm();
   }
-
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition:"top"
+    });
+  }
   ngOnDestroy() {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
 
   loadForm() {
     this.formGroup = this.fb.group({
-      currentPassword: [this.user.password, Validators.required],
       password: ['', Validators.required],
       cPassword: ['', Validators.required]
     }, {
@@ -51,16 +54,25 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.user.password = this.formGroup.value.password;
-    this.userService.isLoadingSubject.next(true);
-    setTimeout(() => {
-      this.userService.currentUserSubject.next(Object.assign({}, this.user));
-      this.userService.isLoadingSubject.next(false);
-    }, 2000);
+    this.password = this.formGroup.value.password;
+
+
+    const sbUpdate = this.usersService.changePassword(this.id, this.password).pipe(
+      tap(() => {
+
+        this.modal.close();
+
+      }),
+      catchError((errorMessage) => {
+        this.modal.dismiss(errorMessage);
+        this.openSnackBar(errorMessage,"X");
+        return of(this.password);
+      }),
+    ).subscribe(res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
   }
 
   cancel() {
-    this.user = Object.assign({}, this.firstUserState);
+    this.password ='';
     this.loadForm();
   }
 
