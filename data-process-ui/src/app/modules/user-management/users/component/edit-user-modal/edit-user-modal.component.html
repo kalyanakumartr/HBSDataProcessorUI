@@ -50,17 +50,6 @@
             <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'fatherName')">Father name should have maximum
               100 symbols</div>
           </div>
-          <div class="col-lg-3">
-            <label class="form-label">Enter Spouse name</label>
-            <input type="text" class="form-control form-control-lg form-control-solid  is-invalid" name="spouseName"
-              placeholder="Spouse Name" autocomplete="off" [class.is-invalid]="isControlInvalid('spouseName')"
-              [class.is-valid]="isControlValid('spouseName')" formControlName="spouseName" />
-            <div class="valid-feedback" *ngIf="isControlValid('spouseName')">Spouse name was entered correct</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'spouseName')">Spouse name should have at
-              least 1 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'spouseName')">Spouse name should have maximum
-              100 symbols</div>
-          </div>
         </div>
         <div class="form-group row">
           <div class="col-lg-3">
