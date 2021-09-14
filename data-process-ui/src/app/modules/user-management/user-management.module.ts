@@ -18,9 +18,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { OperationalUserModalComponent } from './users/component/operational-user-modal/operational-user-modal.component';
 import { HrUserObjListComponent } from './hr-user-obj-list/hr-user-obj-list.component';
 import { ITUserObjListComponent } from './it-user-obj-list/it-user-obj-list.component';
+import { ChangePasswordComponent } from '../user-profile/change-password/change-password.component';
 
 @NgModule({
-  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent,HrUserObjListComponent, ITUserObjListComponent,EditUserModalComponent, UserITModalComponent, UserHRModalComponent,OperationalUserModalComponent],
+  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent,HrUserObjListComponent, ITUserObjListComponent,EditUserModalComponent, UserITModalComponent, UserHRModalComponent,OperationalUserModalComponent, ChangePasswordComponent],
   imports: [CommonModule, UserManagementRoutingModule,   CommonModule,   HttpClientModule,
      CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule],
 })

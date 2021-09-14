@@ -24,6 +24,7 @@ import { AuthModel } from '../../auth/_models/auth.model';
 import { EditUserModalComponent } from '../users/component/edit-user-modal/edit-user-modal.component';
 import { UserITModalComponent } from '../users/component/user-it-modal/user-it-modal.component';
 import { UserHRModalComponent } from '../users/component/user-hr-modal/user-hr-modal.component';
+import { ChangePasswordComponent } from '../../user-profile/change-password/change-password.component';
 
 @Component({
   selector: 'app-it-user-list',
@@ -163,7 +164,15 @@ authModel:AuthModel;
     () => { }
   );
 }
-
+changePassword(id: string, name:string) {
+  const modalRef = this.modalService.open(ChangePasswordComponent, { size: 'lg' });
+  modalRef.componentInstance.id = id;
+  modalRef.componentInstance.name =name;
+  modalRef.result.then(() =>
+    this.userService.fetchIT(id),
+    () => { }
+  );
+}
   delete(id: number) {
     // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
     // modalRef.componentInstance.id = id;
