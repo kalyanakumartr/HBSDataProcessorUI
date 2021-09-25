@@ -139,6 +139,25 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
       })
     );
   }
+  changePassword(userId,password){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    console.log("Inside Save Password");
+    const url = this.API_URL + '/updatePassword';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"formAction":"ChangePassword","media":"Manual","userId":userId, "newPassword":password},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('Error in Saving Password', err);
+        return of("Error in Saving Password");
+      })
+    );
+  }
   saveOPR(oprRecord,formUser){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {

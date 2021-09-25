@@ -28,10 +28,7 @@ const routes: Routes = [
         path: 'account-information',
         component: AccountInformationComponent
       },
-      {
-        path: 'change-password',
-        component: ChangePasswordComponent
-      },
+
       {
         path: 'email-settings',
         component: EmailSettingsComponent

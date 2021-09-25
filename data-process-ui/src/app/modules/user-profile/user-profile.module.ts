@@ -26,7 +26,6 @@ import {ProfileCardComponent} from './_components/profile-card/profile-card.comp
     ProfileOverviewComponent,
     PersonalInformationComponent,
     AccountInformationComponent,
-    ChangePasswordComponent,
     EmailSettingsComponent,
     SavedCreditCardsComponent,
     TaxInformationComponent,
