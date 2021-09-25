@@ -245,7 +245,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
         this.assignControlValues();
         console.log("Check");
       });
-      this.projectService.getProjectList().pipe(
+      this.projectService.getProjectList("RFDB").pipe(
         tap((res: any) => {
           this.projectList = res;
           console.log("projectList", this.projectList)
