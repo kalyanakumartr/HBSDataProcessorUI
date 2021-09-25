@@ -39,9 +39,9 @@ export class ProjectService  {
       })
     );
   }
-  getProjectList(){
+  getProjectList(department){
 
-    const url = this.API_URL + "/getProjectList";
+    const url = this.API_URL + "/getProjectList"+"/"+department;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });

@@ -17,12 +17,19 @@ const routes: Routes = [
         loadChildren: () =>
           import('./builder/builder.module').then((m) => m.BuilderModule),
       },
-      
+
       {
         path: 'user-management',
         loadChildren: () =>
           import('../modules/user-management/user-management.module').then(
             (m) => m.UserManagementModule
+          ),
+      },
+      {
+        path: 'web-upload',
+        loadChildren: () =>
+          import('../modules/web-upload/web-upload.module').then(
+            (m) => m.WebUploadModule
           ),
       },
       {
@@ -32,7 +39,7 @@ const routes: Routes = [
             (m) => m.UserProfileModule
           ),
       },
-      
+
       {
         path: 'wizards',
         loadChildren: () =>
@@ -40,7 +47,7 @@ const routes: Routes = [
             (m) => m.WizardsModule
           ),
       },
-      
+
       {
         path: '',
         redirectTo: '/dashboard',
