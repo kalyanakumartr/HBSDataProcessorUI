@@ -1,0 +1,104 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label">SkillSet Matrix</h3>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- begin:Table -->
+      <div class="table-responsive angular-bootstrap-table">
+        <table id="tablebox" class="table table-head-custom table-vertical-center ">
+          <thead>
+            <tr>
+            <th nowrap >
+              ID
+            </th>
+            <th nowrap >
+              USER NAME
+            </th>
+
+            <th nowrap >
+              Production
+            </th>
+            <th nowrap >
+              QualityAssurance
+            </th>
+            <th nowrap >
+              QualityCheck
+            </th>
+            <th nowrap >
+              QualityCheckTrainer
+            </th>
+            <th nowrap >
+              OnlineTechSupport
+            </th>
+            <th nowrap >
+              QualityCheckTrainee
+            </th>
+            <th nowrap >
+              Trainee
+            </th>
+            <th nowrap >
+              
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let customer of userService.items$ | async">
+              <td>
+                {{ customer.user.userId }}
+              </td>
+              <td>{{ customer.user.userName }} {{ customer.user.lastName }}</td>
+              <td style ="text-align:center" >
+                <label>
+                  <input type="checkbox" name="select1" />
+                  <span></span>
+                </label> 
+              </td>
+              <td style ="text-align:center" >
+                <label>
+                  <input type="checkbox" name="select2" />
+                  <span></span>
+                </label> 
+              </td>
+              <td style ="text-align:center" >
+                <label>
+                  <input type="checkbox" name="select3" />
+                  <span></span>
+                </label> 
+              </td>
+              <td style ="text-align:center" >
+                <label>
+                  <input type="checkbox" name="select4" />
+                  <span></span>
+                </label> 
+              </td>
+              <td style ="text-align:center" >
+                <label>
+                  <input type="checkbox" name="select5" />
+                  <span></span>
+                </label> 
+              </td>
+              <td style ="text-align:center" >
+                <label>
+                  <input type="checkbox" name="select6" />
+                  <span></span>
+                </label> 
+              </td>
+              <td style ="text-align:center" >
+                <label>
+                  <input type="checkbox" name="select7" />
+                  <span></span>
+                </label> 
+              </td>
+              <td>
+                <button type="submit" class="btn btn-primary btn-elevate" (click)="save()">Save</button>
+              </td> 
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- end: Table -->
+      
+    </div>
+  </div>

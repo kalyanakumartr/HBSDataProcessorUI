@@ -24,7 +24,8 @@ export const locale = {
       HROPERATIONS:'HR Operations',
       OPERATIONALOPERATIONS:'Operational Employees',
       ITOPERATIONS:'IT Operations',
-      ROLES:'Roles'
+      ROLES:'Roles',
+      'SKILLSET MATRIX':'SkillSet Matrix'
 
 
     },
