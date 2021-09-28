@@ -11,6 +11,12 @@ export interface ITableState {
   entityId: number | undefined;
 }
 
+export interface ITaskTableState extends ITableState{
+  employeeId: '',
+  queueList:[],
+  taskStatusList:[]
+}
+
 export interface TableResponseModel<T> {
   items: T[];
   total: number;

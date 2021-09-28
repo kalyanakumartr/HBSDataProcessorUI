@@ -24,7 +24,7 @@ export abstract class TableService<T> {
   private _items$ = new BehaviorSubject<T[]>([]);
   private _isLoading$ = new BehaviorSubject<boolean>(false);
   private _isFirstLoading$ = new BehaviorSubject<boolean>(true);
-  private _tableState$ = new BehaviorSubject<ITableState>(DEFAULT_STATE);
+  public _tableState$ = new BehaviorSubject<ITableState>(DEFAULT_STATE);
   private _errorMessage = new BehaviorSubject<string>('');
   private _subscriptions: Subscription[] = [];
   private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;

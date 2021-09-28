@@ -1,0 +1,84 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Task list</h3>
+    </div>
+
+  </div>
+  <div class="card-body">
+    <!-- begin: Filtration form -->
+    <div class="form form-label-right">
+      <div class="form-group row">
+
+        <div class="col-lg-2" [formGroup]="searchGroup">
+          <input type="text" class="form-control" name="searchText" placeholder="Search" value=""
+            formControlName="searchTerm" /><small class="form-text text-muted"><b>Search</b> in all fields</small>
+        </div>
+      </div>
+    </div>
+    <!-- end: Filtration form -->
+
+
+    <!-- begin:Table -->
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="tablebox" class="table table-head-custom table-vertical-center ">
+        <thead>
+          <tr>
+          <th class="sticky-header">Reference ID</th>
+          <th nowrap > Received Date   </th>
+          <th nowrap >Trace</th>
+          <th nowrap >Priority</th>
+          <th nowrap >ReceivedWorkUnits</th>
+          <th nowrap >Description</th>
+          <th nowrap >File Name</th>
+          <th nowrap >Status</th>
+          <th nowrap >Filse Size</th>
+          <th nowrap >Created By</th>
+
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let uploadFiles of webUploadService.items$ | async">
+
+            <td>{{ uploadFiles.dataURN }}</td>
+            <td>
+
+              {{ uploadFiles.createdDate | date: 'dd-MMM-yyyy'}}</td>
+
+
+            <td>
+              {{ uploadFiles.trace }}
+            </td>
+            <td>
+              {{ uploadFiles.priority }}
+            </td>
+
+            <td>
+              {{ uploadFiles.receivedWorkUnits.substring(0.10)  }}
+            </td>
+            <td>
+              {{ uploadFiles.description.substring(0.10)  }}
+            </td>
+            <td>
+              {{ uploadFiles.uploadFileName }}
+            </td>
+            <td>
+              {{ uploadFiles.status }}
+            </td>
+            <td>
+              {{ uploadFiles.uploadFileSize }}
+            </td>
+            <td>
+              {{ uploadFiles.byUser.createdUserId }}
+            </td>
+
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end: Table -->
+    <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator"
+      [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+  </div>
+</div>

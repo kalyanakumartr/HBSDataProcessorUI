@@ -12,6 +12,7 @@ export const environment = {
   apiJsonUrl:'http://localhost:3000',
   viewApiUrl:'http://localhost:9300/edr-view',
   edrReaderApi:'http://localhost:9400/edr-reader',
+
   //apiUrl: 'http://localhost:3000/'
   //apiUrl: 'http://localhost:8090/',
 };
