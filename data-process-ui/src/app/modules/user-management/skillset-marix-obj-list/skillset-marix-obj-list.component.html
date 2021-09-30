@@ -9,7 +9,7 @@
       <div class="table-responsive angular-bootstrap-table">
         <table id="tablebox" class="table table-head-custom table-vertical-center ">
           <thead>
-            <tr>
+          <tr *ngFor="let skillSet of skillSetMatrixService.items$ | async">
             <th nowrap >
               ID
             </th>
@@ -18,26 +18,9 @@
             </th>
 
             <th nowrap >
-              Production
+              {{ skillSet.skillId }}
             </th>
-            <th nowrap >
-              QualityAssurance
-            </th>
-            <th nowrap >
-              QualityCheck
-            </th>
-            <th nowrap >
-              QualityCheckTrainer
-            </th>
-            <th nowrap >
-              OnlineTechSupport
-            </th>
-            <th nowrap >
-              QualityCheckTrainee
-            </th>
-            <th nowrap >
-              Trainee
-            </th>
+            
             <th nowrap >
               
             </th>
