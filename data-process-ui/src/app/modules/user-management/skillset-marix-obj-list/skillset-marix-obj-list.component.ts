@@ -18,14 +18,11 @@ import {
   IGroupingView,
   ISearchView,
 } from '../../../_metronic/shared/crud-table';
-import { AuthService, UserModel } from '../../auth';
-import { UsersService } from '../../auth/_services/user.service';
 import { AuthModel } from '../../auth/_models/auth.model';
 import { EditUserModalComponent } from '../users/component/edit-user-modal/edit-user-modal.component';
-import { UserITModalComponent } from '../users/component/user-it-modal/user-it-modal.component';
-import { UserHRModalComponent } from '../users/component/user-hr-modal/user-hr-modal.component';
 import { catchError, tap } from 'rxjs/operators';
 import { UserSkillSetMatrixService } from '../../auth/_services/user-skillset-matrix.service';
+import { SkillSetService } from '../../auth/_services/skillset.service';
 
 
 @Component({
@@ -54,12 +51,14 @@ isLoading: boolean;
 filterGroup: FormGroup;
 searchGroup: FormGroup;
 userList: any;
+skillSetList:any[];
 skillsetMatrixList: any;
 private subscriptions: Subscription[] = [];
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
-    private modalService: NgbModal, public userSkillSetMatrixService: UserSkillSetMatrixService) {
-
+    private modalService: NgbModal, 
+    public userSkillSetMatrixService: UserSkillSetMatrixService,
+    public skillSetService: SkillSetService) {
   }
 
   ngOnInit(): void {
@@ -72,6 +71,19 @@ authModel:AuthModel;
     this.sorting = this.userSkillSetMatrixService.sorting;
     const sb = this.userSkillSetMatrixService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
+
+    this.skillSetService.getSkillSetList().pipe(
+      tap((res: any) => {
+        this.skillSetList = res;
+        console.log("SkillSet List", this.skillSetList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+    
   }
   
 
@@ -157,15 +169,6 @@ authModel:AuthModel;
      modalRef.componentInstance.id = id;
   }
 
-  addHR(id: string, name:string) {
-    const modalRef = this.modalService.open(UserHRModalComponent, { size: 'xl' });
-    modalRef.componentInstance.id = id;
-    modalRef.componentInstance.name =name;
-    modalRef.result.then(() =>
-      this.userSkillSetMatrixService.fetchHR(id),
-      () => { }
-    );
- }
 
   delete(id: number) {
     // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
