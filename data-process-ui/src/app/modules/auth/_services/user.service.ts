@@ -177,18 +177,4 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
       })
     );
   }
-  getSkillSetMatrixList(){
-    const url = this.API_URL + "/getSkillSetMatrixList";
-    const httpHeaders = new HttpHeaders({
-      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
-    });
-    return this.http.post(url, {"searchTerm":""},{headers: httpHeaders}).pipe(
-      catchError(err => {
-
-        console.error('FIND ITEMS', err);
-        return of({ items: [], total: 0 });
-      })
-    );
-  }
-
 }

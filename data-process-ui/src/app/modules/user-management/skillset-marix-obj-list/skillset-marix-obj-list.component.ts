@@ -25,6 +25,7 @@ import { EditUserModalComponent } from '../users/component/edit-user-modal/edit-
 import { UserITModalComponent } from '../users/component/user-it-modal/user-it-modal.component';
 import { UserHRModalComponent } from '../users/component/user-hr-modal/user-hr-modal.component';
 import { catchError, tap } from 'rxjs/operators';
+import { UserSkillSetMatrixService } from '../../auth/_services/user-skillset-matrix.service';
 
 
 @Component({
@@ -57,34 +58,20 @@ skillsetMatrixList: any;
 private subscriptions: Subscription[] = [];
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
-    private modalService: NgbModal, public userService: UsersService) {
+    private modalService: NgbModal, public userSkillSetMatrixService: UserSkillSetMatrixService) {
 
   }
 
   ngOnInit(): void {
     //this.filterForm();
     this.searchForm();
-    this.userService.fetch("/searchUser");
-    console.log("UserList :", this.subscriptions)
-    this.grouping = this.userService.grouping;
-    this.paginator = this.userService.paginator;
-    this.sorting = this.userService.sorting;
-    const sb = this.userService.isLoading$.subscribe(res => this.isLoading = res);
+    this.userSkillSetMatrixService.fetch("/getSkillSetMatrixList");
+    console.log("SkillSetMatrix :", this.subscriptions)
+    this.grouping = this.userSkillSetMatrixService.grouping;
+    this.paginator = this.userSkillSetMatrixService.paginator;
+    this.sorting = this.userSkillSetMatrixService.sorting;
+    const sb = this.userSkillSetMatrixService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
-
-
-    this.userService.getSkillSetMatrixList().pipe(
-      tap((res: any) => {
-        this.skillsetMatrixList = res;
-        console.log("SkillSetMatrix List", this.skillsetMatrixList)
-      }),
-      catchError((err) => {
-        console.log(err);
-        return of({
-          items: []
-        });
-      })).subscribe();
-
   }
   
 
@@ -118,7 +105,7 @@ authModel:AuthModel;
     if (type) {
       filter['type'] = type;
     }*/
-    this.userService.patchState({ filter },"/searchUser");
+    this.userSkillSetMatrixService.patchState({ filter },"/getSkillSetMatrixList");
   }
 
   // search
@@ -140,7 +127,7 @@ authModel:AuthModel;
   }
 
   search(searchTerm: string) {
-    this.userService.patchState({ searchTerm },"/searchUser");
+    this.userSkillSetMatrixService.patchState({ searchTerm },"/getSkillSetMatrixList");
   }
 
   // sorting
@@ -153,12 +140,12 @@ authModel:AuthModel;
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.userService.patchState({ sorting },"/searchUser");
+    this.userSkillSetMatrixService.patchState({ sorting },"/getSkillSetMatrixList");
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.userService.patchState({ paginator },"/searchUser");
+    this.userSkillSetMatrixService.patchState({ paginator },"/getSkillSetMatrixList");
   }
   // form actions
   create() {
@@ -175,7 +162,7 @@ authModel:AuthModel;
     modalRef.componentInstance.id = id;
     modalRef.componentInstance.name =name;
     modalRef.result.then(() =>
-      this.userService.fetchHR(id),
+      this.userSkillSetMatrixService.fetchHR(id),
       () => { }
     );
  }

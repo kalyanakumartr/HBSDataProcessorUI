@@ -44,11 +44,11 @@
           </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let customer of userService.items$ | async">
+            <tr *ngFor="let userSkillSet of userSkillSetMatrixService.items$ | async">
               <td>
-                {{ customer.user.userId }}
+                {{ userSkillSet.userId }}
               </td>
-              <td>{{ customer.user.userName }} {{ customer.user.lastName }}</td>
+              <td>{{ userSkillSet.userName }}</td>
               <td style ="text-align:center" >
                 <label>
                   <input type="checkbox" name="select1" />
