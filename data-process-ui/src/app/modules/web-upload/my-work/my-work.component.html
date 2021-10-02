@@ -24,20 +24,18 @@
       <table id="tablebox" class="table table-head-custom table-vertical-center ">
         <thead>
           <tr>
-          <th class="sticky-header">AllocationId</th>
-          <th nowrap >
-            Received Date
+            <th nowrap >
+              Work Unit Id
 
-          </th>
+            </th>
 
-          <th nowrap >
-            Work Unit Id
+          <th nowrap > Received Date </th>
 
-          </th>
+
           <th nowrap >Miles</th>
-          <th nowrap >Project Name</th>
+          <th nowrap >Sub Country Name</th>
+          <th nowrap >Road Name</th>
           <th nowrap >Miles</th>
-          <th nowrap >Multi Type Road</th>
           <th nowrap >Motor Ways</th>
           <th nowrap >Motor Ways Miles</th>
           <th nowrap >Trunk</th>
@@ -46,7 +44,8 @@
 
           <th nowrap >Urban Miles</th>
           <th nowrap >Department Name</th>
-          <th nowrap >Sub Country Name</th>
+          <th nowrap >Project Name</th>
+
 
 
 
@@ -54,31 +53,26 @@
         </thead>
         <tbody>
           <tr *ngFor="let task of workAllocationService.items$ | async">
-            <td nowrap>
 
-            </td>
-            <td>{{ task.allocationId }}</td>
+            <td>{{ task.coreData.roadData.workUnitId}} </td>
             <td>
 
               {{ task.coreData.roadData.receivedDate | date: 'dd-MMM-yyyy'}}</td>
-            <td>{{ task.coreData.roadData.workUnitId}} </td>
+
 
             <td>
               {{ task.coreData.roadData.wuMiles }}
             </td>
-            <td>
-              {{ task.coreData.roadData.projectName }}
-            </td>
+            <td>{{ task.coreData.roadData.subCountryName}}</td>
 
             <td>
               {{ task.coreData.roadData.roadTypeMap.roadName }}
             </td>
             <td>
-              {{ task.coreData.roadData.roadTypeMap.multiType }}
-            </td>
-            <td>
               {{ task.coreData.roadData.roadTypeMap.miles }}
             </td>
+
+
             <td>
               {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[0].roadName :"" }}
             </td>
@@ -98,7 +92,10 @@
               {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[2].miles :""}}
             </td>
             <td> {{ task.coreData.roadData.departmentName}}</td>
-            <td>{{ task.coreData.roadData.subCountryName}}</td>
+
+            <td>
+              {{ task.coreData.roadData.projectName }}
+            </td>
 
           </tr>
         </tbody>

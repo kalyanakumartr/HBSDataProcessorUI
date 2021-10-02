@@ -42,7 +42,9 @@ authModel:AuthModel;
   ngOnInit(): void {
     //this.filterForm();
     this.searchForm();
-
+    //this.workAllocationService.patchStateWithoutFetch({ this.sorting});
+    this.workAllocationService.patchStateWithoutFetch({ queueList: ['Group']});
+    this.workAllocationService.patchStateWithoutFetch({ taskStatusList: ['Ready','InProgress'] });
     this.workAllocationService.fetch("/searchTask");
     console.log("UserList :", this.subscriptions)
     this.grouping = this.workAllocationService.grouping;

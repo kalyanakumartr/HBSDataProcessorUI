@@ -13,6 +13,12 @@ export const environment = {
   viewApiUrl:'http://localhost:9300/edr-view',
   edrReaderApi:'http://localhost:9400/edr-reader',
 
+  /*apiUrl: 'http://180.151.61.19:19000',
+  adminApiUrl: 'http://180.151.61.19:19100/core-admin',
+  apiJsonUrl:'http://180.151.61.19:3000',
+  viewApiUrl:'http://180.151.61.19:19300/edr-view',
+  edrReaderApi:'http://180.151.61.19:19400/edr-reader'*/
+
   //apiUrl: 'http://localhost:3000/'
   //apiUrl: 'http://localhost:8090/',
 };

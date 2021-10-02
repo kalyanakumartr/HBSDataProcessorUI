@@ -12,9 +12,9 @@ export interface ITableState {
 }
 
 export interface ITaskTableState extends ITableState{
-  employeeId: '',
-  queueList:[],
-  taskStatusList:[]
+  employeeId: any,
+  queueList:any,
+  taskStatusList:any
 }
 
 export interface TableResponseModel<T> {

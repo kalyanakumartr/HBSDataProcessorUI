@@ -154,4 +154,8 @@ authModel:AuthModel;
     // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
     // modalRef.result.then(() => this.userService.fetch(), () => { });
   }
+  readMore(cont){
+    //feature it will be moved to Model.
+    alert(cont);
+  }
 }
