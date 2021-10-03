@@ -1,0 +1,148 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Task list</h3>
+    </div>
+
+  </div>
+  <div class="card-body">
+    <!-- begin: Filtration form -->
+    <div class="form form-label-right">
+      <div class="form-group row">
+
+
+
+      <div class="col-lg-3">
+        <label>Select Queue</label>
+        <select class="form-control form-control-lg form-control-solid" name="selectedQueue" (change)="selectQueue($event.target.value)"
+           formControlName="selectedQueue">
+          <option *ngFor="let queue of queueList" [ngValue]="queue">
+            {{ queue }}
+          </option>
+        </select>
+        <div class="feedback">Please select <b>Queue</b></div>
+
+      </div>
+      <div class="col-lg-3">
+        <label>Select Status</label>
+        <select class="form-control form-control-lg form-control-solid" name="selectedStatus" (change)="selectTask($event.target.value)"
+           formControlName="selectedStatus">
+          <option *ngFor="let status of statusList" [ngValue]="status">
+            {{ status }}
+          </option>
+        </select>
+        <div class="feedback">Please select <b>Status</b></div>
+      </div>
+      <div class="col-lg-3" [formGroup]="searchGroup">
+        <input type="text" class="form-control" name="searchText" placeholder="Search" value=""
+          formControlName="searchTerm" /><small class="form-text text-muted"><b>Search</b> in all fields</small>
+      </div>
+    </div>
+
+  </div>
+    <!-- end: Filtration form -->
+
+
+    <!-- begin:Table -->
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="tablebox" class="table table-head-custom table-vertical-center ">
+        <thead>
+          <tr>
+            <ng-container *ngIf="hasCheckbox">
+
+             <th><input type="checkbox" (change)="checkAll(this)"/></th>
+            </ng-container>
+
+            <th nowrap >
+              Work Unit Id
+
+            </th>
+
+          <th nowrap > Received Date </th>
+
+
+          <th nowrap >Miles</th>
+          <th nowrap >Sub Country Name</th>
+          <th nowrap >Road Name</th>
+          <th nowrap >Miles</th>
+          <th nowrap >Motor Ways</th>
+          <th nowrap >Motor Ways Miles</th>
+          <th nowrap >Trunk</th>
+          <th nowrap >Trunk Miles</th>
+          <th nowrap >Urban</th>
+
+          <th nowrap >Urban Miles</th>
+          <th nowrap >Department Name</th>
+          <th nowrap >Project Name</th>
+
+
+
+
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of workAllocationService.items$ | async">
+            <ng-container *ngIf="hasCheckbox">
+
+              <td><input type="checkbox" id="vehicle1" name="vehicle1" value="{{ task.coreData.roadData.workUnitId }}"></td>
+             </ng-container>
+            <td>
+              <ng-container *ngIf="hasLink else noLink">
+                <a title="Start WorkUnit"  (click)="openWworkUnit(task)">{{ task.coreData.roadData.workUnitId }}</a>
+               </ng-container>
+               <ng-template #noLink>
+
+                  {{ task.coreData.roadData.workUnitId}}
+              </ng-template>
+              </td>
+            <td>
+
+              {{ task.coreData.roadData.receivedDate | date: 'dd-MMM-yyyy'}}</td>
+
+
+            <td>
+              {{ task.coreData.roadData.wuMiles }}
+            </td>
+            <td>{{ task.coreData.roadData.subCountryName}}</td>
+
+            <td>
+              {{ task.coreData.roadData.roadTypeMap.roadName }}
+            </td>
+            <td>
+              {{ task.coreData.roadData.roadTypeMap.miles }}
+            </td>
+
+
+            <td>
+              {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[0].roadName :"" }}
+            </td>
+            <td>
+              {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[0].miles:"" }}
+            </td>
+            <td>
+              {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[1].roadName:"" }}
+            </td>
+            <td>
+              {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[1].miles:"" }}
+            </td>
+            <td>
+              {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[2].roadName :""}}
+            </td>
+            <td>
+              {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[2].miles :""}}
+            </td>
+            <td> {{ task.coreData.roadData.departmentName}}</td>
+
+            <td>
+              {{ task.coreData.roadData.projectName }}
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end: Table -->
+    <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator"
+      [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+  </div>
+</div>

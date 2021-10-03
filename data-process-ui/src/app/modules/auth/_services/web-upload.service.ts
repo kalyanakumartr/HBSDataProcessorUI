@@ -10,22 +10,24 @@ import { RoleModel } from '../_models/role.model';
 import { Department } from '../_models/department.model';
 import { Project } from '../_models/project.model';
 import { Team } from '../_models/team.model';
+import { UploadedFiles } from '../../web-upload/modal/upload-files.model';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class WebUploadService  {
-  private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
+export class WebUploadService  extends TableService<UploadedFiles> implements OnDestroy {
     // public fields
     isLoadingSubject: BehaviorSubject<boolean>;
     private _errorMsg = new BehaviorSubject<string>('');
     protected http: HttpClient;
   API_URL = `${environment.edrReaderApi}`;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
-    this.http=http;
+    super(http);
   }
-
+  ngOnDestroy() {
+    this.subscriptions.forEach(sb => sb.unsubscribe());
+  }
   uploadFile(projectId,file){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
@@ -47,17 +49,6 @@ export class WebUploadService  {
         return of("Error in Web Upload");
       })
     );
-  }
-  public getAuthFromLocalStorage(): AuthModel {
-    try {
-      const authData = JSON.parse(
-        localStorage.getItem(this.authLocalStorageToken)
-      );
-      return authData;
-    } catch (error) {
-      console.error(error);
-      return undefined;
-    }
   }
 
 }
