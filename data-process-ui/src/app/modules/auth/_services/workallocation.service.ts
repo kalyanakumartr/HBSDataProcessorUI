@@ -31,7 +31,7 @@ export class WorkAllocationService extends TableTaskService<WorkUnitModel> imple
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
 
-  getWorkUnitList(){
+  getWorkUnitList(queue,status){
     const url = this.API_URL + '/searchTask';
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
@@ -46,14 +46,57 @@ export class WorkAllocationService extends TableTaskService<WorkUnitModel> imple
       "searchTerm": "",
       "entityId": null,
       "queueList": [
-          "Group"
+          queue
       ],
       "taskStatusList": [
-        "InProgress", "Ready"
+        status
     ],
     },{
       headers: httpHeaders,
     });
+  }
+
+  getQueueForUser(user){
+    const url = 'http://localhost:3000/queue' ;
+    console.log(this.http.get(url));
+    return this.http.get<string[]>(url);
+    /*const url = this.API_URL + '/getQueueList';
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${auth.access_token}`,
+    });
+    this.isLoadingSubject.next(true);
+    console.log("Inside get Work Units");
+    return this.http.post(url, {
+      "searchTerm": user,
+
+    },{
+      headers: httpHeaders,
+    });*/
+  }
+  getStatusForQueue(queue){
+    console.log("Queue",queue);
+    const url = 'http://localhost:3000/status' ;
+    return this.http.get<string[]>(url);
+   /* const url = this.API_URL + '/getStatusList';
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${auth.access_token}`,
+    });
+    this.isLoadingSubject.next(true);
+    console.log("Inside get Status");
+    return this.http.post(url, {
+      "searchTerm": queue,
+
+    },{
+      headers: httpHeaders,
+    });*/
   }
 
 }

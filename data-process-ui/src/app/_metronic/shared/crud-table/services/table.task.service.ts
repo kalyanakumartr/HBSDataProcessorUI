@@ -44,4 +44,11 @@ export class TableTaskService<WorkUnitModel> extends TableService<WorkUnitModel>
     const newState = Object.assign(this._taskTableState$.value, patch);
     this._taskTableState$.next(newState);
   }
+  public setValues(empId,queue,status) {
+
+    this.patchStateWithoutFetch({ employeeId: empId });
+    this.patchStateWithoutFetch({ queueList: [queue]});
+    this.patchStateWithoutFetch({ taskStatusList: [status] });
+
+  }
 }

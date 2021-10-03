@@ -2,11 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { GroupingState, IDeleteAction, IDeleteSelectedAction, IFetchSelectedAction, IFilterView, IGroupingView, ISearchView, ISortView, IUpdateStatusForSelectedAction, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
 import { AuthModel } from '../../auth/_models/auth.model';
 import { UsersService } from '../../auth/_services/user.service';
 import { WorkAllocationService } from '../../auth/_services/workallocation.service';
+import { WorkUnitModalComponent } from '../work-unit-modal/work-unit-modal.component';
 
 @Component({
   selector: 'app-my-work',
@@ -32,20 +33,33 @@ isLoading: boolean;
 filterGroup: FormGroup;
 searchGroup: FormGroup;
 userList: any;
+queueList: any;
+statusList:any;
+hasLink:boolean;
+hasCheckbox:boolean;
+selectedQueue:string;
+selectedStatus:string;
 private subscriptions: Subscription[] = [];
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
     private modalService: NgbModal, public workAllocationService: WorkAllocationService) {
-
+      this.queueList=[];
+      this.statusList=[];
+      this.hasLink=true;
+      this.hasCheckbox=false;
   }
 
   ngOnInit(): void {
     //this.filterForm();
+    this.getQueues();
+    setTimeout(()=>{
+ //this.workAllocationService.patchStateWithoutFetch({ this.sorting});
+ this.workAllocationService.patchStateWithoutFetch({ queueList: [this.selectedQueue]});
+ this.workAllocationService.patchStateWithoutFetch({ taskStatusList: [this.selectedStatus] });
+ this.workAllocationService.fetch("/searchTask");
+     }, 1000)
     this.searchForm();
-    //this.workAllocationService.patchStateWithoutFetch({ this.sorting});
-    this.workAllocationService.patchStateWithoutFetch({ queueList: ['Group']});
-    this.workAllocationService.patchStateWithoutFetch({ taskStatusList: ['Ready','InProgress'] });
-    this.workAllocationService.fetch("/searchTask");
+
     console.log("UserList :", this.subscriptions)
     this.grouping = this.workAllocationService.grouping;
     this.paginator = this.workAllocationService.paginator;
@@ -55,15 +69,68 @@ authModel:AuthModel;
   }
   public getTasks() {
     console.log("Inside get Tasks")
-    this.workAllocationService.getWorkUnitList().subscribe(users => {
+    this.workAllocationService.getWorkUnitList(this.selectedQueue,this.selectedStatus).subscribe(users => {
       this.subscriptions = users;
     });
     console.log(this.subscriptions );
   }
+  public getQueues() {
+    console.log("Inside get Queue")
+    this.workAllocationService.getQueueForUser("").subscribe(queues => {
+      this.queueList = queues;
+      this.selectedQueue=this.queueList[0];
+      this.getStatus();
+    });
+    console.log("QueueList",this.queueList );
+  }
+  public getStatus() {
+    console.log("Inside get Queue")
+    this.workAllocationService.getStatusForQueue(this.selectedQueue).subscribe(status => {
+      this.statusList = status;
+      this.selectedStatus=this.statusList[0];
+    });
+    console.log("statusList", this.statusList );
+  }
   ngOnDestroy() {
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
+  openWworkUnit(task: any) {
+    const modalRef = this.modalService.open(WorkUnitModalComponent, { size: 'xl' });
+    modalRef.componentInstance.task = task;
+  }
+  checkAll(obj:any){
 
+  }
+  selectQueue(value){
+    console.log(value);
+    var position =value.split(": ");
+    if(position.length>1){
+      this.selectedQueue= position[1];
+    }
+    if(['Group','Team'].includes(this.selectedQueue)){
+      this.hasCheckbox=true;
+      this.hasLink=false;
+    }else{
+      this.hasCheckbox=false;
+      this.hasLink=true;
+    }
+    if(this.selectedQueue!="" && this.selectedStatus!=""){
+      this.workAllocationService.setValues('',this.selectedQueue, this.selectedStatus);
+      this.workAllocationService.patchState({},"/searchTask");
+    }
+  }
+  selectTask(value){
+    console.log(value);
+    var position =value.split(": ");
+    if(position.length>1){
+      this.selectedStatus= position[1];
+    }
+    console.log("Queue", this.selectedQueue, "Status", this.selectedStatus);
+    if(this.selectedQueue!="" && this.selectedStatus!=""){
+      this.workAllocationService.setValues('',this.selectedQueue, this.selectedStatus);
+      this.workAllocationService.patchState({},"/searchTask");
+    }
+  }
   // filtration
   filterForm() {
     this.filterGroup = this.fb.group({
