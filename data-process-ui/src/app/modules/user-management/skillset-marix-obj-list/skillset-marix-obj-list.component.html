@@ -1,87 +1,73 @@
-<div class="card card-custom gutter-b">
-    <div class="card-header">
-      <div class="card-title">
-        <h3 class="card-label">SkillSet Matrix</h3>
-      </div>
-    </div>
-    <div class="card-body">
-      <!-- begin:Table -->
-      <div class="table-responsive angular-bootstrap-table">
-        <table id="tablebox" class="table table-head-custom table-vertical-center ">
-          <thead>
-          <tr *ngFor="let skillSet of skillSetMatrixService.items$ | async">
-            <th nowrap >
-              ID
-            </th>
-            <th nowrap >
-              USER NAME
-            </th>
-
-            <th nowrap >
-              {{ skillSet.skillId }}
-            </th>
-            
-            <th nowrap >
-              
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let userSkillSet of userSkillSetMatrixService.items$ | async">
-              <td>
-                {{ userSkillSet.userId }}
-              </td>
-              <td>{{ userSkillSet.userName }}</td>
-              <td style ="text-align:center" >
-                <label>
-                  <input type="checkbox" name="select1" />
-                  <span></span>
-                </label> 
-              </td>
-              <td style ="text-align:center" >
-                <label>
-                  <input type="checkbox" name="select2" />
-                  <span></span>
-                </label> 
-              </td>
-              <td style ="text-align:center" >
-                <label>
-                  <input type="checkbox" name="select3" />
-                  <span></span>
-                </label> 
-              </td>
-              <td style ="text-align:center" >
-                <label>
-                  <input type="checkbox" name="select4" />
-                  <span></span>
-                </label> 
-              </td>
-              <td style ="text-align:center" >
-                <label>
-                  <input type="checkbox" name="select5" />
-                  <span></span>
-                </label> 
-              </td>
-              <td style ="text-align:center" >
-                <label>
-                  <input type="checkbox" name="select6" />
-                  <span></span>
-                </label> 
-              </td>
-              <td style ="text-align:center" >
-                <label>
-                  <input type="checkbox" name="select7" />
-                  <span></span>
-                </label> 
-              </td>
-              <td>
-                <button type="submit" class="btn btn-primary btn-elevate" (click)="save()">Save</button>
-              </td> 
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <!-- end: Table -->
-      
-    </div>
+<div class="example-container mat-elevation-z8">
+  <div class="form form-label-right">
+    <div class="form-group row">
+  <div class="col-lg-2" >
+    <input type="text" class="form-control" name="searchText" id="searchText" (input)="onSearchChange($event.target.value)"  placeholder="Search" value="" />
+    <small class="form-text text-muted"><b>Search</b> in all fields</small>
   </div>
+  </div>
+  </div>
+  <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
+
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="userId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> User Id </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.userId}} </mat-cell>
+    </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="userName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.userName}} </mat-cell>
+    </ng-container>
+    <!-- Weight Column -->
+    <ng-container matColumnDef="groupName">
+      <mat-header-cell *matHeaderCellDef> Group Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.groupName}} </mat-cell>
+    </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="teamName">
+      <mat-header-cell *matHeaderCellDef> Team Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.teamName}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Production">
+      <mat-header-cell *matHeaderCellDef> Production </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[0].skillId}}" name="{{element.userId}}{{element.skillMapList[0].skillId}}" value="{{ element.skillMapList[0].isMapped }}" [checked]="element.skillMapList[0].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="QualityAssurance">
+      <mat-header-cell *matHeaderCellDef> QA </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[1].skillId}}" name="{{element.userId}}{{element.skillMapList[1].skillId}}" value="{{ element.skillMapList[1].isMapped }}" [checked]="element.skillMapList[1].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="QualityCheck">
+      <mat-header-cell *matHeaderCellDef> QC </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[2].skillId}}" name="{{element.userId}}{{element.skillMapList[2].skillId}}" value="{{ element.skillMapList[2].isMapped }}" [checked]="element.skillMapList[2].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="QualityCheckTrainer">
+      <mat-header-cell *matHeaderCellDef> QCTrainer </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[3].skillId}}" name="{{element.userId}}{{element.skillMapList[3].skillId}}" value="{{ element.skillMapList[3].isMapped }}" [checked]="element.skillMapList[3].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="OnlineTechSupport">
+      <mat-header-cell *matHeaderCellDef> OnlineSupport </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[4].skillId}}" name="{{element.userId}}{{element.skillMapList[4].skillId}}" value="{{ element.skillMapList[4].isMapped }}" [checked]="element.skillMapList[4].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="QualityCheckTrainee">
+      <mat-header-cell *matHeaderCellDef> QCTrainee </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[5].skillId}}" name="{{element.userId}}{{element.skillMapList[5].skillId}}" value="{{ element.skillMapList[5].isMapped }}" [checked]="element.skillMapList[5].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Trainee">
+      <mat-header-cell *matHeaderCellDef> Trainee </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[6].skillId}}" name="{{element.userId}}{{element.skillMapList[6].skillId}}" value="{{ element.skillMapList[6].isMapped }}" [checked]="element.skillMapList[6].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Action">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <button type="submit" class="btn btn-primary btn-elevate" (click)="save(element.userId)" >Save</button> </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator #paginator
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 20]"
+    [showFirstLastButtons]="true">
+  </mat-paginator>
+</div>
