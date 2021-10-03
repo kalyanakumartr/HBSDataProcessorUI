@@ -107,7 +107,7 @@ authModel:AuthModel;
     if(position.length>1){
       this.selectedQueue= position[1];
     }
-    if(['Group','Team'].includes(this.selectedQueue)){
+    if(['Group','ProductionTeam'].includes(this.selectedQueue)){
       this.hasCheckbox=true;
       this.hasLink=false;
     }else{

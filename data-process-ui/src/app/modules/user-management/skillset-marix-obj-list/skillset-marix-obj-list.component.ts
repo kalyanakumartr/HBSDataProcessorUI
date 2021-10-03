@@ -1,29 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { of, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  GroupingState,
-  PaginatorState,
-  SortState,
-  ICreateAction,
-  IEditAction,
-  IDeleteAction,
-  IDeleteSelectedAction,
-  IFetchSelectedAction,
-  IUpdateStatusForSelectedAction,
-  ISortView,
-  IFilterView,
-  IGroupingView,
-  ISearchView,
-} from '../../../_metronic/shared/crud-table';
 import { AuthModel } from '../../auth/_models/auth.model';
-import { EditUserModalComponent } from '../users/component/edit-user-modal/edit-user-modal.component';
 import { catchError, tap } from 'rxjs/operators';
 import { UserSkillSetMatrixService } from '../../auth/_services/user-skillset-matrix.service';
-import { SkillSetService } from '../../auth/_services/skillset.service';
-
+import { of } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import { AddSkillSet, SkillSetMaps, UserSkillSetMatrixModel } from '../../auth/_models/user-skillset-matrix.model';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'skillset-matrix-list',
@@ -33,49 +18,37 @@ import { SkillSetService } from '../../auth/_services/skillset.service';
 export class SkillSetMatrixObjListComponent implements
 OnInit,
 OnDestroy,
-ICreateAction,
-IEditAction,
-IDeleteAction,
-IDeleteSelectedAction,
-IFetchSelectedAction,
-IUpdateStatusForSelectedAction,
-ISortView,
-IFilterView,
-IGroupingView,
-ISearchView,
-IFilterView {
-paginator: PaginatorState;
-sorting: SortState;
-grouping: GroupingState;
-isLoading: boolean;
-filterGroup: FormGroup;
-searchGroup: FormGroup;
+AfterViewInit
+{
+@ViewChild(MatPaginator, {static: true}) paginator:MatPaginator;
+@ViewChild(MatSort) sort: MatSort;
 userList: any;
 skillSetList:any[];
-skillsetMatrixList: any;
-private subscriptions: Subscription[] = [];
+skillsetMatrixList: any[];
+headerList:[];
+skillSet: AddSkillSet;
+displayedColumns = ['userId', 'userName', 'groupName', 'teamName','Production','QualityAssurance','QualityCheck','QualityCheckTrainer','OnlineTechSupport','QualityCheckTrainee','Trainee','Action'];
+dataSource = new MatTableDataSource<UserSkillSetMatrixModel>();
+
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
-    private modalService: NgbModal, 
-    public userSkillSetMatrixService: UserSkillSetMatrixService,
-    public skillSetService: SkillSetService) {
+    private modalService: NgbModal,
+    public userSkillSetMatrixService: UserSkillSetMatrixService
+    ) {
+      this.skillSet =new AddSkillSet;
   }
 
   ngOnInit(): void {
-    //this.filterForm();
-    this.searchForm();
-    this.userSkillSetMatrixService.fetch("/getSkillSetMatrixList");
-    console.log("SkillSetMatrix :", this.subscriptions)
-    this.grouping = this.userSkillSetMatrixService.grouping;
-    this.paginator = this.userSkillSetMatrixService.paginator;
-    this.sorting = this.userSkillSetMatrixService.sorting;
-    const sb = this.userSkillSetMatrixService.isLoading$.subscribe(res => this.isLoading = res);
-    this.subscriptions.push(sb);
-
-    this.skillSetService.getSkillSetList().pipe(
+    this.getData('');
+  }
+  private getData(value:string) {
+    this.userSkillSetMatrixService.getSkillSetMatrixList(value).pipe(
       tap((res: any) => {
-        this.skillSetList = res;
-        console.log("SkillSet List", this.skillSetList)
+        this.dataSource = new MatTableDataSource(res.items);
+        this.headerList = res.headerList;
+        console.log("skillsetMatrixList List", this.dataSource);
+        console.log("headerList ", this.headerList);
+        this.ngAfterViewInit();
       }),
       catchError((err) => {
         console.log(err);
@@ -83,114 +56,47 @@ authModel:AuthModel;
           items: []
         });
       })).subscribe();
-    
   }
-  
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sb) => sb.unsubscribe());
+    //this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
+  save(id){
 
-  // filtration
-  filterForm() {
-    this.filterGroup = this.fb.group({
-      searchTerm: [''],
-    });
-    this.subscriptions.push(
-      this.filterGroup.controls.status.valueChanges.subscribe(() =>
-        this.filter()
-      )
-    );
-    this.subscriptions.push(
-      this.filterGroup.controls.type.valueChanges.subscribe(() => this.filter())
-    );
-  }
-
-  filter() {
-    const filter = {};
-    /*const status = this.filterGroup.get('status').value;
-    if (status) {
-      filter['status'] = status;
+    this.skillSet.skillMapList=[];
+      for (let i = 0; i < this.displayedColumns.length; i++) {
+      if(i >=4 && i<11){
+        console.log(this.displayedColumns[i],"Value",(<HTMLInputElement>document.getElementById(id+this.displayedColumns[i])).checked);
+        var skillSetMap= new SkillSetMaps;
+        skillSetMap.isMapped= (<HTMLInputElement>document.getElementById(id+this.displayedColumns[i])).checked;
+        skillSetMap.skillId=this.displayedColumns[i];
+        this.skillSet.skillMapList.push(skillSetMap);
+      }
     }
 
-    const type = this.filterGroup.get('type').value;
-    if (type) {
-      filter['type'] = type;
-    }*/
-    this.userSkillSetMatrixService.patchState({ filter },"/getSkillSetMatrixList");
+   this.skillSet.id=id;
+   console.log("SkillSet",this.skillSet);
+   this.userSkillSetMatrixService.saveSkillSet(this.skillSet).pipe(
+    tap((res: any) => {
+      console.log(res);
+      //this.ngAfterViewInit();
+    }),
+    catchError((err) => {
+      console.log(err);
+      return of({
+        items: []
+      });
+    })).subscribe();
   }
 
-  // search
-  searchForm() {
-    this.searchGroup = this.fb.group({
-      searchTerm: [''],
-    });
-    const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
-      .pipe(
-        /*
-      The user can type quite quickly in the input box, and that could trigger a lot of server requests. With this operator,
-      we are limiting the amount of server requests emitted to a maximum of one every 150ms
-      */
-        debounceTime(150),
-        distinctUntilChanged()
-      )
-      .subscribe((val) => this.search(val));
-    this.subscriptions.push(searchEvent);
-  }
-
-  search(searchTerm: string) {
-    this.userSkillSetMatrixService.patchState({ searchTerm },"/getSkillSetMatrixList");
-  }
-
-  // sorting
-  sort(column: string) {
-    const sorting = this.sorting;
-    const isActiveColumn = sorting.column === column;
-    if (!isActiveColumn) {
-      sorting.column = column;
-      sorting.direction = 'asc';
-    } else {
-      sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
+  onSearchChange(searchValue: string): void {
+    if(searchValue.length>=3){
+      this.getData(searchValue);
     }
-    this.userSkillSetMatrixService.patchState({ sorting },"/getSkillSetMatrixList");
-  }
-
-  // pagination
-  paginate(paginator: PaginatorState) {
-    this.userSkillSetMatrixService.patchState({ paginator },"/getSkillSetMatrixList");
-  }
-  // form actions
-  create() {
-    this.edit(undefined);
-  }
-
-  edit(id: number) {
-     const modalRef = this.modalService.open(EditUserModalComponent, { size: 'xl' });
-     modalRef.componentInstance.id = id;
-  }
-
-
-  delete(id: number) {
-    // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
-    // modalRef.componentInstance.id = id;
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
-  }
-
-  deleteSelected() {
-    // const modalRef = this.modalService.open(DeleteCustomersModalComponent);
-    // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
-  }
-
-  updateStatusForSelected() {
-    // const modalRef = this.modalService.open(UpdateCustomersStatusModalComponent);
-    // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
-  }
-
-  fetchSelected() {
-    // const modalRef = this.modalService.open(FetchCustomersModalComponent);
-    // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
   }
 }

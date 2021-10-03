@@ -10,10 +10,15 @@ export class UserSkillSetMatrixModel implements BaseModel {
   teamName:string;
   teamId:string;
   skillMapList: SkillSetMaps[];
-
+  userRoleType:string;
 }
 
 export class SkillSetMaps {
   skillId:string;
   isMapped:boolean;
+}
+
+export class AddSkillSet {
+  id:string;
+  skillMapList: SkillSetMaps[];
 }
