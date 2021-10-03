@@ -1,0 +1,47 @@
+
+th.sticky-header {
+
+  position: sticky;
+  left:0px;
+  background-color:#d5d5d5;
+
+}
+
+.table > tbody > tr > td:nth-child(1) {
+  position: sticky;
+  left:0px;
+  background-color:#d5d5d5;
+
+}
+#tablebox thead tr th:nth-of-type(2){
+  position: sticky;
+  left:55px;
+  background-color:#d5d5d5;
+
+}
+
+.table > tbody > tr > td:nth-child(2) {
+  position: sticky;
+  left:55px;
+  background-color:#d5d5d5;
+
+}
+#tablebox thead tr th:nth-of-type(2){
+  position: sticky;
+  left:55px;
+  background-color:#d5d5d5;
+
+}
+
+.table > tbody > tr > td:nth-child(2) {
+  position: sticky;
+  left:55px;
+  background-color:#d5d5d5;
+
+}
+
+th {
+  background: white;
+  position: sticky;
+  top: 0;
+}

@@ -7,6 +7,7 @@ import { UserListComponent } from './user-list/user-list.component';
 import { HrUserObjListComponent } from './hr-user-obj-list/hr-user-obj-list.component';
 import { ITUserObjListComponent } from './it-user-obj-list/it-user-obj-list.component';
 import { ChangePasswordComponent } from '../user-profile/change-password/change-password.component';
+import { SkillSetMatrixObjListComponent } from './skillset-marix-obj-list/skillset-marix-obj-list.component';
 
 
 const routes: Routes = [
@@ -29,6 +30,10 @@ const routes: Routes = [
       {
         path:'hr-employee-list',
         component:HrUserObjListComponent
+      },
+      {
+        path:'skillset-matrix-list',
+        component:SkillSetMatrixObjListComponent
       },
       {
         path:'it-employee-list',
