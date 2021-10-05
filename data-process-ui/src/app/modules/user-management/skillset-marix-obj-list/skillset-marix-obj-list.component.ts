@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AddSkillSet, SkillSetMaps, UserSkillSetMatrixModel } from '../../auth/_models/user-skillset-matrix.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'skillset-matrix-list',
@@ -33,6 +34,7 @@ dataSource = new MatTableDataSource<UserSkillSetMatrixModel>();
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
     private modalService: NgbModal,
+    private snackBar: MatSnackBar,
     public userSkillSetMatrixService: UserSkillSetMatrixService
     ) {
       this.skillSet =new AddSkillSet;
@@ -81,19 +83,18 @@ authModel:AuthModel;
 
    this.skillSet.id=id;
    console.log("SkillSet",this.skillSet);
-   this.userSkillSetMatrixService.saveSkillSet(this.skillSet).pipe(
-    tap((res: any) => {
-      console.log(res);
-      //this.ngAfterViewInit();
-    }),
-    catchError((err) => {
-      console.log(err);
-      return of({
-        items: []
-      });
-    })).subscribe();
+   this.userSkillSetMatrixService.saveSkillSet(this.skillSet).subscribe((res: any)=>
+   {
+       this.openSnackBar(res.messageCode,"!!")
+   });
+   this.getData('');
   }
-
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition:"top"
+    });
+  }
   onSearchChange(searchValue: string): void {
     if(searchValue.length>=3){
       this.getData(searchValue);

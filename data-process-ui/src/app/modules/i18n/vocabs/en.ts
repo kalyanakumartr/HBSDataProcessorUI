@@ -16,6 +16,7 @@ export const locale = {
       WORKALLOCATION: 'WorkAllocation',
       'WORKUPLOAD':'Work Upload',
       'MYWORK':'My Work',
+      'UPLOADEDFILES':'Uploaded Files',
       ATTENDANCE:'Attendance',
       PERFORMANCE:'Performance',
       'DAILY LOG':'Daily Log',

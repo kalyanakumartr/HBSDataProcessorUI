@@ -12,10 +12,11 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import { WebUploadComponent } from './web-upload.component';
 import { MyWorkComponent } from './my-work/my-work.component';
 import { UploadFilesComponent } from './uploaded-files/uploaded-files.component';
+import { WorkUnitModalComponent } from './work-unit-modal/work-unit-modal.component';
 
 
 @NgModule({
-  declarations: [WebUploadComponent,FileUploadComponent, UploadFilesComponent,MyWorkComponent],
+  declarations: [WebUploadComponent,FileUploadComponent, UploadFilesComponent,MyWorkComponent, WorkUnitModalComponent],
   imports: [CommonModule, WebUploadRoutingModule,   CommonModule,   HttpClientModule, CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule],
 })
 

@@ -4,15 +4,90 @@
 
         Work Unit :   {{task.coreData.roadData.workUnitId}}
     </div>
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+
+      Received Date :   {{ task.coreData.roadData.receivedDate | date: 'dd-MMM-yyyy'}}
+  </div>
   </div>
   <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
-    <ng-container *ngIf="isLoading$ | async">
-      <div class="overlay-layer bg-transparent">
-        <div class="spinner spinner-lg spinner-success"></div>
+
+
+        <!--end::Header-->
+        <!--begin::Content-->
+        <div class="tab-content">
+          <!--begin::Tabpane-->
+
+          <div class="form-group row">
+            <div class="col-lg-3">
+              <label class="form-label"><b>SUB COUNTRY NAME :</b> <br/>{{ task.coreData.roadData.subCountryName}}</label>
+
+            </div>
+            <div class="col-lg-3">
+              <label class="form-label"><b>WUMILES : </b><br/>{{ task.coreData.roadData.wuMiles }}</label>
+
+            </div>
+            <div class="col-lg-3">
+              <label class="form-label"><b>ROAD NAME : </b><br/>{{ task.coreData.roadData.roadTypeMap.roadName }}</label>
+
+            </div>
+
+          </div>
+
+    <ng-container *ngIf="task.coreData.roadData.roadTypeMap.multiType">
+      <div class="form-group row">
+        <label class="form-label"><b>Multi RoadType Details</b></label>
+        </div>
+      <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="form-label"><b>Primary Non-Div Motorways Miles: </b><br/>{{task.coreData.roadData.roadTypeMap.roadTypeList[0].miles}}</label>
+
+        </div>
+        <div class="col-lg-3">
+          <label class="form-label"><b>Primary Non-Div Trunk Miles : </b><br/>{{ task.coreData.roadData.roadTypeMap.roadTypeList[1].miles }}</label>
+
+        </div>
+        <div class="col-lg-3">
+          <label class="form-label"><b>Primary Non-Div Urban Miles : </b><br/>{{ task.coreData.roadData.roadTypeMap.roadTypeList[2].miles }}</label>
+
+        </div>
+        <div class="col-lg-3">
+          <label class="form-label"><b>Access Ramp: </b><br/>{{task.duration}}</label>
+
+        </div>
       </div>
     </ng-container>
-
-
+  </div>
+  <div class="form-group row">
+    <div class="col-lg-4">
+    </div>
+    <div class="col-lg-4">
+    </div>
+    <div class="col-lg-4">
+      <label>Select Reason</label>
+      <select class="form-control form-control-lg form-control-solid" name="reason"
+         id="reason" (change)="getReason($event.target.value)">
+        <option *ngFor="let reason of reasonList" [ngValue]="reason.reasonId">
+          {{ reason.reason }}
+        </option>
+      </select>
+      <div class="feedback">Please select <b>Reason</b></div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-lg-3">
+        <button type="button" class="btn btn-light btn-elevate mr-2 right" (click)=start(task.allocationId)>Start</button>
+    </div>
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-light btn-elevate mr-2" (click)=stop(task.allocationId)>Stop</button>
+    </div>
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-light btn-elevate mr-2 right" (click)=hold(task.allocationId)>Hold</button>
+    </div>
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-light btn-elevate mr-2" (click)=reject(task.allocationId)>Reject</button>
+    </div>
+  </div>
+  <!--end::Tabpane-->
   <div class="modal-footer">
     <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
 

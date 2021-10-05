@@ -1,7 +1,7 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Task list</h3>
+      <h3 class="card-label">My {{selectedQueue}} Task List</h3>
     </div>
 
   </div>
@@ -16,8 +16,8 @@
         <label>Select Queue</label>
         <select class="form-control form-control-lg form-control-solid" name="selectedQueue" (change)="selectQueue($event.target.value)"
            formControlName="selectedQueue">
-          <option *ngFor="let queue of queueList" [ngValue]="queue">
-            {{ queue }}
+          <option *ngFor="let queue of queueList" [ngValue]="queue.queueId">
+            {{ queue.queueName }}
           </option>
         </select>
         <div class="feedback">Please select <b>Queue</b></div>
@@ -27,15 +27,30 @@
         <label>Select Status</label>
         <select class="form-control form-control-lg form-control-solid" name="selectedStatus" (change)="selectTask($event.target.value)"
            formControlName="selectedStatus">
-          <option *ngFor="let status of statusList" [ngValue]="status">
-            {{ status }}
+          <option *ngFor="let status of statusList" [ngValue]="status.statusId">
+            {{ status.statusName }}
           </option>
         </select>
         <div class="feedback">Please select <b>Status</b></div>
       </div>
+      <ng-container *ngIf="hasCheckbox">
+      <div class="col-lg-3">
+        <label>Assign to</label>
+        <select class="form-control form-control-lg form-control-solid" name="selectedUser" (change)="selectUser($event.target.value)"
+           formControlName="selectedUser">
+          <option *ngFor="let user of assignedToUserList" [ngValue]="user.employeeId">
+            {{ user.fullName }}
+          </option>
+        </select>
+        <div class="feedback">Selected Work Units will be  <b>Assigned to</b></div>
+      </div>
+    </ng-container>
       <div class="col-lg-3" [formGroup]="searchGroup">
-        <input type="text" class="form-control" name="searchText" placeholder="Search" value=""
-          formControlName="searchTerm" /><small class="form-text text-muted"><b>Search</b> in all fields</small>
+        <small class="form-text text-muted"><b>Search</b> in all fields</small>
+        <input type="text" class="form-control" name="searchText" placeholder="Search" value=""  formControlName="searchTerm" />
+        <ng-container *ngIf="hasCheckbox">
+          <button type="submit" class="btn btn-primary btn-elevate" (click)="assignWorkUnits()" >Assign</button>
+        </ng-container>
       </div>
     </div>
 
@@ -50,7 +65,7 @@
           <tr>
             <ng-container *ngIf="hasCheckbox">
 
-             <th><input type="checkbox" (change)="checkAll(this)"/></th>
+             <th><input type="checkbox" id="checkAllBox" (change)="checkAll()"/></th>
             </ng-container>
 
             <th nowrap >
@@ -61,17 +76,18 @@
           <th nowrap > Received Date </th>
 
 
-          <th nowrap >Miles</th>
+          <th nowrap >WUMiles</th>
           <th nowrap >Sub Country Name</th>
           <th nowrap >Road Name</th>
           <th nowrap >Miles</th>
-          <th nowrap >Motor Ways</th>
-          <th nowrap >Motor Ways Miles</th>
-          <th nowrap >Trunk</th>
-          <th nowrap >Trunk Miles</th>
-          <th nowrap >Urban</th>
+          <th >Primary Non-Div Motorways</th>
+          <th >Primary Non-Div Trunk</th>
+          <th >Primary Non-Div Urban</th>
 
-          <th nowrap >Urban Miles</th>
+          <th nowrap >Access Ramp</th>
+          <th nowrap >Status</th>
+          <th nowrap >Group</th>
+          <th nowrap >Team</th>
           <th nowrap >Department Name</th>
           <th nowrap >Project Name</th>
 
@@ -84,11 +100,12 @@
           <tr *ngFor="let task of workAllocationService.items$ | async">
             <ng-container *ngIf="hasCheckbox">
 
-              <td><input type="checkbox" id="vehicle1" name="vehicle1" value="{{ task.coreData.roadData.workUnitId }}"></td>
+              <td>
+                <input type="checkbox" id="{{task.allocationId}}"  name="workUnits" value="{{ task.allocationId }}"  (change)="checkBoxWorkUnit(task.allocationId)"/></td>
              </ng-container>
             <td>
               <ng-container *ngIf="hasLink else noLink">
-                <a title="Start WorkUnit"  (click)="openWworkUnit(task)">{{ task.coreData.roadData.workUnitId }}</a>
+                <a title="Start WorkUnit"  (click)="openWworkUnit(task,selectedQueue)">{{ task.coreData.roadData.workUnitId }}</a>
                </ng-container>
                <ng-template #noLink>
 
@@ -113,23 +130,29 @@
             </td>
 
 
-            <td>
-              {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[0].roadName :"" }}
-            </td>
+
             <td>
               {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[0].miles:"" }}
             </td>
-            <td>
-              {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[1].roadName:"" }}
-            </td>
+
             <td>
               {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[1].miles:"" }}
             </td>
-            <td>
-              {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[2].roadName :""}}
-            </td>
+
             <td>
               {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[2].miles :""}}
+            </td>
+            <td>
+              {{task.duration}}
+            </td>
+            <td>
+              {{ task.status }}
+            </td>
+            <td>
+              {{ task.groupName }}
+            </td>
+            <td>
+              {{ task.teamName }}
             </td>
             <td> {{ task.coreData.roadData.departmentName}}</td>
 
