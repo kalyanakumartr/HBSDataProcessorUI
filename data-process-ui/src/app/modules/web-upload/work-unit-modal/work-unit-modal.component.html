@@ -66,6 +66,7 @@
       <label>Select Reason</label>
       <select class="form-control form-control-lg form-control-solid" name="reason"
          id="reason" (change)="getReason($event.target.value)">
+         <option value ="">Please Select Reason</option>
         <option *ngFor="let reason of reasonList" [ngValue]="reason.reasonId">
           {{ reason.reason }}
         </option>

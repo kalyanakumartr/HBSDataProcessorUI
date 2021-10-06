@@ -17,19 +17,10 @@
     </ng-container>
     <!-- Name Column -->
     <ng-container matColumnDef="userName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> User Name </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header left> User Name </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.userName}} </mat-cell>
     </ng-container>
-    <!-- Weight Column -->
-    <ng-container matColumnDef="groupName">
-      <mat-header-cell *matHeaderCellDef> Group Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.groupName}} </mat-cell>
-    </ng-container>
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="teamName">
-      <mat-header-cell *matHeaderCellDef> Team Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.teamName}} </mat-cell>
-    </ng-container>
+
     <ng-container matColumnDef="Production">
       <mat-header-cell *matHeaderCellDef> Production </mat-header-cell>
       <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[0].skillId}}" name="{{element.userId}}{{element.skillMapList[0].skillId}}" value="{{ element.skillMapList[0].isMapped }}" [checked]="element.skillMapList[0].isMapped"/> </mat-cell>
@@ -61,6 +52,16 @@
     <ng-container matColumnDef="Action">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
       <mat-cell *matCellDef="let element"> <button type="submit" class="btn btn-primary btn-elevate" (click)="save(element.userId)" >Save</button> </mat-cell>
+    </ng-container>
+    <!-- Weight Column -->
+    <ng-container matColumnDef="groupName">
+      <mat-header-cell *matHeaderCellDef> Group Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.groupName}} </mat-cell>
+    </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="teamName">
+      <mat-header-cell *matHeaderCellDef> Team Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.teamName}} </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

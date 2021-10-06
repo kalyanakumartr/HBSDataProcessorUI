@@ -28,7 +28,7 @@ skillSetList:any[];
 skillsetMatrixList: any[];
 headerList:[];
 skillSet: AddSkillSet;
-displayedColumns = ['userId', 'userName', 'groupName', 'teamName','Production','QualityAssurance','QualityCheck','QualityCheckTrainer','OnlineTechSupport','QualityCheckTrainee','Trainee','Action'];
+displayedColumns = ['userId', 'userName','Production','QualityAssurance','QualityCheck','QualityCheckTrainer','OnlineTechSupport','QualityCheckTrainee','Trainee','Action', 'groupName', 'teamName'];
 dataSource = new MatTableDataSource<UserSkillSetMatrixModel>();
 
 authModel:AuthModel;
@@ -72,7 +72,7 @@ authModel:AuthModel;
 
     this.skillSet.skillMapList=[];
       for (let i = 0; i < this.displayedColumns.length; i++) {
-      if(i >=4 && i<11){
+      if(i >=2 && i<9){
         console.log(this.displayedColumns[i],"Value",(<HTMLInputElement>document.getElementById(id+this.displayedColumns[i])).checked);
         var skillSetMap= new SkillSetMaps;
         skillSetMap.isMapped= (<HTMLInputElement>document.getElementById(id+this.displayedColumns[i])).checked;

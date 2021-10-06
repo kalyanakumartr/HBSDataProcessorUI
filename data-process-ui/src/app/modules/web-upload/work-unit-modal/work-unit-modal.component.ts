@@ -43,12 +43,15 @@ export class WorkUnitModalComponent  {
     var allotedto ="";
     var team="";
     this.assignWorkUnits(taskId,this.queue,team,"Start","Ready",allotedto,"NOREASON");
+    this.openSnackBar("Work Unit Started","");
   }
 
   stop(taskId){
     var allotedto ="15794";//Hardcoded
     var team="GRP0038";//Hardcoded
     this.assignWorkUnits(taskId,this.queue,team,"End","Completed",allotedto,"NOREASON");
+    this.openSnackBar("Work Unit Ended","");
+    this.modal.dismiss();
   }
   hold(taskId){
     if(this.selectedReason == ""){
@@ -57,7 +60,9 @@ export class WorkUnitModalComponent  {
     }
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Hold","InProgress",allotedto,this.selectedReason);
+    //this.assignWorkUnits(taskId,this.queue,team,"Hold","InProgress",allotedto,this.selectedReason);
+    this.openSnackBar("Work Unit Holded","");
+    this.modal.dismiss();
   }
   reject(taskId){
     if(this.selectedReason == ""){
@@ -66,7 +71,9 @@ export class WorkUnitModalComponent  {
     }
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Reject","InProgress",allotedto,this.selectedReason);
+    //this.assignWorkUnits(taskId,this.queue,team,"Reject","InProgress",allotedto,this.selectedReason);
+    this.openSnackBar("Work Unit Rejected","");
+    this.modal.dismiss();
   }
   getReason(value){
     var position =value.split(":")
