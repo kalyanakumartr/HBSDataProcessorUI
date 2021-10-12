@@ -17,15 +17,7 @@
 
     <ng-container *ngIf="userHRModel">
       <form action="#" class="form form-label-right" [formGroup]="formGroup">
-
-          <div class="d-flex flex-column bg-dark-o-5 rounded-top">
-            <!--begin::Tabs-->
-
-      </div>
-      <!--end::Header-->
-      <!--begin::Content-->
-      <div class="form-group row">
-
+        <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter Bank Account</label>
             <input type="text" class="form-control form-control-lg form-control-solid" name="accountNo"
@@ -55,6 +47,7 @@
               placeholder="IFSCCode" autocomplete="off" [class.is-invalid]="isControlInvalid('ifscCode')"
               [class.is-valid]="isControlValid('ifscCode')" formControlName="ifscCode" />
           </div>
+        </div>
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter Highest Graduate</label>
@@ -86,9 +79,6 @@
               [class.is-valid]="isControlValid('year')" formControlName="year" />
           </div>
         </div>
-
-
-
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter Aadhar</label>
@@ -227,11 +217,7 @@
           <div class="valid-feedback" *ngIf="isControlValid('lastWorkDay')">Last Work Day was entered correct</div>
           <div class="invalid-feedback" *ngIf="controlHasError('required', 'lastWorkDay')">Please enter <b>Last Work Day</b>
             in 'mm/dd/yyyy' format</div>
-
       </div>
-      </div>
-
-
       <div class="col-lg-3">
         <label class="form-label">Last Employer</label>
         <input type="text" class="form-control form-control-lg form-control-solid" name="lastEmployer"
@@ -287,7 +273,6 @@
             <div class="valid-feedback" *ngIf="isControlValid('officialEmailId')">Email was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('email', 'officialEmailId')">Email format is incorrect</div>
       </div>
-
       <div class="col-lg-3">
         <label class="form-label">Enter PhoneNumber</label>
         <input type="text" class="form-control form-control-lg form-control-solid" name="phoneno" placeholder="phoneno"
@@ -372,9 +357,6 @@
       </select>
       </div>
     </div>
-    <!--end::Tabpane-->
-
-
       </form>
     </ng-container>
   </div>
