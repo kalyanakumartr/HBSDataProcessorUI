@@ -26,7 +26,7 @@ export class RoleService extends TableService<RoleModel> implements OnDestroy {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
 
-  getActiveRoleList(){
+  getActiveRoleList(division){
 
     const url = this.API_URL + "/getActiveRoleList";
     const httpHeaders = new HttpHeaders({

@@ -116,6 +116,9 @@ const EMPTY_CUSTOMER: UserModel = {
       isOfferIssued:false,
       isApprentice:false,
       isFileCreated:false,
+      longLeaveFromDate:'',
+      longLeaveToDate:'',
+      approvedLeaveBalance :''
     },
     educationalInfo:{
       highestGraduate: '',
@@ -147,6 +150,10 @@ const EMPTY_CUSTOMER: UserModel = {
     department:{
       departmentId: '',
       departmentName: ''
+    },
+    division:{
+      divisionId: '',
+      divisionName: ''
     },
     project:{
       projectId: 'CSAV1CM',
@@ -181,7 +188,10 @@ employmentInfo:{
   lastDesignation: '',
   isOfferIssued:false,
   isApprentice:false,
-  isFileCreated:false
+  isFileCreated:false,
+  longLeaveFromDate:'',
+  longLeaveToDate:'',
+  approvedLeaveBalance :''
 },
 educationalInfo:{
   highestGraduate: '',
@@ -425,22 +435,5 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
   isControlTouched(controlName): boolean {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
-  }
-
-  activeTabId:
-    | 'kt_quick_panel_logs'
-    | 'kt_quick_panel_notifications'
-    | 'kt_quick_panel_settings'
-    | 'kt_quick_panel_settings1' = 'kt_quick_panel_logs';
-
-  setActiveTabId(tabId) {
-    this.activeTabId = tabId;
-  }
-
-  getActiveCSSClasses(tabId) {
-    if (tabId !== this.activeTabId) {
-      return '';
-    }
-    return 'active show';
   }
 }

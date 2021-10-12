@@ -116,6 +116,9 @@ const EMPTY_CUSTOMER: UserModel = {
       isOfferIssued:false,
       isApprentice:false,
       isFileCreated:false,
+      longLeaveFromDate:'',
+      longLeaveToDate:'',
+      approvedLeaveBalance :''
     },
     educationalInfo:{
       highestGraduate: '',
@@ -143,6 +146,10 @@ const EMPTY_CUSTOMER: UserModel = {
     deploy:{
       deploymentId: '',
       deploymentTaskName: ''
+    },
+    division:{
+      divisionId: '',
+      divisionName: ''
     },
     department:{
       departmentId: '',
@@ -175,6 +182,9 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   isLoading$;
   customer: UserModel;
   updateRole:any;
+  department:string;
+  divisionList:any[];
+  division:string;
   roleList:any[];
   projectList:any[];
   teamList:any[];
@@ -208,18 +218,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isLoading$ = this.usersService.isLoading$;
     this.userId.id=this.id;
-    this.roleService.getActiveRoleList().pipe(
-      tap((res: any) => {
-        this.roleList = res;
-        this.loadCustomer();
-        console.log("RoleList", this.roleList)
-      }),
-      catchError((err) => {
-        console.log(err);
-        return of({
-          items: []
-        });
-      })).subscribe();
+
 
   }
 
@@ -302,6 +301,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       teamId: [this.customer.operationalRecord.team.teamId, Validators.compose([Validators.required])],
       groupId: [this.customer.operationalRecord.team.teamId, Validators.compose([Validators.required])],
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
+      division: [this.customer.operationalRecord.division.divisionId, Validators.compose([Validators.required])],
       //Change Reporting to
       reportingTo: [this.customer.operationalRecord.reportingTo, Validators.compose([Validators.required])],
       loginRFDB_BPS: [this.customer.operationalRecord.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
@@ -427,6 +427,48 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     const control = this.formGroup.controls[controlName];
     console.log("Control", control, "Value", value);
     control.setValue(value);
+  }
+  setDepartment(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.department= position[1].toString().trim();
+      this.getDivisionForDepartment();
+    }
+  }
+  setDivision(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.division= position[1].toString().trim();
+      this.getRolesForDivision();
+    }
+  }
+  getDivisionForDepartment(){
+    this.teamList=[];
+    this.projectService.getDivisionList(this.department).pipe(
+      tap((res: any) => {
+        this.divisionList = res;
+        console.log("divisionList", this.divisionList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
+  getRolesForDivision(){
+    this.roleService.getActiveRoleList(this.division).pipe(
+      tap((res: any) => {
+        this.roleList = res;
+        this.loadCustomer();
+        console.log("RoleList", this.roleList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
   }
   getTeamforGroup(){
     this.teamList=[];

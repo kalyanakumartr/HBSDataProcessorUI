@@ -118,6 +118,9 @@ const EMPTY_CUSTOMER: UserModel = {
       isOfferIssued:false,
       isApprentice:false,
       isFileCreated:false,
+      longLeaveFromDate:'',
+      longLeaveToDate:'',
+      approvedLeaveBalance :''
     },
     educationalInfo:{
       highestGraduate: '',
@@ -145,6 +148,10 @@ const EMPTY_CUSTOMER: UserModel = {
     deploy:{
       deploymentId: 'DLP0001',
       deploymentTaskName: ''
+    },
+    division:{
+      divisionId: '',
+      divisionName: ''
     },
     department:{
       departmentId: '',
@@ -180,6 +187,9 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   projectList:any[];
   teamList:any[];
   departmentList:any[];
+  department:string;
+  divisionList:any[];
+  division:string;
   deploy:string;
   formGroup: FormGroup;
   role : RoleModel;
@@ -200,29 +210,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isLoading$ = this.usersService.isLoading$;
-    this.roleService.getActiveRoleList().pipe(
-      tap((res: any) => {
-        this.roleList = res;
-        this.loadCustomer();
-        console.log("RoleList", this.roleList)
-      }),
-      catchError((err) => {
-        console.log(err);
-        return of({
-          items: []
-        });
-      })).subscribe();
-      this.projectService.getProjectList("RFDB").pipe(
-        tap((res: any) => {
-          this.projectList = res;
-          console.log("projectList", this.projectList)
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of({
-            items: []
-          });
-        })).subscribe();
+
         this.projectService.getDepartmentList().pipe(
           tap((res: any) => {
             this.departmentList = res;
@@ -234,6 +222,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
               items: []
             });
           })).subscribe();
+
           this.projectService.getTeamList("","").pipe(
             tap((res: any) => {
               this.teamList = res;
@@ -247,7 +236,48 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
             })).subscribe();
 
   }
-
+  setDepartment(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.department= position[1].toString().trim();
+      this.getDivisionForDepartment();
+    }
+  }
+  setDivision(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.division= position[1].toString().trim();
+      this.getRolesForDivision();
+    }
+  }
+  getDivisionForDepartment(){
+    this.teamList=[];
+    this.projectService.getDivisionList(this.department).pipe(
+      tap((res: any) => {
+        this.divisionList = res;
+        console.log("divisionList", this.divisionList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
+  getRolesForDivision(){
+    this.roleService.getActiveRoleList(this.division).pipe(
+      tap((res: any) => {
+        this.roleList = res;
+        this.loadCustomer();
+        console.log("RoleList", this.roleList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
   loadCustomer() {
     if (!this.id) {
       this.customer = EMPTY_CUSTOMER;
@@ -296,6 +326,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       address: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(3), Validators.maxLength(200)])],
 
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
+      division: [this.customer.operationalRecord.division.divisionId, Validators.compose([Validators.required])],
       roles: [this.customer.roleId, Validators.compose([Validators.required])],
       status: [this.customer.hrRecord.employmentInfo.employmentStatus, Validators.compose([Validators.required])],
       doj: [this.customer.hrRecord.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
