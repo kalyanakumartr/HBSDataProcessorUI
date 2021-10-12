@@ -39,6 +39,20 @@ export class ProjectService  {
       })
     );
   }
+  getDivisionList(department){
+
+    const url = this.API_URL + "/getDivisionList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"searchTerm":""},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
   getProjectList(department){
 
     const url = this.API_URL + "/getProjectList"+"/"+department;

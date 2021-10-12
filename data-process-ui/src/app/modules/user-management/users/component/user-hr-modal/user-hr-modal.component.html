@@ -20,60 +20,12 @@
 
           <div class="d-flex flex-column bg-dark-o-5 rounded-top">
             <!--begin::Tabs-->
-            <ul
-              class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-primary mt-3 px-8"
-              role="tablist"
-            >
-              <li class="nav-item">
-                <a
-                  class="nav-link cursor-pointer"
-                  data-toggle="tab"
-                  [ngClass]="getActiveCSSClasses('kt_quick_panel_logs')"
-                  (click)="setActiveTabId('kt_quick_panel_logs')"
-                  >Tab 1</a
-                >
-              </li>
 
-              <li class="nav-item">
-                <a
-                  class="nav-link cursor-pointer"
-                  data-toggle="tab"
-                  [ngClass]="getActiveCSSClasses('kt_quick_panel_notifications')"
-                  (click)="setActiveTabId('kt_quick_panel_notifications')"
-                  >Tab 2</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link cursor-pointer"
-                  [ngClass]="getActiveCSSClasses('kt_quick_panel_settings')"
-                  (click)="setActiveTabId('kt_quick_panel_settings')"
-                  data-toggle="tab"
-                  >Tab 3</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link cursor-pointer"
-                  [ngClass]="getActiveCSSClasses('kt_quick_panel_settings1')"
-                  (click)="setActiveTabId('kt_quick_panel_settings1')"
-                  data-toggle="tab"
-                  >Tab 4</a
-                >
-              </li>
-            </ul>
-        <!--end::Tabs-->     
       </div>
       <!--end::Header-->
       <!--begin::Content-->
-      <div class="tab-content">
-        <!--begin::Tabpane-->
-        <div
-          class="tab-pane fade pt-3 pr-5 mr-n5"
-          id="kt_quick_panel_logs"
-          [ngClass]="getActiveCSSClasses('kt_quick_panel_logs')"
-          role="tabpanel"
-        >
+      <div class="form-group row">
+
           <div class="col-lg-3">
             <label class="form-label">Enter Bank Account</label>
             <input type="text" class="form-control form-control-lg form-control-solid" name="accountNo"
@@ -134,16 +86,9 @@
               [class.is-valid]="isControlValid('year')" formControlName="year" />
           </div>
         </div>
-        </div>
-      <!--end::Tabpane-->
 
-      <!--begin::Tabpane-->
-      <div
-      class="tab-pane fade pt-2 pr-5 mr-n5"
-      id="kt_quick_panel_notifications"
-      [ngClass]="getActiveCSSClasses('kt_quick_panel_notifications')"
-      role="tabpanel"
-    >
+
+
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter Aadhar</label>
@@ -285,16 +230,8 @@
 
       </div>
       </div>
-      </div>
-      <!--end::Tabpane-->
 
-      <!--begin::Tabpane-->
-      <div
-        class="tab-pane fade pt-3 pr-5 mr-n5"
-        id="kt_quick_panel_settings"
-        [ngClass]="getActiveCSSClasses('kt_quick_panel_settings')"
-        role="tabpanel"
-      >
+
       <div class="col-lg-3">
         <label class="form-label">Last Employer</label>
         <input type="text" class="form-control form-control-lg form-control-solid" name="lastEmployer"
@@ -350,15 +287,7 @@
             <div class="valid-feedback" *ngIf="isControlValid('officialEmailId')">Email was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('email', 'officialEmailId')">Email format is incorrect</div>
       </div>
-    </div>
-    <!--end::Tabpane-->
-    <!--begin::Tabpane-->
-    <div
-    class="tab-pane fade pt-3 pr-5 mr-n5"
-    id="kt_quick_panel_settings1"
-    [ngClass]="getActiveCSSClasses('kt_quick_panel_settings1')"
-    role="tabpanel"
-  >
+
       <div class="col-lg-3">
         <label class="form-label">Enter PhoneNumber</label>
         <input type="text" class="form-control form-control-lg form-control-solid" name="phoneno" placeholder="phoneno"
@@ -444,8 +373,7 @@
       </div>
     </div>
     <!--end::Tabpane-->
-      </div>
-  <!--end::Content-->
+
 
       </form>
     </ng-container>

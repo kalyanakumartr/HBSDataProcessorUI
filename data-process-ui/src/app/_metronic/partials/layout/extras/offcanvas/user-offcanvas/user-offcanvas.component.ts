@@ -12,7 +12,13 @@ import { AuthService } from '../../../../../../modules/auth/_services/auth.servi
 export class UserOffcanvasComponent implements OnInit {
   extrasUserOffcanvasDirection = 'offcanvas-right';
   user$: Observable<UserModel>;
-
+  tabs = {
+    PERSONAL_TAB: 0,
+    HR_TAB: 1,
+    IT_TAB: 2,
+    OPERATIONAL_TAB: 3
+  };
+  activeTabId = this.tabs.PERSONAL_TAB;
   constructor(private layout: LayoutService, private auth: AuthService) {}
 
   ngOnInit(): void {
@@ -21,7 +27,9 @@ export class UserOffcanvasComponent implements OnInit {
     )}`;
     this.user$ = this.auth.currentUserSubject.asObservable();
   }
-
+  changeTab(tabId: number) {
+    this.activeTabId = tabId;
+  }
   logout() {
     this.auth.logout();
     document.location.reload();

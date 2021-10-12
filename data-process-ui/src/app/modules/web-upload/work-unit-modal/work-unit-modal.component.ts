@@ -23,6 +23,7 @@ export class WorkUnitModalComponent  {
   @Input() queue: any;
   reasonList: any;
   selectedReason: string;
+  showReasons:boolean = false;
   private subscriptions: Subscription[] = [];
   constructor(
         private snackBar: MatSnackBar,
@@ -39,13 +40,31 @@ export class WorkUnitModalComponent  {
       this.reasonList = reasons;
     });
   }
+  timeLeft: number = 60;
+  interval;
+
+startTimer() {
+    this.interval = setInterval(() => {
+      if(this.timeLeft > 0) {
+        this.timeLeft--;
+      } else {
+        this.timeLeft = 60;
+      }
+    },1000)
+  }
+
+  pauseTimer() {
+    clearInterval(this.interval);
+  }
   start(taskId){
     var allotedto ="";
     var team="";
     this.assignWorkUnits(taskId,this.queue,team,"Start","Ready",allotedto,"NOREASON");
     this.openSnackBar("Work Unit Started","");
   }
+  pause(taskId){
 
+  }
   stop(taskId){
     var allotedto ="15794";//Hardcoded
     var team="GRP0038";//Hardcoded
@@ -54,7 +73,10 @@ export class WorkUnitModalComponent  {
     this.modal.dismiss();
   }
   hold(taskId){
-    if(this.selectedReason == ""){
+    alert(this.selectedReason);
+    if(this.selectedReason == undefined || this.selectedReason == ""){
+      this.showReasons=true;
+      (<HTMLInputElement> document.getElementById("Reject")).disabled = true;
       alert("Please select Reason for Reject");
       return;
     }
@@ -76,6 +98,7 @@ export class WorkUnitModalComponent  {
     this.modal.dismiss();
   }
   getReason(value){
+    alert(value);
     var position =value.split(":")
     this.selectedReason=position[1].toString().trim();
 
@@ -94,16 +117,20 @@ export class WorkUnitModalComponent  {
     updateTask.eAction=action;
     updateTask.reasonId =reason;
     updateTask.remarks="To Team Member End";
-    this.workAllocationService.updateTask(updateTask)
+   /* this.workAllocationService.updateTask(updateTask)
     .subscribe((res: any)=>
     {
         this.openSnackBar(res.messageCode,"!!")
-    });
+    });*/
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 4000,
       verticalPosition:"top"
     });
+  }
+
+  refresh(){
+
   }
 }

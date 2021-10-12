@@ -30,6 +30,10 @@ export class EmploymentInfo {
   isOfferIssued:boolean;
   isApprentice:boolean;
   isFileCreated:boolean;
+  longLeaveFromDate:string;
+  longLeaveToDate:string;
+  approvedLeaveBalance :string;
+
 }
 
 export class EducationalInfo {
