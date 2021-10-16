@@ -94,6 +94,11 @@ const EMPTY_CUSTOMER: UserModel = {
     systemSerialNo:'',
     systemToHome:false,
     workMode:'WFO',
+    isDongleProvided:false,
+    dongleReturnDate:'',
+    modemReturnDate:'',
+    downGradedPlan:'',
+
   },
   hrRecord:{
     id:'',
@@ -120,7 +125,11 @@ const EMPTY_CUSTOMER: UserModel = {
       isFileCreated:false,
       longLeaveFromDate:'',
       longLeaveToDate:'',
-      approvedLeaveBalance :''
+      longLeaveReason:'',
+      approvedLeaveBalance :'',
+      recruitmentType:'',
+      costToCompany:'',
+      vaccinateInfo:''
     },
     educationalInfo:{
       highestGraduate: '',
@@ -214,6 +223,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         this.projectService.getDepartmentList().pipe(
           tap((res: any) => {
             this.departmentList = res;
+            this.loadCustomer();
             console.log("departmentList", this.departmentList)
           }),
           catchError((err) => {
@@ -223,7 +233,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
             });
           })).subscribe();
 
-          this.projectService.getTeamList("","").pipe(
+          /*this.projectService.getTeamList("","").pipe(
             tap((res: any) => {
               this.teamList = res;
               console.log("teamList", this.teamList)
@@ -233,10 +243,11 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
               return of({
                 items: []
               });
-            })).subscribe();
+            })).subscribe();*/
 
   }
   setDepartment(value){
+    alert(value);
     var position =value.split(":")
     if(position.length>1){
       this.department= position[1].toString().trim();
@@ -251,7 +262,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     }
   }
   getDivisionForDepartment(){
-    this.teamList=[];
+    this.divisionList=[];
     this.projectService.getDivisionList(this.department).pipe(
       tap((res: any) => {
         this.divisionList = res;
@@ -265,10 +276,11 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       })).subscribe();
   }
   getRolesForDivision(){
+    this.roleList=[];
     this.roleService.getActiveRoleList(this.division).pipe(
       tap((res: any) => {
         this.roleList = res;
-        this.loadCustomer();
+
         console.log("RoleList", this.roleList)
       }),
       catchError((err) => {
@@ -328,8 +340,10 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
       division: [this.customer.operationalRecord.division.divisionId, Validators.compose([Validators.required])],
       roles: [this.customer.roleId, Validators.compose([Validators.required])],
+      recruitmentType: [this.customer.hrRecord.employmentInfo.recruitmentType, Validators.compose([Validators.required])],
       status: [this.customer.hrRecord.employmentInfo.employmentStatus, Validators.compose([Validators.required])],
       doj: [this.customer.hrRecord.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
+      ctc: [this.customer.hrRecord.employmentInfo.costToCompany, Validators.compose([Validators.nullValidator])],
 
       //teamId: [this.customer.team, Validators.compose([Validators.required])],
       //deployId: [this.customer.deploy, Validators.compose([Validators.required])],
@@ -403,8 +417,12 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
 
 
     this.customer.operationalRecord.department.departmentId = formData.department;
+    this.customer.operationalRecord.division.divisionId = formData.division;
     this.customer.hrRecord.employmentInfo.employmentStatus= formData.status;
     this.customer.hrRecord.employmentInfo.dateOfJoin =formData.doj;
+    this.customer.hrRecord.employmentInfo.recruitmentType =formData.recruitmentType;
+    this.customer.hrRecord.employmentInfo.costToCompany =formData.ctc;
+
     this.role.roleId = formData.roles;
     for(var role of this.roleList){
       if(role.roleId == this.role.roleId){

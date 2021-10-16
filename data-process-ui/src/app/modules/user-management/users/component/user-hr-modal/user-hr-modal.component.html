@@ -140,13 +140,63 @@
           <div class="col-lg-3">
             <label class="form-label">Employment Status</label>
             <select class="form-control form-control-lg form-control-solid" name="employmentStatus"
-              [class.is-invalid]="isControlInvalid('employmentStatus')" formControlName="employmentStatus">
+              [class.is-invalid]="isControlInvalid('employmentStatus')" formControlName="employmentStatus" (change)="checkEmpStatus($event.target.value)">
               <option value="Active">Active</option>
+              <option value="ActiveLongLeave">Active - But Long Leave</option>
               <option value="Resigned">Resigned</option>
               <option value="NoticePeriod">Under Notice Period </option>
               <option value="Abscond">Abscond</option>
             </select>
           </div>
+          <ng-container *ngIf="isLongLeave">
+          <div class="col-lg-3">
+            <label class="form-label">Reason for Long Leave </label>
+            <select class="form-control form-control-lg form-control-solid" name="longLeaveReason"
+            [class.is-invalid]="isControlInvalid('longLeaveReason')" formControlName="longLeaveReason" >
+            <option value="MaternityLeave">Maternity Leave</option>
+            <option value="MedicalLeave">Medical Leave</option>
+            <option value="MarriageLeave">Marriage Leave</option>
+            <option value="longLeavePossible">Long Leave but Possible to return back</option>
+          </select>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Long Leave From</label>
+
+              <div class="input-group input-group-solid">
+                <input type="text" name="longLeaveFromDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                  placeholder="dd/mm/yyyy" ngbDatepicker #llfd="ngbDatepicker" [class.is-invalid]="isControlInvalid('longLeaveFromDate')"
+                  [class.is-valid]="isControlValid('longLeaveFromDate')" formControlName="longLeaveFromDate" readonly="true" />
+                <div class="input-group-append" (click)="llfd.toggle()">
+                  <span class="input-group-text">
+                    <i class="text-dark-50 flaticon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="valid-feedback" *ngIf="isControlValid('longLeaveFromDate')">Long Leave From was entered correct</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'longLeaveFromDate')">Please enter <b>Long Leave From</b>
+                in 'dd/mm/yyyy' format</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Leave To Date</label>
+
+              <div class="input-group input-group-solid">
+                <input type="text" name="longLeaveToDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                  placeholder="dd/mm/yyyy" ngbDatepicker #lltd="ngbDatepicker" [class.is-invalid]="isControlInvalid('longLeaveToDate')"
+                  [class.is-valid]="isControlValid('longLeaveToDate')" formControlName="longLeaveToDate" readonly="true" />
+                <div class="input-group-append" (click)="lltd.toggle()">
+                  <span class="input-group-text">
+                    <i class="text-dark-50 flaticon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="valid-feedback" *ngIf="isControlValid('longLeaveToDate')">Leave To Date  was entered correct</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'longLeaveToDate')">Please enter <b>Leave To Date</b>
+                in 'dd/mm/yyyy' format</div>
+          </div>
+          <div class="col-lg-3">
+
+          </div>
+        </ng-container>
           <div class="col-lg-3">
             <label class="form-label">Experience In EDR</label>
             <input type="text" class="form-control form-control-lg form-control-solid" name="experienceInEDR"
@@ -354,6 +404,19 @@
         <option value="AB -ve">AB-</option>
         <option value="O +ve">O+</option>
         <option value="O -ve">O-</option>
+      </select>
+      </div>
+      <div class="col-lg-3">
+        <label class="form-label">COVID19 Vaccinated? </label>
+        <select class="form-control form-control-lg form-control-solid" name="vaccinateInfo"
+        [class.is-invalid]="isControlInvalid('vaccinateInfo')" formControlName="vaccinateInfo" >
+        <option value="Covaxin1Dose">Covaxin 1st Dose</option>
+        <option value="Covaxin2Dose">Covaxin 2nd Dose</option>
+        <option value="CoviShield1Dose">CoviShield 1st Dose</option>
+        <option value="CoviShield2Dose">CoviShield 2nd Dose</option>
+        <option value="Sputnik1Dose">Sputnik  1st Dose</option>
+        <option value="Sputnik2Dose">Sputnik  2nd Dose</option>
+
       </select>
       </div>
     </div>

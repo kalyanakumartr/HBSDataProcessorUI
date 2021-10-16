@@ -41,7 +41,7 @@ export class ProjectService  {
   }
   getDivisionList(department){
 
-    const url = this.API_URL + "/getDivisionList";
+    const url = this.API_URL + "/getDivisionList"+"/"+department;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -53,9 +53,9 @@ export class ProjectService  {
       })
     );
   }
-  getProjectList(department){
+  getProjectList(division){
 
-    const url = this.API_URL + "/getProjectList"+"/"+department;
+    const url = this.API_URL + "/getProjectList"+"/"+division;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });

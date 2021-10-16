@@ -92,6 +92,10 @@ const EMPTY_CUSTOMER: UserModel = {
     systemSerialNo:'',
     systemToHome:false,
     workMode:'WFO',
+    isDongleProvided:false,
+    dongleReturnDate:'',
+    modemReturnDate:'',
+    downGradedPlan:'',
   },
   hrRecord:{
     id:'',
@@ -118,7 +122,11 @@ const EMPTY_CUSTOMER: UserModel = {
       isFileCreated:false,
       longLeaveFromDate:'',
       longLeaveToDate:'',
-      approvedLeaveBalance :''
+      longLeaveReason:'',
+      approvedLeaveBalance :'',
+      recruitmentType:'',
+      costToCompany:'',
+      vaccinateInfo:''
     },
     educationalInfo:{
       highestGraduate: '',

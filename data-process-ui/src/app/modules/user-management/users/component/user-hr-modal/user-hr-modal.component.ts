@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserHRModel } from 'src/app/modules/auth/_models/user-hr.model';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { Media } from 'src/app/modules/auth/_models/media.model';
+import { BinaryOperatorToken } from 'typescript';
 
 const EMPTY_CUSTOMER: UserModel = {
   id: undefined,
@@ -92,6 +93,10 @@ const EMPTY_CUSTOMER: UserModel = {
     systemSerialNo:'',
     systemToHome:false,
     workMode:'WFO',
+    isDongleProvided:false,
+    dongleReturnDate:'',
+    modemReturnDate:'',
+    downGradedPlan:'',
   },
   hrRecord:{
     id:'',
@@ -118,7 +123,11 @@ const EMPTY_CUSTOMER: UserModel = {
       isFileCreated:false,
       longLeaveFromDate:'',
       longLeaveToDate:'',
-      approvedLeaveBalance :''
+      longLeaveReason:'',
+      approvedLeaveBalance :'',
+      recruitmentType:'',
+      costToCompany:'',
+      vaccinateInfo:''
     },
     educationalInfo:{
       highestGraduate: '',
@@ -191,7 +200,11 @@ employmentInfo:{
   isFileCreated:false,
   longLeaveFromDate:'',
   longLeaveToDate:'',
-  approvedLeaveBalance :''
+  approvedLeaveBalance :'',
+  recruitmentType:'',
+  costToCompany:'',
+  vaccinateInfo:'',
+  longLeaveReason:''
 },
 educationalInfo:{
   highestGraduate: '',
@@ -227,6 +240,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
   hrEmp: UserModel;
   userHRModel: UserHRModel;
   userId: BaseModel;
+  isLongLeave :boolean;
   formGroup: FormGroup;
   media:Media;
   private subscriptions: Subscription[] = [];
@@ -239,6 +253,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       this.userId= new UserHRModel;
       this.hrEmp= new UserModel;
       this.media = new Media;
+      this.isLongLeave=false;
     }
 
   ngOnInit(): void {
@@ -323,6 +338,12 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       isOfferIssued: [this.userHRModel.employmentInfo.isOfferIssued, Validators.compose([])],
       isApprentice: [this.userHRModel.employmentInfo.isApprentice, Validators.compose([])],
       isFileCreated: [this.userHRModel.employmentInfo.isFileCreated, Validators.compose([])],
+      longLeaveFromDate: [this.userHRModel.employmentInfo.longLeaveFromDate, Validators.compose([])],
+      longLeaveToDate: [this.userHRModel.employmentInfo.longLeaveToDate, Validators.compose([])],
+      recruitmentType: [this.userHRModel.employmentInfo.recruitmentType, Validators.compose([])],
+      costToCompany: [this.userHRModel.employmentInfo.costToCompany, Validators.compose([])],
+      vaccinateInfo: [this.userHRModel.employmentInfo.vaccinateInfo, Validators.compose([])],
+      longLeaveReason: [this.userHRModel.employmentInfo.longLeaveReason, Validators.compose([])],
 
       personalEmailId: [ this.customer.mediaList[0].personalEmailId, Validators.compose([ Validators.email])],
       officialEmailId: [this.customer.mediaList[0].emailId, Validators.compose([ Validators.email])],
@@ -390,6 +411,18 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     this.userHRModel.employmentInfo.isOfferIssued = formData.isOfferIssued;
     this.userHRModel.employmentInfo.isApprentice = formData.isApprentice;
     this.userHRModel.employmentInfo.isFileCreated = formData.isFileCreated;
+    if(this.isLongLeave){
+      this.userHRModel.employmentInfo.longLeaveFromDate = formData.longLeaveFromDate;
+      this.userHRModel.employmentInfo.longLeaveToDate = formData.longLeaveToDate;
+      this.userHRModel.employmentInfo.longLeaveReason = formData.longLeaveReason;
+    }else{
+      this.userHRModel.employmentInfo.longLeaveFromDate = '';
+      this.userHRModel.employmentInfo.longLeaveToDate = '';
+      this.userHRModel.employmentInfo.longLeaveReason ='';
+    }
+    this.userHRModel.employmentInfo.recruitmentType = formData.recruitmentType;
+    this.userHRModel.employmentInfo.costToCompany = formData.costToCompany;
+    this.userHRModel.employmentInfo.vaccinateInfo = formData.vaccinateInfo;
 
     this.media.personalEmailId = formData.personalEmailId;
     this.media.emailId = formData.officialEmailId;
@@ -416,6 +449,14 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
 
+  checkEmpStatus(value){
+
+    if(value == "ActiveLongLeave"){
+      this.isLongLeave=true;
+    }else{
+      this.isLongLeave=false;
+    }
+  }
   // helpers for View
   isControlValid(controlName: string): boolean {
     const control = this.formGroup.controls[controlName];

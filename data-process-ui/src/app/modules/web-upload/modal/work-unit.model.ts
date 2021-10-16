@@ -7,6 +7,8 @@ export class WorkUnitModel implements BaseModel {
   allocationId: string;
   coreData: CoreData;
   duration: string;
+  actualTime: string ="0";
+  efficiency:string ="0";
   queue: string;
   reason:string;
   remarks: string;

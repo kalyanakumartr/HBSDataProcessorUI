@@ -102,7 +102,7 @@
           <div class="col-lg-3">
             <label>Select Department</label>
             <select class="form-control form-control-lg form-control-solid" name="department"
-              [class.is-invalid]="isControlInvalid('department')" formControlName="department">
+              [class.is-invalid]="isControlInvalid('department')" formControlName="department" (change)="setDepartment($event.target.value)">
               <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
                 {{ department.departmentName }}
               </option>
@@ -112,7 +112,7 @@
           <div class="col-lg-3">
             <label>Select Division</label>
             <select class="form-control form-control-lg form-control-solid" name="division"
-              [class.is-invalid]="isControlInvalid('division')" formControlName="division">
+              [class.is-invalid]="isControlInvalid('division')" formControlName="division" (change)="setDivision($event.target.value)">
               <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
                 {{ division.divisionName }}
               </option>
@@ -131,15 +131,13 @@
             <div class="feedback">Please select <b>Role</b></div>
           </div>
           <div class="col-lg-3">
-            <label>Employment Status in EDR</label>
-            <select class="form-control form-control-lg form-control-solid" name="status"
-              [class.is-invalid]="isControlInvalid('status')" formControlName="status">
-              <option value="Active">Active</option>
-              <option value="Resigned">Resigned</option>
-              <option value="NoticePeriod">Under Notice Period </option>
-              <option value="Abscond">Abscond</option>
+            <label>Recruitment Type</label>
+            <select class="form-control form-control-lg form-control-solid" name="recruitmentType"
+              [class.is-invalid]="isControlInvalid('recruitmentType')" formControlName="recruitmentType">
+              <option value="NewJoiner">New Joiner</option>
+              <option value="Re-joiner">Re-joiner</option>
             </select>
-            <div class="feedback">Please select <b>Employment Status</b></div>
+            <div class="feedback">Please select <b>Recruitment Type</b></div>
           </div>
 
 
@@ -160,6 +158,25 @@
             <div class="valid-feedback" *ngIf="isControlValid('doj')">Date of Joining was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('required', 'doj')">Please enter <b>Date of Joining</b>
               in 'mm/dd/yyyy' format</div>
+          </div>
+          <div class="col-lg-3">
+            <label>Employment Status in EDR</label>
+            <select class="form-control form-control-lg form-control-solid" name="status"
+              [class.is-invalid]="isControlInvalid('status')" formControlName="status">
+              <option value="Active">Active</option>
+              <option value="Resigned">Resigned</option>
+              <option value="NoticePeriod">Under Notice Period </option>
+              <option value="Abscond">Abscond</option>
+            </select>
+            <div class="feedback">Please select <b>Employment Status</b></div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label"> Cost To Company</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="ctc"
+              placeholder="CTC" autocomplete="off" [class.is-invalid]="isControlInvalid('ctc')"
+              [class.is-valid]="isControlValid('ctc')" formControlName="ctc" />
+            <div class="valid-feedback" *ngIf="isControlValid('ctc')">Cost To Company was entered correct</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'ctc')">Cost To Company is required</div>
           </div>
         </div>
 

@@ -13,13 +13,12 @@ import { WebUploadComponent } from './web-upload.component';
 import { MyWorkComponent } from './my-work/my-work.component';
 import { UploadFilesComponent } from './uploaded-files/uploaded-files.component';
 import { WorkUnitModalComponent } from './work-unit-modal/work-unit-modal.component';
-import { AutoRefreshComponent } from './auto-refresh/auto-refresh.component';
 import { MatButtonModule } from '@angular/material/button';
 import { GeneralModule } from 'src/app/_metronic/partials/content/general/general.module';
 
 
 @NgModule({
-  declarations: [WebUploadComponent,FileUploadComponent, UploadFilesComponent,MyWorkComponent, WorkUnitModalComponent, AutoRefreshComponent],
+  declarations: [WebUploadComponent,FileUploadComponent, UploadFilesComponent,MyWorkComponent, WorkUnitModalComponent],
   imports: [CommonModule, WebUploadRoutingModule,   CommonModule,   HttpClientModule, CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatButtonModule,GeneralModule],
 })
 

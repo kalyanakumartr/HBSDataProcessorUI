@@ -23,7 +23,11 @@ const EMPTY_CUSTOMER: UserITModel = {
   staticWhiteList:false,
   systemSerialNo:'',
   systemToHome:false,
-  workMode:''
+  workMode:'',
+  isDongleProvided:false,
+  dongleReturnDate:'',
+  modemReturnDate:'',
+  downGradedPlan:'',
 
 };
 @Component({

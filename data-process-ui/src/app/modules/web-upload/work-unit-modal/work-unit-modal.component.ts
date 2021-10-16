@@ -24,13 +24,26 @@ export class WorkUnitModalComponent  {
   reasonList: any;
   selectedReason: string;
   showReasons:boolean = false;
+  mm : any;
+  ss : any;
+  ms : any;
+  isRunning : boolean;
+  buttonType:number;
+  timerId : any;
+  showReject :boolean;
   private subscriptions: Subscription[] = [];
   constructor(
         private snackBar: MatSnackBar,
         public workAllocationService: WorkAllocationService,
         private fb: FormBuilder, public modal: NgbActiveModal
     ) {
-
+      this.mm = 0;
+      this.ss = 0;
+      this.ms = 0;
+      this.isRunning = false;
+      this.buttonType=1;
+      this.timerId = 0;
+      this.showReject=false;
     }
 
   ngOnInit(): void {
@@ -39,6 +52,9 @@ export class WorkUnitModalComponent  {
     .subscribe((reasons) => {
       this.reasonList = reasons;
     });
+    if(this.queue != "Production"){
+      this.showReject=true;
+    }
   }
   timeLeft: number = 60;
   interval;
@@ -61,15 +77,20 @@ startTimer() {
     var team="";
     this.assignWorkUnits(taskId,this.queue,team,"Start","Ready",allotedto,"NOREASON");
     this.openSnackBar("Work Unit Started","");
+    this.clickHandler(2) ;
   }
   pause(taskId){
-
+    this.clickHandler(3) ;
+  }
+  resume(taskId){
+    this.clickHandler(2) ;
   }
   stop(taskId){
     var allotedto ="15794";//Hardcoded
     var team="GRP0038";//Hardcoded
     this.assignWorkUnits(taskId,this.queue,team,"End","Completed",allotedto,"NOREASON");
     this.openSnackBar("Work Unit Ended","");
+    this.clickHandler(0) ;
     this.modal.dismiss();
   }
   hold(taskId){
@@ -132,5 +153,33 @@ startTimer() {
 
   refresh(){
 
+  }
+
+
+  clickHandler(type) {
+    if (!this.isRunning) {
+      // Stop => Running
+      this.timerId = setInterval(() => {
+        this.ms++;
+
+        if (this.ms >= 100) {
+          this.ss++;
+          this.ms = 0;
+        }
+        if (this.ss >= 60) {
+          this.mm++;
+          this.ss = 0
+        }
+
+      }, 10);
+    } else {
+      clearInterval(this.timerId);
+    }
+    this.buttonType=type;
+    this.isRunning = !this.isRunning;
+  }
+
+  format(num: number) {
+    return (num + '').length === 1 ? '0' + num : num + '';
   }
 }

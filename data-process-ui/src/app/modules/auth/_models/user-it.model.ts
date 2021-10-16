@@ -12,4 +12,8 @@ staticWhiteList:boolean;
 systemSerialNo:string;
 systemToHome:boolean;
 workMode:string;
+isDongleProvided:boolean;
+dongleReturnDate:any;
+modemReturnDate:any;
+downGradedPlan:string;
 }
