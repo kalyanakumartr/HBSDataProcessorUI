@@ -100,7 +100,6 @@ getProjectOnChange(value){
   //this.projectId=value;
 }
 setDepartment(value){
-  alert(value);
   var position =value.split(":")
   if(position.length>1){
     this.department= position[1].toString().trim();
