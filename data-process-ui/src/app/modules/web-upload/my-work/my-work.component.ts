@@ -229,7 +229,8 @@ export class MyWorkComponent
     updateTask.queueId =this.selectedQueue;
     updateTask.statusId ="Assigned";
     updateTask.allotedTo = this.selectedUser;
-    updateTask.eAction="Default";
+    updateTask.skillSet="Production";
+    updateTask.triggeredAction="Default";
     updateTask.reasonId ="NOREASON"
     updateTask.remarks="To Team Member End";
     this.workAllocationService.updateTask(updateTask)

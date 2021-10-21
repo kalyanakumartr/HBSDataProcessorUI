@@ -7,4 +7,5 @@ export const environment = {
   adminApiUrl: 'http://180.151.61.19:9100/core-admin',
   apiJsonUrl:'http://180.151.61.19:3000',
   viewApiUrl:'http://180.151.61.19:9300/edr-view',
+  edrReaderApi:'http://180.151.61.19:9400/edr-reader',
 };
