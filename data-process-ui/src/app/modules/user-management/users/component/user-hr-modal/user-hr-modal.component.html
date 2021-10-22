@@ -142,9 +142,9 @@
             <select class="form-control form-control-lg form-control-solid" name="employmentStatus"
               [class.is-invalid]="isControlInvalid('employmentStatus')" formControlName="employmentStatus" (change)="checkEmpStatus($event.target.value)">
               <option value="Active">Active</option>
-              <option value="ActiveLongLeave">Active - But Long Leave</option>
+              <option value="Active_But_Long_Leave">Active - But Long Leave</option>
               <option value="Resigned">Resigned</option>
-              <option value="NoticePeriod">Under Notice Period </option>
+              <option value="Under_Notice_Period">Under Notice Period </option>
               <option value="Abscond">Abscond</option>
             </select>
           </div>
@@ -153,10 +153,10 @@
             <label class="form-label">Reason for Long Leave </label>
             <select class="form-control form-control-lg form-control-solid" name="longLeaveReason"
             [class.is-invalid]="isControlInvalid('longLeaveReason')" formControlName="longLeaveReason" >
-            <option value="MaternityLeave">Maternity Leave</option>
-            <option value="MedicalLeave">Medical Leave</option>
-            <option value="MarriageLeave">Marriage Leave</option>
-            <option value="longLeavePossible">Long Leave but Possible to return back</option>
+            <option value="Maternity_Leave">Maternity Leave</option>
+            <option value="Medical_Leave">Medical Leave</option>
+            <option value="Marriage_Leave">Marriage Leave</option>
+            <option value="Long_Leave_Possible_To_Return_Back">Long Leave but Possible to return back</option>
           </select>
           </div>
           <div class="col-lg-3">

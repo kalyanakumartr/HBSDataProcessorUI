@@ -103,6 +103,7 @@
             <label>Select Department</label>
             <select class="form-control form-control-lg form-control-solid" name="department"
               [class.is-invalid]="isControlInvalid('department')" formControlName="department" (change)="setDepartment($event.target.value)">
+              <option [ngValue]="null" disabled>Choose Department</option>
               <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
                 {{ department.departmentName }}
               </option>
@@ -113,6 +114,7 @@
             <label>Select Division</label>
             <select class="form-control form-control-lg form-control-solid" name="division"
               [class.is-invalid]="isControlInvalid('division')" formControlName="division" (change)="setDivision($event.target.value)">
+              <option [ngValue]="null" disabled>Choose Division</option>
               <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
                 {{ division.divisionName }}
               </option>
@@ -134,8 +136,8 @@
             <label>Recruitment Type</label>
             <select class="form-control form-control-lg form-control-solid" name="recruitmentType"
               [class.is-invalid]="isControlInvalid('recruitmentType')" formControlName="recruitmentType">
-              <option value="NewJoiner">New Joiner</option>
-              <option value="Re-joiner">Re-joiner</option>
+              <option value="New_Joiner">New Joiner</option>
+              <option value="ReJoiner">Re-joiner</option>
             </select>
             <div class="feedback">Please select <b>Recruitment Type</b></div>
           </div>
@@ -165,7 +167,7 @@
               [class.is-invalid]="isControlInvalid('status')" formControlName="status">
               <option value="Active">Active</option>
               <option value="Resigned">Resigned</option>
-              <option value="NoticePeriod">Under Notice Period </option>
+              <option value="Under_Notice_Period">Under Notice Period </option>
               <option value="Abscond">Abscond</option>
             </select>
             <div class="feedback">Please select <b>Employment Status</b></div>

@@ -28,7 +28,7 @@ export class RoleService extends TableService<RoleModel> implements OnDestroy {
 
   getActiveRoleList(division){
 
-    const url = this.API_URL + "/getActiveRoleList";
+    const url = this.API_URL + "/getActiveRoleList"+"/"+division;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });

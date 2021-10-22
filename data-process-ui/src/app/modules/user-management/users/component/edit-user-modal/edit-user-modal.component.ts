@@ -125,7 +125,7 @@ const EMPTY_CUSTOMER: UserModel = {
       isFileCreated:false,
       longLeaveFromDate:'',
       longLeaveToDate:'',
-      longLeaveReason:'',
+      longLeaveReason:'NotApplicable',
       approvedLeaveBalance :'',
       recruitmentType:'',
       costToCompany:'',
@@ -247,7 +247,6 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
 
   }
   setDepartment(value){
-    alert(value);
     var position =value.split(":")
     if(position.length>1){
       this.department= position[1].toString().trim();

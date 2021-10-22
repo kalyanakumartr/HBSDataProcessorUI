@@ -122,7 +122,7 @@ const EMPTY_CUSTOMER: UserModel = {
       isFileCreated:false,
       longLeaveFromDate:'',
       longLeaveToDate:'',
-      longLeaveReason:'',
+      longLeaveReason:'NotApplicable',
       approvedLeaveBalance :'',
       recruitmentType:'',
       costToCompany:'',
@@ -226,7 +226,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isLoading$ = this.usersService.isLoading$;
     this.userId.id=this.id;
-
+    this.loadForm();
 
   }
 

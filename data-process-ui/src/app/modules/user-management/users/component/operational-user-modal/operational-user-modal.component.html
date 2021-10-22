@@ -14,7 +14,6 @@
         <div class="spinner spinner-lg spinner-success"></div>
       </div>
     </ng-container>
-
     <ng-container *ngIf="customer">
       <form action="#" class="form form-label-right" [formGroup]="formGroup">
         <div class="form-group row">
@@ -103,7 +102,7 @@
               {{ project.projectName }}
             </option>
           </select>
-          <div class="feedback">Please select <b>Department</b></div>
+          <div class="feedback">Please select <b>Project</b></div>
 
           </div>
           <div class="col-lg-4">
@@ -121,6 +120,7 @@
         </div>
       </form>
     </ng-container>
+
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>

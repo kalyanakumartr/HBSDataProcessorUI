@@ -123,7 +123,7 @@ const EMPTY_CUSTOMER: UserModel = {
       isFileCreated:false,
       longLeaveFromDate:'',
       longLeaveToDate:'',
-      longLeaveReason:'',
+      longLeaveReason:'NotApplicable',
       approvedLeaveBalance :'',
       recruitmentType:'',
       costToCompany:'',
@@ -418,7 +418,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     }else{
       this.userHRModel.employmentInfo.longLeaveFromDate = '';
       this.userHRModel.employmentInfo.longLeaveToDate = '';
-      this.userHRModel.employmentInfo.longLeaveReason ='';
+      this.userHRModel.employmentInfo.longLeaveReason ='NotApplicable';
     }
     this.userHRModel.employmentInfo.recruitmentType = formData.recruitmentType;
     this.userHRModel.employmentInfo.costToCompany = formData.costToCompany;
