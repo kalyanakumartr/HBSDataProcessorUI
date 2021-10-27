@@ -3,7 +3,7 @@
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
       <ng-container *ngIf="userHRModel">
 
-        HR User Details of {{name}}
+        HR Record Details of {{name}}
         <ng-container *ngIf="userHRModel.id"></ng-container>
       </ng-container>
     </div>
@@ -85,11 +85,6 @@
             <input type="text" class="form-control form-control-lg form-control-solid" name="highestGraduate"
               placeholder="Aadhar" autocomplete="off" [class.is-invalid]="isControlInvalid('aadhar')"
               [class.is-valid]="isControlValid('aadhar')" formControlName="aadhar" />
-
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'aadhar')">BroadBand Account should have at
-              least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'aadhar')">BroadBand Account should have
-              maximum 12 symbols</div>
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter Esic</label>
@@ -109,12 +104,15 @@
               placeholder="Pan" autocomplete="off" [class.is-invalid]="isControlInvalid('pan')"
               [class.is-valid]="isControlValid('pan')" formControlName="pan" />
           </div>
+        </div>
+        <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter Uan</label>
             <input type="text" class="form-control form-control-lg form-control-solid" name="uan"
               placeholder="Uan" autocomplete="off" [class.is-invalid]="isControlInvalid('uan')"
               [class.is-valid]="isControlValid('uan')" formControlName="uan" />
           </div>
+
           <div class="col-lg-3">
             <label class="form-label">Date of Joining</label>
             <div class="input-group input-group-solid">
@@ -148,6 +146,8 @@
               <option value="Abscond">Abscond</option>
             </select>
           </div>
+        </div>
+        <div class="form-group row">
           <ng-container *ngIf="isLongLeave">
           <div class="col-lg-3">
             <label class="form-label">Reason for Long Leave </label>
@@ -197,6 +197,8 @@
 
           </div>
         </ng-container>
+      </div>
+      <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Experience In EDR</label>
             <input type="text" class="form-control form-control-lg form-control-solid" name="experienceInEDR"
@@ -245,6 +247,8 @@
           <div class="invalid-feedback" *ngIf="controlHasError('required', 'toNoticePeriod')">Please enter <b>From Notice Period</b>
             in 'mm/dd/yyyy' format</div>
       </div>
+    </div>
+    <div class="form-group row">
       <div class="col-lg-3">
         <label class="form-label">ID Card Number</label>
         <input type="text" class="form-control form-control-lg form-control-solid" name="idCardEDR"
@@ -280,6 +284,8 @@
           placeholder="Last Designation" autocomplete="off" [class.is-invalid]="isControlInvalid('lastDesignation')"
           [class.is-valid]="isControlValid('lastDesignation')" formControlName="lastDesignation" />
       </div>
+    </div>
+    <div class="form-group row">
       <div class="col-lg-3">
         <label>Offer Issued</label>
         <select class="form-control form-control-lg form-control-solid" name="isOfferIssued"
@@ -315,6 +321,8 @@
             <div class="valid-feedback" *ngIf="isControlValid('personalEmailId')">Email was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('email', 'personalEmailId')">Email format is incorrect</div>
       </div>
+    </div>
+    <div class="form-group row">
       <div class="col-lg-3">
         <label class="form-label">Official Email</label>
           <input type="email" class="form-control form-control-lg form-control-solid" name="officialEmailId" placeholder="Email"
@@ -350,6 +358,8 @@
             least 10 symbols</div>
           <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'emergencyNumber')">Phone Number should not be morethan 13 symbols</div>
       </div>
+    </div>
+    <div class="form-group row">
       <div class="col-lg-3">
         <label class="form-label">Enter Address</label>
         <input type="text" class="form-control form-control-lg form-control-solid  is-invalid" name="currentAddress"
@@ -392,6 +402,8 @@
         <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'spouseName')">Spouse name should have maximum
           100 symbols</div>
       </div>
+    </div>
+    <div class="form-group row">
       <div class="col-lg-3">
         <label class="form-label">Blood Group</label>
         <select class="form-control form-control-lg form-control-solid" name="bloodGroup"

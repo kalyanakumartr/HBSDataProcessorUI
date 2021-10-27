@@ -98,11 +98,12 @@ export class UserITModalComponent implements OnInit, OnDestroy {
       broadBandBy: [this.userITModel.broadBandBy, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
       internetPlan: [this.userITModel.internetPlan, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
       isDowngraded: [this.userITModel.isDowngraded ],
+      downGradedPlan:[this.userITModel.downGradedPlan,Validators.compose([Validators.minLength(3)])],
       ispName: [this.userITModel.ispName, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       staticIPAddress: [this.userITModel.staticIPAddress, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       systemSerialNo : [this.userITModel.systemSerialNo, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
-      staticWhiteList: [this.userITModel.staticWhiteList, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
-      systemToHome: [this.userITModel.systemToHome, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
+      staticWhiteList: [this.userITModel.staticWhiteList],
+      systemToHome: [this.userITModel.systemToHome],
       workMode: [this.userITModel.workMode, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
 
     });
@@ -139,6 +140,7 @@ export class UserITModalComponent implements OnInit, OnDestroy {
     this.userITModel.broadBandBy =formData.broadBandBy;
     this.userITModel.internetPlan = formData.internetPlan;
     this.userITModel.isDowngraded = formData.isDowngraded;
+    this.userITModel.downGradedPlan = formData.downGradedPlan;
     this.userITModel.ispName = formData.ispName;
     this.userITModel.staticIPAddress = formData.staticIPAddress;
     this.userITModel.staticWhiteList= formData.staticWhiteList;

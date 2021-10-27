@@ -6,8 +6,8 @@ export interface ISortState {
 }
 
 export class SortState implements ISortState {
-  column = 'id'; // Id by default
-  direction: SortDirection = 'asc'; // asc by default;
+  column = 'createdDate'; // Id by default
+  direction: SortDirection = 'desc'; // asc by default;
 }
 export class SortStateTable implements ISortState {
   column = 'allotedDate'; // Id by default

@@ -23,7 +23,7 @@ const EMPTY_CUSTOMER: UserModel = {
   userName: '',
   fullname: '',
   pic: '',
-  userRoleses: [
+  userRoles: [
     {
     roles:{
         id:'',
@@ -308,7 +308,13 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         console.log(this.customer);
         this.loadEditForm();
         this.loadForm();
-        this.assignControlValues();
+
+        this.department=this.customer.operationalRecord.department.departmentId;
+        this.division=this.customer.operationalRecord.division.divisionId;
+        console.log("role",this.customer.roleId);
+        this.role.roleId=this.customer.roleId;
+        this.getDivisionForDepartment();
+        this.getRolesForDivision();
 
         console.log("Check");
       });
@@ -321,7 +327,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   assignControlValues(){
     this.assignControlValue("deployId",this.customer.operationalRecord.deploy.deploymentId);
     this.assignControlValue("teamId",this.customer.operationalRecord.team.teamId);
-    //this.assignControlValue("roles",this.customer.userRoleses[0].roleId);
+    //this.assignControlValue("roles",this.customer.userRoles[0].roleId);
 
   }
   loadForm() {
@@ -429,13 +435,17 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       }
     }
     this.role.isAdminRole =this.isAdminRole;
-    for (var key in this.customer.userRoleses[0]) {
-        delete this.customer.userRoleses[0][key];
+    if(this.customer.userRoles != undefined){
+      for (var key in this.customer.userRoles[0]) {
+          delete this.customer.userRoles[0][key];
+      }
+      this.customer.userRoles[0]= null;
+      this.customer.userRoles[0]= new UserRoles;
+    }else{
+      this.customer.userRoles.push(new UserRoles)
     }
-    this.customer.userRoleses[0]= null;
-    this.customer.userRoleses[0]= new UserRoles;
 
-    this.customer.userRoleses[0].roles =this.role;
+    this.customer.userRoles[0].roles =this.role;
 
     this.customer.employeeId=formData.userId;
     if(createEdit == "Edit"){

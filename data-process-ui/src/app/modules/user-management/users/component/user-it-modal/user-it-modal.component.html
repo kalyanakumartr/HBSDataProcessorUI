@@ -50,6 +50,26 @@
         </div>
         <div class="form-group row">
           <div class="col-lg-4">
+            <label>Is Broadband downgraded? </label>
+            <select class="form-control form-control-lg form-control-solid" name="isDowngraded"
+              [class.is-invalid]="isControlInvalid('isDowngraded')" formControlName="isDowngraded">
+              <option value=true>Yes</option>
+              <option value=false>No</option>
+            </select>
+
+        </div>
+          <div class="col-lg-4">
+            <label>Downgraded Plan</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="downGradedPlan" placeholder="Down Graded Plan"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('downGradedPlan')"
+              [class.is-valid]="isControlValid('downGradedPlan')" formControlName="downGradedPlan" />
+
+          </div>
+
+
+          </div>
+        <div class="form-group row">
+          <div class="col-lg-4">
             <label class="form-label">Enter ISP Name</label>
            <select class="form-control form-control-lg form-control-solid" name="ispName"
                 [class.is-invalid]="isControlInvalid('ispName')" formControlName="ispName">
@@ -69,9 +89,26 @@
               [class.is-valid]="isControlValid('staticIPAddress')" formControlName="staticIPAddress" />
 
           </div>
+          <div class="col-lg-4">
+          <label>Static White Listed</label>
+          <select class="form-control form-control-lg form-control-solid" name="staticWhiteList"
+            [class.is-invalid]="isControlInvalid('staticWhiteList')" formControlName="staticWhiteList">
+            <option value=true>Yes</option>
+            <option value=false>No</option>
+          </select>
 
+      </div>
         </div>
         <div class="form-group row">
+          <div class="col-lg-4">
+            <label>System Provided to Home</label>
+            <select class="form-control form-control-lg form-control-solid" name="systemToHome"
+              [class.is-invalid]="isControlInvalid('systemToHome')" formControlName="systemToHome">
+              <option value=true>Yes</option>
+              <option value=false>No</option>
+            </select>
+
+        </div>
           <div class="col-lg-4">
             <label>System Serial No</label>
             <input type="text" class="form-control form-control-lg form-control-solid" name="systemSerialNo" placeholder="systemSerialNo"

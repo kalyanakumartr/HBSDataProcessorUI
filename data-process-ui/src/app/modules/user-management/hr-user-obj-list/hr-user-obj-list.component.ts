@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { of, Subscription } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   GroupingState,
@@ -24,6 +24,7 @@ import { AuthModel } from '../../auth/_models/auth.model';
 import { EditUserModalComponent } from '../users/component/edit-user-modal/edit-user-modal.component';
 import { UserITModalComponent } from '../users/component/user-it-modal/user-it-modal.component';
 import { UserHRModalComponent } from '../users/component/user-hr-modal/user-hr-modal.component';
+import { ProjectService } from '../../auth/_services/project.services';
 
 @Component({
   selector: 'app-hr-user-list',
@@ -51,10 +52,18 @@ isLoading: boolean;
 filterGroup: FormGroup;
 searchGroup: FormGroup;
 userList: any;
+
+departmentList:any[];
+department:string;
+divisionList:any[];
+division:string;
+projectList:any[];
+project:string;
+
 private subscriptions: Subscription[] = [];
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
-    private modalService: NgbModal, public userService: UsersService) {
+    private modalService: NgbModal, public userService: UsersService, public projectService: ProjectService) {
 
   }
 
@@ -67,8 +76,10 @@ authModel:AuthModel;
     this.grouping = this.userService.grouping;
     this.paginator = this.userService.paginator;
     this.sorting = this.userService.sorting;
+
     const sb = this.userService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
+    this.getDepartment();
   }
   public getUsers() {
     console.log("Inside get Users")
@@ -192,5 +203,71 @@ authModel:AuthModel;
     // const modalRef = this.modalService.open(FetchCustomersModalComponent);
     // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
     // modalRef.result.then(() => this.userService.fetch(), () => { });
+  }
+  getDepartment(){
+    this.projectService.getDepartmentList().pipe(
+      tap((res: any) => {
+        this.departmentList = res;
+        console.log("departmentList", this.departmentList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+
+  }
+  setDepartment(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.department= position[1].toString().trim();
+      this.getDivisionForDepartment();
+      this.userService.patchState({ departmentId:this.department },"/searchUser");
+    }
+  }
+  setDivision(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.division= position[1].toString().trim();
+      this.getProjectForDivision()
+      this.userService.patchState({ divisionId:this.division },"/searchUser");
+    }
+  }
+  getDivisionForDepartment(){
+    this.divisionList=[];
+    this.projectService.getDivisionList(this.department).pipe(
+      tap((res: any) => {
+        this.divisionList = res;
+        console.log("divisionList", this.divisionList)
+
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
+  setProject(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.project= position[1].toString().trim();
+      this.userService.patchState({ projectId:this.project },"/searchUser");
+    }
+  }
+  getProjectForDivision(){
+    this.projectList=[];
+    this.projectService.getProjectList(this.division).pipe(
+      tap((res: any) => {
+        this.projectList = res;
+        console.log("projectList", this.projectList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
   }
 }

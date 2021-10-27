@@ -15,6 +15,9 @@ const DEFAULT_STATE: ITableState = {
   paginator: new PaginatorState(),
   sorting: new SortState(),
   searchTerm: '',
+  divisionId: '',
+  departmentId: '',
+  projectId: '',
   grouping: new GroupingState(),
   entityId: undefined
 };

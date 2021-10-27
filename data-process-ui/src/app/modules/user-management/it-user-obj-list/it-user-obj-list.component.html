@@ -92,81 +92,82 @@
           <tr *ngFor="let customer of userService.items$ | async">
             <td nowrap>
               <a title="Edit IT Employee Details" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-              (click)="addIT(customer.user.id, customer.user.userName)">
+              (click)="addIT(customer.id, customer.userName)">
               <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
                 class="svg-icon svg-icon-md svg-icon-primary">
               </span>
             </a>
             <a title="Change Password" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-            (click)="changePassword(customer.user.userId, customer.user.userName)">
+            (click)="changePassword(customer.userId, customer.userName)">
             <span [inlineSVG]="'./assets/media/svg/icons/Code/Lock-circle.svg'" cacheSVG="true"
               class="svg-icon svg-icon-md svg-icon-primary">
             </span>
           </a>
             </td>
-            <td>{{ customer.user.userId }}</td>
+            <td>{{ customer.userId }}</td>
             <td>
 
-              {{ customer.user.userName }} {{ customer.user.lastName }}</td>
-            <td>{{ customer.user.hrRecord.employmentInfo.dateOfJoin | date: 'dd-MMM-yyyy'}} </td>
+              {{ customer.userName }} {{ customer.lastName }}</td>
+            <td>{{ customer.hrRecord.employmentInfo.dateOfJoin | date: 'dd-MMM-yyyy'}} </td>
             <td>
-              <span class="label label-lg label-inline" [class.label-light-danger]="customer.user.hrRecord.employmentInfo.employmentStatus === 'Suspended'"
-                [class.label-light-success]="customer.user.hrRecord.employmentInfo.employmentStatus === 'Active'" [class.label-light-primary]="customer.employmentStatus === 'Pending'">
-                <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'Suspended'">Suspended</ng-container>
-                <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'ResetPassword'">ResetPassword</ng-container>
-                <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'Active'">Active</ng-container>
-                <ng-container *ngIf="customer.user.hrRecord.employmentInfo.employmentStatus === 'Pending'">Pending</ng-container>
+              <span class="label label-lg label-inline" [class.label-light-danger]="customer.hrRecord.employmentInfo.employmentStatus === 'Suspended'"
+                [class.label-light-success]="customer.hrRecord.employmentInfo.employmentStatus === 'Active'" [class.label-light-primary]="customer.employmentStatus === 'Pending'">
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Abscond'">Abscond</ng-container>
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Under_Notice_Period'">Notice Period</ng-container>
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Active'">Active</ng-container>
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Active_But_Long_Leave'">Active Long Leave</ng-container>
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Resigned'">Resigned</ng-container>
               </span>
             </td>
             <td>
-              <span class="label label-dot label-primary mr-2" [class.label-success]="customer.user.itRecord.workMode === 'WFO'"
-                [class.label-primary]="customer.user.itRecord.workMode === 'WFH'"></span>&nbsp;<span class="font-bold font-primary">
-                <ng-container *ngIf="customer.user.itRecord.workMode === 'WFO'">Office</ng-container>
-                <ng-container *ngIf="customer.user.itRecord.workMode === 'WFH'">Home</ng-container>
+              <span class="label label-dot label-primary mr-2" [class.label-success]="customer.itRecord.workMode === 'WFO'"
+                [class.label-primary]="customer.itRecord.workMode === 'WFH'"></span>&nbsp;<span class="font-bold font-primary">
+                <ng-container *ngIf="customer.itRecord.workMode === 'WFO'">WFO</ng-container>
+                <ng-container *ngIf="customer.itRecord.workMode === 'WFH'">WFH</ng-container>
               </span>
             </td>
             <td>
-              {{ customer.user.itRecord.systemToHome }}
+              {{ customer.itRecord.systemToHome }}
             </td>
             <td>
-              {{ customer.user.itRecord.systemSerialNo }}
+              {{ customer.itRecord.systemSerialNo }}
             </td>
 
             <td>
-              {{ customer.user.itRecord.broadBandBy }}
+              {{ customer.itRecord.broadBandBy }}
             </td>
             <td>
-              {{ customer.user.itRecord.ispName }}
+              {{ customer.itRecord.ispName }}
             </td>
             <td>
-              {{ customer.user.itRecord.broadBandAccount }}
+              {{ customer.itRecord.broadBandAccount }}
             </td>
             <td>
-              {{ customer.user.itRecord.internetPlan }}
+              {{ customer.itRecord.internetPlan }}
             </td>
             <td>
-              {{ customer.user.itRecord.isDowngraded }}
+              {{ customer.itRecord.isDowngraded }}
             </td>
             <td>
-              {{ customer.user.itRecord.staticIPAddress }}
+              {{ customer.itRecord.staticIPAddress }}
             </td>
             <td>
-              {{ customer.user.itRecord.staticWhiteList }}
+              {{ customer.itRecord.staticWhiteList }}
             </td>
             <td>
-              {{ customer.user.roleName }}
+              {{ customer.roleName }}
             </td>
-            <td>{{ customer.user.mediaList[0].communicationAddress }}</td>
-            <td>{{ customer.user.mediaList[0].permanentAddress }}</td>
-            <td>{{ customer.user.mediaList[0].mobileNo }}</td>
-            <td>{{ customer.user.mediaList[0].alternateMobile }}</td>
-            <td>{{ customer.user.operationalRecord.department.departmentName }}</td>
-            <td>{{ customer.user.operationalRecord.team.teamName }}</td>
-            <td>{{ customer.user.operationalRecord.team.groupName }}</td>
-            <td>{{ customer.user.reportingTo }} </td>
-            <td>{{ customer.user.operationalRecord.loginRFDB_BPS }}</td>
-            <td>{{ customer.user.operationalRecord.project != null ? customer.user.operationalRecord.project.projectName :"" }}</td>
-            <td>{{ customer.user.trainingBatch }} </td>
+            <td>{{ customer.mediaList[0].communicationAddress }}</td>
+            <td>{{ customer.mediaList[0].permanentAddress }}</td>
+            <td>{{ customer.mediaList[0].mobileNo }}</td>
+            <td>{{ customer.mediaList[0].alternateMobile }}</td>
+            <td>{{ customer.operationalRecord.department.departmentName }}</td>
+            <td>{{ customer.operationalRecord.team.teamName }}</td>
+            <td>{{ customer.operationalRecord.team.groupName }}</td>
+            <td>{{ customer.reportingTo }} </td>
+            <td>{{ customer.operationalRecord.loginRFDB_BPS }}</td>
+            <td>{{ customer.operationalRecord.project != null ? customer.operationalRecord.project.projectName :"" }}</td>
+            <td>{{ customer.trainingBatch }} </td>
           </tr>
         </tbody>
       </table>

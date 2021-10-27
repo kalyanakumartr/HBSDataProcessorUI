@@ -21,7 +21,7 @@ const EMPTY_CUSTOMER: UserModel = {
   userName: '',
   fullname: '',
   pic: '',
-  userRoleses: [
+  userRoles: [
     {
     roles:{
         id:'',
@@ -226,7 +226,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isLoading$ = this.usersService.isLoading$;
     this.userId.id=this.id;
-    this.loadForm();
+    this.loadCustomer();
 
   }
 
@@ -240,33 +240,23 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       const sb = this.usersService.getItemById(this.id).pipe(
         first(),
         catchError((errorMessage) => {
+          console.log("Error");
           console.log("errorMessage", errorMessage);
           this.modal.dismiss(errorMessage);
           return of(EMPTY_CUSTOMER);
         })
       ).subscribe((customer: UserModel) => {
+        console.log("Customer",customer);
         this.customer = customer;
         console.log(this.customer);
         this.loadEditForm();
         this.loadForm();
         this.assignControlValues();
-        console.log("Check");
-      });
-      this.projectService.getProjectList("RFDB").pipe(
-        tap((res: any) => {
-          this.projectList = res;
-          console.log("projectList", this.projectList)
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of({
-            items: []
-          });
-        })).subscribe();
-        this.projectService.getDepartmentList().pipe(
+        console.log("Check"+this.customer.operationalRecord.division.divisionId);
+        this.projectService.getProjectList(this.customer.operationalRecord.division.divisionId).pipe(
           tap((res: any) => {
-            this.departmentList = res;
-            console.log("departmentList", this.departmentList)
+            this.projectList = res;
+            console.log("projectList", this.projectList)
           }),
           catchError((err) => {
             console.log(err);
@@ -274,31 +264,33 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
               items: []
             });
           })).subscribe();
+        this.projectService.getGroupList(this.customer.userId,this.roleId).pipe(
+          tap((res: any) => {
+            this.groupList = res;
+            console.log("groupList", this.groupList)
+          }),
+          catchError((err) => {
+            console.log(err);
+            return of({
+              items: []
+            });
+          })).subscribe();
+          this.getTeamforGroup();
+      });
 
-          this.projectService.getGroupList(this.customer.userId,this.roleId).pipe(
-            tap((res: any) => {
-              this.groupList = res;
-              console.log("groupList", this.groupList)
-            }),
-            catchError((err) => {
-              console.log(err);
-              return of({
-                items: []
-              });
-            })).subscribe();
-    }
+
+}
   }
   loadEditForm(){
     this.customer.email=this.customer.mediaList[0].emailId;
-    this.roleId=this.customer.roleId;
+    /*this.roleId=this.customer.roleId;
     for(var role of this.roleList)
     if(role.roleId == this.roleId ){
       this.isAdminRole=role.isAdminRole;
-    }
+    }*/
   }
   assignControlValues(){
     this.userOPRModel = EMPTY_CUSTOMER.operationalRecord;
-    this.assignControlValue("deployId",this.customer.operationalRecord.deploy.deploymentId);
     this.assignControlValue("teamId",this.customer.operationalRecord.team.teamId);
 
   }
