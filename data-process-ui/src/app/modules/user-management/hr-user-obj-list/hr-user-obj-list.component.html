@@ -1,7 +1,7 @@
 <div class="card card-custom gutter-b">
     <div class="card-header">
       <div class="card-title">
-        <h3 class="card-label">Employee list</h3>
+        <h3 class="card-label">HR Records</h3>
       </div>
       <div class="card-toolbar">
         <button type="button" class="btn btn-primary" (click)="create()">Add Employee</button>
@@ -13,14 +13,14 @@
         <div class="form-group row">
 
           <div class="col-lg-2" [formGroup]="searchGroup">
-            <input type="text" class="form-control" name="searchText" placeholder="Search" value=""
+            <input type="text" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
               formControlName="searchTerm" /><small class="form-text text-muted"><b>Search</b> in all fields</small>
           </div>
           <div class="col-lg-3">
             <label>Select Department</label>
             <select class="form-control form-control-lg form-control-solid" name="department"
                formControlName="department" (change)="setDepartment($event.target.value)">
-              <option [ngValue]="null" disabled>Choose Department</option>
+              <option [ngValue]="0" disabled>Choose Department</option>
               <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
                 {{ department.departmentName }}
               </option>
@@ -50,7 +50,7 @@
 
           </div>
           <div class="col-lg-3">
-            <label>Clear Filter</label>
+            <label><span (click)="clearFilter()">Clear Filter </span></label>
 
 
           </div>
@@ -106,8 +106,6 @@
               <app-sort-icon column="loginRFDB_BPS" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
                 (sort)="sort($event)"></app-sort-icon>
             </th>
-            <th nowrap >Current Address</th>
-            <th nowrap >Permanant Address</th>
 
             <th nowrap >broadBandAccount</th>
             <th nowrap >Broadband By</th>
@@ -213,12 +211,6 @@
               <td>{{ customer.operationalRecord.project != null ? customer.operationalRecord.project.projectName :"" }}</td>
               <td>
                 {{ customer.loginRFDB_BPS }}
-              </td>
-              <td>
-                {{ customer.mediaList[0].communicationAddress }}
-              </td>
-              <td>
-                {{ customer.mediaList[0].permanentAddress }}
               </td>
               <td>
                 {{ customer.itRecord.broadBandAccount }}

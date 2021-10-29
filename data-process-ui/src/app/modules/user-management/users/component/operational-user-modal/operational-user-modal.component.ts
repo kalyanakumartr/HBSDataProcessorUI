@@ -57,7 +57,8 @@ const EMPTY_CUSTOMER: UserModel = {
       personalEmailId:'',
       mediaType: 'Primary',
       mediaId: '',
-      emergencyNumber:''
+      emergencyNumber:'',
+      district:''
     }
 ],
   language: '',
@@ -145,6 +146,13 @@ const EMPTY_CUSTOMER: UserModel = {
   operationalRecord:{
     id:'',
     team:{
+      teamId: '',
+      teamName: '',
+      groupId: '',
+      groupName: '',
+      employeeId:'',
+    },
+    group:{
       teamId: '',
       teamName: '',
       groupId: '',
@@ -327,6 +335,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     const sbUpdate = this.usersService.saveOPR(this.userOPRModel, this.updateRole).pipe(
       tap(() => {
         this.modal.close();
+        this.usersService.filterData("");
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
@@ -345,6 +354,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     const sbCreate = this.usersService.create(this.customer,"/addUser","formUser").pipe(
       tap(() => {
         this.modal.close();
+        this.usersService.filterData("");
       }),
       catchError((errorMessage) => {
         this.openSnackBar(errorMessage,"X");
@@ -381,6 +391,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
 
     this.customer.operationalRecord.trainingBatch = formData.trainingBatch;
     this.customer.operationalRecord.loginRFDB_BPS = formData.loginRFDB_BPS;
+    this.customer.operationalRecord.team.groupId = formData.groupId;
     this.customer.operationalRecord.team.teamId = formData.teamId;
     this.customer.operationalRecord.department.departmentId = formData.department;
     this.customer.operationalRecord.reportingTo=this.reportingId;

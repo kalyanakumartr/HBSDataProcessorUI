@@ -122,6 +122,7 @@ export class UserITModalComponent implements OnInit, OnDestroy {
       tap(() => {
 
         this.modal.close();
+        this.usersService.filterData("");
 
       }),
       catchError((errorMessage) => {

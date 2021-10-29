@@ -58,7 +58,8 @@ const EMPTY_CUSTOMER: UserModel = {
       personalEmailId:'',
       mediaType: 'Primary',
       mediaId: '',
-      emergencyNumber:''
+      emergencyNumber:'',
+      district:''
     }
 ],
   language: '',
@@ -146,6 +147,13 @@ const EMPTY_CUSTOMER: UserModel = {
   operationalRecord:{
     id:'',
     team:{
+      teamId: 'GRP9999',
+      teamName: '',
+      groupId: 'GRP0000',
+      groupName: '',
+      employeeId:'',
+    },
+    group:{
       teamId: 'GRP9999',
       teamName: '',
       groupId: 'GRP0000',
@@ -243,6 +251,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
   isLongLeave :boolean;
   formGroup: FormGroup;
   media:Media;
+  fileToUpload: File | null = null;
   private subscriptions: Subscription[] = [];
   constructor(
     private snackBar: MatSnackBar,
@@ -322,6 +331,9 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       providentFund: [this.userHRModel.taxInfo.providentFund, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       pan: [this.userHRModel.taxInfo.pan, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       uan: [this.userHRModel.taxInfo.uan, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
+      fnf: [''],
+      esiEligible:[''],
+      lastSalaryDrawn:['', Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
 
 
       dateOfJoin: [this.userHRModel.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
@@ -344,6 +356,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       costToCompany: [this.userHRModel.employmentInfo.costToCompany, Validators.compose([])],
       vaccinateInfo: [this.userHRModel.employmentInfo.vaccinateInfo, Validators.compose([])],
       longLeaveReason: [this.userHRModel.employmentInfo.longLeaveReason, Validators.compose([])],
+      district: [this.customer.mediaList[0].district, Validators.compose([])],
 
       personalEmailId: [ this.customer.mediaList[0].personalEmailId, Validators.compose([ Validators.email])],
       officialEmailId: [this.customer.mediaList[0].emailId, Validators.compose([ Validators.email])],
@@ -355,6 +368,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       maritialStatus: [this.customer.martial, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
       spouseName: [this.customer.spouseName, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
       bloodGroup: [this.customer.bloodGroup, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
+
     });
   }
 
@@ -371,6 +385,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       tap(() => {
 
         this.modal.close();
+        this.usersService.filterData("");
 
       }),
       catchError((errorMessage) => {
@@ -431,6 +446,8 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     this.media.emergencyNumber = formData.emergencyNumber;
     this.media.communicationAddress = formData.currentAddress;
     this.media.permanentAddress = formData.permanentAddress;
+    this.media.district = formData.district;
+
     this.hrEmp.martial = formData.maritialStatus;
     this.hrEmp.spouseName = formData.spouseName;
     this.hrEmp.bloodGroup = formData.bloodGroup;
@@ -476,5 +493,9 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
   isControlTouched(controlName): boolean {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
+  }
+
+  handleFileInput(files: FileList) {
+    this.fileToUpload = files.item(0);
   }
 }

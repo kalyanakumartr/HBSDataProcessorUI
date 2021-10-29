@@ -2,9 +2,9 @@
   <div class="modal-header">
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
       <ng-container *ngIf="customer">
-        <ng-container *ngIf="customer.id">Edit</ng-container>
-        <ng-container *ngIf="!customer.id">Create</ng-container>
-        Employee
+        <ng-container *ngIf="customer.id">Edit Employee details for </ng-container>
+        <ng-container *ngIf="!customer.id">Create  Employee  </ng-container>
+
         <ng-container *ngIf="customer.id">'{{customer.userName}} {{ customer.lastName }}'</ng-container>
       </ng-container>
     </div>

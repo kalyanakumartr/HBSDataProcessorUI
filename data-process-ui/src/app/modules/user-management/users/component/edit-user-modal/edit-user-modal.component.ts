@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
@@ -59,7 +59,8 @@ const EMPTY_CUSTOMER: UserModel = {
       personalEmailId:'',
       mediaType: 'Primary',
       mediaId: '',
-      emergencyNumber:''
+      emergencyNumber:'',
+      district:''
     }
 ],
   language: '',
@@ -148,6 +149,13 @@ const EMPTY_CUSTOMER: UserModel = {
   operationalRecord:{
     id:'',
     team:{
+      teamId: 'GRP9999',
+      teamName: '',
+      groupId: 'GRP0000',
+      groupName: '',
+      employeeId:'',
+    },
+    group:{
       teamId: 'GRP9999',
       teamName: '',
       groupId: 'GRP0000',
@@ -375,6 +383,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     const sbUpdate = this.usersService.update(this.customer,"/updateUser","formUser").pipe(
       tap(() => {
         this.modal.close();
+        this.usersService.filterData("");
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
@@ -395,6 +404,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     const sbCreate = this.usersService.create(this.customer,"/addUser","formUser").pipe(
       tap(() => {
         this.modal.close();
+        this.usersService.filterData("");
       }),
       catchError((errorMessage) => {
         this.openSnackBar(errorMessage,"X");

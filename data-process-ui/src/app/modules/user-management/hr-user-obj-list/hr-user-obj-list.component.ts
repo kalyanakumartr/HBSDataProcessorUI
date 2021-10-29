@@ -64,7 +64,12 @@ private subscriptions: Subscription[] = [];
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
     private modalService: NgbModal, public userService: UsersService, public projectService: ProjectService) {
-
+      this.userService.listen().subscribe((m:any)=>{
+        console.log("m -- -- --",m);
+        this.filter();
+      });
+      this.projectList=[];
+      this.divisionList=[];
   }
 
   ngOnInit(): void {
@@ -169,6 +174,7 @@ authModel:AuthModel;
   edit(id: number) {
      const modalRef = this.modalService.open(EditUserModalComponent, { size: 'xl' });
      modalRef.componentInstance.id = id;
+
   }
 
   addHR(id: string, name:string) {
@@ -269,5 +275,19 @@ authModel:AuthModel;
           items: []
         });
       })).subscribe();
+  }
+  clearFilter(){
+    this.division="";
+    this.department="0";
+    this.project="";
+    if(this.projectList.length>0){
+      this.projectList.splice(0, this.projectList.length);
+    }
+    if(this.divisionList.length>0){
+      this.divisionList.splice(0, this.divisionList.length);
+    }
+    (<HTMLInputElement>document.getElementById("searchText")).value="";
+    this.userService.setDefaults();
+    this.userService.patchState({ },"/searchUser");
   }
 }

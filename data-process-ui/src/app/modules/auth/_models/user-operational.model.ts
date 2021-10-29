@@ -8,6 +8,7 @@ import { Team } from "./team.model";
 export class UserOperationalModel implements BaseModel  {
   id: any;
   team:Team;
+  group:Team;
   deploy:Deployment;
   department:Department;
   division:Division;

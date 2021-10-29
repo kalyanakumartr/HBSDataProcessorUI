@@ -231,6 +231,9 @@ export abstract class TableService<T> {
     this.patchStateWithoutFetch({ sorting: new SortState() });
     this.patchStateWithoutFetch({ grouping: new GroupingState() });
     this.patchStateWithoutFetch({ searchTerm: '' });
+    this.patchStateWithoutFetch({ divisionId: '' });
+    this.patchStateWithoutFetch({ departmentId: '' });
+    this.patchStateWithoutFetch({ projectId: '' });
     this.patchStateWithoutFetch({
       paginator: new PaginatorState()
     });

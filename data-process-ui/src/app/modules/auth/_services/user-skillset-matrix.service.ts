@@ -2,7 +2,7 @@ import { Injectable, Inject, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TableService } from '../../../_metronic/shared/crud-table';
 import { environment } from '../../../../environments/environment';
-import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject, of, Subscription, Subject } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { AuthHTTPService } from './auth-http';
 import { UserSkillSetMatrixModel } from '../_models/user-skillset-matrix.model';
@@ -64,5 +64,11 @@ export class UserSkillSetMatrixService implements OnDestroy {
       return undefined;
     }
   }
-
+  private _listners = new Subject<any>();
+  listen(): Observable<any>{
+    return this._listners.asObservable();
+  }
+  filterData(filterBy:string){
+    this._listners.next(filterBy)
+  }
 }

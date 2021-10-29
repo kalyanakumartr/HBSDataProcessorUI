@@ -10,6 +10,7 @@ import { AddSkillSet, SkillSetMaps, UserSkillSetMatrixModel } from '../../auth/_
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'skillset-matrix-list',
@@ -28,16 +29,19 @@ skillSetList:any[];
 skillsetMatrixList: any[];
 headerList:[];
 skillSet: AddSkillSet;
-displayedColumns = ['userId', 'userName','Production','QualityAssurance','QualityCheck','QualityCheckTrainer','OnlineTechSupport','QualityCheckTrainee','Trainee','Action', 'groupName', 'teamName'];
+displayedColumns = ['userId', 'userName','Production','QualityAssurance','QualityControl','QualityControlTrainer','Aprendices','OnlineTechSupport','QualityControlTrainee','Action', 'groupName', 'teamName'];
 dataSource = new MatTableDataSource<UserSkillSetMatrixModel>();
 
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
     private modalService: NgbModal,
     private snackBar: MatSnackBar,
+    private _router: Router,
     public userSkillSetMatrixService: UserSkillSetMatrixService
     ) {
+
       this.skillSet =new AddSkillSet;
+      console.log("skillSet", this.skillSet)
   }
 
   ngOnInit(): void {
@@ -87,7 +91,9 @@ authModel:AuthModel;
    {
        this.openSnackBar(res.messageCode,"!!")
    });
-   this.getData('');
+   this.userSkillSetMatrixService.filterData("");
+   //this.getData('');
+   //this.reloadCurrentRoute();
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -100,4 +106,12 @@ authModel:AuthModel;
       this.getData(searchValue);
     }
   }
+  reloadCurrentRoute() {
+    let currentUrl = this._router.url;
+    this._router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this._router.navigate([currentUrl]);
+        console.log(currentUrl);
+    });
+  }
+
 }

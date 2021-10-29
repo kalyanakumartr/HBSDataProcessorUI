@@ -19,16 +19,16 @@
       <form action="#" class="form form-label-right" [formGroup]="formGroup">
         <div class="form-group row">
           <div class="col-lg-4">
-            <label class="form-label">Enter BroadBand Account</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="broadBandAccount"
-              placeholder="Broadband Account" autocomplete="off" [class.is-invalid]="isControlInvalid('broadBandAccount')"
-              [class.is-valid]="isControlValid('broadBandAccount')" formControlName="broadBandAccount" />
+            <label>Select Work From</label>
+            <select class="form-control form-control-lg form-control-solid" name="workMode"
+              [class.is-invalid]="isControlInvalid('workMode')" formControlName="workMode">
+              <option value="WFH">Home</option>
+              <option value="WFO">Office</option>
+            </select>
+            <div class="feedback">Please select <b>Work From</b></div>
 
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'broadBandAccount')">BroadBand Account should have at
-              least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'broadBandAccount')">BroadBand Account should have
-              maximum 100 symbols</div>
-          </div>
+        </div>
+
           <div class="col-lg-4">
               <label>Select BroadBand By</label>
               <select class="form-control form-control-lg form-control-solid" name="broadBandBy"
@@ -42,34 +42,6 @@
 
           </div>
           <div class="col-lg-4">
-            <label class="form-label">Enter internetPlan</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="internetPlan"
-              placeholder="Internet Plan" autocomplete="off" [class.is-invalid]="isControlInvalid('internetPlan')"
-              [class.is-valid]="isControlValid('internetPlan')" formControlName="internetPlan" />
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-lg-4">
-            <label>Is Broadband downgraded? </label>
-            <select class="form-control form-control-lg form-control-solid" name="isDowngraded"
-              [class.is-invalid]="isControlInvalid('isDowngraded')" formControlName="isDowngraded">
-              <option value=true>Yes</option>
-              <option value=false>No</option>
-            </select>
-
-        </div>
-          <div class="col-lg-4">
-            <label>Downgraded Plan</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="downGradedPlan" placeholder="Down Graded Plan"
-              autocomplete="off" [class.is-invalid]="isControlInvalid('downGradedPlan')"
-              [class.is-valid]="isControlValid('downGradedPlan')" formControlName="downGradedPlan" />
-
-          </div>
-
-
-          </div>
-        <div class="form-group row">
-          <div class="col-lg-4">
             <label class="form-label">Enter ISP Name</label>
            <select class="form-control form-control-lg form-control-solid" name="ispName"
                 [class.is-invalid]="isControlInvalid('ispName')" formControlName="ispName">
@@ -78,10 +50,14 @@
                 <option value="JIO">JIO</option>
                 <option value="ACT">ACT</option>
                 <option value="Hathway">Hathway</option>
+                <option value="localBand">Local BroadBand</option>
               </select>
               <div class="feedback">Please select <b>ISP</b></div>
 
           </div>
+        </div>
+        <div class="form-group row">
+
           <div class="col-lg-4">
             <label>Static IP Address</label>
             <input type="text" class="form-control form-control-lg form-control-solid" name="staticIPAddress" placeholder="staticIPAddress"
@@ -101,6 +77,46 @@
         </div>
         <div class="form-group row">
           <div class="col-lg-4">
+            <label class="form-label">Enter internetPlan</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="internetPlan"
+              placeholder="Internet Plan" autocomplete="off" [class.is-invalid]="isControlInvalid('internetPlan')"
+              [class.is-valid]="isControlValid('internetPlan')" formControlName="internetPlan" />
+          </div>
+          <div class="col-lg-4">
+            <label class="form-label">Enter BroadBand Account</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="broadBandAccount"
+              placeholder="Broadband Account" autocomplete="off" [class.is-invalid]="isControlInvalid('broadBandAccount')"
+              [class.is-valid]="isControlValid('broadBandAccount')" formControlName="broadBandAccount" />
+
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'broadBandAccount')">BroadBand Account should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'broadBandAccount')">BroadBand Account should have
+              maximum 100 symbols</div>
+          </div>
+        </div>
+          <div class="form-group row">
+          <div class="col-lg-4">
+            <label>Is Broadband downgraded? </label>
+            <select class="form-control form-control-lg form-control-solid" name="isDowngraded"
+              [class.is-invalid]="isControlInvalid('isDowngraded')" formControlName="isDowngraded">
+              <option value=true>Yes</option>
+              <option value=false>No</option>
+            </select>
+
+        </div>
+          <div class="col-lg-4">
+            <label>Downgraded Plan</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="downGradedPlan" placeholder="Down Graded Plan"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('downGradedPlan')"
+              [class.is-valid]="isControlValid('downGradedPlan')" formControlName="downGradedPlan" />
+
+          </div>
+
+
+          </div>
+
+        <div class="form-group row">
+          <div class="col-lg-4">
             <label>System Provided to Home</label>
             <select class="form-control form-control-lg form-control-solid" name="systemToHome"
               [class.is-invalid]="isControlInvalid('systemToHome')" formControlName="systemToHome">
@@ -116,16 +132,7 @@
               [class.is-valid]="isControlValid('systemSerialNo')" formControlName="systemSerialNo" />
 
           </div>
-          <div class="col-lg-4">
-            <label>Select Work From</label>
-            <select class="form-control form-control-lg form-control-solid" name="workMode"
-              [class.is-invalid]="isControlInvalid('workMode')" formControlName="workMode">
-              <option value="WFH">Home</option>
-              <option value="WFO">Office</option>
-            </select>
-            <div class="feedback">Please select <b>Work From</b></div>
 
-        </div>
 
           </div>
 

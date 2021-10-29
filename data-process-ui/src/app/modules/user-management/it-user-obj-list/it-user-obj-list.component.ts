@@ -54,7 +54,10 @@ private subscriptions: Subscription[] = [];
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
     private modalService: NgbModal, public userService: UsersService) {
-
+      this.userService.listen().subscribe((m:any)=>{
+        console.log("m -- -- --",m);
+        this.filter();
+      });
   }
 
   ngOnInit(): void {
