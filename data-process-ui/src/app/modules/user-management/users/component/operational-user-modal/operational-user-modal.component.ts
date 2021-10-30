@@ -195,6 +195,7 @@ const EMPTY_CUSTOMER: UserModel = {
 export class OperationalUserModalComponent implements OnInit, OnDestroy {
   @Input() id: string;
   @Input() revId: string;
+  @Input() role: string;
   isLoading$;
   customer: UserModel;
   updateRole:any;
@@ -234,6 +235,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isLoading$ = this.usersService.isLoading$;
     this.userId.id=this.id;
+    this.roleId=this.role;
     this.loadCustomer();
 
   }
@@ -260,6 +262,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
         this.loadEditForm();
         this.loadForm();
         this.assignControlValues();
+        this.roleId = this.customer.roleId;
         console.log("Check"+this.customer.operationalRecord.division.divisionId);
         this.projectService.getProjectList(this.customer.operationalRecord.division.divisionId).pipe(
           tap((res: any) => {
@@ -272,7 +275,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
               items: []
             });
           })).subscribe();
-        this.projectService.getGroupList(this.customer.userId,this.roleId).pipe(
+        this.projectService.getGroupList(this.customer.userId,"").pipe(
           tap((res: any) => {
             this.groupList = res;
             console.log("groupList", this.groupList)
@@ -400,6 +403,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
 
     this.userOPRModel.trainingBatch= formData.trainingBatch;
     this.userOPRModel.loginRFDB_BPS = formData.loginRFDB_BPS;
+    this.userOPRModel.group.teamId = formData.groupId;
     this.userOPRModel.team.teamId = formData.teamId;
     this.userOPRModel.team.employeeId = formData.reportingId;
     this.userOPRModel.department.departmentId = formData.department;

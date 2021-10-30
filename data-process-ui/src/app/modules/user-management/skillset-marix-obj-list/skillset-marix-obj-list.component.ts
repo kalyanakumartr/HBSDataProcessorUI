@@ -29,7 +29,7 @@ skillSetList:any[];
 skillsetMatrixList: any[];
 headerList:[];
 skillSet: AddSkillSet;
-displayedColumns = ['userId', 'userName','Production','QualityAssurance','QualityControl','QualityControlTrainer','Aprendices','OnlineTechSupport','QualityControlTrainee','Action', 'groupName', 'teamName'];
+displayedColumns = ['userId', 'userName','Production','QualityAssurance','QualityControl','QualityControlTrainer','Apprentice','OnlineTechSupport','QualityControlTrainee','Action', 'groupName', 'teamName'];
 dataSource = new MatTableDataSource<UserSkillSetMatrixModel>();
 
 authModel:AuthModel;

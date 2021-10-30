@@ -59,6 +59,7 @@ divisionList:any[];
 division:string;
 projectList:any[];
 project:string;
+isClearFilter:boolean;
 
 private subscriptions: Subscription[] = [];
 authModel:AuthModel;
@@ -70,6 +71,7 @@ authModel:AuthModel;
       });
       this.projectList=[];
       this.divisionList=[];
+      this.isClearFilter=false;
   }
 
   ngOnInit(): void {
@@ -85,6 +87,9 @@ authModel:AuthModel;
     const sb = this.userService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
     this.getDepartment();
+    this.division="0";
+    this.department="0";
+    this.project="0";
   }
   public getUsers() {
     console.log("Inside get Users")
@@ -215,6 +220,7 @@ authModel:AuthModel;
       tap((res: any) => {
         this.departmentList = res;
         console.log("departmentList", this.departmentList)
+        this.department="0";
       }),
       catchError((err) => {
         console.log(err);
@@ -228,16 +234,21 @@ authModel:AuthModel;
     var position =value.split(":")
     if(position.length>1){
       this.department= position[1].toString().trim();
-      this.getDivisionForDepartment();
-      this.userService.patchState({ departmentId:this.department },"/searchUser");
+      if(this.department != "0"){
+        this.isClearFilter=true;
+        this.getDivisionForDepartment();
+        this.userService.patchState({ departmentId:this.department },"/searchUser");
+      }
     }
   }
   setDivision(value){
     var position =value.split(":")
     if(position.length>1){
       this.division= position[1].toString().trim();
-      this.getProjectForDivision()
-      this.userService.patchState({ divisionId:this.division },"/searchUser");
+      if(this.division != "0"){
+        this.getProjectForDivision()
+        this.userService.patchState({ divisionId:this.division },"/searchUser");
+      }
     }
   }
   getDivisionForDepartment(){
@@ -259,7 +270,9 @@ authModel:AuthModel;
     var position =value.split(":")
     if(position.length>1){
       this.project= position[1].toString().trim();
-      this.userService.patchState({ projectId:this.project },"/searchUser");
+      if(this.project != "0"){
+        this.userService.patchState({ projectId:this.project },"/searchUser");
+      }
     }
   }
   getProjectForDivision(){
@@ -277,17 +290,30 @@ authModel:AuthModel;
       })).subscribe();
   }
   clearFilter(){
-    this.division="";
-    this.department="0";
-    this.project="";
-    if(this.projectList.length>0){
-      this.projectList.splice(0, this.projectList.length);
+
+    if(this.isClearFilter){
+      this.division="0";
+
+      this.project="0";
+      if(this.projectList.length>0){
+        this.projectList.splice(0, this.projectList.length);
+      }
+      if(this.divisionList.length>0){
+        this.divisionList.splice(0, this.divisionList.length);
+      }
+      if(this.departmentList.length>0){
+        this.departmentList.splice(0, this.departmentList.length);
+      }
+      this.getDepartment();
+      (<HTMLInputElement>document.getElementById("searchText")).value="";
+      this.userService.setDefaults();
+      this.userService.patchState({ },"/searchUser");
+      this.grouping = this.userService.grouping;
+      this.paginator = this.userService.paginator;
+      this.sorting = this.userService.sorting;
+      this.department="0";
+    }else{
+      (<HTMLInputElement>document.getElementById("searchText")).value="";
     }
-    if(this.divisionList.length>0){
-      this.divisionList.splice(0, this.divisionList.length);
-    }
-    (<HTMLInputElement>document.getElementById("searchText")).value="";
-    this.userService.setDefaults();
-    this.userService.patchState({ },"/searchUser");
   }
 }

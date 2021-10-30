@@ -2,9 +2,9 @@
   <div class="modal-header">
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
       <ng-container *ngIf="customer">
-        <ng-container *ngIf="customer.id">Edit</ng-container>
-        Operational Employee Data
+        <b><label class="heading">Operational Records for
         <ng-container *ngIf="customer.id">'{{customer.userName}} {{ customer.lastName }}'</ng-container>
+        </label></b>
       </ng-container>
     </div>
   </div>

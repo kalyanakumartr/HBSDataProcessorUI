@@ -1,7 +1,7 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Employee list</h3>
+      <h3 class="card-label">IT Records</h3>
     </div>
 
   </div>
@@ -11,8 +11,46 @@
       <div class="form-group row">
 
         <div class="col-lg-2" [formGroup]="searchGroup">
-          <input type="text" class="form-control" name="searchText" placeholder="Search" value=""
+          <input type="text" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
             formControlName="searchTerm" /><small class="form-text text-muted"><b>Search</b> in all fields</small>
+        </div>
+        <div class="col-lg-3">
+          <label>Select Department</label>
+          <select class="form-control form-control-lg form-control-solid" name="department"
+             formControlName="department" (change)="setDepartment($event.target.value)">
+            <option [ngValue]="0" selected>Select Department</option>
+            <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
+              {{ department.departmentName }}
+            </option>
+          </select>
+
+        </div>
+        <div class="col-lg-3">
+          <label>Select Division</label>
+          <select class="form-control form-control-lg form-control-solid" name="division"
+             formControlName="division" (change)="setDivision($event.target.value)">
+             <option [ngValue]="0" selected>Select Division</option>
+            <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
+              {{ division.divisionName }}
+            </option>
+          </select>
+
+        </div>
+        <div class="col-lg-3">
+          <label>Select Project</label>
+          <select class="form-control form-control-lg form-control-solid" name="project"
+             formControlName="project" (change)="setProject($event.target.value)">
+             <option [ngValue]="0" selected>Select Project</option>
+            <option *ngFor="let project of projectList" [ngValue]="project.projectId">
+              {{ project.projectName }}
+            </option>
+          </select>
+
+        </div>
+        <div class="col-lg-3">
+          <span id="link" (click)="clearFilter()">Clear Filter </span>
+
+
         </div>
       </div>
     </div>
