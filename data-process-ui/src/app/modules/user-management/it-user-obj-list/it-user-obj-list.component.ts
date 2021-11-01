@@ -26,6 +26,7 @@ import { UserITModalComponent } from '../users/component/user-it-modal/user-it-m
 import { UserHRModalComponent } from '../users/component/user-hr-modal/user-hr-modal.component';
 import { ChangePasswordComponent } from '../../user-profile/change-password/change-password.component';
 import { ProjectService } from '../../auth/_services/project.services';
+import { ITItemListComponent } from '../it-item-list/it-item-list.component';
 
 @Component({
   selector: 'app-it-user-list',
@@ -186,6 +187,15 @@ authModel:AuthModel;
 }
 changePassword(id: string, name:string) {
   const modalRef = this.modalService.open(ChangePasswordComponent, { size: 'lg' });
+  modalRef.componentInstance.id = id;
+  modalRef.componentInstance.name =name;
+  modalRef.result.then(() =>
+    this.userService.fetchIT(id),
+    () => { }
+  );
+}
+itAsset(id: string, name:string){
+  const modalRef = this.modalService.open(ITItemListComponent, { size: 'lg' });
   modalRef.componentInstance.id = id;
   modalRef.componentInstance.name =name;
   modalRef.result.then(() =>

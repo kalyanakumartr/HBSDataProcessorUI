@@ -403,7 +403,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
 
     this.userOPRModel.trainingBatch= formData.trainingBatch;
     this.userOPRModel.loginRFDB_BPS = formData.loginRFDB_BPS;
-    this.userOPRModel.group.teamId = formData.groupId;
+    this.userOPRModel.group.teamId = formData.teamId;
     this.userOPRModel.team.teamId = formData.teamId;
     this.userOPRModel.team.employeeId = formData.reportingId;
     this.userOPRModel.department.departmentId = formData.department;

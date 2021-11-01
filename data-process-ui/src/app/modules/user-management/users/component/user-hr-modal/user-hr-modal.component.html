@@ -105,10 +105,12 @@
               [class.is-valid]="isControlValid('uan')" formControlName="uan" />
           </div>
           <div class="col-lg-3">
-            <label class="form-label">Info APL</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="infoAPL"
-              placeholder="Info APL" autocomplete="off" [class.is-invalid]="isControlInvalid('infoAPL')"
-              [class.is-valid]="isControlValid('infoAPL')" formControlName="infoAPL" />
+            <label class="form-label">Under Probation Period</label>
+              <select class="form-control form-control-lg form-control-solid" name="infoAPL"
+              [class.is-invalid]="isControlInvalid('infoAPL')" formControlName="infoAPL">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
           </div>
           <div class="col-lg-3">
             <label>Is Eligible for ESI Scheme</label>

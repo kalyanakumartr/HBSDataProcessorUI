@@ -184,4 +184,43 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
   filterData(filterBy:string){
     this._listners.next(filterBy)
   }
+  getUserAssets(id){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+
+    console.log("Inside IT User Assets");
+    const url = this.API_URL + '/getUserAssets';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<UserITModel>(url, {"formUser": { "id": id }},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  saveITItem(itItems,formUser){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    console.log("Inside Save IT");
+    const url = this.API_URL + '/addITItems';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"formUser":formUser,"itItems":itItems},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
 }
