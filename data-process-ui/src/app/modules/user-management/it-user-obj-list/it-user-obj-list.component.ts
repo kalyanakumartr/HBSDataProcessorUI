@@ -194,10 +194,11 @@ changePassword(id: string, name:string) {
     () => { }
   );
 }
-itAsset(id: string, name:string){
+itAsset(id: string, name:string,userId:string){
   const modalRef = this.modalService.open(ITItemListComponent, { size: 'lg' });
   modalRef.componentInstance.id = id;
   modalRef.componentInstance.name =name;
+  modalRef.componentInstance.userId =userId;
   modalRef.result.then(() =>
     this.userService.fetchIT(id),
     () => { }

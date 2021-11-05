@@ -10,6 +10,8 @@ import { UserITModel } from 'src/app/modules/auth/_models/user-it.model';
 import { BaseModel } from 'src/app/_metronic/shared/crud-table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItItemsModel } from 'src/app/modules/auth/_models/it-items.model';
+import { Asset } from 'src/app/modules/auth/_models/asset.model';
+import { Brand } from 'src/app/modules/auth/_models/brand.model';
 
 
 const EMPTY_ITMODEL: ItItemsModel = {
@@ -43,10 +45,15 @@ const EMPTY_ITMODEL: ItItemsModel = {
 })
 export class ITItemModalComponent implements OnInit, OnDestroy {
   @Input() id: string;
+  @Input() userId: string;
   @Input() name: string;
+  @Input() itItemsModel:ItItemsModel;
   isLoading$;
-  itItemsModel: ItItemsModel;
-  userId: BaseModel;
+  assetList: Asset[];
+  brandList: Brand[];
+  assetId :string;
+  brandId :string;
+  receivedDate:string;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
   constructor(
@@ -55,13 +62,36 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
       this.itItemsModel =new ItItemsModel;
-      this.userId= new UserITModel;
+      this.receivedDate="";
     }
 
   ngOnInit(): void {
-    this.isLoading$ = this.usersService.isLoading$;
-    this.userId.id=this.id;
-    this.loadCustomer();
+    console.log("IT  Model",this.itItemsModel);
+    this.usersService.getAssetList().pipe(
+      tap((res: any) => {
+        this.assetList = res;
+        this.assetId ="0";
+        console.log("Assets List", this.assetList);
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+      this.usersService.getBrandList().pipe(
+        tap((res: any) => {
+          this.brandList = res;
+          this.brandId ="0";
+          console.log("Brand List", this.brandList);
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: []
+          });
+        })).subscribe();
+        this.loadITModel();
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -69,7 +99,7 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
       verticalPosition:"top"
     });
   }
-  loadCustomer() {
+  loadITModel() {
     console.log("loadCustomer this.id", this.id);
 
     if (!this.id) {
@@ -77,27 +107,21 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
       this.loadForm();
     } else {
       console.log("this.id", this.id);
-      const sb = this.usersService.fetchIT(this.id).pipe(
-        first(),
-        catchError((errorMessage) => {
-          console.log("errorMessage", errorMessage);
-          return of(EMPTY_ITMODEL);
-        })
-      ).subscribe((itItemsModel: ItItemsModel) => {
-        console.log("itItemsModel", itItemsModel);
-        this.itItemsModel = itItemsModel;
-        this.loadForm();
-      });
-
+      this.assetId = this.itItemsModel.asset.assetId;
+      this.brandId = this.itItemsModel.brand.brandId;
+      console.log("this.assetId", this.assetId);
+      console.log("this.brandId", this.brandId);
+      this.loadForm();
     }
   }
 
   loadForm() {
     this.formGroup = this.fb.group({
-      serialNo: [this.itItemsModel.serialNo, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
-      brand: [this.itItemsModel.brand, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
-      givenDate: [this.itItemsModel.givenDate, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
-      receivedDate: [this.itItemsModel.receivedDate ],
+      assetId: [this.itItemsModel.asset.assetId, Validators.compose([ ])],
+      serialNo: [this.itItemsModel.serialNo, Validators.compose([])],
+      brandId: [this.itItemsModel.brand.brandId, Validators.compose([])],
+      givenDate: [this.itItemsModel.givenDate, Validators.compose([ ])],
+      receivedDate: [this.itItemsModel.receivedDate , Validators.compose([ ])],
       remarks:[this.itItemsModel.remarks],
 
 
@@ -106,19 +130,32 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
 
   save() {
     this.prepareITItem();
-    if (this.userId.id) {
+    if (this.itItemsModel.autoId) {
       this.edit();
+    }else{
+      this.add();
     }
   }
 
-  edit() {
-
-    const sbUpdate = this.usersService.saveITItem(this.itItemsModel, this.userId).pipe(
+  add(){
+    const sbUpdate = this.usersService.createUserAssets(this.itItemsModel, this.userId).pipe(
       tap(() => {
 
         this.modal.close();
-        this.usersService.filterData("");
+      }),
+      catchError((errorMessage) => {
+        this.modal.dismiss(errorMessage);
+        this.openSnackBar(errorMessage,"X");
+        return of(this.itItemsModel);
+      }),
+    ).subscribe(res =>this.openSnackBar(res.messageCode?"Created Successful":res,"!!"));
+  }
+  edit() {
 
+    const sbUpdate = this.usersService.updateUserAssets(this.itItemsModel, this.userId).pipe(
+      tap(() => {
+
+        this.modal.close();
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
@@ -133,10 +170,39 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
   private prepareITItem() {
     const formData = this.formGroup.value;
     this.itItemsModel.serialNo = formData.serialNo;
-    this.itItemsModel.brand =formData.brand;
+    alert(this.assetId + this.brandId);
+    for(var asset of this.assetList){
+      if(asset.assetId === this.assetId){
+      this.itItemsModel.asset =asset;
+      }
+    }
+    for(var brand of this.brandList){
+      if(brand.brandId === this.brandId){
+        this.itItemsModel.brand =brand;
+      }
+    }
+
     this.itItemsModel.givenDate = formData.givenDate;
-    this.itItemsModel.receivedDate = formData.returnDate;
-    this.itItemsModel.remarks = formData.desc;
+    if(this.itItemsModel.givenDate.length > 6){
+      this.itItemsModel.active=false;
+    }else{
+      this.itItemsModel.active=true;
+    }
+    this.itItemsModel.receivedDate = formData.receivedDate;
+    this.itItemsModel.remarks = formData.remarks;
+  }
+
+  setBrand(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.brandId= position[1].toString().trim();
+    }
+  }
+  setAsset(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.assetId= position[1].toString().trim();
+    }
   }
 
   ngOnDestroy(): void {

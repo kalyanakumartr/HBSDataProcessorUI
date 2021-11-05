@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModel } from '../../auth/_models/auth.model';
 import { catchError, tap } from 'rxjs/operators';
 import { UserSkillSetMatrixService } from '../../auth/_services/user-skillset-matrix.service';
@@ -26,6 +26,7 @@ OnDestroy,
 AfterViewInit
 {
 @Input() id: string;
+@Input() userId: string;
 @Input() name: string;
 @ViewChild(MatPaginator, {static: true}) paginator:MatPaginator;
 @ViewChild(MatSort) sort: MatSort;
@@ -33,10 +34,11 @@ userList: any;
 itItemsModel:ItItemsModel;
 displayedColumns = ['slno', 'assetName','serialNo','brand','givenDate','receivedDate','remarks','Action'];
 dataSource = new MatTableDataSource<ItItemsModel>();
+assetList:ItItemsModel[];
 
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
-    private modalService: NgbModal,
+    public modalService: NgbModal,
     private snackBar: MatSnackBar,
     private _router: Router,
     public usersService: UsersService
@@ -53,6 +55,7 @@ authModel:AuthModel;
     this.usersService.getUserAssets(value).pipe(
       tap((res: any) => {
         this.dataSource = new MatTableDataSource(res);
+        this.assetList = res;
         //this.headerList = res.headerList;
         console.log("UserAssets List", this.dataSource);
        // console.log("headerList ", this.headerList);
@@ -87,17 +90,22 @@ authModel:AuthModel;
         this.itItemsModel.remarks =(<HTMLInputElement>document.getElementById(id+this.displayedColumns[6])).value;
 
 
-   this.usersService.saveITItem(this.itItemsModel, id).subscribe((res: any)=>
-   {
-       this.openSnackBar(res.messageCode,"!!")
-   });
-   this.usersService.filterData("");
-   //this.getData('');
-   //this.reloadCurrentRoute();
   }
-  edit(id){
-    const modalRef = this.modalService.open(ITItemModalComponent, { size: 'sm' });
+  create() {
+    this.edit(undefined);
+  }
+
+  edit(id: number) {
+    const modalRef = this.modalService.open(ITItemModalComponent, { size: 'lg', animation :true });
     modalRef.componentInstance.id = id;
+    modalRef.componentInstance.userId = this.userId;
+    modalRef.componentInstance.name = name;
+
+    for(var assetObj of this.assetList){
+      if(assetObj.autoId === id){
+        modalRef.componentInstance.itItemsModel=assetObj;
+      }
+    }
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -117,5 +125,7 @@ authModel:AuthModel;
         console.log(currentUrl);
     });
   }
-
+  close(){
+    this.modalService.dismissAll();
+  }
 }

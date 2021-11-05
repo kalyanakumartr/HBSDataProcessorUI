@@ -1,10 +1,12 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">IT Items Records</h3>
+      <h3 class="card-label">IT Asset Records Given to {{name}}</h3>
+
     </div>
     <div class="card-toolbar">
-      <button type="button" class="btn btn-primary" >Add Items</button>
+      <button type="button" class="btn btn-primary" (click)="create()">Add Items</button>
+      <button type="button" #closebutton class="close" data-dismiss="modal" (click)="close()">&times;</button>
     </div>
   </div>
   </div>
@@ -24,7 +26,7 @@
 
     <ng-container matColumnDef="serialNo">
       <mat-header-cell *matHeaderCellDef> Serial Number </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{ element.serialNo }}" </mat-cell>
+      <mat-cell *matCellDef="let element"> {{ element.serialNo }} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="brand">
       <mat-header-cell *matHeaderCellDef> Brand </mat-header-cell>

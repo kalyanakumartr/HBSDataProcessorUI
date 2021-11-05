@@ -5,8 +5,47 @@
     <input type="text" class="form-control" name="searchText" id="searchText" (input)="onSearchChange($event.target.value)"  placeholder="Search" value="" />
     <small class="form-text text-muted"><b>Search</b> in all fields</small>
   </div>
+  <div class="col-lg-3">
+    <label>Select Division</label>
+    <select class="form-control form-control-lg form-control-solid" name="division"
+       formControlName="department" (change)="setDivision($event.target.value)">
+      <option [ngValue]="0" selected>Select Division</option>
+      <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
+        {{ division.divisionName }}
+      </option>
+    </select>
+
   </div>
+  <div class="col-lg-3">
+    <label>Select Group</label>
+    <select class="form-control form-control-lg form-control-solid" name="group"
+       formControlName="group" (change)="setGroup($event.target.value)">
+       <option [ngValue]="0" selected>Select Group</option>
+      <option *ngFor="let group of groupList" [ngValue]="group.groupId">
+        {{ group.groupName }}
+      </option>
+    </select>
+
   </div>
+  <div class="col-lg-3">
+    <label>Select Team</label>
+    <select class="form-control form-control-lg form-control-solid" name="team"
+       formControlName="team" (change)="setTeam($event.target.value)">
+       <option [ngValue]="0" selected>Select Project</option>
+      <option *ngFor="let team of teamList" [ngValue]="team.teamId">
+        {{ team.teamName }}
+      </option>
+    </select>
+
+  </div>
+  <div class="col-lg-3">
+    <span id="link" (click)="clearFilter()">Clear Filter </span>
+
+
+  </div>
+</div>
+  </div>
+
   <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
 
 

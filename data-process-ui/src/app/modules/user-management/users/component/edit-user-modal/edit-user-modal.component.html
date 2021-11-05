@@ -56,7 +56,7 @@
             <label>Date of Birth</label>
             <div class="input-group input-group-solid">
               <input type="text" name="dob" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                placeholder="mm/dd/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('dob')"
+                placeholder="mm/dd/yyyy" ngbDatepicker [maxDate]="maxDate" #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('dob')"
                 [class.is-valid]="isControlValid('dob')" formControlName="dob" readonly="true" />
               <div class="input-group-append" (click)="d.toggle()">
                 <span class="input-group-text">
@@ -149,7 +149,7 @@
             <label>Date of Joining</label>
             <div class="input-group input-group-solid">
               <input type="text" name="doj"  class="form-control form-control-lg form-control-solid" autocomplete="off"
-                placeholder="mm/dd/yyyy" ngbDatepicker #doj="ngbDatepicker" [class.is-invalid]="isControlInvalid('doj')"
+                placeholder="mm/dd/yyyy" ngbDatepicker [minDate]="minDate" #doj="ngbDatepicker" [class.is-invalid]="isControlInvalid('doj')"
                 [class.is-valid]="isControlValid('doj')" formControlName="doj" readonly="true" />
               <div class="input-group-append" (click)="doj.toggle()">
                 <span class="input-group-text">

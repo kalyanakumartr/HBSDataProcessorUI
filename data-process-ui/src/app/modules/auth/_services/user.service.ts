@@ -9,6 +9,8 @@ import { AuthModel } from '../_models/auth.model';
 import { AuthHTTPService } from './auth-http';
 import { UserITModel } from '../_models/user-it.model';
 import { UserHRModel } from '../_models/user-hr.model';
+import { Brand } from '../_models/brand.model';
+import { Asset } from '../_models/asset.model';
 
 
 @Injectable({
@@ -204,18 +206,78 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
       })
     );
   }
-  saveITItem(itItems,formUser){
+  getAssetList(){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+
+    console.log("Inside Assets");
+    const url = this.API_URL + '/getAssetsList';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<Asset>(url,{},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  getBrandList(){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+
+    console.log("Inside Brand");
+    const url = this.API_URL + '/getAssetsBrandList';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<Brand>(url,{},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+
+  createUserAssets(itItems,formUser){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
       return of(undefined);
     }
 
     console.log("Inside Save IT");
-    const url = this.API_URL + '/addITItems';
+    const url = this.API_URL + '/createUserAssets';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post(url, {"formUser":formUser,"itItems":itItems},{headers: httpHeaders}).pipe(
+    return this.http.post(url, {"formUser":formUser,"usersITAsset":itItems},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  updateUserAssets(itItems,formUser){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    console.log("Inside Save IT");
+    const url = this.API_URL + '/updateUserAssets';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"formUser":formUser,"usersITAsset":itItems},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMsg.next(err);
         console.error('FIND ITEMS', err);

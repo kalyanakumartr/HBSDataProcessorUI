@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter, NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, finalize, first, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter, getDateFromString } from '../../../../../_metronic/core';
@@ -211,6 +211,8 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   role : RoleModel;
   producer : Producer;
+  minDate : NgbDateStruct;
+  maxDate : NgbDateStruct;
   private subscriptions: Subscription[] = [];
   constructor(
     private snackBar: MatSnackBar,
@@ -218,11 +220,28 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     private roleService: RoleService,
     private projectService: ProjectService,
     private authService: AuthService,
+    private config: NgbDatepickerConfig,
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
       this.customer =new UserModel;
       this.role = new RoleModel;
       this.producer = new Producer;
+      /*const current = new Date();
+      config.minDate = { year: current.getFullYear(), month:
+        current.getMonth() + 1, day: current.getDate() };
+          //config.maxDate = { year: 2099, month: 12, day: 31 };
+        config.outsideDays = 'hidden';*/
+        const current = new Date();
+        this.minDate = {
+          year: current.getFullYear(),
+          month: current.getMonth() + 1,
+          day: current.getDate()
+        };
+        this.maxDate = {
+          year: current.getFullYear()-18,
+          month: current.getMonth() + 1,
+          day: current.getDate()
+        };
     }
 
   ngOnInit(): void {
