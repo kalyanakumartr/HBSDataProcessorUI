@@ -52,9 +52,9 @@ isLoading: boolean;
 filterGroup: FormGroup;
 searchGroup: FormGroup;
 userList: any;
-
+sel:string;
 departmentList:any[];
-department:string;
+department:any;
 divisionList:any[];
 division:string;
 projectList:any[];
@@ -71,6 +71,7 @@ authModel:AuthModel;
       });
       this.projectList=[];
       this.divisionList=[];
+      this.sel="0";
       this.isClearFilter=false;
   }
 
@@ -87,9 +88,15 @@ authModel:AuthModel;
     const sb = this.userService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
     this.getDepartment();
-    this.division="0";
-    this.department="0";
-    this.project="0";
+   /* setTimeout(() => {
+      this.division="0";
+      this.department="0: 0";
+      this.project="0";
+    }, 5000);*/
+
+  }
+  ngAfterViewInit(){
+
   }
   public getUsers() {
     console.log("Inside get Users")
@@ -220,7 +227,7 @@ authModel:AuthModel;
       tap((res: any) => {
         this.departmentList = res;
         console.log("departmentList", this.departmentList)
-        this.department="0";
+        this.department="0: 0";
       }),
       catchError((err) => {
         console.log(err);
@@ -257,7 +264,7 @@ authModel:AuthModel;
       tap((res: any) => {
         this.divisionList = res;
         console.log("divisionList", this.divisionList)
-
+        this.division ="0"
       }),
       catchError((err) => {
         console.log(err);

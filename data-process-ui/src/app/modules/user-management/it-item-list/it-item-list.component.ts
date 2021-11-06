@@ -43,7 +43,10 @@ authModel:AuthModel;
     private _router: Router,
     public usersService: UsersService
     ) {
-
+      this.usersService.listen().subscribe((m:any)=>{
+        console.log("m -- -- --",m);
+        this.getData(this.id);
+      });
       this.itItemsModel =new ItItemsModel;
       console.log("itItemsModel", this.itItemsModel)
   }
@@ -99,11 +102,14 @@ authModel:AuthModel;
     const modalRef = this.modalService.open(ITItemModalComponent, { size: 'lg', animation :true });
     modalRef.componentInstance.id = id;
     modalRef.componentInstance.userId = this.userId;
-    modalRef.componentInstance.name = name;
-
-    for(var assetObj of this.assetList){
-      if(assetObj.autoId === id){
-        modalRef.componentInstance.itItemsModel=assetObj;
+    modalRef.componentInstance.name = this.name;
+    if(id == undefined){
+      modalRef.componentInstance.itItemsModel=new ItItemsModel;
+    }else{
+      for(var assetObj of this.assetList){
+        if(assetObj.autoId === id){
+          modalRef.componentInstance.itItemsModel=assetObj;
+        }
       }
     }
   }

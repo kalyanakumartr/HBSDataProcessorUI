@@ -39,13 +39,13 @@
 
   </div>
   <div class="col-lg-3">
-    <span id="link" (click)="clearFilter()">Clear Filter </span>
+    <span id="link" (click)="clearFilter()">Clear Filter</span>
 
 
   </div>
 </div>
   </div>
-
+  <div style=" padding: 0px 10px 10px 20px;">
   <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
 
 
@@ -94,15 +94,7 @@
       <mat-cell *matCellDef="let element"> <button type="submit" class="btn btn-primary btn-elevate" (click)="save(element.userId)" >Save</button> </mat-cell>
     </ng-container>
     <!-- Weight Column -->
-    <ng-container matColumnDef="groupName">
-      <mat-header-cell *matHeaderCellDef> Group Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.groupName}} </mat-cell>
-    </ng-container>
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="teamName">
-      <mat-header-cell *matHeaderCellDef> Team Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.teamName}} </mat-cell>
-    </ng-container>
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
@@ -111,4 +103,5 @@
     [pageSizeOptions]="[5, 10, 20]"
     [showFirstLastButtons]="true">
   </mat-paginator>
+  </div>
 </div>

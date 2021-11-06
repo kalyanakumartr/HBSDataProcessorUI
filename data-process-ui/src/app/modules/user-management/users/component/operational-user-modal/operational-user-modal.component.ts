@@ -263,6 +263,10 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
         this.loadForm();
         this.assignControlValues();
         this.roleId = this.customer.roleId;
+        if(this.customer.operationalRecord.group.teamId != ""){
+          this.groupId = this.customer.operationalRecord.group.teamId;
+          this.getTeamforGroup();
+        }
         console.log("Check"+this.customer.operationalRecord.division.divisionId);
         this.projectService.getProjectList(this.customer.operationalRecord.division.divisionId).pipe(
           tap((res: any) => {
@@ -310,7 +314,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
 
       roles: [this.customer.roleId, Validators.compose([Validators.required])],
       teamId: [this.customer.operationalRecord.team.teamId, Validators.compose([Validators.required])],
-      groupId: [this.customer.operationalRecord.team.teamId, Validators.compose([Validators.required])],
+      groupId: [this.customer.operationalRecord.group.teamId, Validators.compose([Validators.required])],
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
       division: [this.customer.operationalRecord.division.divisionId, Validators.compose([Validators.required])],
       //Change Reporting to

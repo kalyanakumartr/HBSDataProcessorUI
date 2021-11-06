@@ -186,6 +186,9 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
   filterData(filterBy:string){
     this._listners.next(filterBy)
   }
+  filterAssetData(filterBy:string){
+    this._listners.next(filterBy)
+  }
   getUserAssets(id){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {

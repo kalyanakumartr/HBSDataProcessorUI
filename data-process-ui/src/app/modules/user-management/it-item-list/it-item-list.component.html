@@ -5,22 +5,25 @@
 
     </div>
     <div class="card-toolbar">
-      <button type="button" class="btn btn-primary" (click)="create()">Add Items</button>
+      <button type="button" class="btn btn-primary" (click)="create()">Add Asset</button>
       <button type="button" #closebutton class="close" data-dismiss="modal" (click)="close()">&times;</button>
     </div>
+
   </div>
+
   </div>
+  <div style=" padding: 10px 25px 25px 30px;">
   <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
 
 
     <!-- Position Column -->
     <ng-container matColumnDef="slno">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Sl No </mat-header-cell>
-      <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+      <mat-header-cell *matHeaderCellDef > Sl No </mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </mat-cell>
     </ng-container>
     <!-- Name Column -->
     <ng-container matColumnDef="assetName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header left> Item Name </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Asset Name </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.asset.assetName}} </mat-cell>
     </ng-container>
 
@@ -58,3 +61,4 @@
   </mat-table>
 
 
+</div>

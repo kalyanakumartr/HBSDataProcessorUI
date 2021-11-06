@@ -3,10 +3,15 @@
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
       <ng-container *ngIf="itItemsModel">
 
-        <b><label class="heading">Add IT Asset for {{name}}</label></b>
-        <ng-container *ngIf="itItemsModel.autoId"></ng-container>
+        <b><label class="heading">
+        <ng-container *ngIf="itItemsModel.autoId">Edit </ng-container>
+        <ng-container *ngIf="!itItemsModel.autoId">Add </ng-container>
+       IT Asset for {{name}}</label></b>
+
+
       </ng-container>
     </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
   </div>
   <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
     <ng-container *ngIf="isLoading$ | async">
@@ -16,13 +21,13 @@
     </ng-container>
 
     <ng-container *ngIf="itItemsModel">
-      <form action="#" class="form form-label-right" [formGroup]="formGroup">
+      <form action="#" name="assetForm" id="assetForm" class="form form-label-right" [formGroup]="formGroup">
         <div class="form-group row">
           <div class="col-lg-6">
             <label>Select Asset</label>
             <select class="form-control form-control-lg form-control-solid" name="assetId"
               [class.is-invalid]="isControlInvalid('assetId')" formControlName="assetId" (change)="setAsset($event.target.value)">
-              <option [ngValue]="0" disabled>Choose Asset</option>
+              <option [ngValue]="0" [selected]=true>Choose Asset</option>
               <option *ngFor="let asset of assetList" [ngValue]="asset.assetId">
                 {{ asset.assetName }}
               </option>
@@ -33,7 +38,7 @@
             <label>Select Brand</label>
             <select class="form-control form-control-lg form-control-solid" name="brandId"
               [class.is-invalid]="isControlInvalid('brandId')" formControlName="brandId" (change)="setBrand($event.target.value)">
-              <option [ngValue]="0" disabled>Choose Brand</option>
+              <option [ngValue]="0" [selected]=true>Choose Brand</option>
               <option *ngFor="let brand of brandList" [ngValue]="brand.brandId">
                 {{ brand.brandName }}
               </option>
@@ -56,7 +61,7 @@
                 <input type="text" name="givenDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
                   placeholder="mm/dd/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('givenDate')"
                   [class.is-valid]="isControlValid('givenDate')" formControlName="givenDate" readonly="true" />
-                <div class="input-group-append" (click)="d.toggle()">
+                <div class="input-group-append" (click)="d.toggle();">
                   <span class="input-group-text">
                     <i class="text-dark-50 flaticon-calendar"></i>
                   </span>

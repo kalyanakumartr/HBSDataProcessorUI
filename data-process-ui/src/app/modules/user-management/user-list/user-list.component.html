@@ -18,7 +18,7 @@
           <label>Select Department</label>
           <select class="form-control form-control-lg form-control-solid" name="department"
              formControlName="department" (change)="setDepartment($event.target.value)">
-            <option [ngValue]="0" selected>Select Department</option>
+            <option [ngValue]="0" [selected]=true>Select Department</option>
             <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
               {{ department.departmentName }}
             </option>
@@ -29,7 +29,7 @@
           <label>Select Division</label>
           <select class="form-control form-control-lg form-control-solid" name="division"
              formControlName="division" (change)="setDivision($event.target.value)">
-             <option [ngValue]="0" selected>Select Division</option>
+             <option [ngValue]="0" [selected]=true>Select Division</option>
             <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
               {{ division.divisionName }}
             </option>
@@ -40,7 +40,7 @@
           <label>Select Project</label>
           <select class="form-control form-control-lg form-control-solid" name="project"
              formControlName="project" (change)="setProject($event.target.value)">
-             <option [ngValue]="0" selected>Select Project</option>
+             <option [ngValue]="0" [selected]=true>Select Project</option>
             <option *ngFor="let project of projectList" [ngValue]="project.projectId">
               {{ project.projectName }}
             </option>
@@ -48,7 +48,7 @@
 
         </div>
         <div class="col-lg-3">
-          <span id="link" (click)="clearFilter()">Clear Filter </span>
+          <span id="link" (click)="clearFilter()">Clear Filter</span>
 
 
         </div>
@@ -64,12 +64,12 @@
           <tr>
           <th class="sticky-header">Edit</th>
           <th nowrap >
-            ID
+            Emp Id
             <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
               (sort)="sort($event)"></app-sort-icon>
           </th>
           <th nowrap >
-            USER NAME
+            Emp Name
             <app-sort-icon column="userName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
               (sort)="sort($event)"></app-sort-icon>
           </th>
@@ -79,19 +79,19 @@
               (sort)="sort($event)"></app-sort-icon>
           </th>
           <th nowrap >
-            STATUS
+            Status
             <app-sort-icon column="status" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
               (sort)="sort($event)"></app-sort-icon>
           </th>
           <th nowrap >Department Name</th>
 
           <th nowrap >
-            TEAM
+            Team
             <app-sort-icon column="team" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
               (sort)="sort($event)"></app-sort-icon>
           </th>
           <th nowrap >
-            GROUP
+            Group
             <app-sort-icon column="team.groupName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
               (sort)="sort($event)"></app-sort-icon>
           </th>

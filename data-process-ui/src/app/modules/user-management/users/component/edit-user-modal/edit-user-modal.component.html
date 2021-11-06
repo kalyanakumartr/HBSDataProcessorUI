@@ -24,7 +24,6 @@
             <input type="text" class="form-control form-control-lg form-control-solid" name="userId"
               placeholder="Login" autocomplete="off" [class.is-invalid]="isControlInvalid('userId')"
               [class.is-valid]="isControlValid('userId')" formControlName="userId" />
-            <div class="valid-feedback" *ngIf="isControlValid('userId')">Employee Id was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('required', 'userId')">Employee Id is required</div>
           </div>
           <div class="col-lg-3">
@@ -32,7 +31,6 @@
             <input type="text" class="form-control form-control-lg form-control-solid" name="userName"
               placeholder="First Name" autocomplete="off" [class.is-invalid]="isControlInvalid('userName')"
               [class.is-valid]="isControlValid('userName')" formControlName="userName" />
-            <div class="valid-feedback" *ngIf="isControlValid('userName')">First name was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('required', 'userName')">First name is required</div>
             <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'userName')">First name should have at
               least 3 symbols</div>
@@ -44,7 +42,6 @@
             <input type="text" class="form-control form-control-lg form-control-solid  is-invalid" name="fatherName"
               placeholder="Father Name" autocomplete="off" [class.is-invalid]="isControlInvalid('fatherName')"
               [class.is-valid]="isControlValid('fatherName')" formControlName="fatherName" />
-            <div class="valid-feedback" *ngIf="isControlValid('fatherName')">Father name was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'fatherName')">Father name should have at
               least 1 symbols</div>
             <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'fatherName')">Father name should have maximum
@@ -103,7 +100,7 @@
             <label>Select Department</label>
             <select class="form-control form-control-lg form-control-solid" name="department"
               [class.is-invalid]="isControlInvalid('department')" formControlName="department" (change)="setDepartment($event.target.value)">
-              <option [ngValue]="null" disabled>Choose Department</option>
+              <option [ngValue]="0" [selected]=true>Choose Department</option>
               <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
                 {{ department.departmentName }}
               </option>
@@ -114,7 +111,7 @@
             <label>Select Division</label>
             <select class="form-control form-control-lg form-control-solid" name="division"
               [class.is-invalid]="isControlInvalid('division')" formControlName="division" (change)="setDivision($event.target.value)">
-              <option [ngValue]="null" disabled>Choose Division</option>
+              <option [ngValue]="0" [selected]=true>Choose Division</option>
               <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
                 {{ division.divisionName }}
               </option>
@@ -125,7 +122,7 @@
             <label>Select Roles</label>
             <select  class="form-control form-control-lg form-control-solid" name="roles"
               [class.is-invalid]="isControlInvalid('roles')" formControlName="roles">
-              <option [ngValue]="null" disabled>Choose Role</option>
+              <option [ngValue]="0" [selected]=true>Choose Role</option>
               <option *ngFor="let role of roleList" [ngValue]="role.roleId">
               {{ role.roleName }}
               </option>
