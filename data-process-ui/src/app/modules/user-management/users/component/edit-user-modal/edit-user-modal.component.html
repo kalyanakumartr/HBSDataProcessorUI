@@ -8,6 +8,7 @@
         <ng-container *ngIf="customer.id">'{{customer.userName}} {{ customer.lastName }}'</ng-container>
       </ng-container>
     </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
   </div>
   <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
     <ng-container *ngIf="isLoading$ | async">
@@ -21,31 +22,38 @@
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label"> Employee ID</label>
+            <ng-container *ngIf="customer.userId">
+              <input type="text" class="form-control form-control-lg form-control-solid" name="userId" readonly
+              placeholder="Login" autocomplete="off" [class.is-invalid]="isControlInvalid('userId')" maxlength=20
+              [class.is-valid]="isControlValid('userId')" formControlName="userId" />
+               </ng-container>
+               <ng-container *ngIf="!customer.id">
             <input type="text" class="form-control form-control-lg form-control-solid" name="userId"
-              placeholder="Login" autocomplete="off" [class.is-invalid]="isControlInvalid('userId')"
+              placeholder="Login" autocomplete="off" [class.is-invalid]="isControlInvalid('userId')" maxlength=20
               [class.is-valid]="isControlValid('userId')" formControlName="userId" />
             <div class="invalid-feedback" *ngIf="controlHasError('required', 'userId')">Employee Id is required</div>
+          </ng-container>
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter name</label>
             <input type="text" class="form-control form-control-lg form-control-solid" name="userName"
-              placeholder="First Name" autocomplete="off" [class.is-invalid]="isControlInvalid('userName')"
+              placeholder="First Name" autocomplete="off" [class.is-invalid]="isControlInvalid('userName')" maxlength=50
               [class.is-valid]="isControlValid('userName')" formControlName="userName" />
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'userName')">First name is required</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'userName')">First name should have at
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'userName')">Name is required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'userName')">Name should have at
               least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'userName')">First name should have
-              maximum 100 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'userName')">Name should have
+              maximum 50 characters</div>
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter Father name</label>
-            <input type="text" class="form-control form-control-lg form-control-solid  is-invalid" name="fatherName"
+            <input type="text" class="form-control form-control-lg form-control-solid  is-invalid" name="fatherName" maxlength=50
               placeholder="Father Name" autocomplete="off" [class.is-invalid]="isControlInvalid('fatherName')"
               [class.is-valid]="isControlValid('fatherName')" formControlName="fatherName" />
             <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'fatherName')">Father name should have at
               least 1 symbols</div>
             <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'fatherName')">Father name should have maximum
-              100 symbols</div>
+              50 characters</div>
           </div>
         </div>
         <div class="form-group row">
@@ -77,7 +85,7 @@
           <div class="col-lg-3">
             <label class="form-label">Enter PhoneNumber</label>
             <input type="text" class="form-control form-control-lg form-control-solid" name="phoneno" placeholder="phoneno"
-              autocomplete="off" [class.is-invalid]="isControlInvalid('phoneno')"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('phoneno')" maxlength=15
               [class.is-valid]="isControlValid('phoneno')" formControlName="phoneno" />
               <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'phoneno')">Phone Number should have at
                 least 10 symbols</div>
@@ -85,7 +93,7 @@
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter Address</label>
-            <input type="text" class="form-control form-control-lg form-control-solid  is-invalid" name="address"
+            <input type="text" class="form-control form-control-lg form-control-solid  is-invalid" name="address" maxlength=200
               placeholder="Address" autocomplete="off" [class.is-invalid]="isControlInvalid('address')"
               [class.is-valid]="isControlValid('address')" formControlName="address" />
             <div class="valid-feedback" *ngIf="isControlValid('address')">Address was entered correct</div>
@@ -171,7 +179,7 @@
           </div>
           <div class="col-lg-3">
             <label class="form-label"> Cost To Company</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="ctc"
+            <input type="text" class="form-control form-control-lg form-control-solid" name="ctc" maxlength=15
               placeholder="CTC" autocomplete="off" [class.is-invalid]="isControlInvalid('ctc')"
               [class.is-valid]="isControlValid('ctc')" formControlName="ctc" />
             <div class="valid-feedback" *ngIf="isControlValid('ctc')">Cost To Company was entered correct</div>

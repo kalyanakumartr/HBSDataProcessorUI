@@ -37,6 +37,9 @@ export class EmploymentInfo {
   recruitmentType:string;
   costToCompany:string;
   vaccinateInfo:string;
+  lastDrawnSalary:string;
+  resignedFAndF:boolean;
+  esiEligible:boolean;
 
 
 }

@@ -51,6 +51,7 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
   brandList: Brand[];
   assetId :string;
   brandId :string;
+  selValue:string;
   receivedDate:string;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
@@ -61,6 +62,7 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
     ) {
       this.itItemsModel =new ItItemsModel;
       this.receivedDate="";
+      this.selValue="0";
     }
 
   ngOnInit(): void {
@@ -71,8 +73,6 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
     this.usersService.getAssetList().pipe(
       tap((res: any) => {
         this.assetList = res;
-        const formData = this.formGroup.value;
-        formData.assetId="0";
         console.log("Assets List", this.assetList);
       }),
       catchError((err) => {
@@ -84,7 +84,6 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
       this.usersService.getBrandList().pipe(
         tap((res: any) => {
           this.brandList = res;
-          this.brandId ="0";
           console.log("Brand List", this.brandList);
         }),
         catchError((err) => {
@@ -107,6 +106,9 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
     if (!this.id) {
       this.loadForm();
       this.setDefaultValue();
+      console.log("----",this.assetId)
+      this.assetId = "default";
+      this.brandId = "default";
     } else {
       console.log("this.id", this.id);
       this.assetId = this.itItemsModel.asset.assetId;
@@ -119,15 +121,17 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
 
   loadForm() {
     this.formGroup = this.fb.group({
-      assetId: [this.itItemsModel.asset.assetId, Validators.compose([ ])],
+
+      assetId: [this.itItemsModel.asset.assetId == '0'?"0":this.itItemsModel.asset.assetId, Validators.compose([ ])],
       serialNo: [this.itItemsModel.serialNo, Validators.compose([])],
-      brandId: [this.itItemsModel.brand.brandId, Validators.compose([])],
+      brandId: [this.itItemsModel.brand.brandId == '0'?"0":this.itItemsModel.brand.brandId, Validators.compose([])],
       givenDate: [this.itItemsModel.givenDate, Validators.compose([ ])],
       receivedDate: [this.itItemsModel.receivedDate==''?null:this.itItemsModel.receivedDate , Validators.compose([ ])],
       remarks:[this.itItemsModel.remarks],
 
 
     });
+    console.log("00000", this.formGroup.value);
   }
   setDefaultValue(){
     this.itItemsModel =EMPTY_ITMODEL;

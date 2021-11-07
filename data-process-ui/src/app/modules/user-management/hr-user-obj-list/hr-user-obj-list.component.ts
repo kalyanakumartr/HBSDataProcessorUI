@@ -144,9 +144,9 @@ authModel:AuthModel;
   searchForm() {
     this.searchGroup = this.fb.group({
       searchTerm: [''],
-      department:[''],
-      division:[''],
-      project:['']
+      department:['0'],
+      division:['0'],
+      project:['0']
     });
     const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
       .pipe(

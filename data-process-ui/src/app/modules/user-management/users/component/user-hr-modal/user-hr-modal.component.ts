@@ -128,7 +128,10 @@ const EMPTY_CUSTOMER: UserModel = {
       approvedLeaveBalance :'',
       recruitmentType:'',
       costToCompany:'',
-      vaccinateInfo:''
+      vaccinateInfo:'',
+      lastDrawnSalary:'',
+      resignedFAndF:false,
+      esiEligible:false
     },
     educationalInfo:{
       highestGraduate: '',
@@ -212,7 +215,10 @@ employmentInfo:{
   recruitmentType:'',
   costToCompany:'',
   vaccinateInfo:'',
-  longLeaveReason:''
+  longLeaveReason:'',
+  lastDrawnSalary:'',
+  resignedFAndF:false,
+  esiEligible:false
 },
 educationalInfo:{
   highestGraduate: '',
@@ -316,60 +322,65 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
 
   loadForm() {
     this.formGroup = this.fb.group({
-      accountNo: [this.userHRModel.bankAccounts.accountNo, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
-      bankName: [this.userHRModel.bankAccounts.bankName, Validators.compose([ Validators.minLength(1), Validators.maxLength(100)])],
-      bankBranch: [this.userHRModel.bankAccounts.bankBranch, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
-      ifscCode: [this.userHRModel.bankAccounts.ifscCode, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
+      accountNo: [this.userHRModel.bankAccounts.accountNo, Validators.compose([ Validators.minLength(3), Validators.maxLength(20)])],
+      bankName: [this.userHRModel.bankAccounts.bankName, Validators.compose([ Validators.minLength(1), Validators.maxLength(50)])],
+      bankBranch: [this.userHRModel.bankAccounts.bankBranch, Validators.compose([ Validators.minLength(3), Validators.maxLength(50)])],
+      ifscCode: [this.userHRModel.bankAccounts.ifscCode, Validators.compose([ Validators.minLength(3), Validators.maxLength(20)])],
 
-      highestGraduate: [this.userHRModel.educationalInfo.highestGraduate, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
-      institution : [this.userHRModel.educationalInfo.institution, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
-      markGrade: [this.userHRModel.educationalInfo.markGrade, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
-      year: [this.userHRModel.educationalInfo.year, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
+      highestGraduate: [this.userHRModel.educationalInfo.highestGraduate, Validators.compose([Validators.minLength(3), Validators.maxLength(25)])],
+      institution : [this.userHRModel.educationalInfo.institution, Validators.compose([Validators.minLength(3), Validators.maxLength(50)])],
+      markGrade: [this.userHRModel.educationalInfo.markGrade, Validators.compose([Validators.minLength(1), Validators.maxLength(10)])],
+      year: [this.userHRModel.educationalInfo.year, Validators.compose([Validators.minLength(4), Validators.maxLength(4)])],
 
-      aadhar: [this.userHRModel.taxInfo.aadhar, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
-      esic : [this.userHRModel.taxInfo.esic, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
-      providentFund: [this.userHRModel.taxInfo.providentFund, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
-      pan: [this.userHRModel.taxInfo.pan, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
-      uan: [this.userHRModel.taxInfo.uan, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
-      fnf: [''],
-      esiEligible:[''],
-      lastSalaryDrawn:['', Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
+      aadhar: [this.userHRModel.taxInfo.aadhar, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(12), Validators.maxLength(12)])],
+      esic : [this.userHRModel.taxInfo.esic, Validators.compose([Validators.minLength(10), Validators.maxLength(17)])],
+      providentFund: [this.userHRModel.taxInfo.providentFund, Validators.compose([Validators.minLength(10), Validators.maxLength(20)])],
+      pan: [this.userHRModel.taxInfo.pan, Validators.compose([Validators.minLength(10), Validators.maxLength(15)])],
+      uan: [this.userHRModel.taxInfo.uan, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(12), Validators.maxLength(12)])],
+      fnf: [this.userHRModel.employmentInfo.resignedFAndF],
+      esiEligible:[this.userHRModel.employmentInfo.esiEligible],
+      lastSalaryDrawn:[this.userHRModel.employmentInfo.lastDrawnSalary, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(5), Validators.maxLength(7)])],
 
 
       dateOfJoin: [this.userHRModel.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
-      infoAPL: [this.userHRModel.employmentInfo.infoAPL, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
-      employmentStatus: [this.userHRModel.employmentInfo.employmentStatus, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
-      experienceInEDR: [this.userHRModel.employmentInfo.experienceInEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
-      experienceOutEDR: [this.userHRModel.employmentInfo.experienceOutEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
+      infoAPL: [this.userHRModel.employmentInfo.infoAPL, Validators.compose([])],
+      employmentStatus: [this.userHRModel.employmentInfo.employmentStatus, Validators.compose([Validators.minLength(1), Validators.maxLength(50)])],
+      experienceInEDR: [this.userHRModel.employmentInfo.experienceInEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(2)])],
+      experienceOutEDR: [this.userHRModel.employmentInfo.experienceOutEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(2)])],
       fromNoticePeriod: [this.userHRModel.employmentInfo.fromNoticePeriod, Validators.compose([])],
       toNoticePeriod: [this.userHRModel.employmentInfo.toNoticePeriod, Validators.compose([])],
-      idCardEDR: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
+      idCardEDR: [this.userHRModel.employmentInfo.idCardEDR, Validators.compose([Validators.minLength(5), Validators.maxLength(20)])],
       lastWorkDay: [this.userHRModel.employmentInfo.lastWorkDay, Validators.compose([])],
-      lastEmployer: [this.userHRModel.employmentInfo.lastEmployer, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
-      lastDesignation: [this.userHRModel.employmentInfo.lastDesignation, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
+      lastEmployer: [this.userHRModel.employmentInfo.lastEmployer, Validators.compose([Validators.minLength(2), Validators.maxLength(50)])],
+      lastDesignation: [this.userHRModel.employmentInfo.lastDesignation, Validators.compose([Validators.minLength(2), Validators.maxLength(50)])],
       isOfferIssued: [this.userHRModel.employmentInfo.isOfferIssued, Validators.compose([])],
       isApprentice: [this.userHRModel.employmentInfo.isApprentice, Validators.compose([])],
       isFileCreated: [this.userHRModel.employmentInfo.isFileCreated, Validators.compose([])],
       longLeaveFromDate: [this.userHRModel.employmentInfo.longLeaveFromDate, Validators.compose([])],
       longLeaveToDate: [this.userHRModel.employmentInfo.longLeaveToDate, Validators.compose([])],
       recruitmentType: [this.userHRModel.employmentInfo.recruitmentType, Validators.compose([])],
-      costToCompany: [this.userHRModel.employmentInfo.costToCompany, Validators.compose([])],
+      costToCompany: [this.userHRModel.employmentInfo.costToCompany, Validators.compose([Validators.minLength(2), Validators.maxLength(10)])],
       vaccinateInfo: [this.userHRModel.employmentInfo.vaccinateInfo, Validators.compose([])],
       longLeaveReason: [this.userHRModel.employmentInfo.longLeaveReason, Validators.compose([])],
       district: [this.customer.mediaList[0].district, Validators.compose([])],
 
       personalEmailId: [ this.customer.mediaList[0].personalEmailId, Validators.compose([ Validators.email])],
       officialEmailId: [this.customer.mediaList[0].emailId, Validators.compose([ Validators.email])],
-      phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.minLength(1), Validators.maxLength(13)])],
-      alternateNumber: [this.customer.mediaList[0].alternateMobile, Validators.compose([Validators.minLength(1), Validators.maxLength(13)])],
-      emergencyNumber: [this.customer.mediaList[0].alternateMobile, Validators.compose([Validators.minLength(1), Validators.maxLength(13)])],
+      phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
+      alternateNumber: [this.customer.mediaList[0].alternateMobile, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
+      emergencyNumber: [this.customer.mediaList[0].alternateMobile, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
       currentAddress: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(1), Validators.maxLength(200)])],
       permanentAddress: [this.customer.mediaList[0].permanentAddress, Validators.compose([Validators.minLength(1), Validators.maxLength(200)])],
       maritialStatus: [this.customer.martial, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
-      spouseName: [this.customer.spouseName, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
+      spouseName: [this.customer.spouseName, Validators.compose([Validators.minLength(1), Validators.maxLength(50)])],
       bloodGroup: [this.customer.bloodGroup, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
 
     });
+    if(this.userHRModel.employmentInfo.employmentStatus ==="Active_But_Long_Leave"){
+      this.isLongLeave=true;
+    }else{
+      this.isLongLeave=false;
+    }
   }
 
   save() {
@@ -426,6 +437,9 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     this.userHRModel.employmentInfo.isOfferIssued = formData.isOfferIssued;
     this.userHRModel.employmentInfo.isApprentice = formData.isApprentice;
     this.userHRModel.employmentInfo.isFileCreated = formData.isFileCreated;
+    this.userHRModel.employmentInfo.lastDrawnSalary = formData.lastSalaryDrawn;
+    this.userHRModel.employmentInfo.esiEligible = formData.esiEligible;
+    this.userHRModel.employmentInfo.resignedFAndF = formData.fnf;
     if(this.isLongLeave){
       this.userHRModel.employmentInfo.longLeaveFromDate = formData.longLeaveFromDate;
       this.userHRModel.employmentInfo.longLeaveToDate = formData.longLeaveToDate;
@@ -468,7 +482,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
 
   checkEmpStatus(value){
 
-    if(value == "ActiveLongLeave"){
+    if(value == "Active_But_Long_Leave"){
       this.isLongLeave=true;
     }else{
       this.isLongLeave=false;

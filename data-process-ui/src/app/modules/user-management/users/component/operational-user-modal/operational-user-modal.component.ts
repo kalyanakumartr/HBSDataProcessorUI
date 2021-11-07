@@ -127,7 +127,10 @@ const EMPTY_CUSTOMER: UserModel = {
       approvedLeaveBalance :'',
       recruitmentType:'',
       costToCompany:'',
-      vaccinateInfo:''
+      vaccinateInfo:'',
+      lastDrawnSalary:'',
+      resignedFAndF:false,
+      esiEligible:false
     },
     educationalInfo:{
       highestGraduate: '',
@@ -373,8 +376,10 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   setReportingToByGroup(value){
     var position =value.split(":")
     if(position.length>1){
-      this.reporting=this.groupList[position[0]].fullName;
-      this.reportingId= this.groupList[position[0]].reportingTo;
+      var group =this.groupList[position[0]-1];
+      console.log(position[0],group);
+      this.reporting=group.fullName;
+      this.reportingId= group.reportingTo;
       this.groupId= position[1].toString().trim();
       this.getTeamforGroup();
     }
@@ -382,8 +387,11 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   setReportingToByTeam(value){
 
     var position =value.split(":")
-    this.reporting=this.teamList[position[0]].fullName;
-    this.reportingId= this.teamList[position[0]].reportingTo;
+    if(position.length>1){
+      var team =this.teamList[position[0]-1];
+      this.reporting=team.fullName;
+      this.reportingId= team.reportingTo;
+    }
   }
   assignRole(value){
     var position =value.split(": ");
@@ -407,7 +415,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
 
     this.userOPRModel.trainingBatch= formData.trainingBatch;
     this.userOPRModel.loginRFDB_BPS = formData.loginRFDB_BPS;
-    this.userOPRModel.group.teamId = formData.teamId;
+    this.userOPRModel.group.teamId = formData.groupId;
     this.userOPRModel.team.teamId = formData.teamId;
     this.userOPRModel.team.employeeId = formData.reportingId;
     this.userOPRModel.department.departmentId = formData.department;

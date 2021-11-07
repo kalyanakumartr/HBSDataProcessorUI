@@ -50,11 +50,11 @@ filterGroup: FormGroup;
 searchGroup: FormGroup;
 userList: any;
 departmentList:any[];
-department:string;
+department:any;
 divisionList:any[];
-division:string;
+division:any;
 projectList:any[];
-project:string;
+project:any;
 isClearFilter:boolean;
 private subscriptions: Subscription[] = [];
 authModel:AuthModel;
@@ -130,9 +130,9 @@ authModel:AuthModel;
   searchForm() {
     this.searchGroup = this.fb.group({
       searchTerm: [''],
-      department:[''],
-      division:[''],
-      project:['']
+      department:['0'],
+      division:['0'],
+      project:['0']
     });
     const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
       .pipe(
@@ -210,7 +210,8 @@ authModel:AuthModel;
       tap((res: any) => {
         this.departmentList = res;
         console.log("departmentList", this.departmentList)
-        this.department="0";
+        this.department="0: 0";
+
       }),
       catchError((err) => {
         console.log(err);
@@ -247,7 +248,7 @@ authModel:AuthModel;
       tap((res: any) => {
         this.divisionList = res;
         console.log("divisionList", this.divisionList)
-
+        this.division="0: 0";
       }),
       catchError((err) => {
         console.log(err);
@@ -270,7 +271,8 @@ authModel:AuthModel;
     this.projectService.getProjectList(this.division).pipe(
       tap((res: any) => {
         this.projectList = res;
-        console.log("projectList", this.projectList)
+        console.log("projectList", this.projectList);
+        this.project="0: 0";
       }),
       catchError((err) => {
         console.log(err);

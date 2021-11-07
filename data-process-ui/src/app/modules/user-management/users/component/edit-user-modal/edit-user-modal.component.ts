@@ -130,7 +130,10 @@ const EMPTY_CUSTOMER: UserModel = {
       approvedLeaveBalance :'',
       recruitmentType:'',
       costToCompany:'',
-      vaccinateInfo:''
+      vaccinateInfo:'',
+      lastDrawnSalary:'',
+      resignedFAndF:false,
+      esiEligible:false
     },
     educationalInfo:{
       highestGraduate: '',
@@ -359,14 +362,14 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   }
   loadForm() {
     this.formGroup = this.fb.group({
-      userName: [this.customer.userName, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      fatherName: [this.customer.fatherName, Validators.compose([ Validators.minLength(1), Validators.maxLength(100)])],
-      spouseName: [this.customer.spouseName, Validators.compose([ Validators.minLength(1), Validators.maxLength(100)])],
-      userId: [this.customer.userId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      userName: [this.customer.userName, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(50)])],
+      fatherName: [this.customer.fatherName, Validators.compose([ Validators.minLength(1), Validators.maxLength(50)])],
+      spouseName: [this.customer.spouseName, Validators.compose([ Validators.minLength(1), Validators.maxLength(50)])],
+      userId: [this.customer.userId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20)])],
 
       dob: [this.customer.dob, Validators.compose([Validators.nullValidator])],
       sex: [this.customer.sex, Validators.compose([Validators.required])],
-      phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.minLength(10), Validators.maxLength(12)])],
+      phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.minLength(10), Validators.maxLength(15)])],
       address: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(3), Validators.maxLength(200)])],
 
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
