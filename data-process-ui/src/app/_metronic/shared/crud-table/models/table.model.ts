@@ -7,6 +7,9 @@ export interface ITableState {
   paginator: PaginatorState;
   sorting: SortState;
   searchTerm: string;
+  divisionId:string;
+  departmentId: string;
+  projectId: string;
   grouping: GroupingState;
   entityId: number | undefined;
 }

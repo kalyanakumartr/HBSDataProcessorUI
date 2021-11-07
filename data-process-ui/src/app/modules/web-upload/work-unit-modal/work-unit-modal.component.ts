@@ -24,13 +24,26 @@ export class WorkUnitModalComponent  {
   reasonList: any;
   selectedReason: string;
   showReasons:boolean = false;
+  mm : any;
+  ss : any;
+  ms : any;
+  isRunning : boolean;
+  buttonType:number;
+  timerId : any;
+  showReject :boolean;
   private subscriptions: Subscription[] = [];
   constructor(
         private snackBar: MatSnackBar,
         public workAllocationService: WorkAllocationService,
         private fb: FormBuilder, public modal: NgbActiveModal
     ) {
-
+      this.mm = 0;
+      this.ss = 0;
+      this.ms = 0;
+      this.isRunning = false;
+      this.buttonType=1;
+      this.timerId = 0;
+      this.showReject=false;
     }
 
   ngOnInit(): void {
@@ -39,6 +52,9 @@ export class WorkUnitModalComponent  {
     .subscribe((reasons) => {
       this.reasonList = reasons;
     });
+    if(this.queue != "Production"){
+      this.showReject=true;
+    }
   }
   timeLeft: number = 60;
   interval;
@@ -61,15 +77,28 @@ startTimer() {
     var team="";
     this.assignWorkUnits(taskId,this.queue,team,"Start","Ready",allotedto,"NOREASON");
     this.openSnackBar("Work Unit Started","");
+    this.clickHandler(2) ;
   }
   pause(taskId){
-
+    var allotedto ="";
+    var team="";
+    this.assignWorkUnits(taskId,this.queue,team,"Pause","InProgress",allotedto,"NOREASON");
+    this.openSnackBar("Work Unit Paused","");
+    this.clickHandler(3) ;
+  }
+  resume(taskId){
+    var allotedto ="";
+    var team="";
+    this.assignWorkUnits(taskId,this.queue,team,"Resume","InProgress",allotedto,"NOREASON");
+    this.openSnackBar("Work Unit Resume","");
+    this.clickHandler(2) ;
   }
   stop(taskId){
     var allotedto ="15794";//Hardcoded
     var team="GRP0038";//Hardcoded
-    this.assignWorkUnits(taskId,this.queue,team,"End","Completed",allotedto,"NOREASON");
+    this.assignWorkUnits(taskId,this.queue,team,"Stop","Completed",allotedto,"NOREASON");
     this.openSnackBar("Work Unit Ended","");
+    this.clickHandler(0) ;
     this.modal.dismiss();
   }
   hold(taskId){
@@ -82,7 +111,7 @@ startTimer() {
     }
     var allotedto ="";
     var team="";
-    //this.assignWorkUnits(taskId,this.queue,team,"Hold","InProgress",allotedto,this.selectedReason);
+    this.assignWorkUnits(taskId,this.queue,team,"Hold","InProgress",allotedto,this.selectedReason);
     this.openSnackBar("Work Unit Holded","");
     this.modal.dismiss();
   }
@@ -112,16 +141,17 @@ startTimer() {
     updateTask.allocationIds =selectedIds;
     updateTask.teamId = teamId;
     updateTask.queueId =queue;
+    updateTask.skillSet="Production";
     updateTask.statusId =status;
     updateTask.allotedTo = allotedTo;
-    updateTask.eAction=action;
+    updateTask.triggeredAction=action;
     updateTask.reasonId =reason;
     updateTask.remarks="To Team Member End";
-   /* this.workAllocationService.updateTask(updateTask)
+    this.workAllocationService.updateTask(updateTask)
     .subscribe((res: any)=>
     {
         this.openSnackBar(res.messageCode,"!!")
-    });*/
+    });
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -132,5 +162,33 @@ startTimer() {
 
   refresh(){
 
+  }
+
+
+  clickHandler(type) {
+    if (!this.isRunning) {
+      // Stop => Running
+      this.timerId = setInterval(() => {
+        this.ms++;
+
+        if (this.ms >= 100) {
+          this.ss++;
+          this.ms = 0;
+        }
+        if (this.ss >= 60) {
+          this.mm++;
+          this.ss = 0
+        }
+
+      }, 10);
+    } else {
+      clearInterval(this.timerId);
+    }
+    this.buttonType=type;
+    this.isRunning = !this.isRunning;
+  }
+
+  format(num: number) {
+    return (num + '').length === 1 ? '0' + num : num + '';
   }
 }

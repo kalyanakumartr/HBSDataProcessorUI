@@ -8,5 +8,6 @@ export class Media {
     permanentAddress:string;
     personalEmailId:string;
     emergencyNumber:string;
+    district:string;
 
   }

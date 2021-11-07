@@ -1,0 +1,107 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <ng-container *ngIf="itItemsModel">
+
+        <b><label class="heading">
+        <ng-container *ngIf="itItemsModel.autoId">Edit </ng-container>
+        <ng-container *ngIf="!itItemsModel.autoId">Add </ng-container>
+       IT Asset for {{name}}</label></b>
+
+
+      </ng-container>
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="itItemsModel">
+      <form action="#" name="assetForm" id="assetForm" class="form form-label-right" [formGroup]="formGroup">
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label>Select Asset</label>
+            <select class="form-control form-control-lg form-control-solid" name="assetId"
+              [class.is-invalid]="isControlInvalid('assetId')" formControlName="assetId" (change)="setAsset($event.target.value)">
+              <option [ngValue]="0" [selected]=true>Choose Asset</option>
+              <option *ngFor="let asset of assetList" [ngValue]="asset.assetId">
+                {{ asset.assetName }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-lg-6">
+            <label>Select Brand</label>
+            <select class="form-control form-control-lg form-control-solid" name="brandId"
+              [class.is-invalid]="isControlInvalid('brandId')" formControlName="brandId" (change)="setBrand($event.target.value)">
+              <option [ngValue]="0" [selected]=true>Choose Brand</option>
+              <option *ngFor="let brand of brandList" [ngValue]="brand.brandId">
+                {{ brand.brandName }}
+              </option>
+            </select>
+          </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label class="form-label">Enter SerialNo</label>
+              <input type="text" class="form-control form-control-lg form-control-solid" name="serialNo" placeholder="serialNo"
+                autocomplete="off" [class.is-invalid]="isControlInvalid('serialNo')"
+                [class.is-valid]="isControlValid('serialNo')" formControlName="serialNo" />
+                <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'serialNo')">Phone Number should have at
+                  least 10 symbols</div>
+                <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'serialNo')">Phone Number should not be morethan 13 symbols</div>
+            </div>
+            <div class="col-lg-6">
+              <label>Given Date</label>
+              <div class="input-group input-group-solid">
+                <input type="text" name="givenDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('givenDate')"
+                  [class.is-valid]="isControlValid('givenDate')" formControlName="givenDate" readonly="true" />
+                <div class="input-group-append" (click)="d.toggle();">
+                  <span class="input-group-text">
+                    <i class="text-dark-50 flaticon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label>Return Date</label>
+              <div class="input-group input-group-solid">
+                <input type="text" name="receivedDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #r="ngbDatepicker"  formControlName="receivedDate"  [value]=''/>
+                <div class="input-group-append" (click)="r.toggle()">
+                  <span class="input-group-text">
+                    <i class="text-dark-50 flaticon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-lg-6">
+              <label class="form-label">Enter Remarks</label>
+              <textarea  class="form-control form-control-lg form-control-solid  is-invalid" name="remarks"
+                placeholder="Remarks" autocomplete="off" [class.is-invalid]="isControlInvalid('remarks')"
+                [class.is-valid]="isControlValid('remarks')" formControlName="remarks" > </textarea >
+            </div>
+
+          </div>
+
+      </form>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+    <ng-container *ngIf="itItemsModel">
+
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+        [disabled]="formGroup.invalid">Save</button>
+    </ng-container>
+  </div>
+</div>

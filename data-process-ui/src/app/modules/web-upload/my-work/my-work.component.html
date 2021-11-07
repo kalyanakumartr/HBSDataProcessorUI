@@ -69,17 +69,21 @@
             </ng-container>
 
             <th nowrap >
-              Work Unit Id
+              WU Id
 
             </th>
 
-          <th nowrap > Received Date </th>
+          <th nowrap >WU Received Date </th>
 
 
-          <th nowrap >WUMiles</th>
+          <th nowrap >WU Miles</th>
           <th nowrap >Sub Country Name</th>
-          <th nowrap >Road Name</th>
-          <th nowrap >Miles</th>
+          <th nowrap >Road Type</th>
+          <th nowrap >Uploaded Status</th>
+          <th nowrap >Current WU Status</th>
+
+          <th nowrap >Completed Miles</th>
+
           <th >Primary Non-Div Motorways</th>
           <th >Primary Non-Div Trunk</th>
           <th >Primary Non-Div Urban</th>
@@ -88,7 +92,7 @@
           <th nowrap >Status</th>
           <th nowrap >Group</th>
           <th nowrap >Team</th>
-          <th nowrap >Department Name</th>
+          <th nowrap >Division Name</th>
           <th nowrap >Project Name</th>
 
 
@@ -126,6 +130,12 @@
               {{ task.coreData.roadData.roadTypeMap.roadName }}
             </td>
             <td>
+              {{ task.coreData.roadData.roadTypeMap.roadName }}
+            </td>
+            <td>
+              {{ task.currentQueue }}
+            </td>
+            <td>
               {{ task.coreData.roadData.roadTypeMap.miles }}
             </td>
 
@@ -154,7 +164,7 @@
             <td>
               {{ task.teamName }}
             </td>
-            <td> {{ task.coreData.roadData.departmentName}}</td>
+            <td> {{ task.coreData.roadData.divisionName}}</td>
 
             <td>
               {{ task.coreData.roadData.projectName }}

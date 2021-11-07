@@ -32,7 +32,12 @@ export class EmploymentInfo {
   isFileCreated:boolean;
   longLeaveFromDate:string;
   longLeaveToDate:string;
+  longLeaveReason:string;
   approvedLeaveBalance :string;
+  recruitmentType:string;
+  costToCompany:string;
+  vaccinateInfo:string;
+
 
 }
 

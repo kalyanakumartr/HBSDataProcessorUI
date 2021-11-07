@@ -20,7 +20,7 @@ export class UserModel implements BaseModel {
   fullname: string;
   email: string;
   pic: string;
-  userRoleses: UserRoles[];
+  userRoles: UserRoles[];
   occupation: string;
   companyName: string;
   dateOfJoin:string;

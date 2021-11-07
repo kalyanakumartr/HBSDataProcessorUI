@@ -1,6 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter, NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, finalize, first, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter, getDateFromString } from '../../../../../_metronic/core';
@@ -23,7 +23,7 @@ const EMPTY_CUSTOMER: UserModel = {
   userName: '',
   fullname: '',
   pic: '',
-  userRoleses: [
+  userRoles: [
     {
     roles:{
         id:'',
@@ -59,7 +59,8 @@ const EMPTY_CUSTOMER: UserModel = {
       personalEmailId:'',
       mediaType: 'Primary',
       mediaId: '',
-      emergencyNumber:''
+      emergencyNumber:'',
+      district:''
     }
 ],
   language: '',
@@ -94,6 +95,11 @@ const EMPTY_CUSTOMER: UserModel = {
     systemSerialNo:'',
     systemToHome:false,
     workMode:'WFO',
+    isDongleProvided:false,
+    dongleReturnDate:'',
+    modemReturnDate:'',
+    downGradedPlan:'',
+
   },
   hrRecord:{
     id:'',
@@ -120,7 +126,11 @@ const EMPTY_CUSTOMER: UserModel = {
       isFileCreated:false,
       longLeaveFromDate:'',
       longLeaveToDate:'',
-      approvedLeaveBalance :''
+      longLeaveReason:'NotApplicable',
+      approvedLeaveBalance :'',
+      recruitmentType:'',
+      costToCompany:'',
+      vaccinateInfo:''
     },
     educationalInfo:{
       highestGraduate: '',
@@ -139,6 +149,13 @@ const EMPTY_CUSTOMER: UserModel = {
   operationalRecord:{
     id:'',
     team:{
+      teamId: 'GRP9999',
+      teamName: '',
+      groupId: 'GRP0000',
+      groupName: '',
+      employeeId:'',
+    },
+    group:{
       teamId: 'GRP9999',
       teamName: '',
       groupId: 'GRP0000',
@@ -194,6 +211,8 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   role : RoleModel;
   producer : Producer;
+  minDate : NgbDateStruct;
+  maxDate : NgbDateStruct;
   private subscriptions: Subscription[] = [];
   constructor(
     private snackBar: MatSnackBar,
@@ -201,11 +220,28 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     private roleService: RoleService,
     private projectService: ProjectService,
     private authService: AuthService,
+    private config: NgbDatepickerConfig,
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
       this.customer =new UserModel;
       this.role = new RoleModel;
       this.producer = new Producer;
+      /*const current = new Date();
+      config.minDate = { year: current.getFullYear(), month:
+        current.getMonth() + 1, day: current.getDate() };
+          //config.maxDate = { year: 2099, month: 12, day: 31 };
+        config.outsideDays = 'hidden';*/
+        const current = new Date();
+        this.minDate = {
+          year: current.getFullYear(),
+          month: current.getMonth() + 1,
+          day: current.getDate()
+        };
+        this.maxDate = {
+          year: current.getFullYear()-18,
+          month: current.getMonth() + 1,
+          day: current.getDate()
+        };
     }
 
   ngOnInit(): void {
@@ -214,6 +250,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         this.projectService.getDepartmentList().pipe(
           tap((res: any) => {
             this.departmentList = res;
+            this.loadCustomer();
             console.log("departmentList", this.departmentList)
           }),
           catchError((err) => {
@@ -223,7 +260,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
             });
           })).subscribe();
 
-          this.projectService.getTeamList("","").pipe(
+          /*this.projectService.getTeamList("","").pipe(
             tap((res: any) => {
               this.teamList = res;
               console.log("teamList", this.teamList)
@@ -233,7 +270,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
               return of({
                 items: []
               });
-            })).subscribe();
+            })).subscribe();*/
 
   }
   setDepartment(value){
@@ -251,7 +288,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     }
   }
   getDivisionForDepartment(){
-    this.teamList=[];
+    this.divisionList=[];
     this.projectService.getDivisionList(this.department).pipe(
       tap((res: any) => {
         this.divisionList = res;
@@ -265,10 +302,11 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       })).subscribe();
   }
   getRolesForDivision(){
+    this.roleList=[];
     this.roleService.getActiveRoleList(this.division).pipe(
       tap((res: any) => {
         this.roleList = res;
-        this.loadCustomer();
+
         console.log("RoleList", this.roleList)
       }),
       catchError((err) => {
@@ -297,7 +335,13 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         console.log(this.customer);
         this.loadEditForm();
         this.loadForm();
-        this.assignControlValues();
+
+        this.department=this.customer.operationalRecord.department.departmentId;
+        this.division=this.customer.operationalRecord.division.divisionId;
+        console.log("role",this.customer.roleId);
+        this.role.roleId=this.customer.roleId;
+        this.getDivisionForDepartment();
+        this.getRolesForDivision();
 
         console.log("Check");
       });
@@ -310,7 +354,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   assignControlValues(){
     this.assignControlValue("deployId",this.customer.operationalRecord.deploy.deploymentId);
     this.assignControlValue("teamId",this.customer.operationalRecord.team.teamId);
-    //this.assignControlValue("roles",this.customer.userRoleses[0].roleId);
+    //this.assignControlValue("roles",this.customer.userRoles[0].roleId);
 
   }
   loadForm() {
@@ -328,8 +372,10 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
       division: [this.customer.operationalRecord.division.divisionId, Validators.compose([Validators.required])],
       roles: [this.customer.roleId, Validators.compose([Validators.required])],
+      recruitmentType: [this.customer.hrRecord.employmentInfo.recruitmentType, Validators.compose([Validators.required])],
       status: [this.customer.hrRecord.employmentInfo.employmentStatus, Validators.compose([Validators.required])],
       doj: [this.customer.hrRecord.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
+      ctc: [this.customer.hrRecord.employmentInfo.costToCompany, Validators.compose([Validators.nullValidator])],
 
       //teamId: [this.customer.team, Validators.compose([Validators.required])],
       //deployId: [this.customer.deploy, Validators.compose([Validators.required])],
@@ -356,6 +402,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     const sbUpdate = this.usersService.update(this.customer,"/updateUser","formUser").pipe(
       tap(() => {
         this.modal.close();
+        this.usersService.filterData("");
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
@@ -376,6 +423,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     const sbCreate = this.usersService.create(this.customer,"/addUser","formUser").pipe(
       tap(() => {
         this.modal.close();
+        this.usersService.filterData("");
       }),
       catchError((errorMessage) => {
         this.openSnackBar(errorMessage,"X");
@@ -403,8 +451,12 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
 
 
     this.customer.operationalRecord.department.departmentId = formData.department;
+    this.customer.operationalRecord.division.divisionId = formData.division;
     this.customer.hrRecord.employmentInfo.employmentStatus= formData.status;
     this.customer.hrRecord.employmentInfo.dateOfJoin =formData.doj;
+    this.customer.hrRecord.employmentInfo.recruitmentType =formData.recruitmentType;
+    this.customer.hrRecord.employmentInfo.costToCompany =formData.ctc;
+
     this.role.roleId = formData.roles;
     for(var role of this.roleList){
       if(role.roleId == this.role.roleId){
@@ -412,13 +464,17 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       }
     }
     this.role.isAdminRole =this.isAdminRole;
-    for (var key in this.customer.userRoleses[0]) {
-        delete this.customer.userRoleses[0][key];
+    if(this.customer.userRoles != undefined){
+      for (var key in this.customer.userRoles[0]) {
+          delete this.customer.userRoles[0][key];
+      }
+      this.customer.userRoles[0]= null;
+      this.customer.userRoles[0]= new UserRoles;
+    }else{
+      this.customer.userRoles.push(new UserRoles)
     }
-    this.customer.userRoleses[0]= null;
-    this.customer.userRoleses[0]= new UserRoles;
 
-    this.customer.userRoleses[0].roles =this.role;
+    this.customer.userRoles[0].roles =this.role;
 
     this.customer.employeeId=formData.userId;
     if(createEdit == "Edit"){

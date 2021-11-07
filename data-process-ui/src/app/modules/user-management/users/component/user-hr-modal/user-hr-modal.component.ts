@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserHRModel } from 'src/app/modules/auth/_models/user-hr.model';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { Media } from 'src/app/modules/auth/_models/media.model';
+import { BinaryOperatorToken } from 'typescript';
 
 const EMPTY_CUSTOMER: UserModel = {
   id: undefined,
@@ -21,7 +22,7 @@ const EMPTY_CUSTOMER: UserModel = {
   userName: '',
   fullname: '',
   pic: '',
-  userRoleses: [
+  userRoles: [
     {
     roles:{
         id:'',
@@ -57,7 +58,8 @@ const EMPTY_CUSTOMER: UserModel = {
       personalEmailId:'',
       mediaType: 'Primary',
       mediaId: '',
-      emergencyNumber:''
+      emergencyNumber:'',
+      district:''
     }
 ],
   language: '',
@@ -92,6 +94,10 @@ const EMPTY_CUSTOMER: UserModel = {
     systemSerialNo:'',
     systemToHome:false,
     workMode:'WFO',
+    isDongleProvided:false,
+    dongleReturnDate:'',
+    modemReturnDate:'',
+    downGradedPlan:'',
   },
   hrRecord:{
     id:'',
@@ -118,7 +124,11 @@ const EMPTY_CUSTOMER: UserModel = {
       isFileCreated:false,
       longLeaveFromDate:'',
       longLeaveToDate:'',
-      approvedLeaveBalance :''
+      longLeaveReason:'NotApplicable',
+      approvedLeaveBalance :'',
+      recruitmentType:'',
+      costToCompany:'',
+      vaccinateInfo:''
     },
     educationalInfo:{
       highestGraduate: '',
@@ -137,6 +147,13 @@ const EMPTY_CUSTOMER: UserModel = {
   operationalRecord:{
     id:'',
     team:{
+      teamId: 'GRP9999',
+      teamName: '',
+      groupId: 'GRP0000',
+      groupName: '',
+      employeeId:'',
+    },
+    group:{
       teamId: 'GRP9999',
       teamName: '',
       groupId: 'GRP0000',
@@ -191,7 +208,11 @@ employmentInfo:{
   isFileCreated:false,
   longLeaveFromDate:'',
   longLeaveToDate:'',
-  approvedLeaveBalance :''
+  approvedLeaveBalance :'',
+  recruitmentType:'',
+  costToCompany:'',
+  vaccinateInfo:'',
+  longLeaveReason:''
 },
 educationalInfo:{
   highestGraduate: '',
@@ -227,8 +248,10 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
   hrEmp: UserModel;
   userHRModel: UserHRModel;
   userId: BaseModel;
+  isLongLeave :boolean;
   formGroup: FormGroup;
   media:Media;
+  fileToUpload: File | null = null;
   private subscriptions: Subscription[] = [];
   constructor(
     private snackBar: MatSnackBar,
@@ -239,6 +262,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       this.userId= new UserHRModel;
       this.hrEmp= new UserModel;
       this.media = new Media;
+      this.isLongLeave=false;
     }
 
   ngOnInit(): void {
@@ -307,6 +331,9 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       providentFund: [this.userHRModel.taxInfo.providentFund, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       pan: [this.userHRModel.taxInfo.pan, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       uan: [this.userHRModel.taxInfo.uan, Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
+      fnf: [''],
+      esiEligible:[''],
+      lastSalaryDrawn:['', Validators.compose([Validators.minLength(1), Validators.maxLength(100)])],
 
 
       dateOfJoin: [this.userHRModel.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
@@ -323,6 +350,13 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       isOfferIssued: [this.userHRModel.employmentInfo.isOfferIssued, Validators.compose([])],
       isApprentice: [this.userHRModel.employmentInfo.isApprentice, Validators.compose([])],
       isFileCreated: [this.userHRModel.employmentInfo.isFileCreated, Validators.compose([])],
+      longLeaveFromDate: [this.userHRModel.employmentInfo.longLeaveFromDate, Validators.compose([])],
+      longLeaveToDate: [this.userHRModel.employmentInfo.longLeaveToDate, Validators.compose([])],
+      recruitmentType: [this.userHRModel.employmentInfo.recruitmentType, Validators.compose([])],
+      costToCompany: [this.userHRModel.employmentInfo.costToCompany, Validators.compose([])],
+      vaccinateInfo: [this.userHRModel.employmentInfo.vaccinateInfo, Validators.compose([])],
+      longLeaveReason: [this.userHRModel.employmentInfo.longLeaveReason, Validators.compose([])],
+      district: [this.customer.mediaList[0].district, Validators.compose([])],
 
       personalEmailId: [ this.customer.mediaList[0].personalEmailId, Validators.compose([ Validators.email])],
       officialEmailId: [this.customer.mediaList[0].emailId, Validators.compose([ Validators.email])],
@@ -334,6 +368,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       maritialStatus: [this.customer.martial, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
       spouseName: [this.customer.spouseName, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
       bloodGroup: [this.customer.bloodGroup, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
+
     });
   }
 
@@ -350,6 +385,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       tap(() => {
 
         this.modal.close();
+        this.usersService.filterData("");
 
       }),
       catchError((errorMessage) => {
@@ -390,6 +426,18 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     this.userHRModel.employmentInfo.isOfferIssued = formData.isOfferIssued;
     this.userHRModel.employmentInfo.isApprentice = formData.isApprentice;
     this.userHRModel.employmentInfo.isFileCreated = formData.isFileCreated;
+    if(this.isLongLeave){
+      this.userHRModel.employmentInfo.longLeaveFromDate = formData.longLeaveFromDate;
+      this.userHRModel.employmentInfo.longLeaveToDate = formData.longLeaveToDate;
+      this.userHRModel.employmentInfo.longLeaveReason = formData.longLeaveReason;
+    }else{
+      this.userHRModel.employmentInfo.longLeaveFromDate = '';
+      this.userHRModel.employmentInfo.longLeaveToDate = '';
+      this.userHRModel.employmentInfo.longLeaveReason ='NotApplicable';
+    }
+    this.userHRModel.employmentInfo.recruitmentType = formData.recruitmentType;
+    this.userHRModel.employmentInfo.costToCompany = formData.costToCompany;
+    this.userHRModel.employmentInfo.vaccinateInfo = formData.vaccinateInfo;
 
     this.media.personalEmailId = formData.personalEmailId;
     this.media.emailId = formData.officialEmailId;
@@ -398,6 +446,8 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     this.media.emergencyNumber = formData.emergencyNumber;
     this.media.communicationAddress = formData.currentAddress;
     this.media.permanentAddress = formData.permanentAddress;
+    this.media.district = formData.district;
+
     this.hrEmp.martial = formData.maritialStatus;
     this.hrEmp.spouseName = formData.spouseName;
     this.hrEmp.bloodGroup = formData.bloodGroup;
@@ -416,6 +466,14 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
 
+  checkEmpStatus(value){
+
+    if(value == "ActiveLongLeave"){
+      this.isLongLeave=true;
+    }else{
+      this.isLongLeave=false;
+    }
+  }
   // helpers for View
   isControlValid(controlName: string): boolean {
     const control = this.formGroup.controls[controlName];
@@ -435,5 +493,9 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
   isControlTouched(controlName): boolean {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
+  }
+
+  handleFileInput(files: FileList) {
+    this.fileToUpload = files.item(0);
   }
 }

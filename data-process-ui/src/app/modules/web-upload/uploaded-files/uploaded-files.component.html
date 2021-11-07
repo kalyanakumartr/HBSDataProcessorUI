@@ -26,16 +26,16 @@
           <tr>
           <th class="sticky-header">File Name</th>
           <th nowrap >Trace</th>
-          <th nowrap >Priority</th>
+
           <th nowrap >Total Count</th>
           <th nowrap >Success Count</th>
           <th nowrap >Duplicate Count</th>
+
+          <th nowrap >Updated By</th>
+          <th nowrap >Uploaded Date   </th>
+          <th nowrap >Description Details</th>
           <th nowrap >Duration</th>
           <th nowrap >Filse Size</th>
-          <th nowrap >Created By</th>
-          <th nowrap > Received Date   </th>
-          <th nowrap >ReceivedWorkUnits</th>
-          <th nowrap >Description Details</th>
 
         </tr>
         </thead>
@@ -49,9 +49,7 @@
             <td>
               {{ uploadFiles.trace }}
             </td>
-            <td>
-              {{ uploadFiles.priority }}
-            </td>
+
             <td>
               {{ uploadFiles.totalCount }}
             </td>
@@ -61,12 +59,7 @@
             <td>
               {{ uploadFiles.duplicateCount }}
             </td>
-            <td>
-              {{ uploadFiles.duration }}
-            </td>
-            <td>
-              {{ uploadFiles.uploadFileSize }}
-            </td>
+
             <td>
               {{ uploadFiles.byUser.createdUserId }}
             </td>
@@ -74,13 +67,7 @@
 
               {{ uploadFiles.createdDate | date: 'dd-MMM-yyyy'}}</td>
 
-            <td>
-              {{ uploadFiles.receivedWorkUnits.substring(0,10)  }}
-              <a  class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-              (click)="readMore(uploadFiles.receivedWorkUnits)">
-              <span > ... </span>
-            </a>
-            </td>
+
             <td>
               {{ uploadFiles.description.substring(0,10)  }}
               <a  class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
@@ -88,7 +75,12 @@
               <span > ... </span>
               </a>
             </td>
-
+            <td>
+              {{ uploadFiles.duration }}
+            </td>
+            <td>
+              {{ uploadFiles.uploadFileSize }}
+            </td>
           </tr>
         </tbody>
       </table>

@@ -18,8 +18,10 @@ export class FileUploadComponent implements OnInit {
   fileToUpload: File | null = null;
   projectId:any;
   projectSelected:any;
-  departmentId:any;
   projectList:any[];
+  department:string;
+  divisionList:any[];
+  division:string;
   formGroup: FormGroup;
   departmentList:any[];
   private subscriptions: Subscription[] = [];
@@ -27,19 +29,18 @@ export class FileUploadComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading$ = this.usersService.isLoading$;
-    this.loadForm();
-
-      this.projectService.getDepartmentList().pipe(
-        tap((res: any) => {
-          this.departmentList = res;
-          console.log("departmentList", this.departmentList)
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of({
-            items: []
-          });
-        })).subscribe();
+        this.projectService.getDepartmentList().pipe(
+          tap((res: any) => {
+            this.departmentList = res;
+            console.log("departmentList", this.departmentList);
+            this.loadForm();
+          }),
+          catchError((err) => {
+            console.log(err);
+            return of({
+              items: []
+            });
+          })).subscribe();
   }
   handleFileInput(files: FileList) {
     this.fileToUpload = files.item(0);
@@ -47,9 +48,14 @@ export class FileUploadComponent implements OnInit {
 loadForm() {
   this.formGroup = this.fb.group({
 
-    departmentId: ['', Validators.compose([Validators.required])],
+    department: ['', Validators.compose([Validators.required])],
+    division: ['', Validators.compose([Validators.required])],
+    projectId: ['', Validators.compose([Validators.required])],
 
   });
+  this.department='';
+  this.division='';
+  this.projectId='';
 }
 upload() {
 
@@ -93,11 +99,39 @@ getProjectOnChange(value){
   this.projectSelected=value;
   //this.projectId=value;
 }
-getProjectByDepartment(value){
+setDepartment(value){
   var position =value.split(":")
-  var department=position[1].toString().trim();
+  if(position.length>1){
+    this.department= position[1].toString().trim();
+    this.getDivisionForDepartment();
+  }
+}
+setDivision(value){
+  var position =value.split(":")
+  if(position.length>1){
+    this.division= position[1].toString().trim();
+    this.getProjectByDivision();
+  }
+}
+getDivisionForDepartment(){
+  this.divisionList=[];
+  this.projectService.getDivisionList(this.department).pipe(
+    tap((res: any) => {
+      this.divisionList = res;
+      console.log("divisionList", this.divisionList)
+    }),
+    catchError((err) => {
+      console.log(err);
+      return of({
+        items: []
+      });
+    })).subscribe();
+}
+getProjectByDivision(){
+ // var position =value.split(":")
+  //var division=position[1].toString().trim();
 
-  this.projectService.getProjectList(department).pipe(
+  this.projectService.getProjectList(this.division).pipe(
     tap((res: any) => {
       this.projectList = res;
       console.log("projectList", this.projectList)

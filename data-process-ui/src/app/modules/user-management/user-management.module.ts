@@ -23,11 +23,14 @@ import { ITUserObjListComponent } from './it-user-obj-list/it-user-obj-list.comp
 import { ChangePasswordComponent } from '../user-profile/change-password/change-password.component';
 import { SkillSetMatrixObjListComponent } from './skillset-marix-obj-list/skillset-marix-obj-list.component';
 import { MatSortModule } from '@angular/material/sort';
-
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { ITItemListComponent } from './it-item-list/it-item-list.component';
+import { ITItemModalComponent } from './users/component/it-item-modal/it-item-modal.component';
 
 @NgModule({
-  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent,HrUserObjListComponent, ITUserObjListComponent,SkillSetMatrixObjListComponent,EditUserModalComponent, UserITModalComponent, UserHRModalComponent,OperationalUserModalComponent, ChangePasswordComponent],
+  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent,HrUserObjListComponent, ITUserObjListComponent, ITItemListComponent, SkillSetMatrixObjListComponent,EditUserModalComponent, UserITModalComponent, UserHRModalComponent,OperationalUserModalComponent, ChangePasswordComponent,ITItemModalComponent],
   imports: [CommonModule, UserManagementRoutingModule,   CommonModule,   HttpClientModule,
-     CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatPaginatorModule, MatTableModule,MatSortModule],
+     CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatPaginatorModule, MatTableModule,MatSortModule, MatDividerModule, MatExpansionModule],
 })
 export class UserManagementModule {}

@@ -21,7 +21,7 @@ const EMPTY_CUSTOMER: UserModel = {
   userName: '',
   fullname: '',
   pic: '',
-  userRoleses: [
+  userRoles: [
     {
     roles:{
         id:'',
@@ -57,7 +57,8 @@ const EMPTY_CUSTOMER: UserModel = {
       personalEmailId:'',
       mediaType: 'Primary',
       mediaId: '',
-      emergencyNumber:''
+      emergencyNumber:'',
+      district:''
     }
 ],
   language: '',
@@ -92,6 +93,10 @@ const EMPTY_CUSTOMER: UserModel = {
     systemSerialNo:'',
     systemToHome:false,
     workMode:'WFO',
+    isDongleProvided:false,
+    dongleReturnDate:'',
+    modemReturnDate:'',
+    downGradedPlan:'',
   },
   hrRecord:{
     id:'',
@@ -118,7 +123,11 @@ const EMPTY_CUSTOMER: UserModel = {
       isFileCreated:false,
       longLeaveFromDate:'',
       longLeaveToDate:'',
-      approvedLeaveBalance :''
+      longLeaveReason:'NotApplicable',
+      approvedLeaveBalance :'',
+      recruitmentType:'',
+      costToCompany:'',
+      vaccinateInfo:''
     },
     educationalInfo:{
       highestGraduate: '',
@@ -137,6 +146,13 @@ const EMPTY_CUSTOMER: UserModel = {
   operationalRecord:{
     id:'',
     team:{
+      teamId: '',
+      teamName: '',
+      groupId: '',
+      groupName: '',
+      employeeId:'',
+    },
+    group:{
       teamId: '',
       teamName: '',
       groupId: '',
@@ -179,6 +195,7 @@ const EMPTY_CUSTOMER: UserModel = {
 export class OperationalUserModalComponent implements OnInit, OnDestroy {
   @Input() id: string;
   @Input() revId: string;
+  @Input() role: string;
   isLoading$;
   customer: UserModel;
   updateRole:any;
@@ -218,7 +235,8 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isLoading$ = this.usersService.isLoading$;
     this.userId.id=this.id;
-
+    this.roleId=this.role;
+    this.loadCustomer();
 
   }
 
@@ -232,33 +250,28 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       const sb = this.usersService.getItemById(this.id).pipe(
         first(),
         catchError((errorMessage) => {
+          console.log("Error");
           console.log("errorMessage", errorMessage);
           this.modal.dismiss(errorMessage);
           return of(EMPTY_CUSTOMER);
         })
       ).subscribe((customer: UserModel) => {
+        console.log("Customer",customer);
         this.customer = customer;
         console.log(this.customer);
         this.loadEditForm();
         this.loadForm();
         this.assignControlValues();
-        console.log("Check");
-      });
-      this.projectService.getProjectList("RFDB").pipe(
-        tap((res: any) => {
-          this.projectList = res;
-          console.log("projectList", this.projectList)
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of({
-            items: []
-          });
-        })).subscribe();
-        this.projectService.getDepartmentList().pipe(
+        this.roleId = this.customer.roleId;
+        if(this.customer.operationalRecord.group.teamId != ""){
+          this.groupId = this.customer.operationalRecord.group.teamId;
+          this.getTeamforGroup();
+        }
+        console.log("Check"+this.customer.operationalRecord.division.divisionId);
+        this.projectService.getProjectList(this.customer.operationalRecord.division.divisionId).pipe(
           tap((res: any) => {
-            this.departmentList = res;
-            console.log("departmentList", this.departmentList)
+            this.projectList = res;
+            console.log("projectList", this.projectList)
           }),
           catchError((err) => {
             console.log(err);
@@ -266,31 +279,33 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
               items: []
             });
           })).subscribe();
+        this.projectService.getGroupList(this.customer.userId,"").pipe(
+          tap((res: any) => {
+            this.groupList = res;
+            console.log("groupList", this.groupList)
+          }),
+          catchError((err) => {
+            console.log(err);
+            return of({
+              items: []
+            });
+          })).subscribe();
+          this.getTeamforGroup();
+      });
 
-          this.projectService.getGroupList(this.customer.userId,this.roleId).pipe(
-            tap((res: any) => {
-              this.groupList = res;
-              console.log("groupList", this.groupList)
-            }),
-            catchError((err) => {
-              console.log(err);
-              return of({
-                items: []
-              });
-            })).subscribe();
-    }
+
+}
   }
   loadEditForm(){
     this.customer.email=this.customer.mediaList[0].emailId;
-    this.roleId=this.customer.roleId;
+    /*this.roleId=this.customer.roleId;
     for(var role of this.roleList)
     if(role.roleId == this.roleId ){
       this.isAdminRole=role.isAdminRole;
-    }
+    }*/
   }
   assignControlValues(){
     this.userOPRModel = EMPTY_CUSTOMER.operationalRecord;
-    this.assignControlValue("deployId",this.customer.operationalRecord.deploy.deploymentId);
     this.assignControlValue("teamId",this.customer.operationalRecord.team.teamId);
 
   }
@@ -299,7 +314,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
 
       roles: [this.customer.roleId, Validators.compose([Validators.required])],
       teamId: [this.customer.operationalRecord.team.teamId, Validators.compose([Validators.required])],
-      groupId: [this.customer.operationalRecord.team.teamId, Validators.compose([Validators.required])],
+      groupId: [this.customer.operationalRecord.group.teamId, Validators.compose([Validators.required])],
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
       division: [this.customer.operationalRecord.division.divisionId, Validators.compose([Validators.required])],
       //Change Reporting to
@@ -327,6 +342,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     const sbUpdate = this.usersService.saveOPR(this.userOPRModel, this.updateRole).pipe(
       tap(() => {
         this.modal.close();
+        this.usersService.filterData("");
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
@@ -345,6 +361,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     const sbCreate = this.usersService.create(this.customer,"/addUser","formUser").pipe(
       tap(() => {
         this.modal.close();
+        this.usersService.filterData("");
       }),
       catchError((errorMessage) => {
         this.openSnackBar(errorMessage,"X");
@@ -381,6 +398,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
 
     this.customer.operationalRecord.trainingBatch = formData.trainingBatch;
     this.customer.operationalRecord.loginRFDB_BPS = formData.loginRFDB_BPS;
+    this.customer.operationalRecord.team.groupId = formData.groupId;
     this.customer.operationalRecord.team.teamId = formData.teamId;
     this.customer.operationalRecord.department.departmentId = formData.department;
     this.customer.operationalRecord.reportingTo=this.reportingId;
@@ -389,6 +407,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
 
     this.userOPRModel.trainingBatch= formData.trainingBatch;
     this.userOPRModel.loginRFDB_BPS = formData.loginRFDB_BPS;
+    this.userOPRModel.group.teamId = formData.teamId;
     this.userOPRModel.team.teamId = formData.teamId;
     this.userOPRModel.team.employeeId = formData.reportingId;
     this.userOPRModel.department.departmentId = formData.department;

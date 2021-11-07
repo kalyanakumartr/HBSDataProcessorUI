@@ -2,9 +2,9 @@
   <div class="modal-header">
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
       <ng-container *ngIf="customer">
-        <ng-container *ngIf="customer.id">Edit</ng-container>
-        <ng-container *ngIf="!customer.id">Create</ng-container>
-        Employee
+        <ng-container *ngIf="customer.id">Edit Employee details for </ng-container>
+        <ng-container *ngIf="!customer.id">Create  Employee  </ng-container>
+
         <ng-container *ngIf="customer.id">'{{customer.userName}} {{ customer.lastName }}'</ng-container>
       </ng-container>
     </div>
@@ -24,7 +24,6 @@
             <input type="text" class="form-control form-control-lg form-control-solid" name="userId"
               placeholder="Login" autocomplete="off" [class.is-invalid]="isControlInvalid('userId')"
               [class.is-valid]="isControlValid('userId')" formControlName="userId" />
-            <div class="valid-feedback" *ngIf="isControlValid('userId')">Employee Id was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('required', 'userId')">Employee Id is required</div>
           </div>
           <div class="col-lg-3">
@@ -32,7 +31,6 @@
             <input type="text" class="form-control form-control-lg form-control-solid" name="userName"
               placeholder="First Name" autocomplete="off" [class.is-invalid]="isControlInvalid('userName')"
               [class.is-valid]="isControlValid('userName')" formControlName="userName" />
-            <div class="valid-feedback" *ngIf="isControlValid('userName')">First name was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('required', 'userName')">First name is required</div>
             <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'userName')">First name should have at
               least 3 symbols</div>
@@ -44,7 +42,6 @@
             <input type="text" class="form-control form-control-lg form-control-solid  is-invalid" name="fatherName"
               placeholder="Father Name" autocomplete="off" [class.is-invalid]="isControlInvalid('fatherName')"
               [class.is-valid]="isControlValid('fatherName')" formControlName="fatherName" />
-            <div class="valid-feedback" *ngIf="isControlValid('fatherName')">Father name was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'fatherName')">Father name should have at
               least 1 symbols</div>
             <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'fatherName')">Father name should have maximum
@@ -56,7 +53,7 @@
             <label>Date of Birth</label>
             <div class="input-group input-group-solid">
               <input type="text" name="dob" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                placeholder="mm/dd/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('dob')"
+                placeholder="mm/dd/yyyy" ngbDatepicker [maxDate]="maxDate" #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('dob')"
                 [class.is-valid]="isControlValid('dob')" formControlName="dob" readonly="true" />
               <div class="input-group-append" (click)="d.toggle()">
                 <span class="input-group-text">
@@ -102,7 +99,8 @@
           <div class="col-lg-3">
             <label>Select Department</label>
             <select class="form-control form-control-lg form-control-solid" name="department"
-              [class.is-invalid]="isControlInvalid('department')" formControlName="department">
+              [class.is-invalid]="isControlInvalid('department')" formControlName="department" (change)="setDepartment($event.target.value)">
+              <option [ngValue]="0" [selected]=true>Choose Department</option>
               <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
                 {{ department.departmentName }}
               </option>
@@ -112,7 +110,8 @@
           <div class="col-lg-3">
             <label>Select Division</label>
             <select class="form-control form-control-lg form-control-solid" name="division"
-              [class.is-invalid]="isControlInvalid('division')" formControlName="division">
+              [class.is-invalid]="isControlInvalid('division')" formControlName="division" (change)="setDivision($event.target.value)">
+              <option [ngValue]="0" [selected]=true>Choose Division</option>
               <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
                 {{ division.divisionName }}
               </option>
@@ -123,7 +122,7 @@
             <label>Select Roles</label>
             <select  class="form-control form-control-lg form-control-solid" name="roles"
               [class.is-invalid]="isControlInvalid('roles')" formControlName="roles">
-              <option [ngValue]="null" disabled>Choose Role</option>
+              <option [ngValue]="0" [selected]=true>Choose Role</option>
               <option *ngFor="let role of roleList" [ngValue]="role.roleId">
               {{ role.roleName }}
               </option>
@@ -131,15 +130,13 @@
             <div class="feedback">Please select <b>Role</b></div>
           </div>
           <div class="col-lg-3">
-            <label>Employment Status in EDR</label>
-            <select class="form-control form-control-lg form-control-solid" name="status"
-              [class.is-invalid]="isControlInvalid('status')" formControlName="status">
-              <option value="Active">Active</option>
-              <option value="Resigned">Resigned</option>
-              <option value="NoticePeriod">Under Notice Period </option>
-              <option value="Abscond">Abscond</option>
+            <label>Recruitment Type</label>
+            <select class="form-control form-control-lg form-control-solid" name="recruitmentType"
+              [class.is-invalid]="isControlInvalid('recruitmentType')" formControlName="recruitmentType">
+              <option value="New_Joiner">New Joiner</option>
+              <option value="ReJoiner">Re-joiner</option>
             </select>
-            <div class="feedback">Please select <b>Employment Status</b></div>
+            <div class="feedback">Please select <b>Recruitment Type</b></div>
           </div>
 
 
@@ -149,7 +146,7 @@
             <label>Date of Joining</label>
             <div class="input-group input-group-solid">
               <input type="text" name="doj"  class="form-control form-control-lg form-control-solid" autocomplete="off"
-                placeholder="mm/dd/yyyy" ngbDatepicker #doj="ngbDatepicker" [class.is-invalid]="isControlInvalid('doj')"
+                placeholder="mm/dd/yyyy" ngbDatepicker [minDate]="minDate" #doj="ngbDatepicker" [class.is-invalid]="isControlInvalid('doj')"
                 [class.is-valid]="isControlValid('doj')" formControlName="doj" readonly="true" />
               <div class="input-group-append" (click)="doj.toggle()">
                 <span class="input-group-text">
@@ -160,6 +157,25 @@
             <div class="valid-feedback" *ngIf="isControlValid('doj')">Date of Joining was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('required', 'doj')">Please enter <b>Date of Joining</b>
               in 'mm/dd/yyyy' format</div>
+          </div>
+          <div class="col-lg-3">
+            <label>Employment Status in EDR</label>
+            <select class="form-control form-control-lg form-control-solid" name="status"
+              [class.is-invalid]="isControlInvalid('status')" formControlName="status">
+              <option value="Active">Active</option>
+              <option value="Resigned">Resigned</option>
+              <option value="Under_Notice_Period">Under Notice Period </option>
+              <option value="Abscond">Abscond</option>
+            </select>
+            <div class="feedback">Please select <b>Employment Status</b></div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label"> Cost To Company</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="ctc"
+              placeholder="CTC" autocomplete="off" [class.is-invalid]="isControlInvalid('ctc')"
+              [class.is-valid]="isControlValid('ctc')" formControlName="ctc" />
+            <div class="valid-feedback" *ngIf="isControlValid('ctc')">Cost To Company was entered correct</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'ctc')">Cost To Company is required</div>
           </div>
         </div>
 

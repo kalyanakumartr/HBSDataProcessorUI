@@ -6,7 +6,8 @@ export class UpdateTaskModel  {
   reasonId:string;
   allotedTo:string;
   teamId:string;
-  eAction:string;
+  triggeredAction:string;
+  skillSet:string;
   remarks:string;
 
 }
