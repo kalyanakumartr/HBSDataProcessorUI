@@ -35,7 +35,7 @@ itItemsModel:ItItemsModel;
 displayedColumns = ['slno', 'assetName','serialNo','brand','givenDate','receivedDate','remarks','Action'];
 dataSource = new MatTableDataSource<ItItemsModel>();
 assetList:ItItemsModel[];
-
+isLoading$;
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
     public modalService: NgbModal,

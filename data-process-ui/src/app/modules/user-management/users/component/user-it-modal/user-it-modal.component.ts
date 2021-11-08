@@ -87,6 +87,7 @@ export class UserITModalComponent implements OnInit, OnDestroy {
         console.log("UserITModel", userITModal);
         this.userITModel = userITModal;
         this.loadForm();
+        console.log("----",this.userITModel.ispName,"---");
       });
 
     }
@@ -95,16 +96,16 @@ export class UserITModalComponent implements OnInit, OnDestroy {
   loadForm() {
     this.formGroup = this.fb.group({
       broadBandAccount: [this.userITModel.broadBandAccount, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
-      broadBandBy: [this.userITModel.broadBandBy, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
+      broadBandBy: [this.userITModel.broadBandBy.trim()!=""?this.userITModel.broadBandBy:"0", Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
       internetPlan: [this.userITModel.internetPlan, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
       isDowngraded: [this.userITModel.isDowngraded ],
       downGradedPlan:[this.userITModel.downGradedPlan,Validators.compose([Validators.minLength(3)])],
-      ispName: [this.userITModel.ispName, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
+      ispName: [this.userITModel.ispName.trim()!=""?this.userITModel.ispName:"0", Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       staticIPAddress: [this.userITModel.staticIPAddress, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       systemSerialNo : [this.userITModel.systemSerialNo, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       staticWhiteList: [this.userITModel.staticWhiteList],
       systemToHome: [this.userITModel.systemToHome],
-      workMode: [this.userITModel.workMode, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
+      workMode: [this.userITModel.workMode.trim()!=""?this.userITModel.workMode:"0", Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
 
     });
   }

@@ -60,7 +60,7 @@ division:any;
 projectList:any[];
 project:any;
 isClearFilter:boolean;
-
+isLoading$;
 private subscriptions: Subscription[] = [];
 authModel:AuthModel;
   constructor(private fb: FormBuilder,

@@ -303,19 +303,9 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
         this.userHRModel = this.customer.hrRecord;
         this.loadForm();
 
-        console.log("Check");
+        console.log("Check",this.customer.hrRecord);
       });
-      // const sb = this.usersService.fetchHR(this.id).pipe(
-      //   first(),
-      //   catchError((errorMessage) => {
-      //     console.log("errorMessage", errorMessage);
-      //     return of(EMPTY_HR_MODEL);
-      //   })
-      // ).subscribe((userHRModel: UserHRModel) => {
-      //   console.log("UserHRModel", userHRModel);
-      //   this.userHRModel = userHRModel;
-      //   this.loadForm();
-      // });
+
 
     }
   }
@@ -368,7 +358,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       officialEmailId: [this.customer.mediaList[0].emailId, Validators.compose([ Validators.email])],
       phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
       alternateNumber: [this.customer.mediaList[0].alternateMobile, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
-      emergencyNumber: [this.customer.mediaList[0].alternateMobile, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
+      emergencyNumber: [this.customer.mediaList[0].emergencyNumber, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
       currentAddress: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(1), Validators.maxLength(200)])],
       permanentAddress: [this.customer.mediaList[0].permanentAddress, Validators.compose([Validators.minLength(1), Validators.maxLength(200)])],
       maritialStatus: [this.customer.martial, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
@@ -477,7 +467,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sb => sb.unsubscribe());
+    this.subscriptions.forEach(sb => !sb?sb.unsubscribe():"");
   }
 
   checkEmpStatus(value){

@@ -23,7 +23,7 @@
             <label>Work From</label>
             <select class="form-control form-control-lg form-control-solid" name="workMode"
               [class.is-invalid]="isControlInvalid('workMode')" formControlName="workMode">
-              <option [ngValue]="0" [selected]=true>Select Work From</option>
+              <option value="0" >Select Work From</option>
               <option value="WFH">Home</option>
               <option value="WFO">Office</option>
             </select>
@@ -35,7 +35,7 @@
               <label>BroadBand By</label>
               <select class="form-control form-control-lg form-control-solid" name="broadBandBy"
                 [class.is-invalid]="isControlInvalid('broadBandBy')" formControlName="broadBandBy">
-                <option [ngValue]="0" [selected]=true>Select BoadBand By</option>
+                <option value="0" >Select BoadBand By</option>
                 <option value="EDR_Active">EDR Active</option>
                 <option value="OWN">OWN</option>
                 <option value="EDR_Disconnected">EDR Disconnected</option>
@@ -48,7 +48,7 @@
             <label class="form-label">ISP Name</label>
            <select class="form-control form-control-lg form-control-solid" name="ispName"
                 [class.is-invalid]="isControlInvalid('ispName')" formControlName="ispName">
-                <option [ngValue]="0" [selected]=true>Select ISP</option>
+                <option value="0" >Select ISP</option>
                 <option value="BSNL">BSNL</option>
                 <option value="AirTel">AirTel</option>
                 <option value="JIO">JIO</option>

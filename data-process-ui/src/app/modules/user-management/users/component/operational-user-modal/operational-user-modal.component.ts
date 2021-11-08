@@ -322,7 +322,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       division: [this.customer.operationalRecord.division.divisionId, Validators.compose([Validators.required])],
       //Change Reporting to
       reportingTo: [this.customer.operationalRecord.reportingTo, Validators.compose([Validators.required])],
-      loginRFDB_BPS: [this.customer.operationalRecord.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      loginRFDB_BPS: [this.customer.operationalRecord.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20)])],
       projectId: [this.customer.operationalRecord.project.projectId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
       trainingBatch: [this.customer.operationalRecord.trainingBatch, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])],
 
@@ -388,10 +388,14 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
 
     var position =value.split(":")
     if(position.length>1){
-      var team =this.teamList[position[0]-1];
-      this.reporting=team.fullName;
-      this.reportingId= team.reportingTo;
-    }
+      var teamId= position[1].toString().trim();
+      for(var team of this.teamList){
+        if(team.teamId === teamId){
+          this.reporting=team.fullName;
+          this.reportingId= team.reportingTo;
+          }
+        }
+      }
   }
   assignRole(value){
     var position =value.split(": ");

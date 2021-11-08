@@ -7,6 +7,7 @@
         </label></b>
       </ng-container>
     </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
   </div>
   <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
     <ng-container *ngIf="isLoading$ | async">
@@ -32,7 +33,7 @@
         <div class="form-group row">
           <div class="col-lg-4">
             <label>Select Group</label>
-            <select class="form-control form-control-lg form-control-solid" name="groupId"
+            <select class="form-control form-control-lg form-control-solid spinner spinner-success spinner-right" name="groupId"
               [class.is-invalid]="isControlInvalid('groupId')" formControlName="groupId" (change)="setReportingToByGroup($event.target.value)">
               <option [ngValue]="0" [selected]=true>Select Group</option>
               <option *ngFor="let group of groupList" [ngValue]="group.teamId">
@@ -44,7 +45,7 @@
           </div>
           <div class="col-lg-4">
             <label>Select Team</label>
-            <select class="form-control form-control-lg form-control-solid" name="teamId"
+            <select class="form-control form-control-lg form-control-solid spinner spinner-success spinner-right" name="teamId"
               [class.is-invalid]="isControlInvalid('teamId')" formControlName="teamId" (change)="setReportingToByTeam($event.target.value)">
               <option [ngValue]="0" [selected]=true>Select Team</option>
               <option *ngFor="let team of teamList" [ngValue]="team.teamId">
@@ -83,7 +84,7 @@
             <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'loginRFDB_BPS')">Login RFDB BPS Id should have at
               least 3 symbols</div>
             <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'loginRFDB_BPS')">Login RFDB BPS Id should have
-              maximum 100 symbols</div>
+              maximum 20 symbols</div>
           </div>
           <div class="col-lg-4">
             <label class="form-label">Enter Training Batch   </label>
