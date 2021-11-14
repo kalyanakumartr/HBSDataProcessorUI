@@ -84,7 +84,7 @@
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter PhoneNumber</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="phoneno" placeholder="phoneno"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="phoneno" placeholder="phoneno"
               autocomplete="off" [class.is-invalid]="isControlInvalid('phoneno')" maxlength=15
               [class.is-valid]="isControlValid('phoneno')" formControlName="phoneno" />
               <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'phoneno')">Phone Number should have at
@@ -179,7 +179,7 @@
           </div>
           <div class="col-lg-3">
             <label class="form-label"> Cost To Company</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="ctc" maxlength=15
+            <input type="number" class="form-control form-control-lg form-control-solid" name="ctc" maxlength=15
               placeholder="CTC" autocomplete="off" [class.is-invalid]="isControlInvalid('ctc')"
               [class.is-valid]="isControlValid('ctc')" formControlName="ctc" />
             <div class="valid-feedback" *ngIf="isControlValid('ctc')">Cost To Company was entered correct</div>

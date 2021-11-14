@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModel } from '../../auth/_models/auth.model';
 import { catchError, tap } from 'rxjs/operators';
 import { UserSkillSetMatrixService } from '../../auth/_services/user-skillset-matrix.service';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { AddSkillSet, SkillSetMaps, UserSkillSetMatrixModel } from '../../auth/_models/user-skillset-matrix.model';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,6 +12,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ProjectService } from '../../auth/_services/project.services';
+import { AuthService, UserModel } from '../../auth';
 
 @Component({
   selector: 'skillset-matrix-list',
@@ -30,7 +31,7 @@ skillSetList:any[];
 skillsetMatrixList: any[];
 headerList:[];
 skillSet: AddSkillSet;
-displayedColumns = ['userId', 'userName','Production','QualityAssurance','QualityControl','QualityControlTrainer','Apprentice','OnlineTechSupport','QualityControlTrainee','Action'];
+displayedColumns = ['userId', 'userName','Production','QualityAssurance','QualityControl','QualityControlTrainer','Apprentice','OnlineTechSupport','QualityControlTrainee','Action','Division','Group','Team'];
 dataSource = new MatTableDataSource<UserSkillSetMatrixModel>();
 
 
@@ -38,25 +39,68 @@ divisionList:any[];
 division:string;
 groupList:any[];
 group:string;
+groupName:string;
 teamList:any[];
 team:string;
+teamName:string;
 isClearFilter:boolean;
-authModel:AuthModel;
+roleId:string;
+showDivision:boolean;
+showGroup:boolean;
+showTeam:boolean;
+show:boolean =true;
   constructor(private fb: FormBuilder,
     private modalService: NgbModal,
     private snackBar: MatSnackBar,
     private _router: Router,
     private projectService: ProjectService,
+    private authService: AuthService,
     public userSkillSetMatrixService: UserSkillSetMatrixService
     ) {
+      this.roleId = authService.currentUserSubject.value.roleId;
 
+      if(this.roleId.endsWith('ProjectLeader')){
+        this.division = authService.currentUserSubject.value.operationalRecord.division.divisionName;
+        this.group = authService.currentUserSubject.value.operationalRecord.group.teamId;
+        this.groupName = authService.currentUserSubject.value.operationalRecord.group.teamName;
+        this.showDivision=false;
+        this.showGroup=false;
+        this.showTeam=true;
+        if(this.group == undefined){
+          this.group='GRP0002';
+        }
+        this.getTeamForGroup();
+      }else if(this.roleId.endsWith('TeamLeader')){
+        this.showDivision=false;
+        this.showGroup=false;
+        this.showTeam=false;
+        this.division = authService.currentUserSubject.value.operationalRecord.division.divisionName;
+        this.group = authService.currentUserSubject.value.operationalRecord.group.groupId;
+        this.groupName = authService.currentUserSubject.value.operationalRecord.group.groupName;
+        this.team = authService.currentUserSubject.value.operationalRecord.team.teamId;
+        this.teamName = authService.currentUserSubject.value.operationalRecord.team.teamName;
+      }else if(this.roleId.endsWith('EDRAdmin')){
+        this.showDivision=true;
+        this.showGroup=true;
+        this.showTeam=true;
+      }
       this.skillSet =new AddSkillSet;
       console.log("skillSet", this.skillSet)
   }
 
   ngOnInit(): void {
+    this.dataSource.filterPredicate = (data: UserSkillSetMatrixModel, filter: string) => {
+      return data.userId == filter;
+     };
     this.getData('');
-    this.getDivisions();
+    if(this.showDivision){
+      this.getDivisions();
+    }
+  }
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
   }
   private getData(value:string) {
     this.userSkillSetMatrixService.getSkillSetMatrixList(value).pipe(
@@ -125,7 +169,7 @@ authModel:AuthModel;
     });
   }
   getGroupforDivision(){
-    this.projectService.getGroupList("","").pipe(
+    this.projectService.getGroupList(this.division).pipe(
       tap((res: any) => {
         this.groupList = res;
         console.log("groupList", this.groupList)
@@ -145,8 +189,8 @@ authModel:AuthModel;
       this.group= position[1].toString().trim();
       if(this.group != "0"){
         this.isClearFilter=true;
-
-       // this.userService.patchState({ departmentId:this.group },"/searchUser");
+        this.getTeamForGroup();
+        this.applyFilter(this.group);
       }
     }
   }
@@ -156,7 +200,7 @@ authModel:AuthModel;
       this.division= position[1].toString().trim();
       if(this.division != "0"){
         this.getGroupforDivision()
-       // this.userService.patchState({ divisionId:this.division },"/searchUser");
+        this.applyFilter(this.division);
       }
     }
   }
@@ -180,13 +224,13 @@ authModel:AuthModel;
     if(position.length>1){
       this.team= position[1].toString().trim();
       if(this.team != "0"){
-       // this.userService.patchState({ projectId:this.project },"/searchUser");
+        this.applyFilter(this.team);
       }
     }
   }
   getTeamForGroup(){
     this.teamList=[];
-    this.projectService.getTeamList("",this.group).pipe(
+    this.projectService.getTeamList(this.group).pipe(
       tap((res: any) => {
         this.teamList = res;
         console.log("teamList", this.teamList)
@@ -216,8 +260,10 @@ authModel:AuthModel;
       this.getDivisions();
       (<HTMLInputElement>document.getElementById("searchText")).value="";
       this.division="0";
+      this.applyFilter("");
     }else{
       (<HTMLInputElement>document.getElementById("searchText")).value="";
+      this.applyFilter("");
     }
   }
 

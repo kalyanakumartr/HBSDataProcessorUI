@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectService } from 'src/app/modules/auth/_services/project.services';
 import { BaseModel } from 'src/app/_metronic/shared/crud-table/models/base.model';
 import { UserOperationalModel } from 'src/app/modules/auth/_models/user-operational.model';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 const EMPTY_CUSTOMER: UserModel = {
@@ -154,6 +155,8 @@ const EMPTY_CUSTOMER: UserModel = {
       groupId: '',
       groupName: '',
       employeeId:'',
+      divisionId:'',
+      divisionName:'',
     },
     group:{
       teamId: '',
@@ -161,6 +164,8 @@ const EMPTY_CUSTOMER: UserModel = {
       groupId: '',
       groupName: '',
       employeeId:'',
+      divisionId:'',
+      divisionName:'',
     },
     deploy:{
       deploymentId: '',
@@ -205,6 +210,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   department:string;
   divisionList:any[];
   division:string;
+
   roleList:any[];
   projectList:any[];
   teamList:any[];
@@ -240,7 +246,6 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     this.userId.id=this.id;
     this.roleId=this.role;
     this.loadCustomer();
-
   }
 
   loadCustomer() {
@@ -266,12 +271,15 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
         this.loadForm();
         this.assignControlValues();
         this.roleId = this.customer.roleId;
-        if(this.customer.operationalRecord.group.teamId != ""){
-          this.groupId = this.customer.operationalRecord.group.teamId;
+        this.division=this.customer.operationalRecord.division.divisionId;
+        this.groupId=this.customer.operationalRecord.group.teamId;
+
+        this.groupId = this.customer.operationalRecord.group.teamId ;
+        if(this.groupId != ""){
           this.getTeamforGroup();
         }
-        console.log("Check"+this.customer.operationalRecord.division.divisionId);
-        this.projectService.getProjectList(this.customer.operationalRecord.division.divisionId).pipe(
+        console.log("Check"+this.division);
+        this.projectService.getProjectList(this.division).pipe(
           tap((res: any) => {
             this.projectList = res;
             console.log("projectList", this.projectList)
@@ -282,7 +290,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
               items: []
             });
           })).subscribe();
-        this.projectService.getGroupList(this.customer.userId,"").pipe(
+        this.projectService.getGroupList(this.division).pipe(
           tap((res: any) => {
             this.groupList = res;
             console.log("groupList", this.groupList)
@@ -503,7 +511,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   }
   getTeamforGroup(){
     this.teamList=[];
-    this.projectService.getTeamList(this.customer.userId,this.groupId).pipe(
+    this.projectService.getTeamList(this.groupId).pipe(
       tap((res: any) => {
         this.teamList = res;
         console.log("teamList", this.teamList)
@@ -516,7 +524,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       })).subscribe();
   }
   getGroupforRole(){
-    this.projectService.getGroupList(this.customer.userId,this.roleId).pipe(
+    this.projectService.getGroupList(this.roleId).pipe(
       tap((res: any) => {
         this.groupList = res;
         console.log("groupList", this.groupList)

@@ -155,6 +155,8 @@ const EMPTY_CUSTOMER: UserModel = {
       groupId: 'GRP0000',
       groupName: '',
       employeeId:'',
+      divisionId:'',
+      divisionName:'',
     },
     group:{
       teamId: 'GRP9999',
@@ -162,6 +164,8 @@ const EMPTY_CUSTOMER: UserModel = {
       groupId: 'GRP0000',
       groupName: '',
       employeeId:'',
+      divisionId:'',
+      divisionName:'',
     },
     deploy:{
       deploymentId: 'DLP0001',

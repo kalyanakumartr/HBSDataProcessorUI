@@ -74,7 +74,7 @@
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter Aadhar Number</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="highestGraduate"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="highestGraduate"
               placeholder="Aadhar" autocomplete="off" [class.is-invalid]="isControlInvalid('aadhar')" maxlength=12
               [class.is-valid]="isControlValid('aadhar')" formControlName="aadhar" />
           </div>
@@ -101,7 +101,7 @@
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter Uan</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="uan"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="uan"
               placeholder="Uan" autocomplete="off" [class.is-invalid]="isControlInvalid('uan')"
               [class.is-valid]="isControlValid('uan')" formControlName="uan" />
           </div>
@@ -158,7 +158,7 @@
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter Year of Passing</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="year"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="year"
               placeholder="Year" autocomplete="off" [class.is-invalid]="isControlInvalid('year')"
               [class.is-valid]="isControlValid('year')" formControlName="year" />
           </div>
@@ -212,7 +212,7 @@
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter PhoneNumber</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="phoneno" placeholder="phoneno"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="phoneno" placeholder="phoneno"
               autocomplete="off" [class.is-invalid]="isControlInvalid('phoneno')"
               [class.is-valid]="isControlValid('phoneno')" formControlName="phoneno" />
               <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'phoneno')">Phone Number should have at
@@ -221,7 +221,7 @@
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter Alternate PhoneNumber</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="alternateNumber" placeholder="phoneno"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="alternateNumber" placeholder="phoneno"
               autocomplete="off" [class.is-invalid]="isControlInvalid('alternateNumber')"
               [class.is-valid]="isControlValid('alternateNumber')" formControlName="alternateNumber" />
               <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'alternateNumber')">Phone Number should have at
@@ -230,7 +230,7 @@
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter Emergency PhoneNumber</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="emergencyNumber" placeholder="Emergency Number"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="emergencyNumber" placeholder="Emergency Number"
               autocomplete="off" [class.is-invalid]="isControlInvalid('emergencyNumber')"
               [class.is-valid]="isControlValid('emergencyNumber')" formControlName="emergencyNumber" />
               <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'emergencyNumber')">Phone Number should have at
@@ -251,7 +251,7 @@
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter Bank Account</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="accountNo"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="accountNo"
               placeholder="Bank Account Number" autocomplete="off" [class.is-invalid]="isControlInvalid('accountNo')"
               [class.is-valid]="isControlValid('accountNo')" formControlName="accountNo" />
 
@@ -313,14 +313,14 @@
 
           <div class="col-lg-3">
             <label class="form-label">Experience In EDR</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="experienceInEDR"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="experienceInEDR"
               placeholder="Eperience In EDR Status" autocomplete="off" [class.is-invalid]="isControlInvalid('experienceInEDR')"
               [class.is-valid]="isControlValid('experienceInEDR')" formControlName="experienceInEDR" />
           </div>
 
         <div class="col-lg-3">
           <label class="form-label">Experience Out EDR</label>
-          <input type="text" class="form-control form-control-lg form-control-solid" name="experienceOutEDR"
+          <input type="number" class="form-control form-control-lg form-control-solid" name="experienceOutEDR"
             placeholder="Eperience Out EDR Status" autocomplete="off" [class.is-invalid]="isControlInvalid('experienceOutEDR')"
             [class.is-valid]="isControlValid('experienceOutEDR')" formControlName="experienceOutEDR" />
         </div>
@@ -452,7 +452,7 @@
         </div>
         <div class="col-lg-3">
           <label class="form-label">Last Salary Drawn</label>
-          <input type="text" class="form-control form-control-lg form-control-solid" name="lastSalaryDrawn"
+          <input type="number" class="form-control form-control-lg form-control-solid" name="lastSalaryDrawn"
             placeholder="Last Salary Drawn" autocomplete="off" [class.is-invalid]="isControlInvalid('lastSalaryDrawn')"
             [class.is-valid]="isControlValid('lastSalaryDrawn')" formControlName="lastSalaryDrawn" />
         </div>

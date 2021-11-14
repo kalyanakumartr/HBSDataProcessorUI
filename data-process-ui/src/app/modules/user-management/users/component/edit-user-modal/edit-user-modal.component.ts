@@ -152,18 +152,22 @@ const EMPTY_CUSTOMER: UserModel = {
   operationalRecord:{
     id:'',
     team:{
-      teamId: 'GRP9999',
+      teamId: 'NoTeam',
       teamName: '',
       groupId: 'GRP0000',
       groupName: '',
       employeeId:'',
+      divisionId:'',
+      divisionName:'',
     },
     group:{
-      teamId: 'GRP9999',
+      teamId: 'NoTeam',
       teamName: '',
       groupId: 'GRP0000',
       groupName: '',
       employeeId:'',
+      divisionId:'',
+      divisionName:'',
     },
     deploy:{
       deploymentId: 'DLP0001',
@@ -236,7 +240,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         config.outsideDays = 'hidden';*/
         const current = new Date();
         this.minDate = {
-          year: current.getFullYear(),
+          year: current.getFullYear()-18,
           month: current.getMonth() + 1,
           day: current.getDate()
         };
@@ -369,7 +373,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
 
       dob: [this.customer.dob, Validators.compose([Validators.nullValidator])],
       sex: [this.customer.sex, Validators.compose([Validators.required])],
-      phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.minLength(10), Validators.maxLength(15)])],
+      phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
       address: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(3), Validators.maxLength(200)])],
 
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
@@ -378,7 +382,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       recruitmentType: [this.customer.hrRecord.employmentInfo.recruitmentType, Validators.compose([Validators.required])],
       status: [this.customer.hrRecord.employmentInfo.employmentStatus, Validators.compose([Validators.required])],
       doj: [this.customer.hrRecord.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
-      ctc: [this.customer.hrRecord.employmentInfo.costToCompany, Validators.compose([Validators.nullValidator])],
+      ctc: [this.customer.hrRecord.employmentInfo.costToCompany, Validators.compose([Validators.pattern("^[0-9]*$")])],
 
       //teamId: [this.customer.team, Validators.compose([Validators.required])],
       //deployId: [this.customer.deploy, Validators.compose([Validators.required])],

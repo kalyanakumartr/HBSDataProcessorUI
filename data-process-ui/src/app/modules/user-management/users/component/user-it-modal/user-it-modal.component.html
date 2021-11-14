@@ -82,7 +82,7 @@
         <div class="form-group row">
           <div class="col-lg-4">
             <label class="form-label">Enter internetPlan</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="internetPlan" maxlength=10
+            <input type="number" class="form-control form-control-lg form-control-solid" name="internetPlan" maxlength=10
               placeholder="Internet Plan" autocomplete="off" [class.is-invalid]="isControlInvalid('internetPlan')"
               [class.is-valid]="isControlValid('internetPlan')" formControlName="internetPlan" />
           </div>
@@ -110,7 +110,7 @@
         </div>
           <div class="col-lg-4">
             <label>Downgraded Plan</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="downGradedPlan" placeholder="Down Graded Plan"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="downGradedPlan" placeholder="Down Graded Plan"
               autocomplete="off" [class.is-invalid]="isControlInvalid('downGradedPlan')" maxlength=20
               [class.is-valid]="isControlValid('downGradedPlan')" formControlName="downGradedPlan" />
 
