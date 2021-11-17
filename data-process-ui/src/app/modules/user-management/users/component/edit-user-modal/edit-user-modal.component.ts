@@ -239,10 +239,11 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
           //config.maxDate = { year: 2099, month: 12, day: 31 };
         config.outsideDays = 'hidden';*/
         const current = new Date();
+        console.log(current.getFullYear(), current.getMonth(), current.getDate())
         this.minDate = {
-          year: current.getFullYear()-18,
-          month: current.getMonth() + 1,
-          day: current.getDate()
+          year: 2000,
+          month:  1,
+          day: 1
         };
         this.maxDate = {
           year: current.getFullYear()-18,
