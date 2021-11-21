@@ -36,12 +36,22 @@
       <ng-container *ngIf="hasCheckbox">
       <div class="col-lg-3">
         <label>Assign to</label>
+        <ng-container *ngIf="hasGroup">
+        <select class="form-control form-control-lg form-control-solid" name="selectedUser" (change)="selectUser($event.target.value)"
+           formControlName="selectedUser">
+          <option *ngFor="let user of assignedToUserGroupList" [ngValue]="user.allotmentId">
+            {{ user.displayName }}
+          </option>
+        </select>
+        </ng-container>
+        <ng-container *ngIf="!hasGroup">
         <select class="form-control form-control-lg form-control-solid" name="selectedUser" (change)="selectUser($event.target.value)"
            formControlName="selectedUser">
           <option *ngFor="let user of assignedToUserList" [ngValue]="user.employeeId">
             {{ user.fullName }}
           </option>
         </select>
+        </ng-container>
         <div class="feedback">Selected Work Units will be  <b>Assigned to</b></div>
       </div>
     </ng-container>

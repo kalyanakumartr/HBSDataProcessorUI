@@ -50,15 +50,18 @@ export class MyWorkComponent
   filterGroup: FormGroup;
   searchGroup: FormGroup;
   assignedToUserList: any;
+  assignedToUserGroupList:any;
   queueList: any;
   statusList: any;
   hasLink: boolean;
   hasCheckbox: boolean;
+  hasGroup:boolean;
   allWorkUnitIds: string[] = [];
   selectedWorkUnitIds: string[] = [];
   selectedQueue: string;
   selectedStatus: string;
   selectedUser: string;
+  allotmentId:string;
   updateTask:UpdateTaskModel;
 
   private subscriptions: Subscription[] = [];
@@ -138,6 +141,15 @@ export class MyWorkComponent
         console.log("UserList"+userList);
       });
   }
+  getAllotedUserGroup() {
+    this.workAllocationService
+      .getAllotedUserGroup()
+      .subscribe((userGroupList) => {
+        this.assignedToUserGroupList = userGroupList;
+        this.allotmentId = this.assignedToUserGroupList[0].allotmentId;
+        console.log("UserGroupList"+userGroupList);
+      });
+  }
   ngOnDestroy() {
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
@@ -173,10 +185,17 @@ export class MyWorkComponent
     if (position.length > 1) {
       this.selectedQueue = position[1];
     }
+
     if (['Group', 'ProductionTeam'].includes(this.selectedQueue)) {
       this.hasCheckbox = true;
       this.hasLink = false;
-      this.getAssignedtoUser();
+      if (['Group'].includes(this.selectedQueue)) {
+        this.hasGroup=true;
+        this.getAllotedUserGroup();
+      }else{
+        this.hasGroup=false;
+        this.getAssignedtoUser();
+      }
     } else {
       this.hasCheckbox = false;
       this.hasLink = true;
@@ -197,27 +216,43 @@ export class MyWorkComponent
   getWorkUnitIds() {
     var ids = [];
     this.workAllocationService.items$.forEach(function (items) {
+      ids=[];
       items.forEach(function (item) {
         ids.push(item.allocationId);
       });
     });
+    console.log(ids,"before Slice", this.allWorkUnitIds);
     this.allWorkUnitIds.slice(0, this.allWorkUnitIds.length - 1);
+    console.log(ids,"After Slice", this.allWorkUnitIds);
     this.allWorkUnitIds = ids;
+    console.log(ids,"After Assign New ids", this.allWorkUnitIds);
   }
 
   assignWorkUnits() {
     var updateTask= new UpdateTaskModel;
     var name;
-    for (var user of this.assignedToUserList) {
-      if (this.selectedUser == user.employeeId) {
-        console.log("--kk--",user);
-        name = user.fullName;
-        updateTask.teamId = user.teamId;
+    if(this.hasGroup){
+      for (var user of this.assignedToUserGroupList) {
+        if (this.selectedUser == user.allotmentId) {
+          console.log("--kk--",user);
+          name = user.displayName;
+        }
+      }
+    }else{
+      for (var user of this.assignedToUserList) {
+        if (this.selectedUser == user.employeeId) {
+          console.log("--kk--",user);
+          name = user.fullName;
+          updateTask.teamId = user.teamId;
+        }
       }
     }
+
     var selectedIds = [];
+    console.log(this.allWorkUnitIds,"Ids");
     this.allWorkUnitIds.forEach(function (workunit) {
-      if ((<HTMLInputElement>document.getElementById(workunit)).checked) {
+      var wu =(<HTMLInputElement>document.getElementById(workunit));
+      if (wu !=null && wu.checked) {
         if(selectedIds.indexOf(workunit) === -1) {
           selectedIds.push(workunit);
         }
@@ -243,8 +278,17 @@ export class MyWorkComponent
    // alert(updateTask+'Work Unit will be assigned to Selected User' + name);
   }
   openSnackBar(message: string, action: string) {
+
+    const terms = ["failed", "already"];
+    const result1 = terms.some(term => message.includes(term));
+    alert(result1);
+    var redColor = false;
+    if( result1){
+      redColor =true;
+    }
     this.snackBar.open(message, action, {
-      duration: 4000,
+      duration: 6000,
+      panelClass: [redColor?'red-snackbar':'blue-snackbar'],
       verticalPosition:"top"
     });
   }

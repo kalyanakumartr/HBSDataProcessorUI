@@ -81,6 +81,40 @@ export class WorkAllocationService extends TableTaskService<WorkUnitModel> imple
       headers: httpHeaders,
     });
   }
+  getAllotedUserGroup(){
+    const url = this.API_URL + '/getAllotedUserGroup';
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${auth.access_token}`,
+    });
+    //this.isLoadingSubject.next(true);
+    console.log("Inside get Work Units");
+    return this.http.post(url, {
+
+    },{
+      headers: httpHeaders,
+    });
+  }
+  getWorkUnitStatusList(){
+    const url = this.API_URL + '/getWorkUnitsStatusList';
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${auth.access_token}`,
+    });
+    //this.isLoadingSubject.next(true);
+    console.log("Inside get Work Units Status List");
+    return this.http.post(url, {
+
+    },{
+      headers: httpHeaders,
+    });
+  }
   getQueueForUser(user){
     /*const url = 'http://localhost:3000/queue' ;
     console.log(this.http.get(url));
