@@ -61,12 +61,13 @@
             <label class="form-label">COVID19 Vaccinated? </label>
             <select class="form-control form-control-lg form-control-solid" name="vaccinateInfo"
             [class.is-invalid]="isControlInvalid('vaccinateInfo')" formControlName="vaccinateInfo" >
-            <option value="Covaxin1Dose">Covaxin 1st Dose</option>
-            <option value="Covaxin2Dose">Covaxin 2nd Dose</option>
-            <option value="CoviShield1Dose">CoviShield 1st Dose</option>
-            <option value="CoviShield2Dose">CoviShield 2nd Dose</option>
-            <option value="Sputnik1Dose">Sputnik  1st Dose</option>
-            <option value="Sputnik2Dose">Sputnik  2nd Dose</option>
+            <option value="Novaccinated">Not Vaccinated</option>
+            <option value="Covaxin1stDose">Covaxin 1st Dose</option>
+            <option value="Covaxin2ndDose">Covaxin 2nd Dose</option>
+            <option value="CoviShield1stDose">CoviShield 1st Dose</option>
+            <option value="CoviShield2ndDose">CoviShield 2nd Dose</option>
+            <option value="Sputnik1stDose">Sputnik 1st Dose</option>
+            <option value="Sputnik2ndDose">Sputnik 2nd Dose</option>
 
           </select>
           </div>
@@ -221,7 +222,7 @@
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter Alternate PhoneNumber</label>
-            <input type="number" class="form-control form-control-lg form-control-solid" name="alternateNumber" placeholder="phoneno"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="alternateNumber" placeholder="alternateNumber"
               autocomplete="off" [class.is-invalid]="isControlInvalid('alternateNumber')"
               [class.is-valid]="isControlValid('alternateNumber')" formControlName="alternateNumber" />
               <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'alternateNumber')">Phone Number should have at

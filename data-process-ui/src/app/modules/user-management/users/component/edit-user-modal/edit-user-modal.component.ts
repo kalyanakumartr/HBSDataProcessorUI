@@ -59,7 +59,7 @@ const EMPTY_CUSTOMER: UserModel = {
       personalEmailId:'',
       mediaType: 'Primary',
       mediaId: '',
-      emergencyNumber:'',
+      emergencyContactNo:'',
       district:''
     }
 ],

@@ -11,27 +11,37 @@
       <div class="form-group row">
 
 
+        <div class="col-lg-2">
+          <label>Project</label>
+          <select class="form-control form-control-lg form-control-solid" name="project" [(ngModel)]="project"
+             formControlName="project" (change)="setProject($event.target.value)">
+             <option [ngValue]="0" [selected]=true>Select Project</option>
+            <option *ngFor="let project of projectList" [ngValue]="project.projectId">
+              {{ project.projectName }}
+            </option>
+          </select>
 
-      <div class="col-lg-3">
-        <label>Select Queue</label>
+        </div>
+      <div class="col-lg-2">
+        <label>Work Allocation</label>
         <select class="form-control form-control-lg form-control-solid" name="selectedQueue" (change)="selectQueue($event.target.value)"
            formControlName="selectedQueue">
           <option *ngFor="let queue of queueList" [ngValue]="queue.queueId">
             {{ queue.queueName }}
           </option>
         </select>
-        <div class="feedback">Please select <b>Queue</b></div>
+
 
       </div>
-      <div class="col-lg-3">
-        <label>Select Status</label>
+      <div class="col-lg-2">
+        <label>Status</label>
         <select class="form-control form-control-lg form-control-solid" name="selectedStatus" (change)="selectTask($event.target.value)"
            formControlName="selectedStatus">
           <option *ngFor="let status of statusList" [ngValue]="status.statusId">
             {{ status.statusName }}
           </option>
         </select>
-        <div class="feedback">Please select <b>Status</b></div>
+
       </div>
       <ng-container *ngIf="hasCheckbox">
       <div class="col-lg-3">
@@ -55,7 +65,7 @@
         <div class="feedback">Selected Work Units will be  <b>Assigned to</b></div>
       </div>
     </ng-container>
-      <div class="col-lg-3" [formGroup]="searchGroup">
+      <div class="col-lg-2" [formGroup]="searchGroup">
         <small class="form-text text-muted"><b>Search</b> in all fields</small>
         <input type="text" class="form-control" name="searchText" placeholder="Search" value=""  formControlName="searchTerm" />
         <ng-container *ngIf="hasCheckbox">
@@ -119,7 +129,7 @@
              </ng-container>
             <td>
               <ng-container *ngIf="hasLink else noLink">
-                <a title="Start WorkUnit"  (click)="openWworkUnit(task,selectedQueue)">{{ task.coreData.roadData.workUnitId }}</a>
+                <a title="Start WorkUnit"  (click)="openWworkUnit(task,selectedQueue, selectedStatus)">{{ task.coreData.roadData.workUnitId }}</a>
                </ng-container>
                <ng-template #noLink>
 

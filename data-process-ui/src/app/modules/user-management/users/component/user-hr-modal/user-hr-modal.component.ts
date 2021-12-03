@@ -58,7 +58,7 @@ const EMPTY_CUSTOMER: UserModel = {
       personalEmailId:'',
       mediaType: 'Primary',
       mediaId: '',
-      emergencyNumber:'',
+      emergencyContactNo:'',
       district:''
     }
 ],
@@ -362,7 +362,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
       officialEmailId: [this.customer.mediaList[0].emailId, Validators.compose([ Validators.email])],
       phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
       alternateNumber: [this.customer.mediaList[0].alternateMobile, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
-      emergencyNumber: [this.customer.mediaList[0].emergencyNumber, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
+      emergencyNumber: [this.customer.mediaList[0].emergencyContactNo, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
       currentAddress: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(1), Validators.maxLength(200)])],
       permanentAddress: [this.customer.mediaList[0].permanentAddress, Validators.compose([Validators.minLength(1), Validators.maxLength(200)])],
       maritialStatus: [this.customer.martial, Validators.compose([Validators.minLength(1), Validators.maxLength(20)])],
@@ -451,7 +451,7 @@ export class UserHRModalComponent implements OnInit, OnDestroy {
     this.media.emailId = formData.officialEmailId;
     this.media.mobileNo = formData.phoneno;
     this.media.alternateMobile = formData.alternateNumber;
-    this.media.emergencyNumber = formData.emergencyNumber;
+    this.media.emergencyContactNo = formData.emergencyNumber;
     this.media.communicationAddress = formData.currentAddress;
     this.media.permanentAddress = formData.permanentAddress;
     this.media.district = formData.district;

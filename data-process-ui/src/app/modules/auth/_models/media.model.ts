@@ -7,7 +7,7 @@ export class Media {
     communicationAddress:string;
     permanentAddress:string;
     personalEmailId:string;
-    emergencyNumber:string;
+    emergencyContactNo:string;
     district:string;
 
   }

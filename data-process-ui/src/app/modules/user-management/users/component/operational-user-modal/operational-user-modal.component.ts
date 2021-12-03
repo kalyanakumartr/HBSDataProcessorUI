@@ -58,7 +58,7 @@ const EMPTY_CUSTOMER: UserModel = {
       personalEmailId:'',
       mediaType: 'Primary',
       mediaId: '',
-      emergencyNumber:'',
+      emergencyContactNo:'',
       district:''
     }
 ],
@@ -331,7 +331,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       //Change Reporting to
       reportingTo: [this.customer.operationalRecord.reportingTo, Validators.compose([Validators.required])],
       loginRFDB_BPS: [this.customer.operationalRecord.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20)])],
-      projectId: [this.customer.operationalRecord.project.projectId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      projectId: [this.customer.operationalRecord.project!=null?this.customer.operationalRecord.project.projectId:'0', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
       trainingBatch: [this.customer.operationalRecord.trainingBatch, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])],
 
 

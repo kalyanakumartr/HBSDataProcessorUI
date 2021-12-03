@@ -31,7 +31,7 @@
             {{ _user.userName }} {{ _user.lastname }}
           </a>
           <div class="text-muted mt-1">
-            Project Manager
+            {{_user.roleName}}
           </div>
           <div class="navi mt-2">
             <a href="#" class="navi-item">
@@ -203,7 +203,7 @@
                 Emergency Number:
               </div>
               <div class="col-lg-2">
-                {{_user.mediaList[0].emergencyNumber}}
+                {{_user.mediaList[0].emergencyContactNo}}
                </div>
             </div>
 
@@ -227,7 +227,7 @@
                 Date Of Joining:
               </div>
               <div class="col-lg-2">
-                {{_user.hrRecord.dateOfJoin}}
+                {{_user.hrRecord.employmentInfo.dateOfJoin}}
                </div>
             </div>
             <div class="form-group row">

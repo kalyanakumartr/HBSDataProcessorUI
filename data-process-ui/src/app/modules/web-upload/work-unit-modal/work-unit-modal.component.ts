@@ -21,9 +21,11 @@ import { UpdateTaskModel } from '../modal/update-task.model';
 export class WorkUnitModalComponent  {
   @Input() task: any;
   @Input() queue: any;
+  @Input() status: any;
   reasonList: any;
   selectedReason: string;
   showReasons:boolean = false;
+  showEditable:boolean = false;
   mm : any;
   ss : any;
   ms : any;
@@ -31,6 +33,9 @@ export class WorkUnitModalComponent  {
   buttonType:number;
   timerId : any;
   showReject :boolean;
+  estimatedTime:any;
+  actualTime:any;
+  efficiency:any;
   private subscriptions: Subscription[] = [];
   constructor(
         private snackBar: MatSnackBar,
@@ -44,16 +49,51 @@ export class WorkUnitModalComponent  {
       this.buttonType=1;
       this.timerId = 0;
       this.showReject=false;
+      this.estimatedTime=0;
+      this.actualTime=0;
+      this.showEditable=false;
+      this.efficiency=0;
     }
 
   ngOnInit(): void {
-
+    if(this.queue == "Production"){
+      this.estimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.production.estimatedTime;
+      this.actualTime = this.task.coreData.roadData.roadTypeMap.benchMark.production.actualTime;
+      if(this.estimatedTime>0 && this.actualTime>0){
+        this.efficiency =this.estimatedTime/this.actualTime;
+      }
+    }else if(this.queue == "Quality Control"){
+      this.estimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityControl.estimatedTime;
+      this.actualTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityControl.actualTime;
+      if(this.estimatedTime>0 && this.actualTime>0){
+        this.efficiency =this.estimatedTime/this.actualTime;
+      }
+    }else if(this.queue == "Quality Assurance"){
+      this.estimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityAssurance.estimatedTime;
+      this.actualTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityAssurance.actualTime;
+      if(this.estimatedTime>0 && this.actualTime>0){
+        this.efficiency =this.estimatedTime/this.actualTime;
+      }
+    }else{
+      this.estimatedTime=0;
+      this.actualTime=0;
+      this.efficiency =0;
+    }
+    this.mm = this.actualTime;
+    this.efficiency = Math.trunc(this.efficiency*100);
     this.workAllocationService.getReaonsList(this.queue,"hold")
     .subscribe((reasons) => {
       this.reasonList = reasons;
     });
     if(this.queue != "Production"){
       this.showReject=true;
+    }
+    var statusArray: Array<string> = ['Ready', 'InProgress', 'Hold'];
+    if(statusArray.indexOf(this.status) > -1){
+      this.showEditable=true;
+    }
+    if(this.showEditable){
+
     }
   }
   timeLeft: number = 60;

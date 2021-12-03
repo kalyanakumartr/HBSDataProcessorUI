@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { Observable, of, Subscription } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, first, tap } from 'rxjs/operators';
 import {
   GroupingState,
   IDeleteAction,
@@ -23,6 +23,9 @@ import { WorkUnitModel } from '../modal/work-unit.model';
 import { UpdateTaskModel } from '../modal/update-task.model';
 import { WorkUnitModalComponent } from '../work-unit-modal/work-unit-modal.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ProjectService } from '../../auth/_services/project.services';
+import { AuthService, UserModel } from '../../auth';
+import { TaskBatch } from '../modal/taskbatch.model';
 
 @Component({
   selector: 'app-my-work',
@@ -63,17 +66,23 @@ export class MyWorkComponent
   selectedUser: string;
   allotmentId:string;
   updateTask:UpdateTaskModel;
+  projectList:any[];
+  project:any;
 
   private subscriptions: Subscription[] = [];
   authModel: AuthModel;
+  user$: Observable<UserModel>;
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
     private snackBar: MatSnackBar,
+    public projectService: ProjectService,
+    private authService: AuthService,
     public workAllocationService: WorkAllocationService
   ) {
     this.queueList = [];
     this.statusList = [];
+    this.projectList=[];
     this.allWorkUnitIds = [];
     this.selectedWorkUnitIds = [];
     this.hasLink = true;
@@ -82,9 +91,15 @@ export class MyWorkComponent
 
   ngOnInit(): void {
     //this.filterForm();
+    this.user$ = this.authService.currentUserSubject.asObservable();
     this.getQueues();
+    this.user$.pipe(first()).subscribe(value => { this.getProjectForDivision(value.operationalRecord.division.divisionId) });
+
     setTimeout(() => {
       //this.workAllocationService.patchStateWithoutFetch({ this.sorting});
+      this.workAllocationService.patchStateWithoutFetch({
+        projectId: [this.project],
+      });
       this.workAllocationService.patchStateWithoutFetch({
         queueList: [this.selectedQueue],
       });
@@ -103,6 +118,36 @@ export class MyWorkComponent
       (res) => (this.isLoading = res)
     );
     this.subscriptions.push(sb);
+  }
+  getProjectForDivision(division){
+    this.projectList=[];
+    this.projectService.getProjectList(division).pipe(
+      tap((res: any) => {
+        this.projectList = res;
+        if(this.projectList.length>0){
+          this.project = this.projectList[0].projectId;
+        }
+
+        // console.log("projectList", this.projectList)
+        // setTimeout(() => {
+        //         this.project="0: 0";
+        //       }, 2000);
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
+  setProject(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.project= position[1].toString().trim();
+      if(this.project != "0"){
+        this.workAllocationService.patchState({ projectId:this.project },"/searchTask");
+      }
+    }
   }
   public getTasks() {
     console.log('Inside get Tasks');
@@ -153,12 +198,13 @@ export class MyWorkComponent
   ngOnDestroy() {
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
-  openWworkUnit(task: any,selectedQueue:any) {
+  openWworkUnit(task: any,selectedQueue:any, selectedStatus:any) {
     const modalRef = this.modalService.open(WorkUnitModalComponent, {
       size: 'xl',
     });
     modalRef.componentInstance.task = task;
     modalRef.componentInstance.queue = selectedQueue;
+    modalRef.componentInstance.status = selectedStatus;
   }
   //CheckBox
   checkAll() {
@@ -230,6 +276,7 @@ export class MyWorkComponent
 
   assignWorkUnits() {
     var updateTask= new UpdateTaskModel;
+    var taskBatch= new TaskBatch;
     var name;
     if(this.hasGroup){
       for (var user of this.assignedToUserGroupList) {
@@ -264,10 +311,20 @@ export class MyWorkComponent
     updateTask.queueId =this.selectedQueue;
     updateTask.statusId ="Assigned";
     updateTask.allotedTo = this.selectedUser;
+    //updateTask.teamName
+    //updateTask.teamId
+    //updateTask.statusReason
+    //updateTask.allotmentId
+    //updateTask.allotedUserName
+    //updateTask.projectId
+    taskBatch.batch="";
+    taskBatch.batchId="None";
+    updateTask.taskBatch=  taskBatch;
     updateTask.skillSet="Production";
     updateTask.triggeredAction="Default";
     updateTask.reasonId ="NOREASON"
     updateTask.remarks="To Team Member End";
+
     this.workAllocationService.updateTask(updateTask)
     .subscribe((res: any)=>
     {
