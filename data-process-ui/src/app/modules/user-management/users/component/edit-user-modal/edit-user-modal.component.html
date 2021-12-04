@@ -1,12 +1,14 @@
 <div class="modal-content">
   <div class="modal-header">
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <b><label class="heading">
       <ng-container *ngIf="customer">
         <ng-container *ngIf="customer.id">Edit Employee details for </ng-container>
         <ng-container *ngIf="!customer.id">Create  Employee  </ng-container>
 
         <ng-container *ngIf="customer.id">'{{customer.userName}} {{ customer.lastName }}'</ng-container>
       </ng-container>
+    </label></b>
     </div>
     <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
   </div>

@@ -310,15 +310,21 @@ export class MyWorkComponent
     updateTask.allocationIds =this.selectedWorkUnitIds;
     updateTask.queueId =this.selectedQueue;
     updateTask.statusId ="Assigned";
-    updateTask.allotedTo = this.selectedUser;
+    if(this.hasGroup){
+      updateTask.allotmentId= this.selectedUser;
+      updateTask.allotedTo='';
+      updateTask.teamId='';
+    }else{
+      updateTask.allotedTo = this.selectedUser;
+    }
     //updateTask.teamName
     //updateTask.teamId
     //updateTask.statusReason
     //updateTask.allotmentId
     //updateTask.allotedUserName
     //updateTask.projectId
-    taskBatch.batch="";
-    taskBatch.batchId="None";
+    taskBatch.batch="None";
+    taskBatch.batchId="";
     updateTask.taskBatch=  taskBatch;
     updateTask.skillSet="Production";
     updateTask.triggeredAction="Default";

@@ -483,12 +483,12 @@
                 Project:
               </div>
               <div class="col-lg-2">
-                {{_user.operationalRecord.project.projectName}}
+                {{_user.operationalRecord.project !=null? _user.operationalRecord.project.projectName:''}}
                </div>
             </div>
             <div class="form-group row">
               <div class="col-lg-7">
-                Reportin To:
+                Reporting To:
               </div>
               <div class="col-lg-2">
                 {{_user.operationalRecord.reportingTo}}
@@ -507,7 +507,7 @@
                 Group:
               </div>
               <div class="col-lg-2 nowrap">
-                {{_user.operationalRecord.team.groupName}}
+                {{_user.operationalRecord.group.teamName}}
                </div>
             </div>
             <div class="form-group row">

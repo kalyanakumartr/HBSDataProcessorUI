@@ -190,7 +190,7 @@
               </span>
             </td>
               <td>{{ customer.operationalRecord.team.teamName }}</td>
-              <td>{{ customer.operationalRecord.team.groupName }}</td>
+              <td>{{ customer.operationalRecord.group.teamName }}</td>
 
               <td>
                 <span class="label label-dot label-primary mr-2" [class.label-success]="customer.itRecord.workMode === 'WFO'"
@@ -200,7 +200,7 @@
                 </span>
               </td>
               <td>
-                {{ customer.reportingTo }}
+                {{ customer.operationalRecord.reportingTo }}
               </td>
               <td>
                 {{ customer.roleName }}
