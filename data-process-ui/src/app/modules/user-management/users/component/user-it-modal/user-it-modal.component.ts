@@ -9,6 +9,7 @@ import { UsersService } from 'src/app/modules/auth/_services/user.service';
 import { UserITModel } from 'src/app/modules/auth/_models/user-it.model';
 import { BaseModel } from 'src/app/_metronic/shared/crud-table';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl } from '@angular/forms';
 
 
 const EMPTY_CUSTOMER: UserITModel = {
@@ -56,6 +57,19 @@ export class UserITModalComponent implements OnInit, OnDestroy {
     ) {
       this.userITModel =new UserITModel;
       this.userId= new UserITModel;
+      this.formGroup = new FormGroup({
+          broadBandAccount: new FormControl(),
+          broadBandBy: new FormControl(),
+          internetPlan: new FormControl(),
+          isDowngraded: new FormControl(),
+          downGradedPlan: new FormControl(),
+          ispName: new FormControl(),
+          staticIPAddress: new FormControl(),
+          systemSerialNo : new FormControl(),
+          staticWhiteList: new FormControl(),
+          systemToHome: new FormControl(),
+          workMode: new FormControl(),
+      });
     }
 
   ngOnInit(): void {
@@ -111,9 +125,15 @@ export class UserITModalComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.prepareCustomer();
-    if (this.userId.id) {
-      this.edit();
+    var invalid = this.findInvalidControls();
+    var isValid = invalid.length>0?false:true;
+    if(isValid){
+      this.prepareCustomer();
+      if (this.userId.id) {
+        this.edit();
+      }
+    }else{
+      alert("Please add valid values for "+invalid);
     }
   }
 
@@ -174,5 +194,16 @@ export class UserITModalComponent implements OnInit, OnDestroy {
   isControlTouched(controlName): boolean {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
+  }
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.formGroup.controls;
+    for (const name in controls) {
+     // console.log(name,"--",controls[name].invalid);
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+    return invalid;
   }
 }

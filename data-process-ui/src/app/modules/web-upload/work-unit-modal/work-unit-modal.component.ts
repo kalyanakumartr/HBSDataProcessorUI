@@ -5,6 +5,7 @@ import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-boot
 import { of, Subscription } from 'rxjs';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
 import { WorkAllocationService } from '../../auth/_services/workallocation.service';
+import { TaskBatch } from '../modal/taskbatch.model';
 import { UpdateTaskModel } from '../modal/update-task.model';
 
 @Component({
@@ -36,6 +37,7 @@ export class WorkUnitModalComponent  {
   estimatedTime:any;
   actualTime:any;
   efficiency:any;
+  remarks:any;
   private subscriptions: Subscription[] = [];
   constructor(
         private snackBar: MatSnackBar,
@@ -53,6 +55,7 @@ export class WorkUnitModalComponent  {
       this.actualTime=0;
       this.showEditable=false;
       this.efficiency=0;
+      this.remarks='';
     }
 
   ngOnInit(): void {
@@ -115,28 +118,28 @@ startTimer() {
   start(taskId){
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Start","Ready",allotedto,"NOREASON");
+    this.assignWorkUnits(taskId,this.queue,team,"Start","Ready",allotedto,"NOREASON","To Team Member End");
     this.openSnackBar("Work Unit Started","");
     this.clickHandler(2) ;
   }
   pause(taskId){
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Pause","InProgress",allotedto,"NOREASON");
+    this.assignWorkUnits(taskId,this.queue,team,"Pause","InProgress",allotedto,"NOREASON","To Team Member End");
     this.openSnackBar("Work Unit Paused","");
     this.clickHandler(3) ;
   }
   resume(taskId){
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Resume","InProgress",allotedto,"NOREASON");
+    this.assignWorkUnits(taskId,this.queue,team,"Resume","InProgress",allotedto,"NOREASON","To Team Member End");
     this.openSnackBar("Work Unit Resume","");
     this.clickHandler(2) ;
   }
   stop(taskId){
     var allotedto ="15794";//Hardcoded
     var team="GRP0038";//Hardcoded
-    this.assignWorkUnits(taskId,this.queue,team,"Stop","Completed",allotedto,"NOREASON");
+    this.assignWorkUnits(taskId,this.queue,team,"Stop","Completed",allotedto,"NOREASON","To Team Member End");
     this.openSnackBar("Work Unit Ended","");
     this.clickHandler(0) ;
     this.modal.dismiss();
@@ -151,7 +154,7 @@ startTimer() {
     }
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Hold","InProgress",allotedto,this.selectedReason);
+    this.assignWorkUnits(taskId,this.queue,team,"Hold","InProgress",allotedto,this.selectedReason,"To Team Member End");
     this.openSnackBar("Work Unit Holded","");
     this.modal.dismiss();
   }
@@ -162,7 +165,7 @@ startTimer() {
     }
     var allotedto ="";
     var team="";
-    //this.assignWorkUnits(taskId,this.queue,team,"Reject","InProgress",allotedto,this.selectedReason);
+    //this.assignWorkUnits(taskId,this.queue,team,"Reject","InProgress",allotedto,this.selectedReason,"To Team Member End");
     this.openSnackBar("Work Unit Rejected","");
     this.modal.dismiss();
   }
@@ -172,21 +175,25 @@ startTimer() {
     this.selectedReason=position[1].toString().trim();
 
   }
-  assignWorkUnits(taskId, queue,teamId,action,status, allotedTo,reason) {
+  assignWorkUnits(taskId, queue,teamId,action,status, allotedTo,reason, remarks) {
+    alert(this.remarks);
     var updateTask= new UpdateTaskModel;
-
+    var taskBatch= new TaskBatch;
     var selectedIds = [];
     selectedIds.push(taskId);
 
+    taskBatch.batch="None";
+    taskBatch.batchId="";
+    updateTask.taskBatch=  taskBatch;
     updateTask.allocationIds =selectedIds;
     updateTask.teamId = teamId;
     updateTask.queueId =queue;
-    updateTask.skillSet="Production";
+    updateTask.skillSet=queue;
     updateTask.statusId =status;
     updateTask.allotedTo = allotedTo;
     updateTask.triggeredAction=action;
     updateTask.reasonId =reason;
-    updateTask.remarks="To Team Member End";
+    updateTask.remarks=remarks;
     this.workAllocationService.updateTask(updateTask)
     .subscribe((res: any)=>
     {

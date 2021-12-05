@@ -340,11 +340,17 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.prepareCustomer();
-    if (this.userId.id) {
-      this.edit();
-    } else {
-      this.create();
+    var invalid = this.findInvalidControls();
+    var isValid = invalid.length>0?false:true;
+    if(isValid){
+      this.prepareCustomer();
+      if (this.userId.id) {
+        this.edit();
+      } else {
+        this.create();
+      }
+    }else{
+      alert("Please add valid values for "+invalid);
     }
   }
 
@@ -535,5 +541,16 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
           items: []
         });
       })).subscribe();
+  }
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.formGroup.controls;
+    for (const name in controls) {
+     // console.log(name,"--",controls[name].invalid);
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+    return invalid;
   }
 }

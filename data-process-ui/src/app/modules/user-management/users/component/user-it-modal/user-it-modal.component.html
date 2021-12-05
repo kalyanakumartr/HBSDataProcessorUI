@@ -55,6 +55,15 @@
                 <option value="ACT">ACT</option>
                 <option value="Hathway">Hathway</option>
                 <option value="localBand">Local BroadBand</option>
+                <option value="No Broadband connection">No Broadband connection</option>
+                <option value="Local Broadband-Limras">Local Broadband-Limras</option>
+                <option value="Local Broadband-Cherrinet">Local Broadband-Cherrinet</option>
+                <option value="Local Broadband-TIC">Local Broadband-TIC</option>
+                <option value="Local Broadband-Railwire">Local Broadband-Railwire</option>
+                <option value="Local Broadband - C32">Local Broadband - C32</option>
+                <option value="Local Broand-Ready link">Local Broand-Ready link</option>
+                <option value="Local Broadband-Limras ethernet">Local Broadband-Limras ethernet</option>
+
               </select>
               <div class="feedback">Please select <b>ISP</b></div>
 
@@ -142,7 +151,7 @@
     <ng-container *ngIf="userITModel">
 
       <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
-        [disabled]="formGroup.invalid">Save</button>
+        >Save</button>
     </ng-container>
   </div>
 </div>

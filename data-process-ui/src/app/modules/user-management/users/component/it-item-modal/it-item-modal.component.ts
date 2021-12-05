@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItItemsModel } from 'src/app/modules/auth/_models/it-items.model';
 import { Asset } from 'src/app/modules/auth/_models/asset.model';
 import { Brand } from 'src/app/modules/auth/_models/brand.model';
+import { FormControl } from '@angular/forms';
 
 
 const EMPTY_ITMODEL: ItItemsModel = {
@@ -63,6 +64,15 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
       this.itItemsModel =new ItItemsModel;
       this.receivedDate="";
       this.selValue="0";
+      this.formGroup = new FormGroup({
+        assetId: new FormControl(),
+        serialNo: new FormControl(),
+        brandId: new FormControl(),
+        givenDate: new FormControl(),
+        receivedDate: new FormControl(),
+        remarks: new FormControl(),
+
+        });
     }
 
   ngOnInit(): void {
@@ -144,13 +154,19 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.prepareITItem();
-    if (this.itItemsModel.autoId) {
-      this.edit();
+    var invalid = this.findInvalidControls();
+    var isValid = invalid.length>0?false:true;
+    if(isValid){
+      this.prepareITItem();
+      if (this.itItemsModel.autoId) {
+        this.edit();
+      }else{
+        this.add();
+      }
+      this.modal.dismiss();
     }else{
-      this.add();
+      alert("Please add valid values for "+invalid);
     }
-    this.modal.dismiss();
   }
 
   add(){
@@ -244,5 +260,15 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
   }
-
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.formGroup.controls;
+    for (const name in controls) {
+     // console.log(name,"--",controls[name].invalid);
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+    return invalid;
+  }
 }

@@ -312,7 +312,7 @@
                 {{ customer.maritalStatus }}
               </td>
               <td>
-                {{ customer.dob }}
+                {{ customer.dob | date: 'dd-MMM-yyyy'}}
               </td>
               <td>
                 {{ customer.bloodGroup }}

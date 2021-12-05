@@ -13,6 +13,7 @@ import { ProjectService } from 'src/app/modules/auth/_services/project.services'
 import { UserRoles } from 'src/app/modules/auth/_models/user-roles.model';
 import { RoleModel } from 'src/app/modules/auth/_models/role.model';
 import { Producer } from 'src/app/modules/auth/_models/producer.model';
+import { FormControl } from '@angular/forms';
 
 
 const EMPTY_CUSTOMER: UserModel = {
@@ -250,6 +251,24 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
           month: current.getMonth() + 1,
           day: current.getDate()
         };
+        this.formGroup = new FormGroup({
+          userName: new FormControl(),
+          fatherName: new FormControl(),
+          spouseName: new FormControl(),
+          userId: new FormControl(),
+          dob: new FormControl(),
+          sex: new FormControl(),
+          phoneno: new FormControl(),
+          address: new FormControl(),
+          department: new FormControl(),
+          division: new FormControl(),
+          roles: new FormControl(),
+          recruitmentType: new FormControl(),
+          status: new FormControl(),
+          doj: new FormControl(),
+          ctc: new FormControl(),
+
+        });
     }
 
   ngOnInit(): void {
@@ -396,13 +415,18 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   }
 
   save() {
-
-    if (this.customer.id) {
-      this.prepareCustomer("Edit");
-      this.edit();
-    } else {
-      this.prepareCustomer("Create");
-      this.create();
+    var invalid = this.findInvalidControls();
+    var isValid = invalid.length>0?false:true;
+    if(isValid){
+      if (this.customer.id) {
+        this.prepareCustomer("Edit");
+        this.edit();
+      } else {
+        this.prepareCustomer("Create");
+        this.create();
+      }
+    }else{
+      alert("Please add valid values for "+invalid);
     }
   }
 
@@ -524,5 +548,15 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     console.log("Control", control, "Value", value);
     control.setValue(value);
   }
-
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.formGroup.controls;
+    for (const name in controls) {
+     // console.log(name,"--",controls[name].invalid);
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+    return invalid;
+  }
 }

@@ -35,6 +35,11 @@
             <option value="AB -ve">AB-</option>
             <option value="O +ve">O+</option>
             <option value="O -ve">O-</option>
+            <option value="A2B +ve">A2B+</option>
+            <option value="A1B +ve">A1B+</option>
+            <option value="A1 +ve">A1+</option>
+            <option value="A1 -ve">A1-</option>
+
           </select>
           </div>
           <div class="col-lg-3">
@@ -299,8 +304,9 @@
             <label class="form-label">Date of Joining</label>
             <div class="input-group input-group-solid">
               <input type="text" name="dob" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                placeholder="dd/mm/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('dateOfJoin')"
+                placeholder="mm/dd/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('dateOfJoin')"
                 [class.is-valid]="isControlValid('dateOfJoin')" formControlName="dateOfJoin" readonly="true" />
+                {{formGroup.value.dateOfJoin | date: 'dd-MMM-yyyy'}}
               <div class="input-group-append" (click)="d.toggle()">
                 <span class="input-group-text">
                   <i class="text-dark-50 flaticon-calendar"></i>
@@ -333,8 +339,9 @@
 
               <div class="input-group input-group-solid">
                 <input type="text" name="lastWorkDay" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="dd/mm/yyyy" ngbDatepicker #x="ngbDatepicker" [class.is-invalid]="isControlInvalid('lastWorkDay')"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #x="ngbDatepicker" [class.is-invalid]="isControlInvalid('lastWorkDay')"
                   [class.is-valid]="isControlValid('lastWorkDay')" formControlName="lastWorkDay" readonly="true" />
+                  {{formGroup.value.lastWorkDay | date: 'dd-MMM-yyyy'}}
                 <div class="input-group-append" (click)="x.toggle()">
                   <span class="input-group-text">
                     <i class="text-dark-50 flaticon-calendar"></i>
@@ -350,8 +357,9 @@
 
               <div class="input-group input-group-solid">
                 <input type="text" name="fromNoticePeriod" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="dd/mm/yyyy" ngbDatepicker #z="ngbDatepicker" [class.is-invalid]="isControlInvalid('fromNoticePeriod')"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #z="ngbDatepicker" [class.is-invalid]="isControlInvalid('fromNoticePeriod')"
                   [class.is-valid]="isControlValid('fromNoticePeriod')" formControlName="fromNoticePeriod" readonly="true" />
+                  {{formGroup.value.fromNoticePeriod | date: 'dd-MMM-yyyy'}}
                 <div class="input-group-append" (click)="z.toggle()">
                   <span class="input-group-text">
                     <i class="text-dark-50 flaticon-calendar"></i>
@@ -367,8 +375,9 @@
 
               <div class="input-group input-group-solid">
                 <input type="text" name="toNoticePeriod" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="dd/mm/yyyy" ngbDatepicker #y="ngbDatepicker" [class.is-invalid]="isControlInvalid('toNoticePeriod')"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #y="ngbDatepicker" [class.is-invalid]="isControlInvalid('toNoticePeriod')"
                   [class.is-valid]="isControlValid('toNoticePeriod')" formControlName="toNoticePeriod" readonly="true" />
+                  {{formGroup.value.toNoticePeriod | date: 'dd-MMM-yyyy'}}
                 <div class="input-group-append" (click)="y.toggle()">
                   <span class="input-group-text">
                     <i class="text-dark-50 flaticon-calendar"></i>
@@ -405,8 +414,9 @@
 
               <div class="input-group input-group-solid">
                 <input type="text" name="longLeaveFromDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="dd/mm/yyyy" ngbDatepicker #llfd="ngbDatepicker" [class.is-invalid]="isControlInvalid('longLeaveFromDate')"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #llfd="ngbDatepicker" [class.is-invalid]="isControlInvalid('longLeaveFromDate')"
                   [class.is-valid]="isControlValid('longLeaveFromDate')" formControlName="longLeaveFromDate" readonly="true" />
+                  {{formGroup.value.longLeaveFromDate | date: 'dd-MMM-yyyy'}}
                 <div class="input-group-append" (click)="llfd.toggle()">
                   <span class="input-group-text">
                     <i class="text-dark-50 flaticon-calendar"></i>
@@ -422,8 +432,9 @@
 
               <div class="input-group input-group-solid">
                 <input type="text" name="longLeaveToDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="dd/mm/yyyy" ngbDatepicker #lltd="ngbDatepicker" [class.is-invalid]="isControlInvalid('longLeaveToDate')"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #lltd="ngbDatepicker" [class.is-invalid]="isControlInvalid('longLeaveToDate')"
                   [class.is-valid]="isControlValid('longLeaveToDate')" formControlName="longLeaveToDate" readonly="true" />
+                  {{formGroup.value.longLeaveToDate | date: 'dd-MMM-yyyy'}}
                 <div class="input-group-append" (click)="lltd.toggle()">
                   <span class="input-group-text">
                     <i class="text-dark-50 flaticon-calendar"></i>
@@ -506,7 +517,7 @@
     <ng-container *ngIf="userHRModel">
 
       <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
-        [disabled]="formGroup.invalid">Save</button>
+        >Save</button>
     </ng-container>
   </div>
 </div>
