@@ -12,6 +12,7 @@ import { ProjectService } from 'src/app/modules/auth/_services/project.services'
 import { BaseModel } from 'src/app/_metronic/shared/crud-table/models/base.model';
 import { UserOperationalModel } from 'src/app/modules/auth/_models/user-operational.model';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Project } from 'src/app/modules/auth/_models/project.model';
 
 
 const EMPTY_CUSTOMER: UserModel = {
@@ -239,6 +240,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       this.userOPRModel =new UserOperationalModel;
       this.userId= new UserOperationalModel;
       this.isAdminRole=false;
+
     }
 
   ngOnInit(): void {
@@ -429,7 +431,13 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     this.customer.operationalRecord.department.departmentId = formData.department;
     this.customer.operationalRecord.reportingTo=this.reportingId;
     this.customer.operationalRecord.reportingToId=this.reportingId;
-    this.customer.operationalRecord.project.projectId=formData.projectId;
+    var project = new Project;
+    if(this.customer.operationalRecord.project == null){
+      project.projectId ==formData.projectId==null?"0":formData.projectId;
+      this.customer.operationalRecord.project=project;
+    }else{
+      this.customer.operationalRecord.project.projectId=formData.projectId==null?"0":formData.projectId;
+    }
 
     this.userOPRModel.trainingBatch= formData.trainingBatch;
     this.userOPRModel.loginRFDB_BPS = formData.loginRFDB_BPS;

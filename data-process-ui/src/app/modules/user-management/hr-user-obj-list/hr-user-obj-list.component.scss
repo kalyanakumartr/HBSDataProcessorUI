@@ -55,3 +55,13 @@ span
   color:blue;
   text-decoration:underline;
 }
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.grid-item {
+  text-align: center;
+}

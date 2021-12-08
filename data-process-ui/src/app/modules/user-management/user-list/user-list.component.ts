@@ -56,11 +56,18 @@ division:any;
 projectList:any[];
 project:any;
 isClearFilter:boolean;
+
+roleId:string;
+departmentName:string;
+divisionName:string;
+showDivision:boolean;
+showDepartment:boolean;
+
 isLoading$;
 private subscriptions: Subscription[] = [];
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
-    private modalService: NgbModal, public userService: UsersService,public projectService: ProjectService) {
+    private modalService: NgbModal, public userService: UsersService,    private authService: AuthService,public projectService: ProjectService) {
       this.userService.listen().subscribe((m:any)=>{
         console.log("m -- -- --",m);
         this.filter();
@@ -68,22 +75,41 @@ authModel:AuthModel;
       this.projectList=[];
       this.divisionList=[];
       this.isClearFilter=false;
+      this.showDivision=true;
+      this.showDepartment=true;
+      this.roleId = authService.currentUserSubject.value.roleId;
+      if(this.roleId.endsWith('ProjectLeader')){
+        this.divisionName = authService.currentUserSubject.value.operationalRecord.division.divisionName;
+        this.departmentName = authService.currentUserSubject.value.operationalRecord.department.departmentName;
+        this.division = authService.currentUserSubject.value.operationalRecord.division.divisionId;
+        this.department = authService.currentUserSubject.value.operationalRecord.department.departmentId;
+        this.showDivision=false;
+        this.showDepartment=false;
+
+      }
   }
 
   ngOnInit(): void {
     //this.filterForm();
     this.searchForm();
-
+    if(!this.showDivision){
+      this.userService.patchStateWithoutFetch({ departmentId:this.department,divisionId:this.division});
+      this.getProjectForDivision();
+      this.isClearFilter=true;
+    }
     this.userService.fetch("/searchUser");
     console.log("UserList :", this.subscriptions)
     this.grouping = this.userService.grouping;
     this.paginator = this.userService.paginator;
     this.sorting = this.userService.sorting;
+
     const sb = this.userService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
-    this.getDepartment();
-    this.division="0";
-    this.department="0";
+    if(this.showDivision){
+      this.getDepartment();
+      this.division="0";
+      this.department="0";
+    }
     this.project="0";
   }
   public getUsers() {
@@ -285,26 +311,39 @@ authModel:AuthModel;
   clearFilter(){
 
     if(this.isClearFilter){
-      this.division="0";
+      if(this.showDivision){
+        this.division="0: 0";
+        if(this.divisionList.length>0){
+          this.divisionList.splice(0, this.divisionList.length);
+        }
+      }
+      if(this.showDepartment){
+        if(this.departmentList.length>0){
+          this.departmentList.splice(0, this.departmentList.length);
+        }
+        this.getDepartment();
 
-      this.project="0";
-      if(this.projectList.length>0){
-        this.projectList.splice(0, this.projectList.length);
+        this.project="0: 0";
+        if(this.projectList.length>0){
+          this.projectList.splice(0, this.projectList.length);
+        }
+      }else{
+        this.project="0: 0";
       }
-      if(this.divisionList.length>0){
-        this.divisionList.splice(0, this.divisionList.length);
-      }
-      if(this.departmentList.length>0){
-        this.departmentList.splice(0, this.departmentList.length);
-      }
-      this.getDepartment();
+
       (<HTMLInputElement>document.getElementById("searchText")).value="";
       this.userService.setDefaults();
-      this.userService.patchState({ },"/searchUser");
+      if(this.showDepartment){
+        this.userService.patchState({ },"/searchUser");
+      }else{
+        this.userService.patchState({ departmentId:this.department,divisionId:this.division},"/searchUser");
+      }
       this.grouping = this.userService.grouping;
       this.paginator = this.userService.paginator;
       this.sorting = this.userService.sorting;
-      this.department="0";
+      if(this.showDivision){
+        this.department="0: 0";
+      }
     }else{
       (<HTMLInputElement>document.getElementById("searchText")).value="";
     }

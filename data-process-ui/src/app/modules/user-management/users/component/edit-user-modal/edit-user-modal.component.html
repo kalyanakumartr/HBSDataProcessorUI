@@ -157,7 +157,7 @@
             <div class="input-group input-group-solid">
               <input type="text" name="doj"  class="form-control form-control-lg form-control-solid" autocomplete="off"
                 placeholder="mm/dd/yyyy" ngbDatepicker [minDate]="minDate" #doj="ngbDatepicker" [class.is-invalid]="isControlInvalid('doj')"
-                [class.is-valid]="isControlValid('doj')" formControlName="doj" readonly="true" />{{formGroup.value.dateOfJoin | date: 'dd-MMM-yyyy'}}
+                [class.is-valid]="isControlValid('doj')" formControlName="doj" readonly="true" />{{formGroup.value.doj | date: 'dd-MMM-yyyy'}}
               <div class="input-group-append" (click)="doj.toggle()">
                 <span class="input-group-text">
                   <i class="text-dark-50 flaticon-calendar"></i>

@@ -1,10 +1,7 @@
 <div class="example-container mat-elevation-z8">
   <div class="form form-label-right">
     <div class="form-group row">
-  <div class="col-lg-2" >
-    <input type="text" class="form-control" name="searchText" id="searchText" (keyup)="applyFilter($event.target.value)" placeholder="Search" value="" />
-    <small class="form-text text-muted"><b>Search</b> in all fields</small>
-  </div>
+
   <div class="col-lg-3">
     <ng-container *ngIf="showDivision">
     <label>Select Division</label>
@@ -53,10 +50,17 @@
     <span>{{teamName}}</span>
   </ng-container>
   </div>
-  <div class="col-lg-3">
-    <span id="link" (click)="clearFilter()">Clear Filter</span>
-
-
+  <div class="col-lg-2 nowrap" >
+    <label>Search in all fields</label>
+    <div class="grid-container">
+      <div class="grid-item">
+    <input type="search" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
+      formControlName="searchTerm" /></div>
+      <div class="grid-item" style="cursor: pointer;">
+        &nbsp;&nbsp;
+      <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+      </div>
+      </div>
   </div>
 </div>
   </div>

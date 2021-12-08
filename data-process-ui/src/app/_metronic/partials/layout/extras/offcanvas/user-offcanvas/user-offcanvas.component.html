@@ -122,8 +122,16 @@
               <div class="col-lg-7">
                 Blood Group:
               </div>
-              <div class="col-lg-2">
+              <div class="col-lg-2 nowrap">
                 {{_user.bloodGroup}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                DOB:
+              </div>
+              <div class="col-lg-2 nowrap">
+                {{_user.dob | date: 'dd-MMM-yyyy'}}
                </div>
             </div>
             <div class="form-group row">
@@ -154,7 +162,7 @@
               <div class="col-lg-7">
                 Father Name:
               </div>
-              <div class="col-lg-2">
+              <div class="col-lg-2 ">
                 {{_user.fatherName}}
                </div>
             </div>
@@ -226,8 +234,8 @@
               <div class="col-lg-7">
                 Date Of Joining:
               </div>
-              <div class="col-lg-2">
-                {{_user.hrRecord.employmentInfo.dateOfJoin}}
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.dateOfJoin | date: 'dd-MMM-yyyy'}}
                </div>
             </div>
             <div class="form-group row">
@@ -274,32 +282,32 @@
               <div class="col-lg-7">
                 From Notice Period :
               </div>
-              <div class="col-lg-2">
-                {{_user.hrRecord.employmentInfo.fromNoticePeriod}}
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.fromNoticePeriod | date: 'dd-MMM-yyyy'}}
                </div>
             </div>
             <div class="form-group row">
               <div class="col-lg-7">
                 To Notice Period :
               </div>
-              <div class="col-lg-2">
-                {{_user.hrRecord.employmentInfo.toNoticePeriod}}
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.toNoticePeriod | date: 'dd-MMM-yyyy'}}
                </div>
             </div>
             <div class="form-group row">
               <div class="col-lg-7">
                 Long Leave From :
               </div>
-              <div class="col-lg-2">
-                {{_user.hrRecord.employmentInfo.longLeaveFromDate}}
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.longLeaveFromDate | date: 'dd-MMM-yyyy'}}
                </div>
             </div>
             <div class="form-group row">
               <div class="col-lg-7">
                 Long Leave To :
               </div>
-              <div class="col-lg-2">
-                {{_user.hrRecord.employmentInfo.longLeaveToDate}}
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.longLeaveToDate | date: 'dd-MMM-yyyy'}}
                </div>
             </div>
 

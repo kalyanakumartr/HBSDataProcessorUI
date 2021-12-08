@@ -1,3 +1,6 @@
+
+
+
 <div class="card card-custom gutter-b">
     <div class="card-header">
       <div class="card-title">
@@ -12,10 +15,7 @@
       <div class="form form-label-right">
         <div class="form-group row" [formGroup]="searchGroup">
 
-          <div class="col-lg-2" >
-            <input type="text" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
-              formControlName="searchTerm" /><small class="form-text text-muted"><b>Search</b> in all fields</small>
-          </div>
+
           <div class="col-lg-3">
             <label>Department</label>
             <select class="form-control form-control-lg form-control-solid" name="department" [(ngModel)]="department"
@@ -49,10 +49,17 @@
             </select>
 
           </div>
-          <div class="col-lg-3">
-            <span id="link" (click)="clearFilter()">Clear Filter</span>
-
-
+          <div class="col-lg-2 nowrap" >
+            <label>Search in all fields</label>
+            <div class="grid-container">
+              <div class="grid-item">
+            <input type="search" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
+              formControlName="searchTerm" /></div>
+              <div class="grid-item" style="cursor: pointer;">
+                &nbsp;&nbsp;
+              <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+              </div>
+              </div>
           </div>
         </div>
       </div>
