@@ -119,6 +119,10 @@
   <div class="form-group row">
     <div class="col-lg-4">
 
+      <ng-container *ngIf="showQAButtons">
+
+          Move WorkUnit as
+      </ng-container>
 
 
     </div>
@@ -127,28 +131,39 @@
   </div>
   <div class="form-group row">
     <ng-container *ngIf="showEditable">
-      <div class="col-lg-1 button-row" ></div>
-      <ng-container *ngIf="buttonType == 1">
-      <div class="col-lg-1 button-row" >
-          <button type="button" id="Start" mat-fab color="primary" (click)=start(task.allocationId)>Start</button>
-      </div>
+      <ng-container *ngIf="showActionButtons">
+        <div class="col-lg-1 button-row" ></div>
+        <ng-container *ngIf="buttonType == 1">
+        <div class="col-lg-1 button-row" >
+            <button type="button" id="Start" mat-fab color="primary" (click)=start(task.allocationId)>Start</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="buttonType == 2">
+        <div class="col-lg-1 button-row" >
+          <button type="button" id="Pause" mat-fab color="accent" (click)=pause(task.allocationId)>Pause</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="buttonType == 3">
+        <div class="col-lg-1 button-row" >
+          <button type="button" id="Pause" mat-fab color="accent" (click)=resume(task.allocationId)>Resume</button>
+        </div>
+      </ng-container>
+        <div class="col-lg-1">
+          <button type="button" id="Stop" mat-fab color="warn" (click)=stop(task.allocationId)>Stop</button>
+        </div>
+        <div class="col-lg-1">
+          <button type="button" id="Hold" mat-fab color="primary" (click)=hold(task.allocationId)>Hold</button>
+        </div>
     </ng-container>
-    <ng-container *ngIf="buttonType == 2">
-      <div class="col-lg-1 button-row" >
-        <button type="button" id="Pause" mat-fab color="accent" (click)=pause(task.allocationId)>Pause</button>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="buttonType == 3">
-      <div class="col-lg-1 button-row" >
-        <button type="button" id="Pause" mat-fab color="accent" (click)=resume(task.allocationId)>Resume</button>
-      </div>
-    </ng-container>
+    <ng-container *ngIf="showQAButtons">
+
       <div class="col-lg-1">
-        <button type="button" id="Stop" mat-fab color="warn" (click)=stop(task.allocationId)>Stop</button>
+        <button type="button" id="MoveBatch" mat-fab color="primary" title='Move Batch' (click)=batch(task.allocationId)>Batch</button>
       </div>
       <div class="col-lg-1">
-        <button type="button" id="Hold" mat-fab color="primary" (click)=hold(task.allocationId)>Hold</button>
+        <button type="button" id="MoveWorkUnit" mat-fab color="accent" title='Move Current Unit' (click)=currentUnit(task.allocationId)>Single</button>
       </div>
+      </ng-container>
       <ng-container *ngIf="showReject">
       <div class="col-lg-2">
         <button type="button" id="Reject" mat-fab color="primary" (click)=reject(task.allocationId)>Reject</button>

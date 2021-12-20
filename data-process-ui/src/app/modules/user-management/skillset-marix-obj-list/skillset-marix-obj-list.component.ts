@@ -79,7 +79,7 @@ show:boolean =true;
         this.groupName = authService.currentUserSubject.value.operationalRecord.group.groupName;
         this.team = authService.currentUserSubject.value.operationalRecord.team.teamId;
         this.teamName = authService.currentUserSubject.value.operationalRecord.team.teamName;
-      }else if(this.roleId.endsWith('EDRAdmin')){
+      }else if(this.roleId.endsWith('EDRAdmin') ||  (this.roleId.endsWith('ProjectManager'))){
         this.showDivision=true;
         this.showGroup=true;
         this.showTeam=true;

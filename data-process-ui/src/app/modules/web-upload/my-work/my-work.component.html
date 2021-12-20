@@ -1,17 +1,14 @@
 <div class="card card-custom gutter-b">
-  <div class="card-header">
-    <div class="card-title">
-      <h3 class="card-label">My {{selectedQueue}} Task List</h3>
-    </div>
+  <div class="form form-label-right">
+    <div class="card-header">
+    <div class="form-group row">
+      <div class="col-lg-4">
+          <div class="card-title">
+            <h3 class="card-label">My {{selectedQueue}} Task List</h3>
+          </div>
 
-  </div>
-  <div class="card-body">
-    <!-- begin: Filtration form -->
-    <div class="form form-label-right">
-      <div class="form-group row">
-
-
-        <div class="col-lg-2">
+       </div>
+       <div class="col-lg-2">
           <label>Project</label>
           <select class="form-control form-control-lg form-control-solid" name="project" [(ngModel)]="project"
              formControlName="project" (change)="setProject($event.target.value)">
@@ -22,27 +19,40 @@
           </select>
 
         </div>
-      <div class="col-lg-2">
-        <label>Work Allocation</label>
-        <select class="form-control form-control-lg form-control-solid" name="selectedQueue" (change)="selectQueue($event.target.value)"
-           formControlName="selectedQueue">
-          <option *ngFor="let queue of queueList" [ngValue]="queue.queueId">
-            {{ queue.queueName }}
-          </option>
-        </select>
+        <div class="col-lg-2">
+          <label>Work Allocation</label>
+          <select class="form-control form-control-lg form-control-solid" name="selectedQueue" (change)="selectQueue($event.target.value)"
+             formControlName="selectedQueue">
+            <option *ngFor="let queue of queueList" [ngValue]="queue.queueId">
+              {{ queue.queueName }}
+            </option>
+          </select>
 
 
+        </div>
+        <div class="col-lg-2">
+          <label>Status</label>
+          <select class="form-control form-control-lg form-control-solid" name="selectedStatus" (change)="selectTask($event.target.value)"
+             formControlName="selectedStatus">
+            <option *ngFor="let status of statusList" [ngValue]="status.statusId">
+              {{ status.statusName }}
+            </option>
+          </select>
+
+        </div>
+        <div class="col-lg-2" [formGroup]="searchGroup">
+          <small class="form-text text-muted"><b>Search</b> in all fields</small>
+          <input type="search" class="form-control" name="searchText" placeholder="Search" value=""  formControlName="searchTerm" />
+
+        </div>
       </div>
-      <div class="col-lg-2">
-        <label>Status</label>
-        <select class="form-control form-control-lg form-control-solid" name="selectedStatus" (change)="selectTask($event.target.value)"
-           formControlName="selectedStatus">
-          <option *ngFor="let status of statusList" [ngValue]="status.statusId">
-            {{ status.statusName }}
-          </option>
-        </select>
+    </div>
+  </div>
+  <div class="card-body">
+    <!-- begin: Filtration form -->
+    <div class="form form-label-right">
+      <div class="form-group row">
 
-      </div>
       <ng-container *ngIf="hasCheckbox">
       <div class="col-lg-3">
         <label>Assign to</label>
@@ -65,13 +75,26 @@
         <div class="feedback">Selected Work Units will be  <b>Assigned to</b></div>
       </div>
     </ng-container>
-      <div class="col-lg-2" [formGroup]="searchGroup">
-        <small class="form-text text-muted"><b>Search</b> in all fields</small>
-        <input type="text" class="form-control" name="searchText" placeholder="Search" value=""  formControlName="searchTerm" />
+      <div class="col-lg-2" >
+
         <ng-container *ngIf="hasCheckbox">
           <button type="submit" class="btn btn-primary btn-elevate" (click)="assignWorkUnits()" >Assign</button>
         </ng-container>
       </div>
+      <ng-container *ngIf="hasBatch">
+        <div class="col-lg-2">
+          <label>Batch</label>
+          <select class="form-control form-control-lg form-control-solid" name="batch" [(ngModel)]="batch"
+            formControlName="batch" (change)="setProject($event.target.value)">
+            <option [ngValue]="0" >Select Project</option>
+            <option [ngValue]="new" [selected]=true>New Batch</option>
+            <option *ngFor="let batch of batchList" [ngValue]="batch.value">
+              {{ batch.label }}
+            </option>
+          </select>
+
+      </div>
+    </ng-container>
     </div>
 
   </div>

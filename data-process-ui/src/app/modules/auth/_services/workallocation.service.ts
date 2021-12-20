@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TableService } from '../../../_metronic/shared/crud-table';
 import { environment } from '../../../../environments/environment';
 import { UserModel } from '../_models/user.model';
-import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject, of, Subscription, Subject } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { AuthModel } from '../_models/auth.model';
 import { AuthHTTPService } from './auth-http';
@@ -77,6 +77,24 @@ export class WorkAllocationService extends TableTaskService<WorkUnitModel> imple
     return this.http.post(url, {
       "queueId" : ""
 
+    },{
+      headers: httpHeaders,
+    });
+  }
+  getBatchList(queueId,projectId){
+    const url = this.API_URL + '/getBatchList';
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${auth.access_token}`,
+    });
+    //this.isLoadingSubject.next(true);
+    console.log("Inside get Batch list");
+    return this.http.post(url, {
+      "queueId" : queueId,
+      "projectId": projectId
     },{
       headers: httpHeaders,
     });
@@ -188,5 +206,12 @@ export class WorkAllocationService extends TableTaskService<WorkUnitModel> imple
     return this.http.post(url, updateTask,{
       headers: httpHeaders,
     });
+  }
+  private _listners = new Subject<any>();
+  listen(): Observable<any>{
+    return this._listners.asObservable();
+  }
+  filterData(filterBy:string){
+    this._listners.next(filterBy)
   }
 }

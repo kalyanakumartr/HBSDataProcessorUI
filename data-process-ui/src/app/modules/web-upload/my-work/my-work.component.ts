@@ -53,12 +53,14 @@ export class MyWorkComponent
   filterGroup: FormGroup;
   searchGroup: FormGroup;
   assignedToUserList: any;
+  batchList: any;
   assignedToUserGroupList:any;
   queueList: any;
   statusList: any;
   hasLink: boolean;
   hasCheckbox: boolean;
   hasGroup:boolean;
+  hasBatch:boolean;
   allWorkUnitIds: string[] = [];
   selectedWorkUnitIds: string[] = [];
   selectedQueue: string;
@@ -67,6 +69,8 @@ export class MyWorkComponent
   allotmentId:string;
   updateTask:UpdateTaskModel;
   projectList:any[];
+  batch:string = "New";
+  new:any;
   project:any;
 
   private subscriptions: Subscription[] = [];
@@ -87,12 +91,17 @@ export class MyWorkComponent
     this.selectedWorkUnitIds = [];
     this.hasLink = true;
     this.hasCheckbox = false;
+    this.workAllocationService.listen().subscribe((m:any)=>{
+      console.log("m -- -- --",m);
+      this.filter();
+    });
   }
 
   ngOnInit(): void {
     //this.filterForm();
     this.user$ = this.authService.currentUserSubject.asObservable();
     this.getQueues();
+    this.hasBatch=false;
     this.user$.pipe(first()).subscribe(value => { this.getProjectForDivision(value.operationalRecord.division.divisionId) });
 
     setTimeout(() => {
@@ -186,6 +195,14 @@ export class MyWorkComponent
         console.log("UserList"+userList);
       });
   }
+  getBatchList(){
+    this.workAllocationService
+      .getBatchList(this.selectedQueue,this.project)
+      .subscribe((batchList) => {
+        this.batchList = batchList;
+        console.log("BatchList"+batchList);
+      });
+  }
   getAllotedUserGroup() {
     this.workAllocationService
       .getAllotedUserGroup()
@@ -232,12 +249,17 @@ export class MyWorkComponent
       this.selectedQueue = position[1];
     }
 
-    if (['Group', 'ProductionTeam'].includes(this.selectedQueue)) {
+    if (['Group', 'ProductionTeam','QualityControlTeam','QualityAssuranceTeam','ReadyForDelivery','DeliveryToClient'].includes(this.selectedQueue)) {
       this.hasCheckbox = true;
       this.hasLink = false;
       if (['Group'].includes(this.selectedQueue)) {
         this.hasGroup=true;
         this.getAllotedUserGroup();
+      }else if (['QualityAssuranceTeam'].includes(this.selectedQueue)) {
+        this.hasGroup=false;
+        this.hasBatch=true;
+        this.getBatchList();
+        this.getAssignedtoUser();
       }else{
         this.hasGroup=false;
         this.getAssignedtoUser();
@@ -261,17 +283,19 @@ export class MyWorkComponent
 
   getWorkUnitIds() {
     var ids = [];
+    const that = this;
     this.workAllocationService.items$.forEach(function (items) {
       ids=[];
       items.forEach(function (item) {
         ids.push(item.allocationId);
       });
+      console.log(ids,"before Slice", that.allWorkUnitIds);
+      that.allWorkUnitIds.slice(0, that.allWorkUnitIds.length - 1);
+    console.log(ids,"After Slice", that.allWorkUnitIds);
+    that.allWorkUnitIds = ids;
+    console.log(ids,"After Assign New ids", that.allWorkUnitIds);
     });
-    console.log(ids,"before Slice", this.allWorkUnitIds);
-    this.allWorkUnitIds.slice(0, this.allWorkUnitIds.length - 1);
-    console.log(ids,"After Slice", this.allWorkUnitIds);
-    this.allWorkUnitIds = ids;
-    console.log(ids,"After Assign New ids", this.allWorkUnitIds);
+
   }
 
   assignWorkUnits() {
@@ -323,8 +347,16 @@ export class MyWorkComponent
     //updateTask.allotmentId
     //updateTask.allotedUserName
     //updateTask.projectId
-    taskBatch.batch="None";
-    taskBatch.batchId="";
+    if(this.batch == "New"){
+      taskBatch.batch="New";
+      taskBatch.batchId="";
+    }else if(this.batch.length>3){
+      taskBatch.batch="Append";
+      taskBatch.batchId=this.batch;
+    }else{
+      taskBatch.batch="None";
+      taskBatch.batchId="";
+    }
     updateTask.taskBatch=  taskBatch;
     updateTask.skillSet="Production";
     updateTask.triggeredAction="Default";
@@ -336,6 +368,7 @@ export class MyWorkComponent
     {
         this.openSnackBar(res.messageCode,"!!")
         this.search('');
+        this.getBatchList();
     });
     console.log("SelectedWork Unit Ids",this.selectedWorkUnitIds);
    // alert(updateTask+'Work Unit will be assigned to Selected User' + name);
