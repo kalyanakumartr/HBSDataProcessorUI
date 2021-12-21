@@ -61,6 +61,7 @@ export class MyWorkComponent
   hasCheckbox: boolean;
   hasGroup:boolean;
   hasBatch:boolean;
+  hasDeliverToClient:boolean;
   allWorkUnitIds: string[] = [];
   selectedWorkUnitIds: string[] = [];
   selectedQueue: string;
@@ -102,7 +103,8 @@ export class MyWorkComponent
     this.user$ = this.authService.currentUserSubject.asObservable();
     this.getQueues();
     this.hasBatch=false;
-    this.user$.pipe(first()).subscribe(value => { this.getProjectForDivision(value.operationalRecord.division.divisionId) });
+    this.hasDeliverToClient=false;
+    this.user$.pipe(first()).subscribe(value => { this.getProjectForDivision(value.operationalRecord.division.divisionId);this.selectedUser=value.userId; });
 
     setTimeout(() => {
       //this.workAllocationService.patchStateWithoutFetch({ this.sorting});
@@ -251,6 +253,8 @@ export class MyWorkComponent
 
     if (['Group', 'ProductionTeam','QualityControlTeam','QualityAssuranceTeam','ReadyForDelivery','DeliveryToClient'].includes(this.selectedQueue)) {
       this.hasCheckbox = true;
+      this.hasBatch=false;
+      this.hasDeliverToClient=false;
       this.hasLink = false;
       if (['Group'].includes(this.selectedQueue)) {
         this.hasGroup=true;
@@ -260,6 +264,17 @@ export class MyWorkComponent
         this.hasBatch=true;
         this.getBatchList();
         this.getAssignedtoUser();
+      }else if (['ReadyForDelivery'].includes(this.selectedQueue)) {
+        this.hasGroup=false;
+        this.hasBatch=true;
+        this.hasDeliverToClient=true;
+        this.getBatchList();
+      }else if (['DeliveryToClient'].includes(this.selectedQueue)) {
+        this.hasGroup=false;
+        this.hasBatch=false;
+        this.hasDeliverToClient=false;
+        this.hasCheckbox = false;
+        this.getBatchList();
       }else{
         this.hasGroup=false;
         this.getAssignedtoUser();
@@ -302,6 +317,9 @@ export class MyWorkComponent
     var updateTask= new UpdateTaskModel;
     var taskBatch= new TaskBatch;
     var name;
+    console.log("hasDeliverToClient",this.hasDeliverToClient);
+    updateTask.triggeredAction="Default";
+    updateTask.statusId ="Assigned";
     if(this.hasGroup){
       for (var user of this.assignedToUserGroupList) {
         if (this.selectedUser == user.allotmentId) {
@@ -309,6 +327,10 @@ export class MyWorkComponent
           name = user.displayName;
         }
       }
+    }else if(this.hasDeliverToClient){
+      updateTask.triggeredAction="StartStop";
+      updateTask.statusId ="Ready";
+      console.log("selectedUser",this.selectedUser);
     }else{
       for (var user of this.assignedToUserList) {
         if (this.selectedUser == user.employeeId) {
@@ -333,7 +355,7 @@ export class MyWorkComponent
     this.selectedWorkUnitIds = selectedIds;
     updateTask.allocationIds =this.selectedWorkUnitIds;
     updateTask.queueId =this.selectedQueue;
-    updateTask.statusId ="Assigned";
+
     if(this.hasGroup){
       updateTask.allotmentId= this.selectedUser;
       updateTask.allotedTo='';
@@ -359,7 +381,7 @@ export class MyWorkComponent
     }
     updateTask.taskBatch=  taskBatch;
     updateTask.skillSet="Production";
-    updateTask.triggeredAction="Default";
+
     updateTask.reasonId ="NOREASON"
     updateTask.remarks="To Team Member End";
 

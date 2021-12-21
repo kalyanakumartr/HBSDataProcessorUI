@@ -178,7 +178,7 @@ startTimer() {
     var allotedto ="";
     var team="";
     var batchId="";
-    this.assignWorkUnits(taskId,this.queue,team,"StartStop","Ready",allotedto,this.selectedReason,"To Team Member End",batchId);
+    this.assignWorkUnits(taskId,this.queue,team,"StartStop","Ready",allotedto,"NOREASON","To Team Member End",batchId);
     this.openSnackBar("Batch Moved to Ready for Delivery","");
     this.modal.dismiss();
   }
@@ -187,7 +187,7 @@ startTimer() {
 
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"StartStop","Ready",allotedto,this.selectedReason,"To Team Member End","");
+    this.assignWorkUnits(taskId,this.queue,team,"StartStop","Ready",allotedto,"NOREASON","To Team Member End","");
     this.openSnackBar("Work Unit Moved to Next Queue","");
     this.modal.dismiss();
   }

@@ -53,7 +53,7 @@
     <div class="form form-label-right">
       <div class="form-group row">
 
-      <ng-container *ngIf="hasCheckbox">
+      <ng-container *ngIf="hasCheckbox && !hasDeliverToClient">
       <div class="col-lg-3">
         <label>Assign to</label>
         <ng-container *ngIf="hasGroup">
@@ -78,7 +78,14 @@
       <div class="col-lg-2" >
 
         <ng-container *ngIf="hasCheckbox">
-          <button type="submit" class="btn btn-primary btn-elevate" (click)="assignWorkUnits()" >Assign</button>
+          <button type="submit" class="btn btn-primary btn-elevate" (click)="assignWorkUnits()" >
+            <ng-container *ngIf="!hasDeliverToClient">
+              Assign
+            </ng-container>
+            <ng-container *ngIf="hasDeliverToClient">
+              Deliver To Client
+            </ng-container>
+          </button>
         </ng-container>
       </div>
       <ng-container *ngIf="hasBatch">
@@ -86,7 +93,7 @@
           <label>Batch</label>
           <select class="form-control form-control-lg form-control-solid" name="batch" [(ngModel)]="batch"
             formControlName="batch" (change)="setProject($event.target.value)">
-            <option [ngValue]="0" >Select Project</option>
+            <option [ngValue]="0" >Select Batch</option>
             <option [ngValue]="new" [selected]=true>New Batch</option>
             <option *ngFor="let batch of batchList" [ngValue]="batch.value">
               {{ batch.label }}
