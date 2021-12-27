@@ -5,6 +5,7 @@ import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-boot
 import { of, Subscription } from 'rxjs';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
 import { WorkAllocationService } from '../../auth/_services/workallocation.service';
+import { TaskBatch } from '../modal/taskbatch.model';
 import { UpdateTaskModel } from '../modal/update-task.model';
 
 @Component({
@@ -21,9 +22,13 @@ import { UpdateTaskModel } from '../modal/update-task.model';
 export class WorkUnitModalComponent  {
   @Input() task: any;
   @Input() queue: any;
+  @Input() status: any;
   reasonList: any;
   selectedReason: string;
   showReasons:boolean = false;
+  showEditable:boolean = false;
+  showQAButtons:boolean = false;
+  showActionButtons:boolean = false;
   mm : any;
   ss : any;
   ms : any;
@@ -31,6 +36,10 @@ export class WorkUnitModalComponent  {
   buttonType:number;
   timerId : any;
   showReject :boolean;
+  estimatedTime:any;
+  actualTime:any;
+  efficiency:any;
+  remarks:any;
   private subscriptions: Subscription[] = [];
   constructor(
         private snackBar: MatSnackBar,
@@ -44,16 +53,64 @@ export class WorkUnitModalComponent  {
       this.buttonType=1;
       this.timerId = 0;
       this.showReject=false;
+      this.estimatedTime=0;
+      this.actualTime=0;
+      this.showEditable=false;
+      this.showQAButtons=false;
+      this.efficiency=0;
+      this.remarks='';
     }
 
   ngOnInit(): void {
-
+    if(this.queue == "Production"){
+      this.estimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.production.estimatedTime;
+      this.actualTime = this.task.coreData.roadData.roadTypeMap.benchMark.production.actualTime;
+      if(this.estimatedTime>0 && this.actualTime>0){
+        this.efficiency =this.estimatedTime/this.actualTime;
+      }
+      if(this.actualTime>0){
+        this.buttonType=3;
+      }
+      this.showActionButtons=true;
+    }else if(this.queue == "QualityControl"){
+      this.estimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityControl.estimatedTime;
+      this.actualTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityControl.actualTime;
+      if(this.estimatedTime>0 && this.actualTime>0){
+        this.efficiency =this.estimatedTime/this.actualTime;
+      }
+      if(this.actualTime>0){
+        this.buttonType=3;
+      }
+      this.showActionButtons=true;
+    }else if(this.queue == "QualityAssurance"){
+      this.estimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityAssurance.estimatedTime;
+      this.actualTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityAssurance.actualTime;
+      if(this.estimatedTime>0 && this.actualTime>0){
+        this.efficiency =this.estimatedTime/this.actualTime;
+      }
+      this.showActionButtons=false;
+      this.showQAButtons=true;
+    }else{
+      this.estimatedTime=0;
+      this.actualTime=0;
+      this.efficiency =0;
+      this.showActionButtons=false;
+    }
+    this.mm = this.actualTime;
+    this.efficiency = Math.trunc(this.efficiency*100);
     this.workAllocationService.getReaonsList(this.queue,"hold")
     .subscribe((reasons) => {
       this.reasonList = reasons;
     });
     if(this.queue != "Production"){
       this.showReject=true;
+    }
+    var statusArray: Array<string> = ['Ready', 'InProgress', 'Hold'];
+    if(statusArray.indexOf(this.status) > -1){
+      this.showEditable=true;
+    }
+    if(this.showEditable){
+
     }
   }
   timeLeft: number = 60;
@@ -75,34 +132,34 @@ startTimer() {
   start(taskId){
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Start","Ready",allotedto,"NOREASON");
+    this.assignWorkUnits(taskId,this.queue,team,"Start","Ready",allotedto,"NOREASON","To Team Member End","");
     this.openSnackBar("Work Unit Started","");
     this.clickHandler(2) ;
   }
   pause(taskId){
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Pause","InProgress",allotedto,"NOREASON");
+    this.assignWorkUnits(taskId,this.queue,team,"Pause","InProgress",allotedto,"NOREASON","To Team Member End","");
     this.openSnackBar("Work Unit Paused","");
     this.clickHandler(3) ;
   }
   resume(taskId){
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Resume","InProgress",allotedto,"NOREASON");
+    this.assignWorkUnits(taskId,this.queue,team,"Resume","InProgress",allotedto,"NOREASON","To Team Member End","");
     this.openSnackBar("Work Unit Resume","");
     this.clickHandler(2) ;
   }
   stop(taskId){
-    var allotedto ="15794";//Hardcoded
-    var team="GRP0038";//Hardcoded
-    this.assignWorkUnits(taskId,this.queue,team,"Stop","Completed",allotedto,"NOREASON");
+    var allotedto ="";//Hardcoded
+    var team="";//Hardcoded
+    this.assignWorkUnits(taskId,this.queue,team,"Stop","Completed",allotedto,"NOREASON","To Team Member End","");
     this.openSnackBar("Work Unit Ended","");
     this.clickHandler(0) ;
     this.modal.dismiss();
   }
   hold(taskId){
-    alert(this.selectedReason);
+
     if(this.selectedReason == undefined || this.selectedReason == ""){
       this.showReasons=true;
       (<HTMLInputElement> document.getElementById("Reject")).disabled = true;
@@ -111,10 +168,30 @@ startTimer() {
     }
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Hold","InProgress",allotedto,this.selectedReason);
+    this.assignWorkUnits(taskId,this.queue,team,"Hold","InProgress",allotedto,this.selectedReason,"To Team Member End","");
     this.openSnackBar("Work Unit Holded","");
     this.modal.dismiss();
   }
+  batch(taskId){
+
+
+    var allotedto ="";
+    var team="";
+    var batchId="";
+    this.assignWorkUnits(taskId,this.queue,team,"StartStop","Ready",allotedto,"NOREASON","To Team Member End",batchId);
+    this.openSnackBar("Batch Moved to Ready for Delivery","");
+    this.modal.dismiss();
+  }
+  currentUnit(taskId){
+
+
+    var allotedto ="";
+    var team="";
+    this.assignWorkUnits(taskId,this.queue,team,"StartStop","Ready",allotedto,"NOREASON","To Team Member End","");
+    this.openSnackBar("Work Unit Moved to Next Queue","");
+    this.modal.dismiss();
+  }
+
   reject(taskId){
     if(this.selectedReason == ""){
       alert("Please select Reason for Reject");
@@ -122,7 +199,7 @@ startTimer() {
     }
     var allotedto ="";
     var team="";
-    //this.assignWorkUnits(taskId,this.queue,team,"Reject","InProgress",allotedto,this.selectedReason);
+    //this.assignWorkUnits(taskId,this.queue,team,"Reject","InProgress",allotedto,this.selectedReason,"To Team Member End");
     this.openSnackBar("Work Unit Rejected","");
     this.modal.dismiss();
   }
@@ -132,25 +209,34 @@ startTimer() {
     this.selectedReason=position[1].toString().trim();
 
   }
-  assignWorkUnits(taskId, queue,teamId,action,status, allotedTo,reason) {
-    var updateTask= new UpdateTaskModel;
+  assignWorkUnits(taskId, queue,teamId,action,status, allotedTo,reason, remarks,batchId) {
 
+    var updateTask= new UpdateTaskModel;
+    var taskBatch= new TaskBatch;
     var selectedIds = [];
     selectedIds.push(taskId);
 
+    if(batchId!=""){
+      taskBatch.batch="Search";
+    }else{
+      taskBatch.batch="None";
+    }
+    taskBatch.batchId=batchId;
+    updateTask.taskBatch=  taskBatch;
     updateTask.allocationIds =selectedIds;
     updateTask.teamId = teamId;
     updateTask.queueId =queue;
-    updateTask.skillSet="Production";
+    updateTask.skillSet=queue;
     updateTask.statusId =status;
     updateTask.allotedTo = allotedTo;
     updateTask.triggeredAction=action;
     updateTask.reasonId =reason;
-    updateTask.remarks="To Team Member End";
+    updateTask.remarks=remarks;
     this.workAllocationService.updateTask(updateTask)
     .subscribe((res: any)=>
     {
-        this.openSnackBar(res.messageCode,"!!")
+        this.openSnackBar(res.messageCode,"!!");
+        this.workAllocationService.filterData("");
     });
   }
   openSnackBar(message: string, action: string) {

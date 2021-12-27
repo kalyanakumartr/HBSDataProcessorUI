@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItItemsModel } from 'src/app/modules/auth/_models/it-items.model';
 import { Asset } from 'src/app/modules/auth/_models/asset.model';
 import { Brand } from 'src/app/modules/auth/_models/brand.model';
+import { FormControl } from '@angular/forms';
 
 
 const EMPTY_ITMODEL: ItItemsModel = {
@@ -51,6 +52,7 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
   brandList: Brand[];
   assetId :string;
   brandId :string;
+  selValue:string;
   receivedDate:string;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
@@ -61,6 +63,16 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
     ) {
       this.itItemsModel =new ItItemsModel;
       this.receivedDate="";
+      this.selValue="0";
+      this.formGroup = new FormGroup({
+        assetId: new FormControl(),
+        serialNo: new FormControl(),
+        brandId: new FormControl(),
+        givenDate: new FormControl(),
+        receivedDate: new FormControl(),
+        remarks: new FormControl(),
+
+        });
     }
 
   ngOnInit(): void {
@@ -71,8 +83,6 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
     this.usersService.getAssetList().pipe(
       tap((res: any) => {
         this.assetList = res;
-        const formData = this.formGroup.value;
-        formData.assetId="0";
         console.log("Assets List", this.assetList);
       }),
       catchError((err) => {
@@ -84,7 +94,6 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
       this.usersService.getBrandList().pipe(
         tap((res: any) => {
           this.brandList = res;
-          this.brandId ="0";
           console.log("Brand List", this.brandList);
         }),
         catchError((err) => {
@@ -107,6 +116,9 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
     if (!this.id) {
       this.loadForm();
       this.setDefaultValue();
+      console.log("----",this.assetId)
+      this.assetId = "default";
+      this.brandId = "default";
     } else {
       console.log("this.id", this.id);
       this.assetId = this.itItemsModel.asset.assetId;
@@ -119,15 +131,17 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
 
   loadForm() {
     this.formGroup = this.fb.group({
-      assetId: [this.itItemsModel.asset.assetId, Validators.compose([ ])],
+
+      assetId: [this.itItemsModel.asset.assetId == '0'?"0":this.itItemsModel.asset.assetId, Validators.compose([ ])],
       serialNo: [this.itItemsModel.serialNo, Validators.compose([])],
-      brandId: [this.itItemsModel.brand.brandId, Validators.compose([])],
+      brandId: [this.itItemsModel.brand.brandId == '0'?"0":this.itItemsModel.brand.brandId, Validators.compose([])],
       givenDate: [this.itItemsModel.givenDate, Validators.compose([ ])],
       receivedDate: [this.itItemsModel.receivedDate==''?null:this.itItemsModel.receivedDate , Validators.compose([ ])],
       remarks:[this.itItemsModel.remarks],
 
 
     });
+    console.log("00000", this.formGroup.value);
   }
   setDefaultValue(){
     this.itItemsModel =EMPTY_ITMODEL;
@@ -140,13 +154,19 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.prepareITItem();
-    if (this.itItemsModel.autoId) {
-      this.edit();
+    var invalid = this.findInvalidControls();
+    var isValid = invalid.length>0?false:true;
+    if(isValid){
+      this.prepareITItem();
+      if (this.itItemsModel.autoId) {
+        this.edit();
+      }else{
+        this.add();
+      }
+      this.modal.dismiss();
     }else{
-      this.add();
+      alert("Please add valid values for "+invalid);
     }
-    this.modal.dismiss();
   }
 
   add(){
@@ -240,5 +260,15 @@ export class ITItemModalComponent implements OnInit, OnDestroy {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
   }
-
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.formGroup.controls;
+    for (const name in controls) {
+     // console.log(name,"--",controls[name].invalid);
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+    return invalid;
+  }
 }

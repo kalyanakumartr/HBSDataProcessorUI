@@ -56,6 +56,7 @@ function appInitializer(authService: AuthService) {
       multi: true,
       deps: [AuthService],
     },
+
     {
       provide: HIGHLIGHT_OPTIONS,
       useValue: {

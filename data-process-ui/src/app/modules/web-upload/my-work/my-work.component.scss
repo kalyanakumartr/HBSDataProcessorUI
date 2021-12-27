@@ -1,0 +1,14 @@
+.blue-snackbar {
+  background: #2196F3;
+}
+
+.red-snackbar {
+  background: #e71919;
+}
+.vertical-center {
+  margin: 100,200;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}

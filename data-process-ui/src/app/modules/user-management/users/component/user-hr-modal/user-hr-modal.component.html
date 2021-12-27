@@ -7,6 +7,7 @@
         <ng-container *ngIf="userHRModel.id"></ng-container>
       </ng-container>
     </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
   </div>
   <mat-divider ></mat-divider>
   <mat-divider ></mat-divider>
@@ -34,6 +35,11 @@
             <option value="AB -ve">AB-</option>
             <option value="O +ve">O+</option>
             <option value="O -ve">O-</option>
+            <option value="A2B +ve">A2B+</option>
+            <option value="A1B +ve">A1B+</option>
+            <option value="A1 +ve">A1+</option>
+            <option value="A1 -ve">A1-</option>
+
           </select>
           </div>
           <div class="col-lg-3">
@@ -60,12 +66,13 @@
             <label class="form-label">COVID19 Vaccinated? </label>
             <select class="form-control form-control-lg form-control-solid" name="vaccinateInfo"
             [class.is-invalid]="isControlInvalid('vaccinateInfo')" formControlName="vaccinateInfo" >
-            <option value="Covaxin1Dose">Covaxin 1st Dose</option>
-            <option value="Covaxin2Dose">Covaxin 2nd Dose</option>
-            <option value="CoviShield1Dose">CoviShield 1st Dose</option>
-            <option value="CoviShield2Dose">CoviShield 2nd Dose</option>
-            <option value="Sputnik1Dose">Sputnik  1st Dose</option>
-            <option value="Sputnik2Dose">Sputnik  2nd Dose</option>
+            <option value="Novaccinated">Not Vaccinated</option>
+            <option value="Covaxin1stDose">Covaxin 1st Dose</option>
+            <option value="Covaxin2ndDose">Covaxin 2nd Dose</option>
+            <option value="CoviShield1stDose">CoviShield 1st Dose</option>
+            <option value="CoviShield2ndDose">CoviShield 2nd Dose</option>
+            <option value="Sputnik1stDose">Sputnik 1st Dose</option>
+            <option value="Sputnik2ndDose">Sputnik 2nd Dose</option>
 
           </select>
           </div>
@@ -73,8 +80,8 @@
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter Aadhar Number</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="highestGraduate"
-              placeholder="Aadhar" autocomplete="off" [class.is-invalid]="isControlInvalid('aadhar')"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="highestGraduate"
+              placeholder="Aadhar" autocomplete="off" [class.is-invalid]="isControlInvalid('aadhar')" maxlength=12
               [class.is-valid]="isControlValid('aadhar')" formControlName="aadhar" />
           </div>
 
@@ -100,7 +107,7 @@
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter Uan</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="uan"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="uan"
               placeholder="Uan" autocomplete="off" [class.is-invalid]="isControlInvalid('uan')"
               [class.is-valid]="isControlValid('uan')" formControlName="uan" />
           </div>
@@ -157,7 +164,7 @@
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter Year of Passing</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="year"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="year"
               placeholder="Year" autocomplete="off" [class.is-invalid]="isControlInvalid('year')"
               [class.is-valid]="isControlValid('year')" formControlName="year" />
           </div>
@@ -211,7 +218,7 @@
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter PhoneNumber</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="phoneno" placeholder="phoneno"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="phoneno" placeholder="phoneno"
               autocomplete="off" [class.is-invalid]="isControlInvalid('phoneno')"
               [class.is-valid]="isControlValid('phoneno')" formControlName="phoneno" />
               <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'phoneno')">Phone Number should have at
@@ -220,7 +227,7 @@
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter Alternate PhoneNumber</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="alternateNumber" placeholder="phoneno"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="alternateNumber" placeholder="alternateNumber"
               autocomplete="off" [class.is-invalid]="isControlInvalid('alternateNumber')"
               [class.is-valid]="isControlValid('alternateNumber')" formControlName="alternateNumber" />
               <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'alternateNumber')">Phone Number should have at
@@ -229,7 +236,7 @@
           </div>
           <div class="col-lg-3">
             <label class="form-label">Enter Emergency PhoneNumber</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="emergencyNumber" placeholder="Emergency Number"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="emergencyNumber" placeholder="Emergency Number"
               autocomplete="off" [class.is-invalid]="isControlInvalid('emergencyNumber')"
               [class.is-valid]="isControlValid('emergencyNumber')" formControlName="emergencyNumber" />
               <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'emergencyNumber')">Phone Number should have at
@@ -250,7 +257,7 @@
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">Enter Bank Account</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="accountNo"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="accountNo"
               placeholder="Bank Account Number" autocomplete="off" [class.is-invalid]="isControlInvalid('accountNo')"
               [class.is-valid]="isControlValid('accountNo')" formControlName="accountNo" />
 
@@ -297,8 +304,9 @@
             <label class="form-label">Date of Joining</label>
             <div class="input-group input-group-solid">
               <input type="text" name="dob" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                placeholder="dd/mm/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('dateOfJoin')"
+                placeholder="mm/dd/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('dateOfJoin')"
                 [class.is-valid]="isControlValid('dateOfJoin')" formControlName="dateOfJoin" readonly="true" />
+                {{formGroup.value.dateOfJoin | date: 'dd-MMM-yyyy'}}
               <div class="input-group-append" (click)="d.toggle()">
                 <span class="input-group-text">
                   <i class="text-dark-50 flaticon-calendar"></i>
@@ -312,14 +320,14 @@
 
           <div class="col-lg-3">
             <label class="form-label">Experience In EDR</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="experienceInEDR"
+            <input type="number" class="form-control form-control-lg form-control-solid" name="experienceInEDR"
               placeholder="Eperience In EDR Status" autocomplete="off" [class.is-invalid]="isControlInvalid('experienceInEDR')"
               [class.is-valid]="isControlValid('experienceInEDR')" formControlName="experienceInEDR" />
           </div>
 
         <div class="col-lg-3">
           <label class="form-label">Experience Out EDR</label>
-          <input type="text" class="form-control form-control-lg form-control-solid" name="experienceOutEDR"
+          <input type="number" class="form-control form-control-lg form-control-solid" name="experienceOutEDR"
             placeholder="Eperience Out EDR Status" autocomplete="off" [class.is-invalid]="isControlInvalid('experienceOutEDR')"
             [class.is-valid]="isControlValid('experienceOutEDR')" formControlName="experienceOutEDR" />
         </div>
@@ -331,8 +339,9 @@
 
               <div class="input-group input-group-solid">
                 <input type="text" name="lastWorkDay" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="dd/mm/yyyy" ngbDatepicker #x="ngbDatepicker" [class.is-invalid]="isControlInvalid('lastWorkDay')"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #x="ngbDatepicker" [class.is-invalid]="isControlInvalid('lastWorkDay')"
                   [class.is-valid]="isControlValid('lastWorkDay')" formControlName="lastWorkDay" readonly="true" />
+                  {{formGroup.value.lastWorkDay | date: 'dd-MMM-yyyy'}}
                 <div class="input-group-append" (click)="x.toggle()">
                   <span class="input-group-text">
                     <i class="text-dark-50 flaticon-calendar"></i>
@@ -348,8 +357,9 @@
 
               <div class="input-group input-group-solid">
                 <input type="text" name="fromNoticePeriod" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="dd/mm/yyyy" ngbDatepicker #z="ngbDatepicker" [class.is-invalid]="isControlInvalid('fromNoticePeriod')"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #z="ngbDatepicker" [class.is-invalid]="isControlInvalid('fromNoticePeriod')"
                   [class.is-valid]="isControlValid('fromNoticePeriod')" formControlName="fromNoticePeriod" readonly="true" />
+                  {{formGroup.value.fromNoticePeriod | date: 'dd-MMM-yyyy'}}
                 <div class="input-group-append" (click)="z.toggle()">
                   <span class="input-group-text">
                     <i class="text-dark-50 flaticon-calendar"></i>
@@ -365,8 +375,9 @@
 
               <div class="input-group input-group-solid">
                 <input type="text" name="toNoticePeriod" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="dd/mm/yyyy" ngbDatepicker #y="ngbDatepicker" [class.is-invalid]="isControlInvalid('toNoticePeriod')"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #y="ngbDatepicker" [class.is-invalid]="isControlInvalid('toNoticePeriod')"
                   [class.is-valid]="isControlValid('toNoticePeriod')" formControlName="toNoticePeriod" readonly="true" />
+                  {{formGroup.value.toNoticePeriod | date: 'dd-MMM-yyyy'}}
                 <div class="input-group-append" (click)="y.toggle()">
                   <span class="input-group-text">
                     <i class="text-dark-50 flaticon-calendar"></i>
@@ -403,8 +414,9 @@
 
               <div class="input-group input-group-solid">
                 <input type="text" name="longLeaveFromDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="dd/mm/yyyy" ngbDatepicker #llfd="ngbDatepicker" [class.is-invalid]="isControlInvalid('longLeaveFromDate')"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #llfd="ngbDatepicker" [class.is-invalid]="isControlInvalid('longLeaveFromDate')"
                   [class.is-valid]="isControlValid('longLeaveFromDate')" formControlName="longLeaveFromDate" readonly="true" />
+                  {{formGroup.value.longLeaveFromDate | date: 'dd-MMM-yyyy'}}
                 <div class="input-group-append" (click)="llfd.toggle()">
                   <span class="input-group-text">
                     <i class="text-dark-50 flaticon-calendar"></i>
@@ -420,8 +432,9 @@
 
               <div class="input-group input-group-solid">
                 <input type="text" name="longLeaveToDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="dd/mm/yyyy" ngbDatepicker #lltd="ngbDatepicker" [class.is-invalid]="isControlInvalid('longLeaveToDate')"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #lltd="ngbDatepicker" [class.is-invalid]="isControlInvalid('longLeaveToDate')"
                   [class.is-valid]="isControlValid('longLeaveToDate')" formControlName="longLeaveToDate" readonly="true" />
+                  {{formGroup.value.longLeaveToDate | date: 'dd-MMM-yyyy'}}
                 <div class="input-group-append" (click)="lltd.toggle()">
                   <span class="input-group-text">
                     <i class="text-dark-50 flaticon-calendar"></i>
@@ -451,7 +464,7 @@
         </div>
         <div class="col-lg-3">
           <label class="form-label">Last Salary Drawn</label>
-          <input type="text" class="form-control form-control-lg form-control-solid" name="lastSalaryDrawn"
+          <input type="number" class="form-control form-control-lg form-control-solid" name="lastSalaryDrawn"
             placeholder="Last Salary Drawn" autocomplete="off" [class.is-invalid]="isControlInvalid('lastSalaryDrawn')"
             [class.is-valid]="isControlValid('lastSalaryDrawn')" formControlName="lastSalaryDrawn" />
         </div>
@@ -504,7 +517,7 @@
     <ng-container *ngIf="userHRModel">
 
       <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
-        [disabled]="formGroup.invalid">Save</button>
+        >Save</button>
     </ng-container>
   </div>
 </div>

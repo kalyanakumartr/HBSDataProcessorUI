@@ -11,6 +11,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectService } from 'src/app/modules/auth/_services/project.services';
 import { BaseModel } from 'src/app/_metronic/shared/crud-table/models/base.model';
 import { UserOperationalModel } from 'src/app/modules/auth/_models/user-operational.model';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { Project } from 'src/app/modules/auth/_models/project.model';
 
 
 const EMPTY_CUSTOMER: UserModel = {
@@ -57,7 +59,7 @@ const EMPTY_CUSTOMER: UserModel = {
       personalEmailId:'',
       mediaType: 'Primary',
       mediaId: '',
-      emergencyNumber:'',
+      emergencyContactNo:'',
       district:''
     }
 ],
@@ -127,7 +129,10 @@ const EMPTY_CUSTOMER: UserModel = {
       approvedLeaveBalance :'',
       recruitmentType:'',
       costToCompany:'',
-      vaccinateInfo:''
+      vaccinateInfo:'',
+      lastDrawnSalary:'',
+      resignedFAndF:false,
+      esiEligible:false
     },
     educationalInfo:{
       highestGraduate: '',
@@ -151,6 +156,8 @@ const EMPTY_CUSTOMER: UserModel = {
       groupId: '',
       groupName: '',
       employeeId:'',
+      divisionId:'',
+      divisionName:'',
     },
     group:{
       teamId: '',
@@ -158,6 +165,8 @@ const EMPTY_CUSTOMER: UserModel = {
       groupId: '',
       groupName: '',
       employeeId:'',
+      divisionId:'',
+      divisionName:'',
     },
     deploy:{
       deploymentId: '',
@@ -202,6 +211,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   department:string;
   divisionList:any[];
   division:string;
+
   roleList:any[];
   projectList:any[];
   teamList:any[];
@@ -230,6 +240,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       this.userOPRModel =new UserOperationalModel;
       this.userId= new UserOperationalModel;
       this.isAdminRole=false;
+
     }
 
   ngOnInit(): void {
@@ -237,7 +248,6 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     this.userId.id=this.id;
     this.roleId=this.role;
     this.loadCustomer();
-
   }
 
   loadCustomer() {
@@ -263,12 +273,15 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
         this.loadForm();
         this.assignControlValues();
         this.roleId = this.customer.roleId;
-        if(this.customer.operationalRecord.group.teamId != ""){
-          this.groupId = this.customer.operationalRecord.group.teamId;
+        this.division=this.customer.operationalRecord.division.divisionId;
+        this.groupId=this.customer.operationalRecord.group.teamId;
+
+        this.groupId = this.customer.operationalRecord.group.teamId ;
+        if(this.groupId != ""){
           this.getTeamforGroup();
         }
-        console.log("Check"+this.customer.operationalRecord.division.divisionId);
-        this.projectService.getProjectList(this.customer.operationalRecord.division.divisionId).pipe(
+        console.log("Check"+this.division);
+        this.projectService.getProjectList(this.division).pipe(
           tap((res: any) => {
             this.projectList = res;
             console.log("projectList", this.projectList)
@@ -279,7 +292,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
               items: []
             });
           })).subscribe();
-        this.projectService.getGroupList(this.customer.userId,"").pipe(
+        this.projectService.getGroupList(this.division).pipe(
           tap((res: any) => {
             this.groupList = res;
             console.log("groupList", this.groupList)
@@ -319,9 +332,9 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       division: [this.customer.operationalRecord.division.divisionId, Validators.compose([Validators.required])],
       //Change Reporting to
       reportingTo: [this.customer.operationalRecord.reportingTo, Validators.compose([Validators.required])],
-      loginRFDB_BPS: [this.customer.operationalRecord.loginRFDB_BPS, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      projectId: [this.customer.operationalRecord.project.projectId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      trainingBatch: [this.customer.operationalRecord.trainingBatch, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(10)])],
+      loginRFDB_BPS: [this.customer.operationalRecord.loginRFDB_BPS, Validators.compose([ Validators.minLength(3), Validators.maxLength(20)])],
+      projectId: [this.customer.operationalRecord.project!=null?this.customer.operationalRecord.project.projectId:'0', Validators.compose([])],
+      trainingBatch: [this.customer.operationalRecord.trainingBatch, Validators.compose([ Validators.minLength(3), Validators.maxLength(10)])],
 
 
     });
@@ -329,11 +342,17 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.prepareCustomer();
-    if (this.userId.id) {
-      this.edit();
-    } else {
-      this.create();
+    var invalid = this.findInvalidControls();
+    var isValid = invalid.length>0?false:true;
+    if(isValid){
+      this.prepareCustomer();
+      if (this.userId.id) {
+        this.edit();
+      } else {
+        this.create();
+      }
+    }else{
+      alert("Please add valid values for "+invalid);
     }
   }
 
@@ -373,8 +392,10 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   setReportingToByGroup(value){
     var position =value.split(":")
     if(position.length>1){
-      this.reporting=this.groupList[position[0]].fullName;
-      this.reportingId= this.groupList[position[0]].reportingTo;
+      var group =this.groupList[position[0]-1];
+      console.log(position[0],group);
+      this.reporting=group.fullName;
+      this.reportingId= group.reportingTo;
       this.groupId= position[1].toString().trim();
       this.getTeamforGroup();
     }
@@ -382,8 +403,15 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   setReportingToByTeam(value){
 
     var position =value.split(":")
-    this.reporting=this.teamList[position[0]].fullName;
-    this.reportingId= this.teamList[position[0]].reportingTo;
+    if(position.length>1){
+      var teamId= position[1].toString().trim();
+      for(var team of this.teamList){
+        if(team.teamId === teamId){
+          this.reporting=team.fullName;
+          this.reportingId= team.reportingTo;
+          }
+        }
+      }
   }
   assignRole(value){
     var position =value.split(": ");
@@ -403,11 +431,17 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
     this.customer.operationalRecord.department.departmentId = formData.department;
     this.customer.operationalRecord.reportingTo=this.reportingId;
     this.customer.operationalRecord.reportingToId=this.reportingId;
-    this.customer.operationalRecord.project.projectId=formData.projectId;
+    var project = new Project;
+    if(this.customer.operationalRecord.project == null){
+      project.projectId ==formData.projectId==null?"0":formData.projectId;
+      this.customer.operationalRecord.project=project;
+    }else{
+      this.customer.operationalRecord.project.projectId=formData.projectId==null?"0":formData.projectId;
+    }
 
     this.userOPRModel.trainingBatch= formData.trainingBatch;
     this.userOPRModel.loginRFDB_BPS = formData.loginRFDB_BPS;
-    this.userOPRModel.group.teamId = formData.teamId;
+    this.userOPRModel.group.teamId = formData.groupId;
     this.userOPRModel.team.teamId = formData.teamId;
     this.userOPRModel.team.employeeId = formData.reportingId;
     this.userOPRModel.department.departmentId = formData.department;
@@ -491,7 +525,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   }
   getTeamforGroup(){
     this.teamList=[];
-    this.projectService.getTeamList(this.customer.userId,this.groupId).pipe(
+    this.projectService.getTeamList(this.groupId).pipe(
       tap((res: any) => {
         this.teamList = res;
         console.log("teamList", this.teamList)
@@ -504,7 +538,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       })).subscribe();
   }
   getGroupforRole(){
-    this.projectService.getGroupList(this.customer.userId,this.roleId).pipe(
+    this.projectService.getGroupList(this.roleId).pipe(
       tap((res: any) => {
         this.groupList = res;
         console.log("groupList", this.groupList)
@@ -515,5 +549,16 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
           items: []
         });
       })).subscribe();
+  }
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.formGroup.controls;
+    for (const name in controls) {
+     // console.log(name,"--",controls[name].invalid);
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+    return invalid;
   }
 }

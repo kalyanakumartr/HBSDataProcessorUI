@@ -9,6 +9,7 @@ import { UsersService } from 'src/app/modules/auth/_services/user.service';
 import { UserITModel } from 'src/app/modules/auth/_models/user-it.model';
 import { BaseModel } from 'src/app/_metronic/shared/crud-table';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl } from '@angular/forms';
 
 
 const EMPTY_CUSTOMER: UserITModel = {
@@ -56,6 +57,19 @@ export class UserITModalComponent implements OnInit, OnDestroy {
     ) {
       this.userITModel =new UserITModel;
       this.userId= new UserITModel;
+      this.formGroup = new FormGroup({
+          broadBandAccount: new FormControl(),
+          broadBandBy: new FormControl(),
+          internetPlan: new FormControl(),
+          isDowngraded: new FormControl(),
+          downGradedPlan: new FormControl(),
+          ispName: new FormControl(),
+          staticIPAddress: new FormControl(),
+          systemSerialNo : new FormControl(),
+          staticWhiteList: new FormControl(),
+          systemToHome: new FormControl(),
+          workMode: new FormControl(),
+      });
     }
 
   ngOnInit(): void {
@@ -87,6 +101,7 @@ export class UserITModalComponent implements OnInit, OnDestroy {
         console.log("UserITModel", userITModal);
         this.userITModel = userITModal;
         this.loadForm();
+        console.log("----",this.userITModel.ispName,"---");
       });
 
     }
@@ -95,24 +110,30 @@ export class UserITModalComponent implements OnInit, OnDestroy {
   loadForm() {
     this.formGroup = this.fb.group({
       broadBandAccount: [this.userITModel.broadBandAccount, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
-      broadBandBy: [this.userITModel.broadBandBy, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
+      broadBandBy: [this.userITModel.broadBandBy.trim()!=""?this.userITModel.broadBandBy:"0", Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
       internetPlan: [this.userITModel.internetPlan, Validators.compose([ Validators.minLength(3), Validators.maxLength(100)])],
       isDowngraded: [this.userITModel.isDowngraded ],
       downGradedPlan:[this.userITModel.downGradedPlan,Validators.compose([Validators.minLength(3)])],
-      ispName: [this.userITModel.ispName, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
+      ispName: [this.userITModel.ispName.trim()!=""?this.userITModel.ispName:"0", Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       staticIPAddress: [this.userITModel.staticIPAddress, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       systemSerialNo : [this.userITModel.systemSerialNo, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       staticWhiteList: [this.userITModel.staticWhiteList],
       systemToHome: [this.userITModel.systemToHome],
-      workMode: [this.userITModel.workMode, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
+      workMode: [this.userITModel.workMode.trim()!=""?this.userITModel.workMode:"0", Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
 
     });
   }
 
   save() {
-    this.prepareCustomer();
-    if (this.userId.id) {
-      this.edit();
+    var invalid = this.findInvalidControls();
+    var isValid = invalid.length>0?false:true;
+    if(isValid){
+      this.prepareCustomer();
+      if (this.userId.id) {
+        this.edit();
+      }
+    }else{
+      alert("Please add valid values for "+invalid);
     }
   }
 
@@ -173,5 +194,16 @@ export class UserITModalComponent implements OnInit, OnDestroy {
   isControlTouched(controlName): boolean {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
+  }
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.formGroup.controls;
+    for (const name in controls) {
+     // console.log(name,"--",controls[name].invalid);
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+    return invalid;
   }
 }

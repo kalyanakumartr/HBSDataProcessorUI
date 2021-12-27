@@ -4,7 +4,7 @@
     <!--begin::Header-->
     <div class="offcanvas-header d-flex align-items-center justify-content-between pb-5">
       <h3 class="font-weight-bold m-0">
-        User Profile
+        Employee Profile
         <!--<small class="text-muted font-size-sm ml-2">12 messages</small>-->
       </h3>
       <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
@@ -31,7 +31,7 @@
             {{ _user.userName }} {{ _user.lastname }}
           </a>
           <div class="text-muted mt-1">
-            Project Manager
+            {{_user.roleName}}
           </div>
           <div class="navi mt-2">
             <a href="#" class="navi-item">
@@ -122,8 +122,16 @@
               <div class="col-lg-7">
                 Blood Group:
               </div>
-              <div class="col-lg-2">
+              <div class="col-lg-2 nowrap">
                 {{_user.bloodGroup}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                DOB:
+              </div>
+              <div class="col-lg-2 nowrap">
+                {{_user.dob | date: 'dd-MMM-yyyy'}}
                </div>
             </div>
             <div class="form-group row">
@@ -154,7 +162,7 @@
               <div class="col-lg-7">
                 Father Name:
               </div>
-              <div class="col-lg-2">
+              <div class="col-lg-2 ">
                 {{_user.fatherName}}
                </div>
             </div>
@@ -203,7 +211,7 @@
                 Emergency Number:
               </div>
               <div class="col-lg-2">
-                {{_user.mediaList[0].emergencyNumber}}
+                {{_user.mediaList[0].emergencyContactNo}}
                </div>
             </div>
 
@@ -226,8 +234,8 @@
               <div class="col-lg-7">
                 Date Of Joining:
               </div>
-              <div class="col-lg-2">
-                {{_user.hrRecord.dateOfJoin}}
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.dateOfJoin | date: 'dd-MMM-yyyy'}}
                </div>
             </div>
             <div class="form-group row">
@@ -274,32 +282,32 @@
               <div class="col-lg-7">
                 From Notice Period :
               </div>
-              <div class="col-lg-2">
-                {{_user.hrRecord.employmentInfo.fromNoticePeriod}}
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.fromNoticePeriod | date: 'dd-MMM-yyyy'}}
                </div>
             </div>
             <div class="form-group row">
               <div class="col-lg-7">
                 To Notice Period :
               </div>
-              <div class="col-lg-2">
-                {{_user.hrRecord.employmentInfo.toNoticePeriod}}
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.toNoticePeriod | date: 'dd-MMM-yyyy'}}
                </div>
             </div>
             <div class="form-group row">
               <div class="col-lg-7">
                 Long Leave From :
               </div>
-              <div class="col-lg-2">
-                {{_user.hrRecord.employmentInfo.longLeaveFromDate}}
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.longLeaveFromDate | date: 'dd-MMM-yyyy'}}
                </div>
             </div>
             <div class="form-group row">
               <div class="col-lg-7">
                 Long Leave To :
               </div>
-              <div class="col-lg-2">
-                {{_user.hrRecord.employmentInfo.longLeaveToDate}}
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.longLeaveToDate | date: 'dd-MMM-yyyy'}}
                </div>
             </div>
 
@@ -475,7 +483,7 @@
                 Division:
               </div>
               <div class="col-lg-2">
-                {{_user.operationalRecord.userId}}
+                {{_user.operationalRecord.division.divisionName}}
                </div>
             </div>
             <div class="form-group row">
@@ -483,12 +491,12 @@
                 Project:
               </div>
               <div class="col-lg-2">
-                {{_user.operationalRecord.project.projectName}}
+                {{_user.operationalRecord.project !=null? _user.operationalRecord.project.projectName:''}}
                </div>
             </div>
             <div class="form-group row">
               <div class="col-lg-7">
-                Reportin To:
+                Reporting To:
               </div>
               <div class="col-lg-2">
                 {{_user.operationalRecord.reportingTo}}
@@ -507,7 +515,7 @@
                 Group:
               </div>
               <div class="col-lg-2 nowrap">
-                {{_user.operationalRecord.team.groupName}}
+                {{_user.operationalRecord.group.teamName}}
                </div>
             </div>
             <div class="form-group row">

@@ -13,24 +13,26 @@
       <table class="table table-head-custom table-vertical-center overflow-hidden">
         <thead>
 
-          <th>
-            ID
-            <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
-              (sort)="sort($event)"></app-sort-icon>
-          </th>
+
           <th>
             Role Name
             <app-sort-icon column="roleName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
               (sort)="sort($event)"></app-sort-icon>
           </th>
+
           <th>
-            DESCRIPTION
-            <app-sort-icon column="description" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+            Department
+            <app-sort-icon column="department" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
               (sort)="sort($event)"></app-sort-icon>
           </th>
           <th>
-            ROLE TYPE
-            <app-sort-icon column="roletype" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+            Division
+            <app-sort-icon column="division" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              (sort)="sort($event)"></app-sort-icon>
+          </th>
+          <th>
+            Description
+            <app-sort-icon column="description" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
               (sort)="sort($event)"></app-sort-icon>
           </th>
 
@@ -38,12 +40,10 @@
         </thead>
         <tbody>
           <tr *ngFor="let obj of roleService.items$ | async">
-
-            <td>{{ obj.roleId }}</td>
             <td>{{ obj.roleName }}</td>
+            <td>{{ obj.departmentName }}</td>
+            <td>{{ obj.divisionName }}</td>
             <td>{{ obj.description }}</td>
-            <td>{{ obj.roletype }}</td>
-
 
           </tr>
         </tbody>

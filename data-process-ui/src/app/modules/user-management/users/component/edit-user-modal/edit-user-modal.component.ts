@@ -13,6 +13,7 @@ import { ProjectService } from 'src/app/modules/auth/_services/project.services'
 import { UserRoles } from 'src/app/modules/auth/_models/user-roles.model';
 import { RoleModel } from 'src/app/modules/auth/_models/role.model';
 import { Producer } from 'src/app/modules/auth/_models/producer.model';
+import { FormControl } from '@angular/forms';
 
 
 const EMPTY_CUSTOMER: UserModel = {
@@ -59,7 +60,7 @@ const EMPTY_CUSTOMER: UserModel = {
       personalEmailId:'',
       mediaType: 'Primary',
       mediaId: '',
-      emergencyNumber:'',
+      emergencyContactNo:'',
       district:''
     }
 ],
@@ -130,7 +131,10 @@ const EMPTY_CUSTOMER: UserModel = {
       approvedLeaveBalance :'',
       recruitmentType:'',
       costToCompany:'',
-      vaccinateInfo:''
+      vaccinateInfo:'',
+      lastDrawnSalary:'',
+      resignedFAndF:false,
+      esiEligible:false
     },
     educationalInfo:{
       highestGraduate: '',
@@ -149,18 +153,22 @@ const EMPTY_CUSTOMER: UserModel = {
   operationalRecord:{
     id:'',
     team:{
-      teamId: 'GRP9999',
+      teamId: 'NoTeam',
       teamName: '',
       groupId: 'GRP0000',
       groupName: '',
       employeeId:'',
+      divisionId:'',
+      divisionName:'',
     },
     group:{
-      teamId: 'GRP9999',
+      teamId: 'NoTeam',
       teamName: '',
       groupId: 'GRP0000',
       groupName: '',
       employeeId:'',
+      divisionId:'',
+      divisionName:'',
     },
     deploy:{
       deploymentId: 'DLP0001',
@@ -232,16 +240,35 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
           //config.maxDate = { year: 2099, month: 12, day: 31 };
         config.outsideDays = 'hidden';*/
         const current = new Date();
+        console.log(current.getFullYear(), current.getMonth(), current.getDate())
         this.minDate = {
-          year: current.getFullYear(),
-          month: current.getMonth() + 1,
-          day: current.getDate()
+          year: 2000,
+          month:  1,
+          day: 1
         };
         this.maxDate = {
           year: current.getFullYear()-18,
           month: current.getMonth() + 1,
           day: current.getDate()
         };
+        this.formGroup = new FormGroup({
+          userName: new FormControl(),
+          fatherName: new FormControl(),
+          spouseName: new FormControl(),
+          userId: new FormControl(),
+          dob: new FormControl(),
+          sex: new FormControl(),
+          phoneno: new FormControl(),
+          address: new FormControl(),
+          department: new FormControl(),
+          division: new FormControl(),
+          roles: new FormControl(),
+          recruitmentType: new FormControl(),
+          status: new FormControl(),
+          doj: new FormControl(),
+          ctc: new FormControl(),
+
+        });
     }
 
   ngOnInit(): void {
@@ -359,14 +386,14 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   }
   loadForm() {
     this.formGroup = this.fb.group({
-      userName: [this.customer.userName, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
-      fatherName: [this.customer.fatherName, Validators.compose([ Validators.minLength(1), Validators.maxLength(100)])],
-      spouseName: [this.customer.spouseName, Validators.compose([ Validators.minLength(1), Validators.maxLength(100)])],
-      userId: [this.customer.userId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      userName: [this.customer.userName, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(50)])],
+      fatherName: [this.customer.fatherName, Validators.compose([ Validators.minLength(1), Validators.maxLength(50)])],
+      spouseName: [this.customer.spouseName, Validators.compose([ Validators.minLength(1), Validators.maxLength(50)])],
+      userId: [this.customer.userId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20)])],
 
       dob: [this.customer.dob, Validators.compose([Validators.nullValidator])],
       sex: [this.customer.sex, Validators.compose([Validators.required])],
-      phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.minLength(10), Validators.maxLength(12)])],
+      phoneno: [this.customer.mediaList[0].mobileNo, Validators.compose([Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(15)])],
       address: [this.customer.mediaList[0].communicationAddress, Validators.compose([Validators.minLength(3), Validators.maxLength(200)])],
 
       department: [this.customer.operationalRecord.department.departmentId, Validators.compose([Validators.required])],
@@ -375,7 +402,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
       recruitmentType: [this.customer.hrRecord.employmentInfo.recruitmentType, Validators.compose([Validators.required])],
       status: [this.customer.hrRecord.employmentInfo.employmentStatus, Validators.compose([Validators.required])],
       doj: [this.customer.hrRecord.employmentInfo.dateOfJoin, Validators.compose([Validators.nullValidator])],
-      ctc: [this.customer.hrRecord.employmentInfo.costToCompany, Validators.compose([Validators.nullValidator])],
+      ctc: [this.customer.hrRecord.employmentInfo.costToCompany, Validators.compose([Validators.pattern("^[0-9]*$")])],
 
       //teamId: [this.customer.team, Validators.compose([Validators.required])],
       //deployId: [this.customer.deploy, Validators.compose([Validators.required])],
@@ -388,13 +415,18 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   }
 
   save() {
-
-    if (this.customer.id) {
-      this.prepareCustomer("Edit");
-      this.edit();
-    } else {
-      this.prepareCustomer("Create");
-      this.create();
+    var invalid = this.findInvalidControls();
+    var isValid = invalid.length>0?false:true;
+    if(isValid){
+      if (this.customer.id) {
+        this.prepareCustomer("Edit");
+        this.edit();
+      } else {
+        this.prepareCustomer("Create");
+        this.create();
+      }
+    }else{
+      alert("Please add valid values for "+invalid);
     }
   }
 
@@ -516,5 +548,15 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
     console.log("Control", control, "Value", value);
     control.setValue(value);
   }
-
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.formGroup.controls;
+    for (const name in controls) {
+     // console.log(name,"--",controls[name].invalid);
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+    return invalid;
+  }
 }

@@ -8,37 +8,44 @@
   <div class="card-body">
     <!-- begin: Filtration form -->
     <div class="form form-label-right">
-      <div class="form-group row">
+      <div class="form-group row" [formGroup]="searchGroup">
 
-        <div class="col-lg-2" [formGroup]="searchGroup">
-          <input type="text" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
-            formControlName="searchTerm" /><small class="form-text text-muted"><b>Search</b> in all fields</small>
-        </div>
+
         <div class="col-lg-3">
-          <label>Select Department</label>
-          <select class="form-control form-control-lg form-control-solid" name="department"
+          <ng-container *ngIf="showDepartment">
+          <label>Department</label>
+          <select class="form-control form-control-lg form-control-solid" name="department"  [(ngModel)]="department"
              formControlName="department" (change)="setDepartment($event.target.value)">
             <option [ngValue]="0" [selected]=true>Select Department</option>
             <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
               {{ department.departmentName }}
             </option>
           </select>
-
+        </ng-container>
+        <ng-container *ngIf="!showDepartment">
+          <label>Department</label><br/>
+          <span>{{departmentName}}</span>
+        </ng-container>
         </div>
         <div class="col-lg-3">
-          <label>Select Division</label>
-          <select class="form-control form-control-lg form-control-solid" name="division"
+          <ng-container *ngIf="showDivision">
+          <label>Division</label>
+          <select class="form-control form-control-lg form-control-solid" name="division"  [(ngModel)]="division"
              formControlName="division" (change)="setDivision($event.target.value)">
              <option [ngValue]="0" [selected]=true>Select Division</option>
             <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
               {{ division.divisionName }}
             </option>
           </select>
-
+          </ng-container>
+          <ng-container *ngIf="!showDivision">
+            <label>Division</label><br/>
+            <span>{{divisionName}}</span>
+          </ng-container>
         </div>
         <div class="col-lg-3">
-          <label>Select Project</label>
-          <select class="form-control form-control-lg form-control-solid" name="project"
+          <label>Project</label>
+          <select class="form-control form-control-lg form-control-solid" name="project"  [(ngModel)]="project"
              formControlName="project" (change)="setProject($event.target.value)">
              <option [ngValue]="0" [selected]=true>Select Project</option>
             <option *ngFor="let project of projectList" [ngValue]="project.projectId">
@@ -47,10 +54,17 @@
           </select>
 
         </div>
-        <div class="col-lg-3">
-          <span id="link" (click)="clearFilter()">Clear Filter</span>
-
-
+        <div class="col-lg-2 nowrap" >
+          <label>Search in all fields</label>
+          <div class="grid-container">
+            <div class="grid-item">
+          <input type="search" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
+            formControlName="searchTerm" /></div>
+            <div class="grid-item" style="cursor: pointer;">
+              &nbsp;&nbsp;
+            <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+            </div>
+            </div>
         </div>
       </div>
     </div>
@@ -142,8 +156,8 @@
 
             <td>{{ customer.operationalRecord.department.departmentName }}</td>
             <td>{{ customer.operationalRecord.team.teamName }}</td>
-            <td>{{ customer.operationalRecord.team.groupName }}</td>
-            <td>{{ customer.reportingTo != null? customer.reportingTo :"" }} </td>
+            <td>{{ customer.operationalRecord.group.teamName }}</td>
+            <td>{{ customer.operationalRecord.reportingTo != null? customer.reportingTo :"" }} </td>
             <td>{{ customer.operationalRecord.loginRFDB_BPS }}</td>
             <td>{{ customer.operationalRecord.project != null ? customer.operationalRecord.project.projectName :"" }}</td>
             <td>{{ customer.trainingBatch }} </td>

@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { Observable, of, Subscription } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, first, tap } from 'rxjs/operators';
 import {
   GroupingState,
   IDeleteAction,
@@ -23,6 +23,9 @@ import { WorkUnitModel } from '../modal/work-unit.model';
 import { UpdateTaskModel } from '../modal/update-task.model';
 import { WorkUnitModalComponent } from '../work-unit-modal/work-unit-modal.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ProjectService } from '../../auth/_services/project.services';
+import { AuthService, UserModel } from '../../auth';
+import { TaskBatch } from '../modal/taskbatch.model';
 
 @Component({
   selector: 'app-my-work',
@@ -50,38 +53,64 @@ export class MyWorkComponent
   filterGroup: FormGroup;
   searchGroup: FormGroup;
   assignedToUserList: any;
+  batchList: any;
+  assignedToUserGroupList:any;
   queueList: any;
   statusList: any;
   hasLink: boolean;
   hasCheckbox: boolean;
+  hasGroup:boolean;
+  hasBatch:boolean;
+  hasDeliverToClient:boolean;
   allWorkUnitIds: string[] = [];
   selectedWorkUnitIds: string[] = [];
   selectedQueue: string;
   selectedStatus: string;
   selectedUser: string;
+  allotmentId:string;
   updateTask:UpdateTaskModel;
+  projectList:any[];
+  batch:string = "New";
+  new:any;
+  project:any;
 
   private subscriptions: Subscription[] = [];
   authModel: AuthModel;
+  user$: Observable<UserModel>;
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
     private snackBar: MatSnackBar,
+    public projectService: ProjectService,
+    private authService: AuthService,
     public workAllocationService: WorkAllocationService
   ) {
     this.queueList = [];
     this.statusList = [];
+    this.projectList=[];
     this.allWorkUnitIds = [];
     this.selectedWorkUnitIds = [];
     this.hasLink = true;
     this.hasCheckbox = false;
+    this.workAllocationService.listen().subscribe((m:any)=>{
+      console.log("m -- -- --",m);
+      this.filter();
+    });
   }
 
   ngOnInit(): void {
     //this.filterForm();
+    this.user$ = this.authService.currentUserSubject.asObservable();
     this.getQueues();
+    this.hasBatch=false;
+    this.hasDeliverToClient=false;
+    this.user$.pipe(first()).subscribe(value => { this.getProjectForDivision(value.operationalRecord.division.divisionId);this.selectedUser=value.userId; });
+
     setTimeout(() => {
       //this.workAllocationService.patchStateWithoutFetch({ this.sorting});
+      this.workAllocationService.patchStateWithoutFetch({
+        projectId: [this.project],
+      });
       this.workAllocationService.patchStateWithoutFetch({
         queueList: [this.selectedQueue],
       });
@@ -100,6 +129,36 @@ export class MyWorkComponent
       (res) => (this.isLoading = res)
     );
     this.subscriptions.push(sb);
+  }
+  getProjectForDivision(division){
+    this.projectList=[];
+    this.projectService.getProjectList(division).pipe(
+      tap((res: any) => {
+        this.projectList = res;
+        if(this.projectList.length>0){
+          this.project = this.projectList[0].projectId;
+        }
+
+        // console.log("projectList", this.projectList)
+        // setTimeout(() => {
+        //         this.project="0: 0";
+        //       }, 2000);
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
+  setProject(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.project= position[1].toString().trim();
+      if(this.project != "0"){
+        this.workAllocationService.patchState({ projectId:this.project },"/searchTask");
+      }
+    }
   }
   public getTasks() {
     console.log('Inside get Tasks');
@@ -138,15 +197,33 @@ export class MyWorkComponent
         console.log("UserList"+userList);
       });
   }
+  getBatchList(){
+    this.workAllocationService
+      .getBatchList(this.selectedQueue,this.project)
+      .subscribe((batchList) => {
+        this.batchList = batchList;
+        console.log("BatchList"+batchList);
+      });
+  }
+  getAllotedUserGroup() {
+    this.workAllocationService
+      .getAllotedUserGroup()
+      .subscribe((userGroupList) => {
+        this.assignedToUserGroupList = userGroupList;
+        this.allotmentId = this.assignedToUserGroupList[0].allotmentId;
+        console.log("UserGroupList"+userGroupList);
+      });
+  }
   ngOnDestroy() {
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
-  openWworkUnit(task: any,selectedQueue:any) {
+  openWworkUnit(task: any,selectedQueue:any, selectedStatus:any) {
     const modalRef = this.modalService.open(WorkUnitModalComponent, {
       size: 'xl',
     });
     modalRef.componentInstance.task = task;
     modalRef.componentInstance.queue = selectedQueue;
+    modalRef.componentInstance.status = selectedStatus;
   }
   //CheckBox
   checkAll() {
@@ -173,10 +250,35 @@ export class MyWorkComponent
     if (position.length > 1) {
       this.selectedQueue = position[1];
     }
-    if (['Group', 'ProductionTeam'].includes(this.selectedQueue)) {
+
+    if (['Group', 'ProductionTeam','QualityControlTeam','QualityAssuranceTeam','ReadyForDelivery','DeliveryToClient'].includes(this.selectedQueue)) {
       this.hasCheckbox = true;
+      this.hasBatch=false;
+      this.hasDeliverToClient=false;
       this.hasLink = false;
-      this.getAssignedtoUser();
+      if (['Group'].includes(this.selectedQueue)) {
+        this.hasGroup=true;
+        this.getAllotedUserGroup();
+      }else if (['QualityAssuranceTeam'].includes(this.selectedQueue)) {
+        this.hasGroup=false;
+        this.hasBatch=true;
+        this.getBatchList();
+        this.getAssignedtoUser();
+      }else if (['ReadyForDelivery'].includes(this.selectedQueue)) {
+        this.hasGroup=false;
+        this.hasBatch=true;
+        this.hasDeliverToClient=true;
+        this.getBatchList();
+      }else if (['DeliveryToClient'].includes(this.selectedQueue)) {
+        this.hasGroup=false;
+        this.hasBatch=false;
+        this.hasDeliverToClient=false;
+        this.hasCheckbox = false;
+        this.getBatchList();
+      }else{
+        this.hasGroup=false;
+        this.getAssignedtoUser();
+      }
     } else {
       this.hasCheckbox = false;
       this.hasLink = true;
@@ -196,28 +298,54 @@ export class MyWorkComponent
 
   getWorkUnitIds() {
     var ids = [];
+    const that = this;
     this.workAllocationService.items$.forEach(function (items) {
+      ids=[];
       items.forEach(function (item) {
         ids.push(item.allocationId);
       });
+      console.log(ids,"before Slice", that.allWorkUnitIds);
+      that.allWorkUnitIds.slice(0, that.allWorkUnitIds.length - 1);
+    console.log(ids,"After Slice", that.allWorkUnitIds);
+    that.allWorkUnitIds = ids;
+    console.log(ids,"After Assign New ids", that.allWorkUnitIds);
     });
-    this.allWorkUnitIds.slice(0, this.allWorkUnitIds.length - 1);
-    this.allWorkUnitIds = ids;
+
   }
 
   assignWorkUnits() {
     var updateTask= new UpdateTaskModel;
+    var taskBatch= new TaskBatch;
     var name;
-    for (var user of this.assignedToUserList) {
-      if (this.selectedUser == user.employeeId) {
-        console.log("--kk--",user);
-        name = user.fullName;
-        updateTask.teamId = user.teamId;
+    console.log("hasDeliverToClient",this.hasDeliverToClient);
+    updateTask.triggeredAction="Default";
+    updateTask.statusId ="Assigned";
+    if(this.hasGroup){
+      for (var user of this.assignedToUserGroupList) {
+        if (this.selectedUser == user.allotmentId) {
+          console.log("--kk--",user);
+          name = user.displayName;
+        }
+      }
+    }else if(this.hasDeliverToClient){
+      updateTask.triggeredAction="StartStop";
+      updateTask.statusId ="Ready";
+      console.log("selectedUser",this.selectedUser);
+    }else{
+      for (var user of this.assignedToUserList) {
+        if (this.selectedUser == user.employeeId) {
+          console.log("--kk--",user);
+          name = user.fullName;
+          updateTask.teamId = user.teamId;
+        }
       }
     }
+
     var selectedIds = [];
+    console.log(this.allWorkUnitIds,"Ids");
     this.allWorkUnitIds.forEach(function (workunit) {
-      if ((<HTMLInputElement>document.getElementById(workunit)).checked) {
+      var wu =(<HTMLInputElement>document.getElementById(workunit));
+      if (wu !=null && wu.checked) {
         if(selectedIds.indexOf(workunit) === -1) {
           selectedIds.push(workunit);
         }
@@ -227,24 +355,58 @@ export class MyWorkComponent
     this.selectedWorkUnitIds = selectedIds;
     updateTask.allocationIds =this.selectedWorkUnitIds;
     updateTask.queueId =this.selectedQueue;
-    updateTask.statusId ="Assigned";
-    updateTask.allotedTo = this.selectedUser;
+
+    if(this.hasGroup){
+      updateTask.allotmentId= this.selectedUser;
+      updateTask.allotedTo='';
+      updateTask.teamId='';
+    }else{
+      updateTask.allotedTo = this.selectedUser;
+    }
+    //updateTask.teamName
+    //updateTask.teamId
+    //updateTask.statusReason
+    //updateTask.allotmentId
+    //updateTask.allotedUserName
+    //updateTask.projectId
+    if(this.batch == "New"){
+      taskBatch.batch="New";
+      taskBatch.batchId="";
+    }else if(this.batch.length>3){
+      taskBatch.batch="Append";
+      taskBatch.batchId=this.batch;
+    }else{
+      taskBatch.batch="None";
+      taskBatch.batchId="";
+    }
+    updateTask.taskBatch=  taskBatch;
     updateTask.skillSet="Production";
-    updateTask.triggeredAction="Default";
+
     updateTask.reasonId ="NOREASON"
     updateTask.remarks="To Team Member End";
+
     this.workAllocationService.updateTask(updateTask)
     .subscribe((res: any)=>
     {
         this.openSnackBar(res.messageCode,"!!")
         this.search('');
+        this.getBatchList();
     });
     console.log("SelectedWork Unit Ids",this.selectedWorkUnitIds);
    // alert(updateTask+'Work Unit will be assigned to Selected User' + name);
   }
   openSnackBar(message: string, action: string) {
+
+    const terms = ["failed", "already"];
+    const result1 = terms.some(term => message.includes(term));
+    alert(result1);
+    var redColor = false;
+    if( result1){
+      redColor =true;
+    }
     this.snackBar.open(message, action, {
-      duration: 4000,
+      duration: 6000,
+      panelClass: [redColor?'red-snackbar':'blue-snackbar'],
       verticalPosition:"top"
     });
   }

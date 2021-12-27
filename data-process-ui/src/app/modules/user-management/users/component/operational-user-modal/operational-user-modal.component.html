@@ -7,6 +7,7 @@
         </label></b>
       </ng-container>
     </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
   </div>
   <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
     <ng-container *ngIf="isLoading$ | async">
@@ -32,9 +33,9 @@
         <div class="form-group row">
           <div class="col-lg-4">
             <label>Select Group</label>
-            <select class="form-control form-control-lg form-control-solid" name="groupId"
+            <select class="form-control form-control-lg form-control-solid spinner spinner-success spinner-right" name="groupId"
               [class.is-invalid]="isControlInvalid('groupId')" formControlName="groupId" (change)="setReportingToByGroup($event.target.value)">
-              <option [ngValue]="null" disabled>Select Group</option>
+              <option [ngValue]="0" [selected]=true>Select Group</option>
               <option *ngFor="let group of groupList" [ngValue]="group.teamId">
                 {{ group.teamName }}
               </option>
@@ -44,9 +45,9 @@
           </div>
           <div class="col-lg-4">
             <label>Select Team</label>
-            <select class="form-control form-control-lg form-control-solid" name="teamId"
+            <select class="form-control form-control-lg form-control-solid spinner spinner-success spinner-right" name="teamId"
               [class.is-invalid]="isControlInvalid('teamId')" formControlName="teamId" (change)="setReportingToByTeam($event.target.value)">
-              <option [ngValue]="null" disabled>Select Team</option>
+              <option [ngValue]="0" [selected]=true>Select Team</option>
               <option *ngFor="let team of teamList" [ngValue]="team.teamId">
                 {{ team.teamName }}
               </option>
@@ -57,6 +58,7 @@
             <label class="form-label">Enter Project Id   </label>
             <select class="form-control form-control-lg form-control-solid" name="projectId"
             [class.is-invalid]="isControlInvalid('projectId')" formControlName="projectId">
+            <option [ngValue]="0" [selected]=true>Select Project</option>
             <option *ngFor="let project of projectList" [ngValue]="project.projectId">
               {{ project.projectName }}
             </option>
@@ -75,22 +77,20 @@
           </div>
           <div class="col-lg-4">
             <label class="form-label">Enter BPS Login      </label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="loginRFDB_BPS"
+            <input type="text" class="form-control form-control-lg form-control-solid" name="loginRFDB_BPS" maxlength=20
               placeholder="BPS Login" autocomplete="off" [class.is-invalid]="isControlInvalid('loginRFDB_BPS')"
               [class.is-valid]="isControlValid('loginRFDB_BPS')" formControlName="loginRFDB_BPS" />
-            <div class="valid-feedback" *ngIf="isControlValid('loginRFDB_BPS')">Login RFDB BPS Id was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('required', 'loginRFDB_BPS')">Login RFDB BPS Id is required</div>
             <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'loginRFDB_BPS')">Login RFDB BPS Id should have at
               least 3 symbols</div>
             <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'loginRFDB_BPS')">Login RFDB BPS Id should have
-              maximum 100 symbols</div>
+              maximum 20 symbols</div>
           </div>
           <div class="col-lg-4">
             <label class="form-label">Enter Training Batch   </label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="trainingBatch"
+            <input type="text" class="form-control form-control-lg form-control-solid" name="trainingBatch" maxlength=40
               placeholder="Training Batch" autocomplete="off" [class.is-invalid]="isControlInvalid('trainingBatch')"
               [class.is-valid]="isControlValid('trainingBatch')" formControlName="trainingBatch" />
-              <div class="valid-feedback" *ngIf="isControlValid('trainingBatch')">Training Batch was entered correct</div>
               <div class="invalid-feedback" *ngIf="controlHasError('required', 'trainingBatch')">Training Batch is required</div>
               <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'trainingBatch')">Training Batch should have at
                 least 3 symbols</div>
@@ -111,7 +111,7 @@
     <ng-container *ngIf="customer">
 
       <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
-        [disabled]="formGroup.invalid">Save</button>
+        >Save</button>
     </ng-container>
   </div>
 </div>

@@ -68,9 +68,9 @@ export class ProjectService  {
     );
   }
 
-  getGroupList(userId, roleId){
+  getGroupList(division){
 
-    const url = this.API_URL + "/getGroupList/"+userId+"/"+roleId;
+    const url = this.API_URL + "/getGroupList/"+division;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -83,9 +83,9 @@ export class ProjectService  {
     );
   }
 
-  getTeamList(userId, groupId){
+  getTeamList(groupId){
 
-    const url = this.API_URL + "/getTeamList/"+userId+"/"+groupId;
+    const url = this.API_URL + "/getTeamList/"+groupId;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });

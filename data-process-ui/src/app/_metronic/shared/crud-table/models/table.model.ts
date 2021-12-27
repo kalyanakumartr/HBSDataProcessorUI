@@ -17,6 +17,7 @@ export interface ITableState {
 export interface ITaskTableState extends ITableState{
   employeeId: any,
   queueList:any,
+  projectId:any,
   taskStatusList:any
 }
 

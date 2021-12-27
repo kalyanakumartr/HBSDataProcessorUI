@@ -4,4 +4,6 @@ export class Team {
   groupId: string;
   groupName: string;
   employeeId:string;
+  divisionName:string;
+  divisionId:string;
 }

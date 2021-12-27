@@ -54,13 +54,13 @@ searchGroup: FormGroup;
 userList: any;
 
 departmentList:any[];
-department:string;
+department:any;
 divisionList:any[];
-division:string;
+division:any;
 projectList:any[];
-project:string;
+project:any;
 isClearFilter:boolean;
-
+isLoading$;
 private subscriptions: Subscription[] = [];
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
@@ -135,6 +135,9 @@ authModel:AuthModel;
   searchForm() {
     this.searchGroup = this.fb.group({
       searchTerm: [''],
+      department:['0'],
+      division:['0'],
+      project:['0']
     });
     const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
       .pipe(
@@ -232,7 +235,7 @@ itAsset(id: string, name:string,userId:string){
       tap((res: any) => {
         this.departmentList = res;
         console.log("departmentList", this.departmentList)
-        this.department="0";
+        this.department="0: 0";
       }),
       catchError((err) => {
         console.log(err);
@@ -269,7 +272,7 @@ itAsset(id: string, name:string,userId:string){
       tap((res: any) => {
         this.divisionList = res;
         console.log("divisionList", this.divisionList)
-
+        this.division="0: 0";
       }),
       catchError((err) => {
         console.log(err);
@@ -293,6 +296,7 @@ itAsset(id: string, name:string,userId:string){
       tap((res: any) => {
         this.projectList = res;
         console.log("projectList", this.projectList)
+        this.project="0: 0";
       }),
       catchError((err) => {
         console.log(err);
