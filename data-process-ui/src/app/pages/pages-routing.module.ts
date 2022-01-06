@@ -26,6 +26,27 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'leave-management',
+        loadChildren: () =>
+          import('../modules/leave-management-system/leave-management-system.module').then(
+            (m) => m.LeaveManagementSystemModule
+          ),
+      },
+      {
+        path: 'time-tracker',
+        loadChildren: () =>
+          import('../modules/time-tracker/time-tracker.module').then(
+            (m) => m.TimeTrackerModule
+          ),
+      },
+      {
+        path: 'attendance',
+        loadChildren: () =>
+          import('../modules/attendance/attendance.module').then(
+            (m) => m.AttendanceModule
+          ),
+      },
+      {
         path: 'web-upload',
         loadChildren: () =>
           import('../modules/web-upload/web-upload.module').then(

@@ -1,0 +1,88 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+
+
+        <b><label class="heading">
+
+       Apply Leave </label></b>
+
+
+
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+
+      <form action="#" name="timeTrackerForm" id="assetForm" class="form form-label-right" [formGroup]="formGroup">
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label>Leave Type</label>
+            <select class="form-control form-control-lg form-control-solid" name="leaveType"
+              [class.is-invalid]="isControlInvalid('leaveType')" formControlName="leaveType" >
+              <option  [selected]=true>Choose Leave Type</option>
+              <option *ngFor="let leaveType of leaveTypeList" >
+                {{ leaveType.leaveTypeName }}
+              </option>
+            </select>
+          </div>
+
+
+          </div>
+          <div class="form-group row">
+
+            <div class="col-lg-6">
+              <label>From Date</label>
+              <div class="input-group input-group-solid">
+                <input type="text" name="fromDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('fromDate')"
+                  [class.is-valid]="isControlValid('fromDate')" formControlName="fromDate" readonly="true" />
+                <div class="input-group-append" (click)="d.toggle();">
+                  <span class="input-group-text">
+                    <i class="text-dark-50 flaticon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label>To Date</label>
+              <div class="input-group input-group-solid">
+                <input type="text" name="toDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #r="ngbDatepicker"  formControlName="toDate"  [value]=''/>
+                <div class="input-group-append" (click)="r.toggle()">
+                  <span class="input-group-text">
+                    <i class="text-dark-50 flaticon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-lg-6">
+              <label class="form-label">Reason</label>
+              <textarea  class="form-control form-control-lg form-control-solid  is-invalid" name="reason"  maxlength=200
+                placeholder="Reason" autocomplete="off" [class.is-invalid]="isControlInvalid('reason')"
+                [class.is-valid]="isControlValid('reason')" formControlName="reason" > </textarea >
+            </div>
+
+          </div>
+
+      </form>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+        [disabled]="formGroup.invalid">Save</button>
+  </div>
+</div>
