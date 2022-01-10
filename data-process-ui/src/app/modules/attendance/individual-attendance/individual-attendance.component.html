@@ -1,1 +1,115 @@
-<p>individual-attendance works!</p>
+
+
+
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">My Attendance for Month </h3>
+    </div>
+
+  </div>
+  <div class="card-body">
+
+    </div>
+    <!-- end: Filtration form -->
+
+
+    <!-- begin:Table -->
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="tablebox" class="table table-head-custom table-vertical-center ">
+        <thead>
+          <tr>
+          <th class="sticky-header" nowrap >
+            Date
+
+          </th>
+          <th class="sticky-header" nowrap >
+            Attendance
+
+          </th>
+
+          <th nowrap >
+            Reason for Leave
+
+          </th>
+          <th nowrap >
+            Approval Status
+
+          </th>
+          <th nowrap >
+            Remarks
+
+          </th>
+          <th nowrap >
+            Billable Hours
+
+          </th>
+
+          <th  >
+            Non Billable Productive Hours
+
+          </th>
+          <th  >
+            Non Billable   Non Productive Hours
+
+          </th>
+          <th nowrap >Total Hours</th>
+          <th nowrap >OT Hours</th>
+          <th nowrap >Approved OT Hours</th>
+          <th nowrap >Time Discrencies</th>
+
+          <th nowrap >Add TimeSheet
+            <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "addTimeSheet('09/01/2022')">Add Time Sheet</button>
+          </th>
+
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let attendance of attendanceList">
+
+            <td>{{ attendance.attendanceDate | date: 'dd-MMM-yyyy'}} </td>
+          <td>
+            <span class="label label-lg label-inline" [class.label-light-danger]="attendance.shiftSelected === 'L'"
+              [class.label-light-success]="attendance.shiftSelected === 'P-8h'" [class.label-light-success]="attendance.shiftSelected === 'P-4h'"
+              [class.label-light-success]="attendance.shiftSelected === 'P-12h'"[class.label-light-primary]="attendance.shiftSelected === 'A'">
+              <ng-container *ngIf="attendance.shiftSelected === 'P-8h'">P-8 Hrs</ng-container>
+              <ng-container *ngIf="attendance.shiftSelected === 'P-4h'">P-4 Hrs</ng-container>
+              <ng-container *ngIf="attendance.shiftSelected === 'P-12h'">P-12 Hrs</ng-container>
+              <ng-container *ngIf="attendance.shiftSelected === 'L'">L</ng-container>
+              <ng-container *ngIf="attendance.shiftSelected === 'A'">A</ng-container>
+            </span>
+          </td>
+            <td>{{ attendance.leaveReason }}</td>
+            <td>{{ attendance.approvalStatus }}</td>
+            <td>{{ attendance.remarks }}</td>
+
+            <td>
+              {{ attendance.billableHours }}
+            </td>
+            <td>
+              {{ attendance.nonBillableProductiveHours }}
+            </td>
+            <td>
+              {{ attendance.nonBillableNonProductiveHours }}
+            </td>
+            <td>
+              {{ attendance.totalHours }}
+            </td>
+            <td>
+              {{ attendance.otHours }}
+            </td>
+            <td>
+              {{ attendance.approvedOtHours }}
+            </td>
+            <td>{{ attendance.discrenciesHours }}</td>
+
+            <td>
+              <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "addTimeSheet(attendance.attendanceDate)">Add Time Sheet</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end: Table -->
+  </div>
+

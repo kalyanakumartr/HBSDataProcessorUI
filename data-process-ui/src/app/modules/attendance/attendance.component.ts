@@ -13,7 +13,7 @@ export class AttendanceComponent implements OnInit {
     public attendanceService: AttendanceService,) { }
 
   ngOnInit(): void {
-    this.attendanceService.getAttendance();
+    this.attendanceService.getMarkedAttendance();
   }
 
 }

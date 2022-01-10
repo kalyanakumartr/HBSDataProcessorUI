@@ -6,6 +6,7 @@ import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { AuthHTTPService } from './auth-http';
 import { Attendance } from '../../attendance/modal/attendance.model';
+import { MarkAttendanceModel } from '../../attendance/modal/mark-attendance.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,26 +16,27 @@ export class AttendanceService  extends TableService<Attendance> implements OnDe
     isLoadingSubject: BehaviorSubject<boolean>;
     private _errorMsg = new BehaviorSubject<string>('');
     protected http: HttpClient;
-  API_URL = `${environment.edrReaderApi}`;
+    API_ADMIN_URL = `${environment.adminApiUrl}`;
+
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
   }
   ngOnDestroy() {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
-  getAttendance(){
+  getMarkedAttendance(){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
       return of(undefined);
     }
 
     console.log("Inside get Attendance");
-    const url = this.API_URL + '/getAttendance';
+    const url = this.API_ADMIN_URL + '/getAttendance';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    let formData: FormData = new FormData();
-    return this.http.post(url, formData,{headers: httpHeaders}).pipe(
+
+    return this.http.post<MarkAttendanceModel>(url, {},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMsg.next(err);
         console.error('Error in get Attendance', err);
@@ -42,19 +44,19 @@ export class AttendanceService  extends TableService<Attendance> implements OnDe
       })
     );
   }
-  markAttendance(){
+  markAttendance(symbol,currentDate){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
       return of(undefined);
     }
 
     console.log("Inside mark attendance");
-    const url = this.API_URL + '/markAttendance';
+    const url = this.API_ADMIN_URL + '/markAttendance';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    let formData: FormData = new FormData();
-    return this.http.post(url, formData,{headers: httpHeaders}).pipe(
+
+    return this.http.post(url, {'symbol': symbol,'date':currentDate},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMsg.next(err);
         console.error('Error in mark Attendance', err);
@@ -69,7 +71,7 @@ export class AttendanceService  extends TableService<Attendance> implements OnDe
     }
 
     console.log("Inside mark attendance");
-    const url = this.API_URL + '/markAttendance';
+    const url = this.API_ADMIN_URL + '/getmonthAttendance';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });

@@ -11,11 +11,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgbDatepickerModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ApplyLeaveComponent } from './apply-leave/apply-leave.component';
+import { ApproveLeaveComponent } from './approve-leave/approve-leave.component';
 
 
 
 @NgModule({
-  declarations: [LeaveManagementSystemComponent],
+  declarations: [LeaveManagementSystemComponent, ApplyLeaveComponent, ApproveLeaveComponent],
   imports: [
     CommonModule, FormsModule,    ReactiveFormsModule, LeaveManagementRoutingModule,InlineSVGModule, NgbDatepickerModule,NgbModalModule, MatSnackBarModule, MatButtonModule,GeneralModule
   ],

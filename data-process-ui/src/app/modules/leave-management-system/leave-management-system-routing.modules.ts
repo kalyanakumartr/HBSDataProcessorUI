@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ApplyLeaveComponent } from './apply-leave/apply-leave.component';
+import { ApproveLeaveComponent } from './approve-leave/approve-leave.component';
 import { LeaveManagementSystemComponent } from './leave-management-system.component';
 
 
@@ -14,11 +16,11 @@ const routes: Routes = [
       },
       {
         path: 'approveLeave',
-        component: LeaveManagementSystemComponent,
+        component: ApproveLeaveComponent,
       },
       {
         path: 'applyLeave',
-        component: LeaveManagementSystemComponent,
+        component: ApplyLeaveComponent,
       },
       { path: '', redirectTo: 'lms', pathMatch: 'full' },
       { path: '**', redirectTo: 'lms', pathMatch: 'full' },

@@ -9,13 +9,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { IndividualAttendanceComponent } from './individual-attendance/individual-attendance.component';
 import { GroupAttendanceComponent } from './group-attendance/group-attendance.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
 @NgModule({
   declarations: [MarkAttendanceComponent, AttendanceComponent, IndividualAttendanceComponent, GroupAttendanceComponent],
   imports: [
-    CommonModule, AttendanceRoutingModule,NgbModalModule, MatSnackBarModule, MatButtonModule,GeneralModule
+    CommonModule, FormsModule, ReactiveFormsModule,AttendanceRoutingModule,NgbModalModule, MatSnackBarModule, MatButtonModule,GeneralModule
   ],
   exports: [MarkAttendanceComponent]
 })

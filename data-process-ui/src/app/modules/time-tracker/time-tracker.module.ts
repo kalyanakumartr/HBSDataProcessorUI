@@ -16,9 +16,9 @@ import { TimeTrackerComponent } from './time-tracker/time-tracker.component';
 @NgModule({
   declarations: [TimeTrackerComponent],
   imports: [
-    CommonModule, FormsModule,    ReactiveFormsModule, TimeTrackerRoutingModule,InlineSVGModule, NgbDatepickerModule,NgbModalModule, MatSnackBarModule, MatButtonModule,GeneralModule
+    CommonModule, FormsModule, ReactiveFormsModule, TimeTrackerRoutingModule,InlineSVGModule, NgbDatepickerModule,NgbModalModule, MatSnackBarModule, MatButtonModule,GeneralModule
   ],
   providers: [MatDatepickerModule, MatNativeDateModule],
-  exports: []
+  exports: [TimeTrackerComponent]
 })
 export class TimeTrackerModule { }
