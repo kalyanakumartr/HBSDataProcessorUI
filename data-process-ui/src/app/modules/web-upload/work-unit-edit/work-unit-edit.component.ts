@@ -47,8 +47,8 @@ export class WorkUnitEditComponent implements OnInit {
 }
 
 ngOnInit(): void {
-  this.prodEstimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.production.estimatedTime;
-  this.qcEstimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityControl.estimatedTime;
+  this.prodEstimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.production? this.task.coreData.roadData.roadTypeMap.benchMark.production.estimatedTime:0;
+  this.qcEstimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityControl? this.task.coreData.roadData.roadTypeMap.benchMark.qualityControl.estimatedTime:0;
   this.isMultiType=this.task.coreData.roadData.roadTypeMap.multiType;
 
   this.workAllocationService.getRoadTypeList(this.projectId)
@@ -107,7 +107,7 @@ ngOnInit(): void {
       this.workAllocationService.updateWorkUnits(this.workunitUpdate).pipe(
         tap(() => {
           this.modal.close();
-
+          this.workAllocationService.filterData("");
         }),
         catchError((errorMessage) => {
           this.openSnackBar(errorMessage,"X");
