@@ -118,7 +118,7 @@
              <th><input type="checkbox" id="checkAllBox" (change)="checkAll()"/></th>
             </ng-container>
 
-            <th nowrap >
+            <th nowrap > <ng-container *ngIf="hasEdit">Edit</ng-container>
               WU Id
 
             </th>
@@ -157,12 +157,19 @@
               <td>
                 <input type="checkbox" id="{{task.allocationId}}"  name="workUnits" value="{{ task.allocationId }}"  (change)="checkBoxWorkUnit(task.allocationId)"/></td>
              </ng-container>
-            <td>
+            <td  nowrap>
               <ng-container *ngIf="hasLink else noLink">
-                <a title="Start WorkUnit"  (click)="openWworkUnit(task,selectedQueue, selectedStatus)">{{ task.coreData.roadData.workUnitId }}</a>
+                <a title="Start WorkUnit"  (click)="openWorkUnit(task,selectedQueue)">{{ task.coreData.roadData.workUnitId }}</a>
+
                </ng-container>
                <ng-template #noLink>
+                <ng-container *ngIf="hasEdit">
+                  <a title="Edit Work Unit" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3" (click)="editWorkUnit(task)">
+                    <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-primary">
+                    </span>
+                  </a>
 
+                </ng-container>
                   {{ task.coreData.roadData.workUnitId}}
               </ng-template>
               </td>

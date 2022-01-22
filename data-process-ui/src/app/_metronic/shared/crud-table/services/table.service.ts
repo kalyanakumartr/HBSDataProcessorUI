@@ -74,7 +74,7 @@ export abstract class TableService<T> {
 
   // CREATE
   // server should return the object with ID
-  create(item: BaseModel,path: string, formUser:string): Observable<BaseModel> {
+  create(item: BaseModel,path: string, formUser:string): Observable<any> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
     const httpHeaders = new HttpHeaders({

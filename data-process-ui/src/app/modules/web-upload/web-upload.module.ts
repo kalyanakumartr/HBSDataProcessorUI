@@ -15,10 +15,11 @@ import { UploadFilesComponent } from './uploaded-files/uploaded-files.component'
 import { WorkUnitModalComponent } from './work-unit-modal/work-unit-modal.component';
 import { MatButtonModule } from '@angular/material/button';
 import { GeneralModule } from 'src/app/_metronic/partials/content/general/general.module';
+import { WorkUnitEditComponent } from './work-unit-edit/work-unit-edit.component';
 
 
 @NgModule({
-  declarations: [WebUploadComponent,FileUploadComponent, UploadFilesComponent,MyWorkComponent, WorkUnitModalComponent],
+  declarations: [WebUploadComponent,FileUploadComponent, UploadFilesComponent,MyWorkComponent, WorkUnitModalComponent, WorkUnitEditComponent],
   imports: [CommonModule, WebUploadRoutingModule,   CommonModule,   HttpClientModule, CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatButtonModule,GeneralModule],
 })
 

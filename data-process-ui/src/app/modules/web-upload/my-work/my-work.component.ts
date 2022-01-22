@@ -26,6 +26,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectService } from '../../auth/_services/project.services';
 import { AuthService, UserModel } from '../../auth';
 import { TaskBatch } from '../modal/taskbatch.model';
+import { WorkUnitEditComponent } from '../work-unit-edit/work-unit-edit.component';
 
 @Component({
   selector: 'app-my-work',
@@ -58,6 +59,7 @@ export class MyWorkComponent
   queueList: any;
   statusList: any;
   hasLink: boolean;
+  hasEdit:boolean;
   hasCheckbox: boolean;
   hasGroup:boolean;
   hasBatch:boolean;
@@ -91,6 +93,7 @@ export class MyWorkComponent
     this.allWorkUnitIds = [];
     this.selectedWorkUnitIds = [];
     this.hasLink = true;
+    this.hasEdit=false;
     this.hasCheckbox = false;
     this.workAllocationService.listen().subscribe((m:any)=>{
       console.log("m -- -- --",m);
@@ -217,13 +220,20 @@ export class MyWorkComponent
   ngOnDestroy() {
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
-  openWworkUnit(task: any,selectedQueue:any, selectedStatus:any) {
+  openWorkUnit(task: any,selectedQueue:any) {
     const modalRef = this.modalService.open(WorkUnitModalComponent, {
       size: 'xl',
     });
     modalRef.componentInstance.task = task;
     modalRef.componentInstance.queue = selectedQueue;
-    modalRef.componentInstance.status = selectedStatus;
+    modalRef.componentInstance.status = this.selectedStatus;
+
+  }
+  editWorkUnit(task: any) {
+    const modalRef = this.modalService.open(WorkUnitEditComponent, {
+      size: 'xl',
+    });
+    modalRef.componentInstance.task = task;
   }
   //CheckBox
   checkAll() {
@@ -250,8 +260,13 @@ export class MyWorkComponent
     if (position.length > 1) {
       this.selectedQueue = position[1];
     }
-
-    if (['Group', 'ProductionTeam','QualityControlTeam','QualityAssuranceTeam','ReadyForDelivery','DeliveryToClient'].includes(this.selectedQueue)) {
+    this.queueList
+    for (var queue of this.queueList) {
+      if (this.selectedQueue == queue.queueId) {
+        this.hasEdit=queue.editable;
+      }
+    }
+    if (['Group', 'ProductionTeam','QualityControlTeam','HoldQueue','QualityAssuranceTeam','ReadyForDelivery','DeliveryToClient'].includes(this.selectedQueue)) {
       this.hasCheckbox = true;
       this.hasBatch=false;
       this.hasDeliverToClient=false;
@@ -276,8 +291,26 @@ export class MyWorkComponent
         this.hasCheckbox = false;
         this.getBatchList();
       }else{
-        this.hasGroup=false;
-        this.getAssignedtoUser();
+
+        if (['HoldQueue'].includes(this.selectedQueue) && ['Ready'].includes(this.selectedStatus)) {
+          this.hasCheckbox = true;
+          this.hasBatch=false;
+          this.hasDeliverToClient=false;
+          this.hasLink = true;
+          this.hasGroup=false;
+          this.getAssignedtoUser();
+        }else if (['HoldQueue'].includes(this.selectedQueue) && ['Assigned','Completed'].includes(this.selectedStatus)) {
+          this.hasCheckbox = false;
+          this.hasBatch=false;
+          this.hasDeliverToClient=false;
+          this.hasLink = true;
+        }else if (['HoldQueue'].includes(this.selectedQueue) && ['Hold'].includes(this.selectedStatus)) {
+          this.hasCheckbox = false;
+          this.hasLink = true;
+        }else{
+          this.hasGroup=false;
+          this.getAssignedtoUser();
+        }
       }
     } else {
       this.hasCheckbox = false;
@@ -432,6 +465,24 @@ export class MyWorkComponent
       );
       this.workAllocationService.patchState({}, '/searchTask');
     }
+    if (['HoldQueue'].includes(this.selectedQueue) && ['Ready'].includes(this.selectedStatus)) {
+      this.hasCheckbox = true;
+      this.hasBatch=false;
+      this.hasDeliverToClient=false;
+      this.hasLink = false;
+      this.hasGroup=false;
+      this.getAssignedtoUser();
+    }else if (['HoldQueue'].includes(this.selectedQueue) && ['Assigned','Completed'].includes(this.selectedStatus)) {
+      this.hasCheckbox = false;
+      this.hasBatch=false;
+      this.hasDeliverToClient=false;
+      this.hasLink = true;
+    }else if (['HoldQueue'].includes(this.selectedQueue) && ['Hold'].includes(this.selectedStatus)) {
+      this.hasCheckbox = false;
+      this.hasLink = true;
+    }else{
+
+    }
   }
   // filtration
   filterForm() {
@@ -531,3 +582,5 @@ export class MyWorkComponent
     // modalRef.result.then(() => this.userService.fetch(), () => { });
   }
 }
+
+

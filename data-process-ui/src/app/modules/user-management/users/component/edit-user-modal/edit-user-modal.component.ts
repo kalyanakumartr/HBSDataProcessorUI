@@ -461,7 +461,7 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
         this.openSnackBar(errorMessage,"X");
         return of(this.customer);
       }),
-    ).subscribe((res: UserModel) => res =>this.openSnackBar(res.messageCode?"Employee Created Successful":res,"!!"));
+    ).subscribe(res =>this.openSnackBar(res.messageCode?"Employee Created Successful":res,"!!"));
 
     this.subscriptions.push(sbCreate);
   }
