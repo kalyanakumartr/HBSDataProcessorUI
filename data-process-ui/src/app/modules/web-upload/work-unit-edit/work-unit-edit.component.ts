@@ -113,7 +113,7 @@ ngOnInit(): void {
           this.openSnackBar(errorMessage,"X");
           return of(this.workunitUpdate);
         }),
-      ).subscribe((res: string) => res =>this.openSnackBar(res == "Success"?"Work Unit Update Successful":res,"!!"));
+      ).subscribe(res =>this.openSnackBar(res.includes("Success")?"Work Unit Update Successful":res,"!!"));
     }
   }
 
