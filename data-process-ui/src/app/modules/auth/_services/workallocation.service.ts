@@ -12,6 +12,7 @@ import { UserHRModel } from '../_models/user-hr.model';
 import { WorkUnitModel } from '../../web-upload/modal/work-unit.model';
 import { TableTaskService } from 'src/app/_metronic/shared/crud-table/services/table.task.service';
 import { UpdateTaskModel } from '../../web-upload/modal/update-task.model';
+import { WorkUnitUpdateModel } from '../../web-upload/modal/workunitupdate.model';
 
 
 @Injectable({
@@ -193,6 +194,22 @@ export class WorkAllocationService extends TableTaskService<WorkUnitModel> imple
       headers: httpHeaders,
     });
   }
+  getRoadTypeList(projectId: string) {
+    const url = this.API_URL + '/getRoadTypeList';
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${auth.access_token}`,
+    });
+    console.log("Inside get Status");
+    return this.http.post(url, {
+        "projectId" : projectId
+    },{
+      headers: httpHeaders,
+    });
+  }
   updateTask(updateTask: UpdateTaskModel) {
     const url = this.API_URL + '/updateTask';
     const auth = this.getAuthFromLocalStorage();
@@ -213,5 +230,19 @@ export class WorkAllocationService extends TableTaskService<WorkUnitModel> imple
   }
   filterData(filterBy:string){
     this._listners.next(filterBy)
+  }
+  updateWorkUnits(workUnitData: WorkUnitUpdateModel):Observable<any> {
+    const url = this.API_URL + '/updateData';
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${auth.access_token}`,
+    });
+    console.log("Inside get updateData",workUnitData);
+    return this.http.post(url, workUnitData,{
+      headers: httpHeaders,
+    });
   }
 }

@@ -59,19 +59,19 @@
             <div class="col-lg-2">
               <label class="form-label"><b>Efficiency % : </b><br/>{{ efficiency }}% </label>
             </div>
-            <div class="col-lg-3">
+            <!-- <div class="col-lg-3">
               <label>Reason for low efficiency(if < 100%)</label>
-             <!-- <select class="form-control form-control-lg form-control-solid" name="reason"
+             <select class="form-control form-control-lg form-control-solid" name="reason"
                  id="reason" (change)="getReason($event.target.value)">
                  <option value ="">Please Select Reason</option>
                 <option *ngFor="let reason of reasonList" [ngValue]="reason.reasonId">
                   {{ reason.reason }}
                 </option>
-              </select>-->
+              </select>
               <input type="text" class="form-control form-control-lg form-control-solid  " name="lowEffReason"
               placeholder="Low Efficiency Reason" autocomplete="off" formControlName="lowEffReason" />
 
-            </div>
+            </div>-->
 
           </div>
         <div class="form-group row">
@@ -80,13 +80,19 @@
 
           </div>
           <div class="col-lg-4">
+            <ng-container *ngIf="showHoldQueueButtons">
+
+               <b> Hold Reason :</b> <br/>{{task.reason.reason}}
+
+            </ng-container>
             </div>
           <div class="col-lg-4">
-            <label>Remarks</label>
+            <label><b>Remarks</b></label>
             <textarea class="form-control form-control-lg form-control-solid" name="remarks" placeholder="remarks" [(ngModel)]="remarks"
-              autocomplete="off"   formControlName="remarks" ></textarea>
+              autocomplete="off"    ></textarea>
 
           </div>
+
         </div>
     <ng-container *ngIf="task.coreData.roadData.roadTypeMap.multiType">
       <div class="form-group row">
@@ -152,9 +158,18 @@
           <button type="button" id="Stop" mat-fab color="warn" (click)=stop(task.allocationId)>Stop</button>
         </div>
         <div class="col-lg-1">
-          <button type="button" id="Hold" mat-fab color="primary" (click)=hold(task.allocationId)>Hold</button>
+          <button type="button" id="Hold" mat-fab color="primary" (click)=preHold(task.allocationId)>Hold</button>
         </div>
     </ng-container>
+    <ng-container *ngIf="showHoldQueueButtons">
+
+      <div class="col-lg-1">
+        <button type="button" id="MoveToHold" mat-fab color="primary" title='Move Batch' (click)=hold(task.allocationId)>Hold</button>
+      </div>
+      <div class="col-lg-1">
+        <button type="button" id="WorkUnitRevoke" mat-fab color="accent" title='Move Current Unit' (click)=revoke(task.allocationId)>Revoke</button>
+      </div>
+      </ng-container>
     <ng-container *ngIf="showQAButtons">
 
       <div class="col-lg-1">
@@ -169,12 +184,16 @@
         <button type="button" id="Reject" mat-fab color="primary" (click)=reject(task.allocationId)>Reject</button>
       </div>
       </ng-container>
+
+
       <div class="col-lg-4" *ngIf="showReasons">
         <label>Select Reason for on Hold</label>
         <select class="form-control form-control-lg form-control-solid" name="reason"
           id="reason" (change)="getReason($event.target.value)">
           <option value ="">Please Select Reason</option>
-          <option *ngFor="let reason of reasonList" [ngValue]="reason.reasonId">
+          <!--<option value ="2DLIDARnotloadingvisibleinQGIS">2D LIDAR not loading / visible in QGIS</option>
+          <option value ="3DLIDARissue–Bifurcationlocationshift">3DLIDARissue–Bifurcationlocationshift</option>-->
+          <option *ngFor="let reason of reasonList" [value]="reason.reasonId">
             {{ reason.reason }}
           </option>
         </select>

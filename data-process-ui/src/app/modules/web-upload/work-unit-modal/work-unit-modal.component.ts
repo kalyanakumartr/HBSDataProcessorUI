@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
 import { WorkAllocationService } from '../../auth/_services/workallocation.service';
 import { TaskBatch } from '../modal/taskbatch.model';
@@ -29,6 +30,7 @@ export class WorkUnitModalComponent  {
   showEditable:boolean = false;
   showQAButtons:boolean = false;
   showActionButtons:boolean = false;
+  showHoldQueueButtons:boolean = false;
   mm : any;
   ss : any;
   ms : any;
@@ -62,6 +64,7 @@ export class WorkUnitModalComponent  {
     }
 
   ngOnInit(): void {
+
     if(this.queue == "Production"){
       this.estimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.production.estimatedTime;
       this.actualTime = this.task.coreData.roadData.roadTypeMap.benchMark.production.actualTime;
@@ -90,19 +93,33 @@ export class WorkUnitModalComponent  {
       }
       this.showActionButtons=false;
       this.showQAButtons=true;
+    }else if(this.queue == "HoldQueue"){
+      this.showActionButtons=false;
+      this.showQAButtons=false;
+      this.showHoldQueueButtons=true;
     }else{
       this.estimatedTime=0;
       this.actualTime=0;
       this.efficiency =0;
       this.showActionButtons=false;
     }
+    if(this.status == "Hold"){
+      this.showActionButtons=false;
+    }
     this.mm = this.actualTime;
     this.efficiency = Math.trunc(this.efficiency*100);
-    this.workAllocationService.getReaonsList(this.queue,"hold")
-    .subscribe((reasons) => {
-      this.reasonList = reasons;
-    });
-    if(this.queue != "Production"){
+    this.workAllocationService.getReaonsList(this.queue,"hold").pipe(
+      tap((res: any) => {
+        this.reasonList =  res;
+        console.log("reasonList", this.reasonList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+    if(!['HoldQueue','Production'].includes(this.queue) ){
       this.showReject=true;
     }
     var statusArray: Array<string> = ['Ready', 'InProgress', 'Hold'];
@@ -132,43 +149,57 @@ startTimer() {
   start(taskId){
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Start","Ready",allotedto,"NOREASON","To Team Member End","");
+    this.assignWorkUnits(taskId,this.queue,team,"Start","Ready",allotedto,"NOREASON",this.remarks,"");
     this.openSnackBar("Work Unit Started","");
     this.clickHandler(2) ;
   }
   pause(taskId){
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Pause","InProgress",allotedto,"NOREASON","To Team Member End","");
+    this.assignWorkUnits(taskId,this.queue,team,"Pause","InProgress",allotedto,"NOREASON",this.remarks,"");
     this.openSnackBar("Work Unit Paused","");
     this.clickHandler(3) ;
   }
   resume(taskId){
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Resume","InProgress",allotedto,"NOREASON","To Team Member End","");
+    this.assignWorkUnits(taskId,this.queue,team,"Resume","InProgress",allotedto,"NOREASON",this.remarks,"");
     this.openSnackBar("Work Unit Resume","");
     this.clickHandler(2) ;
   }
   stop(taskId){
     var allotedto ="";//Hardcoded
     var team="";//Hardcoded
-    this.assignWorkUnits(taskId,this.queue,team,"Stop","Completed",allotedto,"NOREASON","To Team Member End","");
+    this.assignWorkUnits(taskId,this.queue,team,"Stop","Completed",allotedto,"NOREASON",this.remarks,"");
     this.openSnackBar("Work Unit Ended","");
     this.clickHandler(0) ;
     this.modal.dismiss();
   }
   hold(taskId){
-
+    var allotedto ="";
+    var team=this.task.teamId;
+    this.assignWorkUnits(taskId,this.queue,team,"StartPause","Hold",allotedto,this.task.reason.reasonId,this.remarks,"");
+    this.openSnackBar("Work Unit moved to Permanent Hold","");
+    this.modal.dismiss();
+  }
+  revoke(taskId){
+    var allotedto ="";
+    var team=this.task.teamId;
+    this.assignWorkUnits(taskId,this.queue,team,"ResumeStop","Hold",allotedto,"NOREASON",this.remarks,"");
+    this.openSnackBar("Work Unit moved to from Hold","");
+    this.modal.dismiss();
+  }
+  preHold(taskId){
+    alert(this.selectedReason);
     if(this.selectedReason == undefined || this.selectedReason == ""){
       this.showReasons=true;
       (<HTMLInputElement> document.getElementById("Reject")).disabled = true;
-      alert("Please select Reason for Reject");
+      alert("Please select Reason for Hold");
       return;
     }
     var allotedto ="";
-    var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"Hold","InProgress",allotedto,this.selectedReason,"To Team Member End","");
+    var team=this.task.teamId;
+    this.assignWorkUnits(taskId,this.queue,team,"Hold","InProgress",allotedto,this.selectedReason,this.remarks,"");
     this.openSnackBar("Work Unit Holded","");
     this.modal.dismiss();
   }
@@ -178,7 +209,7 @@ startTimer() {
     var allotedto ="";
     var team="";
     var batchId="";
-    this.assignWorkUnits(taskId,this.queue,team,"StartStop","Ready",allotedto,"NOREASON","To Team Member End",batchId);
+    this.assignWorkUnits(taskId,this.queue,team,"StartStop","Ready",allotedto,"NOREASON",this.remarks,batchId);
     this.openSnackBar("Batch Moved to Ready for Delivery","");
     this.modal.dismiss();
   }
@@ -187,27 +218,21 @@ startTimer() {
 
     var allotedto ="";
     var team="";
-    this.assignWorkUnits(taskId,this.queue,team,"StartStop","Ready",allotedto,"NOREASON","To Team Member End","");
+    this.assignWorkUnits(taskId,this.queue,team,"StartStop","Ready",allotedto,"NOREASON",this.remarks,"");
     this.openSnackBar("Work Unit Moved to Next Queue","");
     this.modal.dismiss();
   }
 
   reject(taskId){
-    if(this.selectedReason == ""){
-      alert("Please select Reason for Reject");
-      return;
-    }
+
     var allotedto ="";
     var team="";
-    //this.assignWorkUnits(taskId,this.queue,team,"Reject","InProgress",allotedto,this.selectedReason,"To Team Member End");
+    this.assignWorkUnits(taskId,this.queue,team,"Reject","InProgress",allotedto,"REJECTED",this.remarks,"");
     this.openSnackBar("Work Unit Rejected","");
     this.modal.dismiss();
   }
   getReason(value){
-    alert(value);
-    var position =value.split(":")
-    this.selectedReason=position[1].toString().trim();
-
+     this.selectedReason=value;
   }
   assignWorkUnits(taskId, queue,teamId,action,status, allotedTo,reason, remarks,batchId) {
 
@@ -226,7 +251,11 @@ startTimer() {
     updateTask.allocationIds =selectedIds;
     updateTask.teamId = teamId;
     updateTask.queueId =queue;
-    updateTask.skillSet=queue;
+    if(queue.includes("HoldQueue")){ //Hard coded for Hold Queue alone
+      updateTask.skillSet="QualityControl";
+    }else{
+      updateTask.skillSet=queue;
+    }
     updateTask.statusId =status;
     updateTask.allotedTo = allotedTo;
     updateTask.triggeredAction=action;
