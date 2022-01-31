@@ -1,21 +1,23 @@
-import { BaseModel } from "src/app/_metronic/shared/crud-table";
+import { Employee } from "./employee.model";
 
 
-export class Attendance implements BaseModel {
-  id: any;
-  attendanceDate: string;
-  shiftSelected:string;
-  leaveReason:string;
-  approvalStatus:string;
-  remarks:string;
-  billableHours:string;
-  nonBillableProductiveHours:string;
-  nonBillableNonProductiveHours:string;
-  totalHours:string;
-  otHours:string;
-  approvedOtHours:string;
-  discrenciesHours:string;
-
-  }
+export class AttendanceModel  {
+  mode:string;
+  approvedTime: string;
+  attendanceId: any;
+  comments:string;
+  date:string;
+  eventTrack:string;
+  holidayName:string;
+  ipAddress:string;
+  markedTime:string;
+  lockStatus:string;
+  status:string;
+  symbol:string;
+  employee:Employee;
+  markedBy:Employee;
+  payRollLocked:boolean;
+  approvedBy:Employee;
+}
 
 

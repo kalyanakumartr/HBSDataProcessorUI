@@ -10,6 +10,9 @@ export interface ITableState {
   divisionId:string;
   departmentId: string;
   projectId: string;
+  fromDate: string;
+  toDate: string;
+  status: string;
   grouping: GroupingState;
   entityId: number | undefined;
 }
@@ -18,6 +21,18 @@ export interface ITaskTableState extends ITableState{
   employeeId: any,
   queueList:any,
   projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+export interface IAttendanceTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
   taskStatusList:any
 }
 

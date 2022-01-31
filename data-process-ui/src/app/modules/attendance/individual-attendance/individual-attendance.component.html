@@ -5,12 +5,52 @@
   <div class="card-header">
     <div class="card-title">
       <h3 class="card-label">My Attendance for Month </h3>
-    </div>
+      <select class="form-control form-control-lg form-control-solid" name="monthYear" (change)="setMonth($event.target.value)">
+        <option [ngValue]="0" [selected]=true>Select Month</option>
+        <option *ngFor="let month of employeeMonthList" [value]="month.value">
+          {{ month.label }}
+        </option>
+      </select>
 
+    </div>
+<!--
+      <div class="form-group row">
+
+      <div class="col-lg-1">
+      OR
+      </div>
+      <div class="col-lg-3">
+      <label>From Date</label>
+      <div class="input-group input-group-solid">
+        <input type="text" name="fromDate"  class="form-control form-control-lg form-control-solid" autocomplete="off"
+          placeholder="mm/dd/yyyy" ngbDatepicker  #fromDate="ngbDatepicker" formControlName="fromDate" readonly="true" (onChange)="setFromDate($event.target.value)" />
+        <div class="input-group-append" (click)="fromDate.toggle()">
+          <span class="input-group-text">
+            <i class="text-dark-50 flaticon-calendar"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <label>To Date</label>
+      <div class="input-group input-group-solid">
+        <input type="text" name="toDate"  class="form-control form-control-lg form-control-solid" autocomplete="off"
+          placeholder="mm/dd/yyyy" ngbDatepicker  #toDate="ngbDatepicker" formControlName="toDate" readonly="true" (ngModel)="toDate" (onChange)="setToDate($event.target.value)"/>
+        <div class="input-group-append" (click)="toDate.toggle()">
+          <span class="input-group-text">
+            <i class="text-dark-50 flaticon-calendar"></i>
+          </span>
+        </div>
+      </div>
+      </div>
+      <div class="col-lg-2">
+        <label> &nbsp;</label>
+        <button type="button" class="btn btn-primary btn-elevate" (click)="searchDates()" >Search</button>
+      </div>
+    </div>
+-->
   </div>
-  <div class="card-body">
 
-    </div>
     <!-- end: Filtration form -->
 
 
@@ -19,6 +59,9 @@
       <table id="tablebox" class="table table-head-custom table-vertical-center ">
         <thead>
           <tr>
+            <th nowrap >TimeSheet
+
+            </th>
           <th class="sticky-header" nowrap >
             Date
 
@@ -27,85 +70,86 @@
             Attendance
 
           </th>
+          <th class="sticky-header" nowrap >
+            Work Mode
+
+          </th>
 
           <th nowrap >
             Reason for Leave
 
           </th>
           <th nowrap >
-            Approval Status
+            Status
 
           </th>
-          <th nowrap >
-            Remarks
 
-          </th>
           <th nowrap >
             Billable Hours
 
           </th>
 
           <th  >
-            Non Billable Productive Hours
+            Non Billable Hours
 
           </th>
-          <th  >
-            Non Billable   Non Productive Hours
+          <th  >Total Hours</th>
+          <th  >OT Hours</th>
+          <th  >Approved OT Hours</th>
+          <th  >Time Discrencies</th>
+          <th nowrap >
+            Remarks
 
           </th>
-          <th nowrap >Total Hours</th>
-          <th nowrap >OT Hours</th>
-          <th nowrap >Approved OT Hours</th>
-          <th nowrap >Time Discrencies</th>
 
-          <th nowrap >Add TimeSheet
-            <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "addTimeSheet('09/01/2022')">Add Time Sheet</button>
-          </th>
 
         </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let attendance of attendanceList">
-
-            <td>{{ attendance.attendanceDate | date: 'dd-MMM-yyyy'}} </td>
+          <tr *ngFor="let timeSheet of timeSheetService.items$ | async">
+            <td>
+              <ng-container *ngIf="timeSheet.editable">
+                <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "addTimeSheet(timeSheet.attendance)">
+                  <mat-icon >edit</mat-icon>
+                </button>
+              </ng-container>
+            </td>
+            <td noWrap>{{ timeSheet.attendance.date | date: 'dd-MMM-yyyy'}} </td>
           <td>
-            <span class="label label-lg label-inline" [class.label-light-danger]="attendance.shiftSelected === 'L'"
-              [class.label-light-success]="attendance.shiftSelected === 'P-8h'" [class.label-light-success]="attendance.shiftSelected === 'P-4h'"
-              [class.label-light-success]="attendance.shiftSelected === 'P-12h'"[class.label-light-primary]="attendance.shiftSelected === 'A'">
-              <ng-container *ngIf="attendance.shiftSelected === 'P-8h'">P-8 Hrs</ng-container>
-              <ng-container *ngIf="attendance.shiftSelected === 'P-4h'">P-4 Hrs</ng-container>
-              <ng-container *ngIf="attendance.shiftSelected === 'P-12h'">P-12 Hrs</ng-container>
-              <ng-container *ngIf="attendance.shiftSelected === 'L'">L</ng-container>
-              <ng-container *ngIf="attendance.shiftSelected === 'A'">A</ng-container>
+            <span class="label label-lg label-inline" [class.label-light-danger]="timeSheet.attendance.symbol === 'L'"
+              [class.label-light-success]="timeSheet.attendance.symbol === 'P12'" [class.label-light-success]="timeSheet.attendance.symbol === 'P8'"
+              [class.label-light-success]="timeSheet.attendance.symbol === 'H'"[class.label-light-primary]="timeSheet.attendance.symbol === 'A'">
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'P8'">P-8 Hrs</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'P12'">P-12 Hrs</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'L'">L</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'A'">A</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'H'">H</ng-container>
             </span>
           </td>
-            <td>{{ attendance.leaveReason }}</td>
-            <td>{{ attendance.approvalStatus }}</td>
-            <td>{{ attendance.remarks }}</td>
+          <td>{{ timeSheet.attendance.mode }}</td>
+            <td>{{ timeSheet.attendance.leaveReason }}</td>
+            <td>{{ timeSheet.attendance.status }}</td>
+
 
             <td>
-              {{ attendance.billableHours }}
+              {{ timeSheet.hoursBillable }}
             </td>
             <td>
-              {{ attendance.nonBillableProductiveHours }}
+              {{ timeSheet.hoursNonBillable }}
             </td>
-            <td>
-              {{ attendance.nonBillableNonProductiveHours }}
-            </td>
-            <td>
-              {{ attendance.totalHours }}
-            </td>
-            <td>
-              {{ attendance.otHours }}
-            </td>
-            <td>
-              {{ attendance.approvedOtHours }}
-            </td>
-            <td>{{ attendance.discrenciesHours }}</td>
 
             <td>
-              <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "addTimeSheet(attendance.attendanceDate)">Add Time Sheet</button>
+              {{ timeSheet.totalHours }}
             </td>
+            <td>
+              {{ timeSheet.otHours }}
+            </td>
+            <td>
+              {{ timeSheet.approvedOtHours }}
+            </td>
+            <td>{{ timeSheet.discrepencies }}</td>
+            <td>{{ timeSheet.attendance.remarks }}</td>
+
           </tr>
         </tbody>
       </table>

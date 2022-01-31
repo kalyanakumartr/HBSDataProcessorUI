@@ -18,6 +18,9 @@ const DEFAULT_STATE: ITableState = {
   divisionId: '',
   departmentId: '',
   projectId: '',
+  status:'',
+  fromDate: '',
+  toDate: '',
   grouping: new GroupingState(),
   entityId: undefined
 };

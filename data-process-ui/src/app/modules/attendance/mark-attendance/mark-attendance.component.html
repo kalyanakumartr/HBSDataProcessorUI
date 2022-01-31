@@ -1,15 +1,42 @@
-<div class="form-group row ">
-  <div class="col-lg-6 top-margin-text">
-  <label class="form-label"><b>Mark Attendance</b></label>
+<form>
+
+    <div class="form-group row ">
+      <div class="col-lg-4 top-margin-text">
+      <label class="form-label"><b>Mark Attendance</b></label>
+      </div>
+      <div class="col-lg-4 top-margin-text">
+
+          <div class="form-group row ">
+            <div class="col-lg-5 top-margin-button">
+              <button type="button" id="P12WFO" mat-mini-fab color="primary" (click)= "markAttendance('P12','WFO')">
+                12 H</button>
+            </div>
+            <div class="col-lg-5 top-margin-button">
+              <button type="button" id="P8WFO" mat-mini-fab color="primary"  (click)= "markAttendance('P8', 'WFO')">8 H</button>
+            </div>
+          </div>
+
+    </div>
+    <div class="col-lg-4 top-margin-text">
+
+        <div class="form-group row ">
+          <div class="col-lg-5 top-margin-button">
+
+            <button type="button" id="P12WFH" mat-mini-fab color="primary" class="toolbar-button" (click)= "markAttendance('P12','WFH')">
+              12 H  <mat-icon class="white-icon">home</mat-icon>
+            </button>
+
+          </div>
+          <div class="col-lg-5 top-margin-button">
+            <button type="button" id="P8WFH" mat-mini-fab color="primary" class="toolbar-button" (click)= "markAttendance('P8', 'WFH')">
+              8 H  <mat-icon class="white-icon">home</mat-icon>
+            </button>
+
+          </div>
+      </div>
+
+    </div>
   </div>
-  <div class="col-lg-2 top-margin-button">
-    <button type="button" id="Present_12_Hours" mat-mini-fab color="primary" (click)= "markAttendance('Present_12_Hours')">12 H</button>
-  </div>
-  <div class="col-lg-2 top-margin-button">
-    <button type="button" id="Present_8_Hours" mat-mini-fab color="primary"  (click)= "markAttendance('Present_8_Hours')">8 H</button>
-  </div>
-  <div class="col-lg-2 top-margin-button">
-    <button type="button" id="Present_4_Hours" mat-mini-fab color="primary" (click)= "markAttendance('Present_4_Hours')" >4 H</button>
-  </div>
-</div>
+
+</form>
 

@@ -18,8 +18,17 @@ mat-radio-button {
 	.mat-radio-label { margin-bottom: 4px; }
 }
 .top-margin-text{
-  top: 20px;
-}
-.top-margin-button{
   top: 10px;
 }
+.top-margin-button{
+  top: 1px;
+}
+
+.white-icon {
+  color: red;
+}
+.toolbar-button {
+  padding: 0;
+}
+#leg legend {font-family:"Courier New",Courier;font-size:0.5em;font-weight:bold};
+

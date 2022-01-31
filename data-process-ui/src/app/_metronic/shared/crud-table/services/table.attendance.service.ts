@@ -2,12 +2,12 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TableService } from './table.service';
 import { BehaviorSubject } from 'rxjs';
-import { GroupingState, ITaskTableState, PaginatorState, SortState, SortStateTable } from '..';
+import { GroupingState, IAttendanceTableState, PaginatorState, SortStateAttendance } from '..';
 
-const DEFAULT_STATE: ITaskTableState = {
+const DEFAULT_STATE: IAttendanceTableState = {
   filter: {},
   paginator: new PaginatorState(),
-  sorting: new SortStateTable(),
+  sorting: new SortStateAttendance(),
   searchTerm: '',
   divisionId: '',
   departmentId: '',
@@ -22,8 +22,8 @@ const DEFAULT_STATE: ITaskTableState = {
   taskStatusList:[]
 
 };
-export class TableTaskService<WorkUnitModel> extends TableService<WorkUnitModel> {
-  private _taskTableState$ = new BehaviorSubject<ITaskTableState>(DEFAULT_STATE);
+export class TableAttendanceService<AttendanceModel> extends TableService<AttendanceModel> {
+  private _taskTableState$ = new BehaviorSubject<IAttendanceTableState>(DEFAULT_STATE);
 
   constructor(@Inject(HttpClient) http) {
     super(http);
@@ -46,7 +46,7 @@ export class TableTaskService<WorkUnitModel> extends TableService<WorkUnitModel>
     this.patchStateWithoutFetch({ taskStatusList: ['Ready'] });
 
   }
-  public patchStateWithoutFetch(patch: Partial<ITaskTableState>) {
+  public patchStateWithoutFetch(patch: Partial<IAttendanceTableState>) {
     const newState = Object.assign(this._taskTableState$.value, patch);
     this._taskTableState$.next(newState);
   }

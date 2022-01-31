@@ -1,11 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
+import { AttendanceModel } from '../../attendance/modal/attendance.model';
+import { DailyLogService } from '../../auth/_services/dailylog.services';
+import { ProjectService } from '../../auth/_services/project.services';
 import { UsersService } from '../../auth/_services/user.service';
+import { DailyActivities } from '../modal/daily-activities.model';
 
 @Component({
   selector: 'app-time-tracker',
@@ -17,28 +21,55 @@ import { UsersService } from '../../auth/_services/user.service';
   ]
 })
 export class TimeTrackerComponent implements OnInit {
+  @Input() attendance: AttendanceModel;
   isLoading$;
   selValue:string;
   receivedDate:string;
   formGroup: FormGroup;
-  leaveTypeList:[];
+  projectId:any;
+  projectSelected:any;
+  projectList:any[];
+  dailyActivities: DailyActivities;
   private subscriptions: Subscription[] = [];
   constructor(
     private snackBar: MatSnackBar,
-    private timeTrackerService: UsersService,
+    private dailyLogService: DailyLogService,
+    private projectService: ProjectService,
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
       this.receivedDate="";
       this.selValue="0";
+      this.projectId="CSAV1CM";
       this.formGroup = new FormGroup({
-        leaveType: new FormControl(),
-        leaveFrom: new FormControl(),
-        leaveTo: new FormControl(),
-        reason: new FormControl(),
+
         });
     }
 
   ngOnInit(): void {
+    this.projectService.getProjectList("RFDB").pipe(
+      tap((res: any) => {
+        this.projectList = res;
+        console.log("projectList", this.projectList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+      var getDailyActivityDate = this.attendance.date.replace("-Jan-","/01/");
+      this.dailyLogService.getDailyActivities(getDailyActivityDate).pipe(
+        tap((res: any) => {
+          this.dailyActivities = res;
+          console.log("DailyActivities", this.dailyActivities)
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: []
+          });
+        })).subscribe();
+    console.log("Inside Time Tracker ngOnInit", this.attendance);
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -49,11 +80,6 @@ export class TimeTrackerComponent implements OnInit {
 
   loadForm() {
     this.formGroup = this.fb.group({
-
-      leaveType: ['', Validators.compose([ ])],
-      leaveFrom: ['', Validators.compose([ ])],
-      leaveTo: ['', Validators.compose([ ])],
-      reason:[''],
 
 
     });
@@ -86,7 +112,9 @@ export class TimeTrackerComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
-
+  deleteDailyLog(id){
+    console.log("Delete the Daily log for Id",id);
+  }
   // helpers for View
   isControlValid(controlName: string): boolean {
     const control = this.formGroup.controls[controlName];

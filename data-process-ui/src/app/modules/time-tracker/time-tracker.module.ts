@@ -10,13 +10,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { TimeTrackerComponent } from './time-tracker/time-tracker.component';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
 @NgModule({
   declarations: [TimeTrackerComponent],
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, TimeTrackerRoutingModule,InlineSVGModule, NgbDatepickerModule,NgbModalModule, MatSnackBarModule, MatButtonModule,GeneralModule
+    CommonModule, FormsModule, ReactiveFormsModule, TimeTrackerRoutingModule,InlineSVGModule, NgbDatepickerModule,NgbModalModule, MatSnackBarModule, MatButtonModule,MatIconModule,GeneralModule
   ],
   providers: [MatDatepickerModule, MatNativeDateModule],
   exports: [TimeTrackerComponent]

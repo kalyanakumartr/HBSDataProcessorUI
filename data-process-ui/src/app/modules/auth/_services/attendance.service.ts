@@ -1,17 +1,17 @@
 import { Injectable, Inject, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TableService } from '../../../_metronic/shared/crud-table';
+
 import { environment } from '../../../../environments/environment';
-import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject, of, Subscription, Subject } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { AuthHTTPService } from './auth-http';
-import { Attendance } from '../../attendance/modal/attendance.model';
-import { MarkAttendanceModel } from '../../attendance/modal/mark-attendance.model';
+import { AttendanceModel } from '../../attendance/modal/attendance.model';
+import { TableAttendanceService } from 'src/app/_metronic/shared/crud-table/services/table.attendance.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AttendanceService  extends TableService<Attendance> implements OnDestroy {
+export class AttendanceService  extends TableAttendanceService<AttendanceModel> implements OnDestroy {
     // public fields
     isLoadingSubject: BehaviorSubject<boolean>;
     private _errorMsg = new BehaviorSubject<string>('');
@@ -36,7 +36,7 @@ export class AttendanceService  extends TableService<Attendance> implements OnDe
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
 
-    return this.http.post<MarkAttendanceModel>(url, {},{headers: httpHeaders}).pipe(
+    return this.http.post<AttendanceModel>(url, {},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMsg.next(err);
         console.error('Error in get Attendance', err);
@@ -44,7 +44,7 @@ export class AttendanceService  extends TableService<Attendance> implements OnDe
       })
     );
   }
-  markAttendance(symbol,currentDate){
+  markAttendance(symbol,mode, currentDate){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
       return of(undefined);
@@ -56,7 +56,7 @@ export class AttendanceService  extends TableService<Attendance> implements OnDe
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
 
-    return this.http.post(url, {'symbol': symbol,'date':currentDate},{headers: httpHeaders}).pipe(
+    return this.http.post(url, {'symbol': symbol,'mode':mode,'date':currentDate},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMsg.next(err);
         console.error('Error in mark Attendance', err);
@@ -71,7 +71,7 @@ export class AttendanceService  extends TableService<Attendance> implements OnDe
     }
 
     console.log("Inside mark attendance");
-    const url = this.API_ADMIN_URL + '/getmonthAttendance';
+    const url = this.API_ADMIN_URL + '/searchAttendance';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -103,5 +103,35 @@ export class AttendanceService  extends TableService<Attendance> implements OnDe
         return of("Error in mark Attendance");
       })
     );
+  }
+  getAttendanceComboList(){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    console.log("Inside getAttendanceComboList");
+    const url = this.API_URL + '/getAttendanceComboList';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    let formData: FormData = new FormData();
+    return this.http.post(url, formData,{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('Error ingetAttendanceComboList', err);
+        return of("Error in getAttendanceComboList");
+      })
+    );
+  }
+  private _listners = new Subject<any>();
+  listen(): Observable<any>{
+    return this._listners.asObservable();
+  }
+  filterData(filterBy:string){
+    this._listners.next(filterBy)
+  }
+  filterAssetData(filterBy:string){
+    this._listners.next(filterBy)
   }
 }

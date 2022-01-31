@@ -5,9 +5,7 @@
 
         <b><label class="heading">
 
-       Apply Leave </label></b>
-
-
+          Daily Log for {{attendance.employee.fullName}} </label></b>
 
     </div>
     <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
@@ -19,61 +17,75 @@
       </div>
     </ng-container>
 
+    <div class="form-group row">
+      <div class="col-lg-2">
+        <label>Shift :</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{attendance.symbol}} Hrs</label>
+      </div>
+      <div class="col-lg-4">
 
-      <form action="#" name="timeTrackerForm" id="assetForm" class="form form-label-right" [formGroup]="formGroup">
-        <div class="form-group row">
-          <div class="col-lg-6">
-            <label>Leave Type</label>
-            <select class="form-control form-control-lg form-control-solid" name="leaveType" formControlName="leaveType" >
-              <option  [selected]=true>Choose Leave Type</option>
-              <option *ngFor="let leaveType of leaveTypeList" >
-                {{ leaveType.leaveTypeName }}
-              </option>
-            </select>
-          </div>
+      </div>
+      <div class="col-lg-2">
+        <label>Date :</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{attendance.date}}</label>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-lg-2">
+        <label>Billable Hours :</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{dailyActivities.sumTotalBillable}} H</label>
+      </div>
+      <div class="col-lg-3">
+        <label>Non Billable Hours :</label>
+      </div>
+      <div class="col-lg-1">
+        <label>{{dailyActivities.sumTotalNonBillable}} H</label>
+      </div>
+      <div class="col-lg-3">
+        <label nowrap>Discrencies Hours:</label>
+      </div>
+      <div class="col-lg-1">
+        <label>{{dailyActivities.overTimeHours==0.0?dailyActivities.shortageHours:dailyActivities.overTimeHours}} H</label>
+      </div>
+    </div>
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="tablebox" class="table table-head-custom table-vertical-center ">
+        <thead>
+          <tr>
+            <th nowrap >Project   </th>
+            <th nowrap >Process   </th>
+            <th nowrap >Billable   </th>
+            <th nowrap >Time   </th>
+            <th nowrap >Remarks   </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dailyLog of dailyActivities.dailyLogList">
+
+            <td>{{ dailyLog.projectName }}</td>
+            <td>{{dailyLog.processName }}</td>
+            <td>{{dailyLog.billable }}</td>
+            <td>{{dailyLog.actualTime }}</td>
+            <td>{{dailyLog.remarks }}</td>
+            <td>
+              <ng-container *ngIf="dailyLog.entryType == 'Manual'">
+                <button type="button" id="log" mat-mini-fab color="warn" (click)= "deleteDailyLog(dailyLog.autoId)">
+                  <mat-icon >delete</mat-icon>
+                </button>
+              </ng-container>
+          </td>
 
 
-          </div>
-          <div class="form-group row">
-
-            <div class="col-lg-6">
-              <label>From Date</label>
-              <div class="input-group input-group-solid">
-                <input type="text" name="fromDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="mm/dd/yyyy" ngbDatepicker #d="ngbDatepicker"  [ formControlName="fromDate" readonly="true" />
-                <div class="input-group-append" (click)="d.toggle();">
-                  <span class="input-group-text">
-                    <i class="text-dark-50 flaticon-calendar"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-lg-6">
-              <label>To Date</label>
-              <div class="input-group input-group-solid">
-                <input type="text" name="toDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="mm/dd/yyyy" ngbDatepicker #r="ngbDatepicker"  formControlName="toDate"  [value]=''/>
-                <div class="input-group-append" (click)="r.toggle()">
-                  <span class="input-group-text">
-                    <i class="text-dark-50 flaticon-calendar"></i>
-                  </span>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="col-lg-6">
-              <label class="form-label">Reason</label>
-              <textarea  class="form-control form-control-lg form-control-solid  is-invalid" name="reason"  maxlength=200
-                placeholder="Reason" autocomplete="off"
-                [class.is-valid]="isControlValid('reason')" formControlName="reason" > </textarea >
-            </div>
-
-          </div>
-
-      </form>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
   </div>
   <div class="modal-footer">
@@ -81,6 +93,6 @@
 
 
       <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
-        [disabled]="formGroup.invalid">Save</button>
+        [disabled]="formGroup.invalid">Submit</button>
   </div>
 </div>
