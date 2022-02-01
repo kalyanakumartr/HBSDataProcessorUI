@@ -11,6 +11,7 @@ export class DailyLog  {
   workUnitId:string;
   entryType:string;
   processName: string;
+  autoId:number;
 }
 
 

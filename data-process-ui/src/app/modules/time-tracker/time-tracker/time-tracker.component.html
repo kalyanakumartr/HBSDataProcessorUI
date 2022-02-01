@@ -54,6 +54,46 @@
         <label>{{dailyActivities.overTimeHours==0.0?dailyActivities.shortageHours:dailyActivities.overTimeHours}} H</label>
       </div>
     </div>
+    <div class="form-group row">
+      <div class="col-lg-2">
+        <label>Select Project</label>
+        <select class="form-control form-control-lg form-control-solid" name="projectId"
+           (change)="setProjectId($event.target.value)">
+          <option [ngValue]="selValue" [selected]=true>Select Project</option>
+          <option *ngFor="let project of projectList" [value]="project.projectId">
+            {{ project.projectName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-lg-2">
+        <label>Select Process</label>
+        <select class="form-control form-control-lg form-control-solid" name="processId"
+           (change)="setProcess($event.target.value)">
+          <option [ngValue]="selValue" [selected]=true>Select Process</option>
+          <option *ngFor="let process of processList" [value]="process.processId">
+            {{ process.processName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-lg-1">
+        <label>billable</label>
+        {{billable}}
+      </div>
+      <div class="col-lg-2">
+        <label>Time</label>
+        <input type="text" class="form-control form-control-lg form-control-solid" name="time" placeholder="time" autocomplete="off"  />
+      </div>
+      <div class="col-lg-3">
+        <label>Remarks</label>
+        <input type="textarea" class="form-control form-control-lg form-control-solid" name="remarks" placeholder="remarks" autocomplete="off"  />
+      </div>
+      <div class="col-lg-2">
+        <label>Action</label>
+        <button type="button" id="log" mat-mini-fab color="warn" (click)= "save()">
+          <mat-icon >add</mat-icon>
+        </button>
+      </div>
+    </div>
     <div class="table-responsive angular-bootstrap-table">
       <table id="tablebox" class="table table-head-custom table-vertical-center ">
         <thead>
@@ -93,6 +133,6 @@
 
 
       <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
-        [disabled]="formGroup.invalid">Submit</button>
+        disabled="{{dailyActivities.shortageHours===0.0}}">Submit TimeSheet</button>
   </div>
 </div>

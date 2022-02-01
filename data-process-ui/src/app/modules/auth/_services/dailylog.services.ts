@@ -32,7 +32,7 @@ export class DailyLogService  {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post<DailyActivities>(url, {"date" : date, "etstatus": "None"  },{headers: httpHeaders}).pipe(
+    return this.http.post<DailyActivities>(url, {"date" : date  },{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);
@@ -40,14 +40,40 @@ export class DailyLogService  {
       })
     );
   }
+  getProcessList(projectId){
+    const url = this.API_URL + "/getProcessList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<DailyActivities>(url, {"projectId" : projectId  },{headers: httpHeaders}).pipe(
+      catchError(err => {
 
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
   updateDailyLog(updateDailyLog){
 
-    const url = this.API_URL + "/updateDailyLog";
+    const url = this.API_URL + "/saveDailyLog";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
     return this.http.post(url, {updateDailyLog },{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  deleteDailyLog(id){
+
+    const url = this.API_URL + "/deleteDailyLog";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"autoId":id },{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);

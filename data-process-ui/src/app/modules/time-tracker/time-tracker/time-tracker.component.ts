@@ -29,6 +29,8 @@ export class TimeTrackerComponent implements OnInit {
   projectId:any;
   projectSelected:any;
   projectList:any[];
+  processList:any[];
+  billable:boolean;
   dailyActivities: DailyActivities;
   private subscriptions: Subscription[] = [];
   constructor(
@@ -40,6 +42,7 @@ export class TimeTrackerComponent implements OnInit {
       this.receivedDate="";
       this.selValue="0";
       this.projectId="CSAV1CM";
+      this.billable=false;
       this.formGroup = new FormGroup({
 
         });
@@ -57,6 +60,7 @@ export class TimeTrackerComponent implements OnInit {
           items: []
         });
       })).subscribe();
+
       var getDailyActivityDate = this.attendance.date.replace("-Jan-","/01/");
       this.dailyLogService.getDailyActivities(getDailyActivityDate).pipe(
         tap((res: any) => {
@@ -94,7 +98,32 @@ export class TimeTrackerComponent implements OnInit {
         this.add();
 
   }
-
+  setProjectId(value){
+    alert(value + this.projectId);
+    this.projectId =value;
+    this.getProcess();
+  }
+  setProcess(value){
+    alert(value + this.projectId);
+    this.projectId ='CSAV1CM';
+  }
+  getProcess(){
+    if(this.projectId != undefined || this.projectId !=''){
+      this.dailyLogService.getProcessList(this.projectId).pipe(
+        tap((res: any) => {
+          this.processList = res;
+          console.log("processList", this.processList)
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: []
+          });
+        })).subscribe();
+    }else{
+      alert("Select Project Id");
+    }
+  }
   add(){
    /* const sbUpdate = this.timeTrackerService.createTimeTracker().pipe(
       tap(() => {
@@ -113,7 +142,17 @@ export class TimeTrackerComponent implements OnInit {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
   deleteDailyLog(id){
-    console.log("Delete the Daily log for Id",id);
+    this.dailyLogService.deleteDailyLog(id).pipe(
+      tap((res: any) => {
+        this.dailyActivities = res;
+        console.log("DailyActivities", this.dailyActivities)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
   }
   // helpers for View
   isControlValid(controlName: string): boolean {
