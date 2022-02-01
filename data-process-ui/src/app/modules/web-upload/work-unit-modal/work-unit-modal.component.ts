@@ -1,7 +1,8 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbActiveModal,  NgbDateAdapter, NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
@@ -42,8 +43,10 @@ export class WorkUnitModalComponent  {
   actualTime:any;
   efficiency:any;
   remarks:any;
+  closeResult: string;
   private subscriptions: Subscription[] = [];
   constructor(
+        private modalService: NgbModal,
         private snackBar: MatSnackBar,
         public workAllocationService: WorkAllocationService,
         private fb: FormBuilder, public modal: NgbActiveModal
@@ -61,7 +64,12 @@ export class WorkUnitModalComponent  {
       this.showQAButtons=false;
       this.efficiency=0;
       this.remarks='';
+
     }
+    openDialog(content): void {
+      const modalRef = this.modalService.open(NgbdModalContent);
+      modalRef.componentInstance.comments = content;
+  }
 
   ngOnInit(): void {
 
@@ -307,3 +315,24 @@ startTimer() {
     return (num + '').length === 1 ? '0' + num : num + '';
   }
 }
+@Component({
+  selector: 'ngbd-modal-content',
+  template: `
+      <div class="modal-header">
+      <h4 class="modal-title">All Comments</h4>
+          <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+          <p> {{comments}}!</p>
+      </div>
+  <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+      </div>
+  `
+})
+export class NgbdModalContent {
+  @Input() comments;
+  constructor(public activeModal: NgbActiveModal) {}
+  }
