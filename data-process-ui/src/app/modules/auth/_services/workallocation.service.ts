@@ -203,7 +203,7 @@ export class WorkAllocationService extends TableTaskService<WorkUnitModel> imple
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${auth.access_token}`,
     });
-    console.log("Inside get Status");
+    console.log("Inside get getRoadTypeList", projectId);
     return this.http.post(url, {
         "projectId" : projectId
     },{

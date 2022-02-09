@@ -79,7 +79,11 @@ export class WorkUnitModalComponent  {
       if(this.estimatedTime>0 && this.actualTime>0){
         this.efficiency =this.estimatedTime/this.actualTime;
       }
-      if(this.actualTime>0){
+      if(this.task.currentEvent =='Default'){
+        this.buttonType=1;
+      }else if(this.task.currentEvent =='Start'|| this.task.currentEvent =='Resume'){
+        this.buttonType=2;
+      }else if(this.task.currentEvent =='Stop'||this.task.currentEvent =='Pause'){
         this.buttonType=3;
       }
       this.showActionButtons=true;
@@ -89,7 +93,7 @@ export class WorkUnitModalComponent  {
       if(this.estimatedTime>0 && this.actualTime>0){
         this.efficiency =this.estimatedTime/this.actualTime;
       }
-      if(this.actualTime>0){
+      if(this.task.status ='In Progress'){
         this.buttonType=3;
       }
       this.showActionButtons=true;
@@ -282,7 +286,11 @@ startTimer() {
       verticalPosition:"top"
     });
   }
+cancel(){
+  this.workAllocationService.filterData("");
+  this.modal.dismiss();
 
+}
   refresh(){
 
   }

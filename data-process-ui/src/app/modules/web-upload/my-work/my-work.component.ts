@@ -416,7 +416,7 @@ export class MyWorkComponent
     updateTask.skillSet="Production";
 
     updateTask.reasonId ="NOREASON"
-    updateTask.remarks="To Team Member End";
+    updateTask.remarks="";
 
     this.workAllocationService.updateTask(updateTask)
     .subscribe((res: any)=>
