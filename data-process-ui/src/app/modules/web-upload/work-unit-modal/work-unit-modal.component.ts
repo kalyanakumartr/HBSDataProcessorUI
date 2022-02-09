@@ -202,7 +202,7 @@ startTimer() {
     this.modal.dismiss();
   }
   preHold(taskId){
-    alert(this.selectedReason);
+
     if(this.selectedReason == undefined || this.selectedReason == ""){
       this.showReasons=true;
       (<HTMLInputElement> document.getElementById("Reject")).disabled = true;

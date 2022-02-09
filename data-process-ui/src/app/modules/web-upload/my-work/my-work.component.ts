@@ -432,7 +432,7 @@ export class MyWorkComponent
 
     const terms = ["failed", "already"];
     const result1 = terms.some(term => message.includes(term));
-    alert(result1);
+
     var redColor = false;
     if( result1){
       redColor =true;
