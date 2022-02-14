@@ -92,7 +92,7 @@
         <div class="col-lg-2">
           <label>Batch</label>
           <select class="form-control form-control-lg form-control-solid" name="batch" [(ngModel)]="batch"
-            formControlName="batch" (change)="setProject($event.target.value)">
+            formControlName="batch">
             <option [ngValue]="0" >Select Batch</option>
             <option [ngValue]="new" [selected]=true>New Batch</option>
             <option *ngFor="let batch of batchList" [ngValue]="batch.value">

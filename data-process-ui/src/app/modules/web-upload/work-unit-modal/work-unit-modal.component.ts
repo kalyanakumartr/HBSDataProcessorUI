@@ -93,7 +93,11 @@ export class WorkUnitModalComponent  {
       if(this.estimatedTime>0 && this.actualTime>0){
         this.efficiency =this.estimatedTime/this.actualTime;
       }
-      if(this.task.status ='In Progress'){
+      if(this.task.currentEvent =='Default'){
+        this.buttonType=1;
+      }else if(this.task.currentEvent =='Start'|| this.task.currentEvent =='Resume'){
+        this.buttonType=2;
+      }else if(this.task.currentEvent =='Stop'||this.task.currentEvent =='Pause'){
         this.buttonType=3;
       }
       this.showActionButtons=true;
@@ -102,6 +106,13 @@ export class WorkUnitModalComponent  {
       this.actualTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityAssurance.actualTime;
       if(this.estimatedTime>0 && this.actualTime>0){
         this.efficiency =this.estimatedTime/this.actualTime;
+      }
+      if(this.task.currentEvent =='Default'){
+        this.buttonType=1;
+      }else if(this.task.currentEvent =='Start'|| this.task.currentEvent =='Resume'){
+        this.buttonType=2;
+      }else if(this.task.currentEvent =='Stop'||this.task.currentEvent =='Pause'){
+        this.buttonType=3;
       }
       this.showActionButtons=false;
       this.showQAButtons=true;
@@ -131,7 +142,7 @@ export class WorkUnitModalComponent  {
           items: []
         });
       })).subscribe();
-    if(!['HoldQueue','Production'].includes(this.queue) ){
+    if(!['HoldQueue','Production'].includes(this.queue) && ['Stop','Pause'].includes(this.queue) ){
       this.showReject=true;
     }
     var statusArray: Array<string> = ['Ready', 'InProgress', 'Hold'];
@@ -316,6 +327,9 @@ cancel(){
       clearInterval(this.timerId);
     }
     this.buttonType=type;
+    if(!['HoldQueue','Production'].includes(this.queue) ){
+      this.showReject=true;
+    }
     this.isRunning = !this.isRunning;
   }
 
