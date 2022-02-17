@@ -50,13 +50,14 @@ ngOnInit(): void {
   this.prodEstimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.production? this.task.coreData.roadData.roadTypeMap.benchMark.production.estimatedTime:0;
   this.qcEstimatedTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityControl? this.task.coreData.roadData.roadTypeMap.benchMark.qualityControl.estimatedTime:0;
   this.isMultiType=this.task.coreData.roadData.roadTypeMap.multiType;
-
+  this.projectId = this.task.coreData.roadData.project.projectId;
+  console.log("this.task",this.task);
   this.workAllocationService.getRoadTypeList(this.projectId)
     .subscribe((reasons) => {
       this.roadTypeList = reasons;
       for(var roadType of this.roadTypeList){
         if(roadType.roadId.includes("MULTY")){
-          this.roadTypeInnerList = roadType.roadTypeMap.roadTypeList;
+          this.roadTypeInnerList = roadType.roadTypeList;
         }
       }
       console.log("roadTypeList",this.roadTypeList);

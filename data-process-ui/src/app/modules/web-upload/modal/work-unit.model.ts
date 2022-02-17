@@ -4,6 +4,7 @@ import { CoreData } from "./core-data.model";
 
 export class WorkUnitModel implements BaseModel {
   id: string;
+  nextAllocationId: string;
   allocationId: string;
   coreData: CoreData;
   duration: string;
