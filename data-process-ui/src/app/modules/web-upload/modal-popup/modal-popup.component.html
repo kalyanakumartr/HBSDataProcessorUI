@@ -1,0 +1,42 @@
+<div class="modal-header">
+  <h4 class="modal-title">All Comments</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+      <div class="table-responsive angular-bootstrap-table">
+  <table id="tablebox" class="table table-head-custom table-vertical-center ">
+    <thead>
+      <tr>
+
+      <th nowrap >Queue</th>
+      <th nowrap >Processed By</th>
+      <th nowrap >Remark</th>
+      <th nowrap >Time</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let comment of comments">
+        <td>
+          {{comment.eventQueue}}
+        </td>
+        <td>
+        {{comment.eventBy.userName}}-{{comment.eventBy.userId}}
+        </td>
+        <td>
+          {{comment.eventRemark}}
+          </td>
+        <td>
+        {{comment.eventTime}}
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  </div>
+<div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  </div>

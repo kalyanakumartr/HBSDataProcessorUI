@@ -61,19 +61,21 @@ export class MyWorkComponent
   hasLink: boolean;
   hasEdit:boolean;
   hasCheckbox: boolean;
+  isAssigned:boolean;
   hasGroup:boolean;
   hasBatch:boolean;
   hasDeliverToClient:boolean;
   allWorkUnitIds: string[] = [];
   selectedWorkUnitIds: string[] = [];
   selectedQueue: string;
+  mappedSkill: string;
   selectedStatus: string;
   selectedUser: string;
   allotmentId:string;
   updateTask:UpdateTaskModel;
   projectList:any[];
   batch:string = "New";
-  new:any;
+  new:string = "New";
   project:any;
 
   private subscriptions: Subscription[] = [];
@@ -95,6 +97,7 @@ export class MyWorkComponent
     this.hasLink = true;
     this.hasEdit=false;
     this.hasCheckbox = false;
+    this.isAssigned = false;
     this.workAllocationService.listen().subscribe((m:any)=>{
       console.log("m -- -- --",m);
       this.filter();
@@ -177,6 +180,7 @@ export class MyWorkComponent
     this.workAllocationService.getQueueForUser('').subscribe((queues) => {
       this.queueList = queues;
       this.selectedQueue = this.queueList[0].queueId;
+      this.mappedSkill = this.queueList[0].mappedSkill;
       this.getStatus();
     });
     console.log('QueueList', this.queueList);
@@ -193,10 +197,10 @@ export class MyWorkComponent
   }
   getAssignedtoUser() {
     this.workAllocationService
-      .getAssignedtoUser(this.selectedQueue)
+      .getAssignedtoUser(this.mappedSkill)
       .subscribe((userList) => {
         this.assignedToUserList = userList;
-        this.selectedUser = this.assignedToUserList[0].employeeId;
+        this.selectedUser = '0: 0';
         console.log("UserList"+userList);
       });
   }
@@ -264,6 +268,7 @@ export class MyWorkComponent
     for (var queue of this.queueList) {
       if (this.selectedQueue == queue.queueId) {
         this.hasEdit=queue.editable;
+        this.mappedSkill=queue.mappedSkill
       }
     }
     if (['Group', 'ProductionTeam','QualityControlTeam','HoldQueue','QualityAssuranceTeam','ReadyForDelivery','DeliveryToClient'].includes(this.selectedQueue)) {
@@ -335,7 +340,11 @@ export class MyWorkComponent
     this.workAllocationService.items$.forEach(function (items) {
       ids=[];
       items.forEach(function (item) {
-        ids.push(item.allocationId);
+        if(that.isAssigned){
+          ids.push(item.nextAllocationId);
+        }else{
+          ids.push(item.allocationId);
+        }
       });
       console.log(ids,"before Slice", that.allWorkUnitIds);
       that.allWorkUnitIds.slice(0, that.allWorkUnitIds.length - 1);
@@ -344,6 +353,13 @@ export class MyWorkComponent
     console.log(ids,"After Assign New ids", that.allWorkUnitIds);
     });
 
+  }
+  setBatch(value){
+    console.log(value);
+    var position = value.split(': ');
+    if (position.length > 1) {
+      this.batch = position[1];
+    }
   }
 
   assignWorkUnits() {
@@ -393,6 +409,10 @@ export class MyWorkComponent
       updateTask.allotmentId= this.selectedUser;
       updateTask.allotedTo='';
       updateTask.teamId='';
+    }else if(this.hasDeliverToClient){
+      updateTask.allotmentId= '';
+      updateTask.allotedTo='';
+      updateTask.teamId='';
     }else{
       updateTask.allotedTo = this.selectedUser;
     }
@@ -405,6 +425,9 @@ export class MyWorkComponent
     if(this.batch == "New"){
       taskBatch.batch="New";
       taskBatch.batchId="";
+    }else if(this.batch == "NO_BATCH"){
+      taskBatch.batch="None";
+      taskBatch.batchId="";
     }else if(this.batch.length>3){
       taskBatch.batch="Append";
       taskBatch.batchId=this.batch;
@@ -413,26 +436,41 @@ export class MyWorkComponent
       taskBatch.batchId="";
     }
     updateTask.taskBatch=  taskBatch;
-    updateTask.skillSet="Production";
+    updateTask.skillSet=this.mappedSkill != null?this.mappedSkill:"Production";
 
     updateTask.reasonId ="NOREASON"
-    updateTask.remarks="To Team Member End";
+    updateTask.remarks="";
 
-    this.workAllocationService.updateTask(updateTask)
-    .subscribe((res: any)=>
-    {
-        this.openSnackBar(res.messageCode,"!!")
-        this.search('');
-        this.getBatchList();
-    });
-    console.log("SelectedWork Unit Ids",this.selectedWorkUnitIds);
-   // alert(updateTask+'Work Unit will be assigned to Selected User' + name);
+    if(this.selectedStatus == "Assigned"){
+      taskBatch.batch="None";
+      taskBatch.batchId="";
+      updateTask.taskBatch=  taskBatch;
+      this.workAllocationService.reAllocateTask(updateTask)
+      .subscribe((res: any)=>
+      {
+          this.openSnackBar(res.messageCode,"!!")
+          this.search('');
+          this.getBatchList();
+      });
+      console.log("SelectedWork Unit Ids",this.selectedWorkUnitIds);
+    // alert(updateTask+'Work Unit will be assigned to Selected User' + name);
+    }else{
+      this.workAllocationService.updateTask(updateTask)
+      .subscribe((res: any)=>
+      {
+          this.openSnackBar(res.messageCode,"!!")
+          this.search('');
+          this.getBatchList();
+      });
+      console.log("SelectedWork Unit Ids",this.selectedWorkUnitIds);
+    // alert(updateTask+'Work Unit will be assigned to Selected User' + name);
+    }
   }
   openSnackBar(message: string, action: string) {
 
     const terms = ["failed", "already"];
     const result1 = terms.some(term => message.includes(term));
-    alert(result1);
+
     var redColor = false;
     if( result1){
       redColor =true;
@@ -482,6 +520,11 @@ export class MyWorkComponent
       this.hasLink = true;
     }else{
 
+    }
+    if (['Assigned'].includes(this.selectedStatus)){
+      this.isAssigned=true;
+    }else{
+      this.isAssigned=false;
     }
   }
   // filtration

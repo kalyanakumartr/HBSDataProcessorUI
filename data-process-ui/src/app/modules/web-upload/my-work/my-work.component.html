@@ -59,6 +59,7 @@
         <ng-container *ngIf="hasGroup">
         <select class="form-control form-control-lg form-control-solid" name="selectedUser" (change)="selectUser($event.target.value)"
            formControlName="selectedUser">
+           <option [ngValue]="0" [selected]=true>Select User</option>
           <option *ngFor="let user of assignedToUserGroupList" [ngValue]="user.allotmentId">
             {{ user.displayName }}
           </option>
@@ -67,6 +68,7 @@
         <ng-container *ngIf="!hasGroup">
         <select class="form-control form-control-lg form-control-solid" name="selectedUser" (change)="selectUser($event.target.value)"
            formControlName="selectedUser">
+           <option [ngValue]="0" [selected]=true>Select User</option>
           <option *ngFor="let user of assignedToUserList" [ngValue]="user.employeeId">
             {{ user.fullName }}
           </option>
@@ -91,8 +93,8 @@
       <ng-container *ngIf="hasBatch">
         <div class="col-lg-2">
           <label>Batch</label>
-          <select class="form-control form-control-lg form-control-solid" name="batch" [(ngModel)]="batch"
-            formControlName="batch" (change)="setProject($event.target.value)">
+          <select class="form-control form-control-lg form-control-solid" name="batch"  (change)="setBatch($event.target.value)"
+            formControlName="batch">
             <option [ngValue]="0" >Select Batch</option>
             <option [ngValue]="new" [selected]=true>New Batch</option>
             <option *ngFor="let batch of batchList" [ngValue]="batch.value">
@@ -115,7 +117,15 @@
           <tr>
             <ng-container *ngIf="hasCheckbox">
 
-             <th><input type="checkbox" id="checkAllBox" (change)="checkAll()"/></th>
+             <th>
+                <ng-container *ngIf="!isAssigned">
+                  <input type="checkbox" id="checkAllBox" (change)="checkAll()"/>
+                </ng-container>
+                <ng-container *ngIf="isAssigned">
+                  <input type="checkbox" id="checkAllBox" disabled=true/>
+                </ng-container>
+
+              </th>
             </ng-container>
 
             <th nowrap > <ng-container *ngIf="hasEdit">Edit</ng-container>
@@ -155,7 +165,13 @@
             <ng-container *ngIf="hasCheckbox">
 
               <td>
-                <input type="checkbox" id="{{task.allocationId}}"  name="workUnits" value="{{ task.allocationId }}"  (change)="checkBoxWorkUnit(task.allocationId)"/></td>
+                <ng-container *ngIf="!isAssigned">
+                  <input type="checkbox" id="{{task.allocationId}}"  name="workUnits" value="{{ task.allocationId }}"  (change)="checkBoxWorkUnit(task.allocationId)"/>
+                </ng-container>
+                <ng-container *ngIf="isAssigned && task.reAllocate">
+                  <input type="checkbox" id="{{task.nextAllocationId}}"  name="workUnits" value="{{ task.nextAllocationId }}"  (change)="checkBoxWorkUnit(task.nextAllocationId)"/>
+                </ng-container>
+              </td>
              </ng-container>
             <td  nowrap>
               <ng-container *ngIf="hasLink else noLink">

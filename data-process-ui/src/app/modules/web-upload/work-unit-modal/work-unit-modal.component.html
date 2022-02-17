@@ -9,7 +9,7 @@
   </div>
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
 
-      File Allocated Date :   {{ task.coreData.roadData.receivedDate | date: 'dd-MMM-yyyy'}}
+      File Allocated Date :   {{ task.allotedDate }}
     </div>
   </div>
   <div class="modal-header">
@@ -19,7 +19,7 @@
 
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
 
-      File Completed Date :{{task.processedDate | date: 'dd-MMM-yyyy'}}
+      File Completed Date :{{task.processedDate }}
     </div>
   </div>
   <div class="modal-header">
@@ -85,7 +85,7 @@
           </div>
           <div class="col-lg-4">
             <label class="form-label"><b>Previous Queue Remarks : </b>
-              <button  (click)="openDialog(task.allComments)" >...</button>
+              <button  (click)="openDialog(task.taskRemarks)" >...</button>
 
               <br/></label>
             <textarea class="form-control form-control-lg form-control-solid" name="remarks">{{task.comments}}</textarea>
@@ -160,12 +160,16 @@
           <button type="button" id="Pause" mat-fab color="accent" (click)=resume(task.allocationId)>Resume</button>
         </div>
       </ng-container>
+      <ng-container *ngIf="buttonType == 2">
         <div class="col-lg-1">
           <button type="button" id="Stop" mat-fab color="warn" (click)=stop(task.allocationId)>Stop</button>
         </div>
+      </ng-container>
+      <ng-container *ngIf="buttonType == 2">
         <div class="col-lg-1">
           <button type="button" id="Hold" mat-fab color="primary" (click)=preHold(task.allocationId)>Hold</button>
         </div>
+      </ng-container>
     </ng-container>
     <ng-container *ngIf="showHoldQueueButtons">
 
@@ -208,7 +212,7 @@
   </div>
   <!--end::Tabpane-->
   <div class="modal-footer">
-    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="cancel()">Cancel</button>
 
 
   </div>

@@ -65,7 +65,7 @@ export class WorkAllocationService extends TableTaskService<WorkUnitModel> imple
     /*const url = 'http://localhost:3000/getAssignedtoUser' ;
     console.log(this.http.get(url));
     return this.http.get<string[]>(url);*/
-    const url = this.ADMIN_API_URL + '/getTaskUsersList';
+    const url = this.ADMIN_API_URL + '/getTaskUsersList/'+selectedQueue;
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
       return of(undefined);
@@ -203,7 +203,7 @@ export class WorkAllocationService extends TableTaskService<WorkUnitModel> imple
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${auth.access_token}`,
     });
-    console.log("Inside get Status");
+    console.log("Inside get getRoadTypeList", projectId);
     return this.http.post(url, {
         "projectId" : projectId
     },{
@@ -221,6 +221,20 @@ export class WorkAllocationService extends TableTaskService<WorkUnitModel> imple
     });
     console.log("Inside get updateTask");
     return this.http.post(url, updateTask,{
+      headers: httpHeaders,
+    });
+  }
+  reAllocateTask(reAllocateTask: UpdateTaskModel) {
+    const url = this.API_URL + '/reAllocateTask';
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${auth.access_token}`,
+    });
+    console.log("Inside get reAllocateTask");
+    return this.http.post(url, reAllocateTask,{
       headers: httpHeaders,
     });
   }

@@ -1,3 +1,4 @@
+
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -7,6 +8,7 @@ import { of, Subscription } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
 import { WorkAllocationService } from '../../auth/_services/workallocation.service';
+import { ModalPopup } from '../modal-popup/modal-popup.component';
 import { TaskBatch } from '../modal/taskbatch.model';
 import { UpdateTaskModel } from '../modal/update-task.model';
 
@@ -67,7 +69,9 @@ export class WorkUnitModalComponent  {
 
     }
     openDialog(content): void {
-      const modalRef = this.modalService.open(NgbdModalContent);
+      const modalRef = this.modalService.open(ModalPopup, {
+        size: 'lg',
+      });
       modalRef.componentInstance.comments = content;
   }
 
@@ -79,7 +83,11 @@ export class WorkUnitModalComponent  {
       if(this.estimatedTime>0 && this.actualTime>0){
         this.efficiency =this.estimatedTime/this.actualTime;
       }
-      if(this.actualTime>0){
+      if(this.task.currentEvent =='Default'){
+        this.buttonType=1;
+      }else if(this.task.currentEvent =='Start'|| this.task.currentEvent =='Resume'){
+        this.buttonType=2;
+      }else if(this.task.currentEvent =='Stop'||this.task.currentEvent =='Pause'){
         this.buttonType=3;
       }
       this.showActionButtons=true;
@@ -89,7 +97,11 @@ export class WorkUnitModalComponent  {
       if(this.estimatedTime>0 && this.actualTime>0){
         this.efficiency =this.estimatedTime/this.actualTime;
       }
-      if(this.actualTime>0){
+      if(this.task.currentEvent =='Default'){
+        this.buttonType=1;
+      }else if(this.task.currentEvent =='Start'|| this.task.currentEvent =='Resume'){
+        this.buttonType=2;
+      }else if(this.task.currentEvent =='Stop'||this.task.currentEvent =='Pause'){
         this.buttonType=3;
       }
       this.showActionButtons=true;
@@ -98,6 +110,13 @@ export class WorkUnitModalComponent  {
       this.actualTime = this.task.coreData.roadData.roadTypeMap.benchMark.qualityAssurance.actualTime;
       if(this.estimatedTime>0 && this.actualTime>0){
         this.efficiency =this.estimatedTime/this.actualTime;
+      }
+      if(this.task.currentEvent =='Default'){
+        this.buttonType=1;
+      }else if(this.task.currentEvent =='Start'|| this.task.currentEvent =='Resume'){
+        this.buttonType=2;
+      }else if(this.task.currentEvent =='Stop'||this.task.currentEvent =='Pause'){
+        this.buttonType=3;
       }
       this.showActionButtons=false;
       this.showQAButtons=true;
@@ -127,7 +146,7 @@ export class WorkUnitModalComponent  {
           items: []
         });
       })).subscribe();
-    if(!['HoldQueue','Production'].includes(this.queue) ){
+    if(!['HoldQueue','Production'].includes(this.queue) && ['Stop','Pause'].includes(this.queue) ){
       this.showReject=true;
     }
     var statusArray: Array<string> = ['Ready', 'InProgress', 'Hold'];
@@ -198,7 +217,7 @@ startTimer() {
     this.modal.dismiss();
   }
   preHold(taskId){
-    alert(this.selectedReason);
+
     if(this.selectedReason == undefined || this.selectedReason == ""){
       this.showReasons=true;
       (<HTMLInputElement> document.getElementById("Reject")).disabled = true;
@@ -216,7 +235,7 @@ startTimer() {
 
     var allotedto ="";
     var team="";
-    var batchId="";
+    var batchId=this.task.coreData.batchId;
     this.assignWorkUnits(taskId,this.queue,team,"StartStop","Ready",allotedto,"NOREASON",this.remarks,batchId);
     this.openSnackBar("Batch Moved to Ready for Delivery","");
     this.modal.dismiss();
@@ -282,7 +301,11 @@ startTimer() {
       verticalPosition:"top"
     });
   }
+cancel(){
+  this.workAllocationService.filterData("");
+  this.modal.dismiss();
 
+}
   refresh(){
 
   }
@@ -308,6 +331,9 @@ startTimer() {
       clearInterval(this.timerId);
     }
     this.buttonType=type;
+    if(!['HoldQueue','Production'].includes(this.queue) ){
+      this.showReject=true;
+    }
     this.isRunning = !this.isRunning;
   }
 
@@ -315,24 +341,3 @@ startTimer() {
     return (num + '').length === 1 ? '0' + num : num + '';
   }
 }
-@Component({
-  selector: 'ngbd-modal-content',
-  template: `
-      <div class="modal-header">
-      <h4 class="modal-title">All Comments</h4>
-          <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-              <span aria-hidden="true">&times;</span>
-          </button>
-      </div>
-      <div class="modal-body">
-          <p> {{comments}}!</p>
-      </div>
-  <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
-      </div>
-  `
-})
-export class NgbdModalContent {
-  @Input() comments;
-  constructor(public activeModal: NgbActiveModal) {}
-  }
