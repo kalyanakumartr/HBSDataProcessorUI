@@ -8,8 +8,8 @@ export class UpdateDailyLog  {
   etstatus:string;
   projectId:string;
   processId: string;
-  actualTime:number;
-  remarks:string;
+  actualTime:string;
+  comments:string;
 }
 
 

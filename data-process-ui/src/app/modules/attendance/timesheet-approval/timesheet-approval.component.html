@@ -1,0 +1,159 @@
+
+
+
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Approve TimeSheet for Month </h3>
+      <select class="form-control form-control-lg form-control-solid" name="monthYear" (change)="setMonth($event.target.value)">
+        <option [ngValue]="0" [selected]=true>Select Month</option>
+        <option *ngFor="let month of employeeMonthList" [value]="month.value">
+          {{ month.label }}
+        </option>
+      </select>
+
+    </div>
+<!--
+      <div class="form-group row">
+
+      <div class="col-lg-1">
+      OR
+      </div>
+      <div class="col-lg-3">
+      <label>From Date</label>
+      <div class="input-group input-group-solid">
+        <input type="text" name="fromDate"  class="form-control form-control-lg form-control-solid" autocomplete="off"
+          placeholder="mm/dd/yyyy" ngbDatepicker  #fromDate="ngbDatepicker" formControlName="fromDate" readonly="true" (onChange)="setFromDate($event.target.value)" />
+        <div class="input-group-append" (click)="fromDate.toggle()">
+          <span class="input-group-text">
+            <i class="text-dark-50 flaticon-calendar"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <label>To Date</label>
+      <div class="input-group input-group-solid">
+        <input type="text" name="toDate"  class="form-control form-control-lg form-control-solid" autocomplete="off"
+          placeholder="mm/dd/yyyy" ngbDatepicker  #toDate="ngbDatepicker" formControlName="toDate" readonly="true" (ngModel)="toDate" (onChange)="setToDate($event.target.value)"/>
+        <div class="input-group-append" (click)="toDate.toggle()">
+          <span class="input-group-text">
+            <i class="text-dark-50 flaticon-calendar"></i>
+          </span>
+        </div>
+      </div>
+      </div>
+      <div class="col-lg-2">
+        <label> &nbsp;</label>
+        <button type="button" class="btn btn-primary btn-elevate" (click)="searchDates()" >Search</button>
+      </div>
+    </div>
+-->
+  </div>
+
+    <!-- end: Filtration form -->
+
+
+    <!-- begin:Table -->
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="tablebox" class="table table-head-custom table-vertical-center ">
+        <thead>
+          <tr>
+            <th nowrap >TimeSheet
+
+            </th>
+          <th class="sticky-header" nowrap >
+            Date
+
+          </th>
+          <th class="sticky-header" nowrap >
+            Attendance
+
+          </th>
+          <th class="sticky-header" nowrap >
+            Work Mode
+
+          </th>
+
+          <th nowrap >
+            Reason for Leave
+
+          </th>
+          <th nowrap >
+            Status
+
+          </th>
+
+          <th nowrap >
+            Billable Hours
+
+          </th>
+
+          <th  >
+            Non Billable Hours
+
+          </th>
+          <th  >Total Hours</th>
+          <th  >OT Hours</th>
+          <th  >Approved OT Hours</th>
+          <th  >Time Discrencies</th>
+          <th nowrap >
+            Remarks
+
+          </th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let timeSheet of timeSheetService.items$ | async">
+            <td>
+              <ng-container *ngIf="timeSheet.editable">
+                <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "addTimeSheet(timeSheet.attendance)">
+                  <mat-icon >edit</mat-icon>
+                </button>
+              </ng-container>
+            </td>
+            <td noWrap>{{ timeSheet.attendance.date | date: 'dd-MMM-yyyy'}} </td>
+          <td>
+            <span class="label label-lg label-inline" [class.label-light-danger]="timeSheet.attendance.symbol === 'L'"
+              [class.label-light-success]="timeSheet.attendance.symbol === 'P12'" [class.label-light-success]="timeSheet.attendance.symbol === 'P8'"
+              [class.label-light-success]="timeSheet.attendance.symbol === 'H'"[class.label-light-primary]="timeSheet.attendance.symbol === 'A'">
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'P8'">P-8 Hrs</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'P12'">P-12 Hrs</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'L'">L</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'A'">A</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'H'">H</ng-container>
+            </span>
+          </td>
+          <td>{{ timeSheet.attendance.mode }}</td>
+            <td>{{ timeSheet.attendance.leaveReason }}</td>
+            <td>{{ timeSheet.attendance.status }}</td>
+
+
+            <td>
+              {{ timeSheet.hoursBillable }}
+            </td>
+            <td>
+              {{ timeSheet.hoursNonBillable }}
+            </td>
+
+            <td>
+              {{ timeSheet.totalHours }}
+            </td>
+            <td>
+              {{ timeSheet.otHours }}
+            </td>
+            <td>
+              {{ timeSheet.approvedOtHours }}
+            </td>
+            <td>{{ timeSheet.discrepencies }}</td>
+            <td>{{ timeSheet.attendance.remarks }}</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end: Table -->
+  </div>
+

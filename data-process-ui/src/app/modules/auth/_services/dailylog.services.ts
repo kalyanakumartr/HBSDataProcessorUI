@@ -11,6 +11,8 @@ import { Department } from '../_models/department.model';
 import { Project } from '../_models/project.model';
 import { Team } from '../_models/team.model';
 import { DailyActivities } from '../../time-tracker/modal/daily-activities.model';
+import { Process } from '../../time-tracker/modal/process.model';
+import { UpdateDailyLog } from '../../time-tracker/modal/update-dailylog.model';
 
 
 @Injectable({
@@ -45,7 +47,7 @@ export class DailyLogService  {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post<DailyActivities>(url, {"projectId" : projectId  },{headers: httpHeaders}).pipe(
+    return this.http.post<Process>(url, {"projectId" : projectId  },{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);
@@ -53,13 +55,13 @@ export class DailyLogService  {
       })
     );
   }
-  updateDailyLog(updateDailyLog){
+  updateDailyLog(updateDailyLog:UpdateDailyLog){
 
     const url = this.API_URL + "/saveDailyLog";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post(url, {updateDailyLog },{headers: httpHeaders}).pipe(
+    return this.http.post(url, updateDailyLog ,{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);

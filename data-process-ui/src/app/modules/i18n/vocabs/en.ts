@@ -20,6 +20,7 @@ export const locale = {
       ATTENDANCE:'Attendance',
       MYATTENDANCE:'My Attendance',
       GROUPATTENDANCE:'Group Attendance',
+      APPROVETIMESHEET:'Approve TimeSheet',
       LEAVEMANAGEMENT:'Leave Management',
       APPROVELEAVE:'Approve Leave',
       APPLYLEAVE:'Apply Leave',

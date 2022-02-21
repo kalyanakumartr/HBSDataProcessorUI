@@ -81,15 +81,15 @@
       </div>
       <div class="col-lg-2">
         <label>Time</label>
-        <input type="text" class="form-control form-control-lg form-control-solid" name="time" placeholder="time" autocomplete="off"  />
+        <input type="number" class="form-control form-control-lg form-control-solid" name="time" placeholder="time" autocomplete="off"  [(ngModel)]="logTime" />
       </div>
       <div class="col-lg-3">
         <label>Remarks</label>
-        <input type="textarea" class="form-control form-control-lg form-control-solid" name="remarks" placeholder="remarks" autocomplete="off"  />
+        <input type="textarea" class="form-control form-control-lg form-control-solid" name="remarks" placeholder="remarks" autocomplete="off" [(ngModel)]="remarks"  />
       </div>
       <div class="col-lg-2">
         <label>Action</label>
-        <button type="button" id="log" mat-mini-fab color="warn" (click)= "save()">
+        <button type="button" id="log" mat-mini-fab color="warn" (click)= "add()">
           <mat-icon >add</mat-icon>
         </button>
       </div>
@@ -112,7 +112,7 @@
             <td>{{dailyLog.processName }}</td>
             <td>{{dailyLog.billable }}</td>
             <td>{{dailyLog.actualTime }}</td>
-            <td>{{dailyLog.remarks }}</td>
+            <td>{{dailyLog.comments }}</td>
             <td>
               <ng-container *ngIf="dailyLog.entryType == 'Manual'">
                 <button type="button" id="log" mat-mini-fab color="warn" (click)= "deleteDailyLog(dailyLog.autoId)">

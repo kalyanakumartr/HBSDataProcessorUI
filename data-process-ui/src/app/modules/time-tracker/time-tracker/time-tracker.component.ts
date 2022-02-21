@@ -10,6 +10,7 @@ import { DailyLogService } from '../../auth/_services/dailylog.services';
 import { ProjectService } from '../../auth/_services/project.services';
 import { UsersService } from '../../auth/_services/user.service';
 import { DailyActivities } from '../modal/daily-activities.model';
+import { UpdateDailyLog } from '../modal/update-dailylog.model';
 
 @Component({
   selector: 'app-time-tracker',
@@ -27,11 +28,15 @@ export class TimeTrackerComponent implements OnInit {
   receivedDate:string;
   formGroup: FormGroup;
   projectId:any;
+  processtId:any;
   projectSelected:any;
   projectList:any[];
   processList:any[];
   billable:boolean;
   dailyActivities: DailyActivities;
+  logTime:string;
+  remarks:string;
+  updateDailyLog: UpdateDailyLog;
   private subscriptions: Subscription[] = [];
   constructor(
     private snackBar: MatSnackBar,
@@ -39,10 +44,13 @@ export class TimeTrackerComponent implements OnInit {
     private projectService: ProjectService,
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
+      this.logTime="";
+      this.remarks="";
       this.receivedDate="";
       this.selValue="0";
       this.projectId="CSAV1CM";
       this.billable=false;
+      this.updateDailyLog = new UpdateDailyLog;
       this.formGroup = new FormGroup({
 
         });
@@ -61,20 +69,24 @@ export class TimeTrackerComponent implements OnInit {
         });
       })).subscribe();
 
-      var getDailyActivityDate = this.attendance.date.replace("-Jan-","/01/");
-      this.dailyLogService.getDailyActivities(getDailyActivityDate).pipe(
-        tap((res: any) => {
-          this.dailyActivities = res;
-          console.log("DailyActivities", this.dailyActivities)
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of({
-            items: []
-          });
-        })).subscribe();
+      this.getDailyLog();
     console.log("Inside Time Tracker ngOnInit", this.attendance);
   }
+  private getDailyLog() {
+    var getDailyActivityDate = this.attendance.date.replace("-Jan-","/01/");
+    this.dailyLogService.getDailyActivities(getDailyActivityDate).pipe(
+      tap((res: any) => {
+        this.dailyActivities = res;
+        console.log("DailyActivities", this.dailyActivities);
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
+
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 4000,
@@ -99,13 +111,16 @@ export class TimeTrackerComponent implements OnInit {
 
   }
   setProjectId(value){
-    alert(value + this.projectId);
     this.projectId =value;
     this.getProcess();
   }
   setProcess(value){
-    alert(value + this.projectId);
-    this.projectId ='CSAV1CM';
+    this.processtId=value;
+    for(let process of this.processList){
+      if (value == process.processId){
+        this.billable = process.billType == "Billable"?true:false;
+      }
+    }
   }
   getProcess(){
     if(this.projectId != undefined || this.projectId !=''){
@@ -125,17 +140,23 @@ export class TimeTrackerComponent implements OnInit {
     }
   }
   add(){
-   /* const sbUpdate = this.timeTrackerService.createTimeTracker().pipe(
+    this.updateDailyLog.projectId=this.projectId;
+    this.updateDailyLog.processId=this.processtId;
+    this.updateDailyLog.actualTime=this.logTime;
+    this.updateDailyLog.comments=this.remarks;
+    this.updateDailyLog.date=this.attendance.date.replace("-Jan-","/01/");
+       const sbUpdate = this.dailyLogService.updateDailyLog( this.updateDailyLog).pipe(
       tap(() => {
-        this.timeTrackerService.filterAssetData("");
-        this.modal.dismiss();
+        this.getDailyLog();
+        //this.modal.dismiss();
+        this.updateDailyLog = new UpdateDailyLog;
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
         this.openSnackBar(errorMessage,"X");
         return of();
       }),
-    ).subscribe(res =>this.openSnackBar(res.messageCode?"Created Successful":res,"!!"));*/
+    ).subscribe();
   }
 
   ngOnDestroy(): void {
@@ -145,6 +166,7 @@ export class TimeTrackerComponent implements OnInit {
     this.dailyLogService.deleteDailyLog(id).pipe(
       tap((res: any) => {
         this.dailyActivities = res;
+        this.getDailyLog();
         console.log("DailyActivities", this.dailyActivities)
       }),
       catchError((err) => {

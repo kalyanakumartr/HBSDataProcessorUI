@@ -4,6 +4,7 @@ import { AttendanceComponent } from './attendance.component';
 import { GroupAttendanceComponent } from './group-attendance/group-attendance.component';
 import { IndividualAttendanceComponent } from './individual-attendance/individual-attendance.component';
 import { MarkAttendanceComponent } from './mark-attendance/mark-attendance.component';
+import { TimesheetApprovalComponent } from './timesheet-approval/timesheet-approval.component';
 
 
 const routes: Routes = [
@@ -18,6 +19,10 @@ const routes: Routes = [
       {
         path: 'groupAttendance',
         component: GroupAttendanceComponent,
+      },
+      {
+        path: 'approveTimeSheet',
+        component: TimesheetApprovalComponent,
       },
       {
         path: 'myAttendance',
