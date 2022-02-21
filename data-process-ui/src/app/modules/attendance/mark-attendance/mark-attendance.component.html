@@ -1,15 +1,13 @@
 <form>
 
     <div class="form-group row ">
-      <div class="col-lg-4 top-margin-text">
-      <label class="form-label"><b>Mark Attendance</b></label>
-      </div>
-      <div class="col-lg-4 top-margin-text">
+
+      <div class="col-lg-4 top-margin-icon">
 
           <div class="form-group row ">
             <div class="col-lg-5 top-margin-button">
               <button type="button" id="P12WFO" mat-mini-fab color="primary" (click)= "markAttendance('P12','WFO')">
-                12 H</button>
+                12 H   <mat-icon class="white-icon">airline_seat_recline_normal</mat-icon></button>
             </div>
             <div class="col-lg-5 top-margin-button">
               <button type="button" id="P8WFO" mat-mini-fab color="primary"  (click)= "markAttendance('P8', 'WFO')">8 H</button>
@@ -17,19 +15,22 @@
           </div>
 
     </div>
-    <div class="col-lg-4 top-margin-text">
+    <div class="col-lg-3 top-margin-text">
+      <label class="form-label" style ="text-align:center"><b>Mark Attendance</b></label>
+      </div>
+    <div class="col-lg-4 top-margin-icon">
 
         <div class="form-group row ">
           <div class="col-lg-5 top-margin-button">
 
             <button type="button" id="P12WFH" mat-mini-fab color="primary" class="toolbar-button" (click)= "markAttendance('P12','WFH')">
-              12 H  <mat-icon class="white-icon">home</mat-icon>
+              12 H   <mat-icon class="white-icon">home</mat-icon>
             </button>
 
           </div>
           <div class="col-lg-5 top-margin-button">
             <button type="button" id="P8WFH" mat-mini-fab color="primary" class="toolbar-button" (click)= "markAttendance('P8', 'WFH')">
-              8 H  <mat-icon class="white-icon">home</mat-icon>
+              8 H
             </button>
 
           </div>

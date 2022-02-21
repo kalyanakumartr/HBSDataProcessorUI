@@ -59,7 +59,7 @@ export class WorkUnitModalComponent  {
       this.isRunning = false;
       this.buttonType=1;
       this.timerId = 0;
-      this.showReject=false;
+      this.showReject=true;
       this.estimatedTime=0;
       this.actualTime=0;
       this.showEditable=false;
@@ -133,6 +133,9 @@ export class WorkUnitModalComponent  {
     if(this.status == "Hold"){
       this.showActionButtons=false;
     }
+    if(this.task.reason && this.task.reason.reason != '' && this.task.reason.reason !='NO REASON'){
+      this.showHoldQueueButtons = true
+    }
     this.mm = this.actualTime;
     this.efficiency = Math.trunc(this.efficiency*100);
     this.workAllocationService.getReaonsList(this.queue,"hold").pipe(
@@ -146,8 +149,9 @@ export class WorkUnitModalComponent  {
           items: []
         });
       })).subscribe();
-    if(!['HoldQueue','Production'].includes(this.queue) && ['Stop','Pause'].includes(this.queue) ){
-      this.showReject=true;
+
+    if(['HoldQueue','Production'].includes(this.queue)|| ['Stop','Pause'].includes(this.task.currentEvent) ){
+      this.showReject=false;
     }
     var statusArray: Array<string> = ['Ready', 'InProgress', 'Hold'];
     if(statusArray.indexOf(this.status) > -1){
@@ -312,29 +316,14 @@ cancel(){
 
 
   clickHandler(type) {
-    if (!this.isRunning) {
-      // Stop => Running
-      this.timerId = setInterval(() => {
-        this.ms++;
 
-        if (this.ms >= 100) {
-          this.ss++;
-          this.ms = 0;
-        }
-        if (this.ss >= 60) {
-          this.mm++;
-          this.ss = 0
-        }
-
-      }, 10);
-    } else {
-      clearInterval(this.timerId);
-    }
     this.buttonType=type;
-    if(!['HoldQueue','Production'].includes(this.queue) ){
+    if(['HoldQueue','Production'].includes(this.queue) || ['Stop','Pause'].includes(this.task.currentEvent) || type == 3){
+      this.showReject=false;
+    }else{
       this.showReject=true;
     }
-    this.isRunning = !this.isRunning;
+
   }
 
   format(num: number) {

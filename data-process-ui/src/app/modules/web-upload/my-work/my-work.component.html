@@ -141,7 +141,10 @@
           <th nowrap >Road Type</th>
           <th nowrap >Uploaded Status</th>
           <th nowrap >Current WU Status</th>
-
+          <ng-container *ngIf="isAssigned">
+            <th nowrap >Assigned To </th>
+          </ng-container>
+          <th nowrap >Hold Reason </th>
           <th nowrap >Completed Miles</th>
 
           <th >Primary Non-Div Motorways</th>
@@ -207,6 +210,14 @@
             </td>
             <td>
               {{ task.currentQueue }}
+            </td>
+            <ng-container *ngIf="isAssigned">
+              <td>
+                {{ task.assignedTo }}
+              </td>
+            </ng-container>
+            <td>
+              {{ task.reason? task.reason.reason =='NO REASON'?"":task.reason.reason :""}}
             </td>
             <td>
               {{ task.coreData.roadData.roadTypeMap.miles }}

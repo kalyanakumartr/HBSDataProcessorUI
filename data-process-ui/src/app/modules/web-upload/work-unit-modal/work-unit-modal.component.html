@@ -146,68 +146,74 @@
       <ng-container *ngIf="showActionButtons">
         <div class="col-lg-1 button-row" ></div>
         <ng-container *ngIf="buttonType == 1">
-        <div class="col-lg-1 button-row" >
+        <div class="col-lg-2 button-row" >
             <button type="button" id="Start" mat-fab color="primary" (click)=start(task.allocationId)>Start</button>
         </div>
       </ng-container>
       <ng-container *ngIf="buttonType == 2">
-        <div class="col-lg-1 button-row" >
+        <div class="col-lg-2 button-row" >
           <button type="button" id="Pause" mat-fab color="accent" (click)=pause(task.allocationId)>Pause</button>
         </div>
       </ng-container>
       <ng-container *ngIf="buttonType == 3">
-        <div class="col-lg-1 button-row" >
+        <div class="col-lg-2 button-row" >
           <button type="button" id="Pause" mat-fab color="accent" (click)=resume(task.allocationId)>Resume</button>
         </div>
       </ng-container>
+
       <ng-container *ngIf="buttonType == 2">
-        <div class="col-lg-1">
-          <button type="button" id="Stop" mat-fab color="warn" (click)=stop(task.allocationId)>Stop</button>
-        </div>
-      </ng-container>
-      <ng-container *ngIf="buttonType == 2">
-        <div class="col-lg-1">
+        <div class="col-lg-2">
           <button type="button" id="Hold" mat-fab color="primary" (click)=preHold(task.allocationId)>Hold</button>
         </div>
       </ng-container>
     </ng-container>
-    <ng-container *ngIf="showHoldQueueButtons">
+      <ng-container *ngIf="showHoldQueueButtons">
 
-      <div class="col-lg-1">
-        <button type="button" id="MoveToHold" mat-fab color="primary" title='Move Batch' (click)=hold(task.allocationId)>Hold</button>
-      </div>
-      <div class="col-lg-1">
-        <button type="button" id="WorkUnitRevoke" mat-fab color="accent" title='Move Current Unit' (click)=revoke(task.allocationId)>Revoke</button>
-      </div>
+        <div class="col-lg-1">
+          <button type="button" id="MoveToHold" mat-fab color="primary" title='Move Batch' (click)=hold(task.allocationId)>Hold</button>
+        </div>
+        <div class="col-lg-1">
+          <button type="button" id="WorkUnitRevoke" mat-fab color="accent" title='Move Current Unit' (click)=revoke(task.allocationId)>Revoke</button>
+        </div>
       </ng-container>
-    <ng-container *ngIf="showQAButtons">
+      <ng-container *ngIf="showQAButtons">
 
-      <div class="col-lg-1">
-        <button type="button" id="MoveBatch" mat-fab color="primary" title='Move Batch' (click)=batch(task.allocationId)>Batch</button>
-      </div>
-      <div class="col-lg-1">
-        <button type="button" id="MoveWorkUnit" mat-fab color="accent" title='Move Current Unit' (click)=currentUnit(task.allocationId)>Single</button>
-      </div>
+        <div class="col-lg-1">
+          <button type="button" id="MoveBatch" mat-fab color="primary" title='Move Batch' (click)=batch(task.allocationId)>Batch</button>
+        </div>
+        <div class="col-lg-1">
+          <button type="button" id="MoveWorkUnit" mat-fab color="accent" title='Move Current Unit' (click)=currentUnit(task.allocationId)>Single</button>
+        </div>
       </ng-container>
+
+
+
+      <div class="col-lg-4" >
+        <div *ngIf="showReasons">
+          <label>Select Reason for on Hold</label>
+          <select class="form-control form-control-lg form-control-solid" name="reason"
+            id="reason" (change)="getReason($event.target.value)">
+            <option value ="">Please Select Reason</option>
+            <!--<option value ="2DLIDARnotloadingvisibleinQGIS">2D LIDAR not loading / visible in QGIS</option>
+            <option value ="3DLIDARissue–Bifurcationlocationshift">3DLIDARissue–Bifurcationlocationshift</option>-->
+            <option *ngFor="let reason of reasonList" [value]="reason.reasonId">
+              {{ reason.reason }}
+            </option>
+          </select>
+        </div>
+      </div>
       <ng-container *ngIf="showReject">
-      <div class="col-lg-2">
-        <button type="button" id="Reject" mat-fab color="primary" (click)=reject(task.allocationId)>Reject</button>
-      </div>
+        <div class="col-lg-2">
+          <button type="button" id="Reject" mat-fab color="primary" (click)=reject(task.allocationId)>Reject</button>
+        </div>
       </ng-container>
-
-
-      <div class="col-lg-4" *ngIf="showReasons">
-        <label>Select Reason for on Hold</label>
-        <select class="form-control form-control-lg form-control-solid" name="reason"
-          id="reason" (change)="getReason($event.target.value)">
-          <option value ="">Please Select Reason</option>
-          <!--<option value ="2DLIDARnotloadingvisibleinQGIS">2D LIDAR not loading / visible in QGIS</option>
-          <option value ="3DLIDARissue–Bifurcationlocationshift">3DLIDARissue–Bifurcationlocationshift</option>-->
-          <option *ngFor="let reason of reasonList" [value]="reason.reasonId">
-            {{ reason.reason }}
-          </option>
-        </select>
-      </div>
+      <ng-container *ngIf="showActionButtons">
+        <ng-container *ngIf="buttonType == 2">
+          <div class="col-lg-1">
+            <button type="button" id="Stop" mat-fab color="warn" (click)=stop(task.allocationId)>Stop</button>
+          </div>
+        </ng-container>
+      </ng-container>
     </ng-container>
   </div>
   <!--end::Tabpane-->
