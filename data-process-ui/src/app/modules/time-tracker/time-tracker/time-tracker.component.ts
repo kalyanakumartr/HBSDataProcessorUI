@@ -32,7 +32,7 @@ export class TimeTrackerComponent implements OnInit {
   projectSelected:any;
   projectList:any[];
   processList:any[];
-  billable:boolean;
+  billable:any;
   dailyActivities: DailyActivities;
   logTime:string;
   remarks:string;
@@ -57,7 +57,9 @@ export class TimeTrackerComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.projectService.getProjectList("RFDB").pipe(
+    var authModel =this.projectService.getAuthFromLocalStorage();
+    console.log(authModel);
+    this.projectService.getProjectList(authModel.divisionId).pipe(
       tap((res: any) => {
         this.projectList = res;
         console.log("projectList", this.projectList)
@@ -73,7 +75,7 @@ export class TimeTrackerComponent implements OnInit {
     console.log("Inside Time Tracker ngOnInit", this.attendance);
   }
   private getDailyLog() {
-    var getDailyActivityDate = this.attendance.date.replace("-Jan-","/01/");
+    var getDailyActivityDate = this.changeDate(this.attendance.date);
     this.dailyLogService.getDailyActivities(getDailyActivityDate).pipe(
       tap((res: any) => {
         this.dailyActivities = res;
@@ -90,7 +92,7 @@ export class TimeTrackerComponent implements OnInit {
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 4000,
-      verticalPosition:"bottom"
+      verticalPosition:"top"
     });
   }
 
@@ -107,7 +109,18 @@ export class TimeTrackerComponent implements OnInit {
 
   save() {
 
-        this.add();
+       var date =this.changeDate(this.attendance.date);
+
+       const sbUpdate = this.dailyLogService.submitDailyLog( date).pipe(
+        tap(() => {
+          this.modal.dismiss();
+        }),
+        catchError((errorMessage) => {
+          this.modal.dismiss(errorMessage);
+          this.openSnackBar(errorMessage,"X");
+          return of();
+        }),
+      ).subscribe(res =>this.openSnackBar("Time Sheet Submit "+res +" for the date " +date ,"."));
 
   }
   setProjectId(value){
@@ -140,11 +153,20 @@ export class TimeTrackerComponent implements OnInit {
     }
   }
   add(){
+    if(this.projectId ==""){
+      alert("Select Project");
+    }
+    if(this.processtId ==""){
+      alert("Select Process");
+    }
+    if(this.logTime ==""){
+      alert("Log Time");
+    }
     this.updateDailyLog.projectId=this.projectId;
     this.updateDailyLog.processId=this.processtId;
     this.updateDailyLog.actualTime=this.logTime;
     this.updateDailyLog.comments=this.remarks;
-    this.updateDailyLog.date=this.attendance.date.replace("-Jan-","/01/");
+    this.updateDailyLog.date=this.changeDate(this.attendance.date);
        const sbUpdate = this.dailyLogService.updateDailyLog( this.updateDailyLog).pipe(
       tap(() => {
         this.getDailyLog();
@@ -195,5 +217,8 @@ export class TimeTrackerComponent implements OnInit {
   isControlTouched(controlName): boolean {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
+  }
+  changeDate(date){
+    return date.replace("-Jan-","/01/").replace("-Feb-","/02/").replace("-Mar-","/03/").replace("-Apr-","/04/").replace("-May-","/06/").replace("-Jun-","/06/").replace("-Jul-","/07/").replace("-Aug-","/08/").replace("-Sep-","/09/").replace("-Oct-","/10/").replace("-Nov-","/11/").replace("-Dec-","/12/");
   }
 }

@@ -55,6 +55,20 @@ export class DailyLogService  {
       })
     );
   }
+  submitDailyLog(date:String){
+
+    const url = this.API_URL + "/submitDailyLog";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"date":date} ,{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
   updateDailyLog(updateDailyLog:UpdateDailyLog){
 
     const url = this.API_URL + "/saveDailyLog";
