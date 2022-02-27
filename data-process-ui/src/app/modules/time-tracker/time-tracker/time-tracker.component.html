@@ -24,14 +24,14 @@
       <div class="col-lg-2">
         <label>{{attendance.symbol}} Hrs</label>
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-3">
 
       </div>
       <div class="col-lg-2">
         <label>Date :</label>
       </div>
       <div class="col-lg-2">
-        <label>{{attendance.date}}</label>
+        <label>{{attendance.date.slice(0, 10).split("-").reverse().join("/")}}</label>
       </div>
     </div>
     <div class="form-group row">
@@ -44,13 +44,11 @@
       <div class="col-lg-3">
 
       </div>
-      <div class="col-lg-1">
 
-      </div>
       <div class="col-lg-3">
         <label>Non Billable Hours :</label>
       </div>
-      <div class="col-lg-1">
+      <div class="col-lg-2">
         <label>{{dailyActivities.sumTotalNonBillable?dailyActivities.sumTotalNonBillable:"0"}} H</label>
       </div>
     </div>
@@ -64,13 +62,11 @@
       <div class="col-lg-3">
 
       </div>
-      <div class="col-lg-1">
 
-      </div>
       <div class="col-lg-3">
         <label nowrap>Discrencies Hours:</label>
       </div>
-      <div class="col-lg-1">
+      <div class="col-lg-2">
         <label>{{dailyActivities.overTimeHours=="00:00"?dailyActivities.shortageHours:dailyActivities.overTimeHours}} H</label>
       </div>
     </div>

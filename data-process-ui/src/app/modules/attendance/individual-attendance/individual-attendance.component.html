@@ -4,13 +4,14 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">My Attendance for Month </h3>
+      <h3 class="card-label">My Attendance </h3>
       <select class="form-control form-control-lg form-control-solid" name="monthYear" (change)="setMonth($event.target.value)">
         <option [ngValue]="0" [selected]=true>Select Month</option>
         <option *ngFor="let month of employeeMonthList" [value]="month.value">
           {{ month.label }}
         </option>
       </select>
+      &nbsp;&nbsp;
       <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "refresh()">
         <mat-icon >refresh</mat-icon>
       </button>
