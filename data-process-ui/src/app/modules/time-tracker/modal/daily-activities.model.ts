@@ -3,13 +3,14 @@ import { DailyLog } from "./dailylog.model";
 
 export class DailyActivities  {
   date:string;
-  actualTime:number;
-  sumTotalBillable:number;
-  sumTotalNonBillable:number;
-  sumTotal:number;
-  overTimeHours:number;
-  shortageHours:number;
-  attendanceHours:number;
+  actualTime:string;
+  sumTotalBillable:string;
+  sumTotalNonBillable:string;
+  sumTotal:string;
+  max24Hours:string;
+  overTimeHours:string;
+  shortageHours:string;
+  attendanceHours:string;
   dailyLogList: DailyLog[];
   editable:boolean;
 }

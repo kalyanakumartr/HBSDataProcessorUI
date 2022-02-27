@@ -35,7 +35,7 @@
             <label>Select Group</label>
             <select class="form-control form-control-lg form-control-solid spinner spinner-success spinner-right" name="groupId"
               [class.is-invalid]="isControlInvalid('groupId')" formControlName="groupId" (change)="setReportingToByGroup($event.target.value)">
-              <option [ngValue]="0" [selected]=true>Select Group</option>
+              <option [ngValue]="groupTeamDefault" [selected]=true>Select Group</option>
               <option *ngFor="let group of groupList" [ngValue]="group.teamId">
                 {{ group.teamName }}
               </option>
@@ -47,7 +47,7 @@
             <label>Select Team</label>
             <select class="form-control form-control-lg form-control-solid spinner spinner-success spinner-right" name="teamId"
               [class.is-invalid]="isControlInvalid('teamId')" formControlName="teamId" (change)="setReportingToByTeam($event.target.value)">
-              <option [ngValue]="0" [selected]=true>Select Team</option>
+              <option [ngValue]="groupTeamDefault" [selected]=true>Select Team</option>
               <option *ngFor="let team of teamList" [ngValue]="team.teamId">
                 {{ team.teamName }}
               </option>
@@ -58,7 +58,7 @@
             <label class="form-label">Enter Project Id   </label>
             <select class="form-control form-control-lg form-control-solid" name="projectId"
             [class.is-invalid]="isControlInvalid('projectId')" formControlName="projectId">
-            <option [ngValue]="0" [selected]=true>Select Project</option>
+            <option [ngValue]="projectDefault" [selected]=true>Select Project</option>
             <option *ngFor="let project of projectList" [ngValue]="project.projectId">
               {{ project.projectName }}
             </option>

@@ -11,11 +11,12 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { TimeTrackerComponent } from './time-tracker/time-tracker.component';
 import { MatIconModule } from '@angular/material/icon';
+import { TimeTrackerApprovalComponent } from './time-tracker-approval/time-tracker-approval.component';
 
 
 
 @NgModule({
-  declarations: [TimeTrackerComponent],
+  declarations: [TimeTrackerComponent, TimeTrackerApprovalComponent],
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, TimeTrackerRoutingModule,InlineSVGModule, NgbDatepickerModule,NgbModalModule, MatSnackBarModule, MatButtonModule,MatIconModule,GeneralModule
   ],

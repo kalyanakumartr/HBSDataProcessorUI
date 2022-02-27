@@ -5,7 +5,7 @@
 
         <b><label class="heading">
 
-          Daily Log for {{attendance.employee.fullName}} </label></b>
+          Daily Log for {{approval.userName}} </label></b>
 
     </div>
     <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
@@ -22,7 +22,7 @@
         <label>Shift :</label>
       </div>
       <div class="col-lg-2">
-        <label>{{attendance.symbol}} Hrs</label>
+        <label>{{timeSheet.symbol}} Hrs</label>
       </div>
       <div class="col-lg-4">
 
@@ -31,7 +31,7 @@
         <label>Date :</label>
       </div>
       <div class="col-lg-2">
-        <label>{{attendance.date}}</label>
+        <label>{{timeSheet.date}}</label>
       </div>
     </div>
     <div class="form-group row">
@@ -74,46 +74,7 @@
         <label>{{dailyActivities.overTimeHours=="00:00"?dailyActivities.shortageHours:dailyActivities.overTimeHours}} H</label>
       </div>
     </div>
-    <div class="form-group row">
-      <div class="col-lg-2">
-        <label>Select Project</label>
-        <select class="form-control form-control-lg form-control-solid" name="projectId"
-           (change)="setProjectId($event.target.value)">
-          <option [ngValue]="selValue" [selected]=true>Select Project</option>
-          <option *ngFor="let project of projectList" [value]="project.projectId">
-            {{ project.projectName }}
-          </option>
-        </select>
-      </div>
-      <div class="col-lg-2">
-        <label>Select Process</label>
-        <select class="form-control form-control-lg form-control-solid" name="processId"
-           (change)="setProcess($event.target.value)">
-          <option [ngValue]="selValue" [selected]=true>Select Process</option>
-          <option *ngFor="let process of processList" [value]="process.processId">
-            {{ process.processName }}
-          </option>
-        </select>
-      </div>
-      <div class="col-lg-1">
-        <label>Billable</label>
-        <label class="form-control form-control-lg form-control-solid" style ="padding: 0.825rem 0.42rem;">{{billable}}</label>
-      </div>
-      <div class="col-lg-2">
-        <label>Time</label>
-        <input type="time" class="form-control form-control-lg form-control-solid" name="time" placeholder="time" autocomplete="off"  [(ngModel)]="logTime" />
-      </div>
-      <div class="col-lg-3">
-        <label>Remarks</label>
-        <input type="textarea" class="form-control form-control-lg form-control-solid" name="remarks" placeholder="remarks" autocomplete="off" [(ngModel)]="remarks"  />
-      </div>
-      <div class="col-lg-2">
-        <label>Action</label>
-        <button type="button" id="add" class="btn btn-primary btn-elevate" (click)= "add()">
-          &nbsp;&nbsp;&nbsp;Add&nbsp;&nbsp;&nbsp;&nbsp;
-        </button>
-      </div>
-    </div>
+
     <div class="table-responsive angular-bootstrap-table">
       <table id="tablebox" class="table table-head-custom table-vertical-center ">
         <thead>
@@ -128,20 +89,11 @@
         <tbody>
           <tr *ngFor="let dailyLog of dailyActivities.dailyLogList">
 
-            <td>{{ dailyLog.projectName }}</td>
+            <td>{{dailyLog.projectName }}</td>
             <td>{{dailyLog.processName }}</td>
             <td>{{dailyLog.billable }}</td>
             <td>{{dailyLog.actualTime.replace(".",":") }}</td>
-            <td>{{dailyLog.remarks }}</td>
-            <td>
-              <ng-container *ngIf="dailyLog.entryType == 'Manual'">
-                <button type="button" id="log" mat-mini-fab color="warn" (click)= "deleteDailyLog(dailyLog.autoId)">
-                  <mat-icon >delete</mat-icon>
-                </button>
-              </ng-container>
-          </td>
-
-
+            <td>{{dailyLog.comments }}</td>
           </tr>
         </tbody>
       </table>
@@ -151,8 +103,5 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
 
-
-      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
-      [disabled]="dailyActivities.shortageHours && dailyActivities.shortageHours!='00:00'">Submit TimeSheet</button>
   </div>
 </div>

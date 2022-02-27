@@ -9,6 +9,8 @@ import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core
 import { GroupingState, IDeleteAction, IDeleteSelectedAction, IFetchSelectedAction, IFilterView, IGroupingView, ISearchView, ISortView, IUpdateStatusForSelectedAction, PaginatorState, SortState, SortStateAttendance } from 'src/app/_metronic/shared/crud-table';
 import { AttendanceService } from '../../auth/_services/attendance.service';
 import { TimeSheetService } from '../../auth/_services/timesheet.service';
+import { TimeSheetApprovalService } from '../../auth/_services/timesheetapproval.service';
+import { TimeTrackerApprovalComponent } from '../../time-tracker/time-tracker-approval/time-tracker-approval.component';
 import { TimeTrackerComponent } from '../../time-tracker/time-tracker/time-tracker.component';
 import { AttendanceModel } from '../modal/attendance.model';
 import { LabelValueModel } from '../modal/value-lable.model';
@@ -49,7 +51,7 @@ IFilterView {
     private snackBar: MatSnackBar,
     private _router: Router,
     public attendanceService: AttendanceService,
-    public timeSheetService: TimeSheetService) {
+    public timeSheetService: TimeSheetApprovalService) {
       this.timeSheetService.listen().subscribe((m:any)=>{
         console.log("m -- -- --",m);
         this.filter();
@@ -85,9 +87,10 @@ IFilterView {
         });
       })).subscribe();
   }
-  addTimeSheet(attendance){
-    const modalRef = this.modalService.open(TimeTrackerComponent, { size: 'lg', animation :true });
-    modalRef.componentInstance.attendance = attendance;
+  showTimeSheet(approval,timesheet){
+    const modalRef = this.modalService.open(TimeTrackerApprovalComponent, { size: 'lg', animation :true });
+    modalRef.componentInstance.approval = approval;
+    modalRef.componentInstance.timeSheet = timesheet;
 
   }
     // filtration
@@ -116,7 +119,7 @@ IFilterView {
       if (type) {
         filter['type'] = type;
       }*/
-      this.timeSheetService.patchState({ filter },"/searchTimesheet");
+      this.timeSheetService.patchState({ filter },"/searchApprovalTimesheet");
     }
 
     // search
@@ -142,7 +145,7 @@ IFilterView {
 
     search(searchTerm: string) {
       this.timeSheetService.patchStateWithoutFetch({fromDate:this.fromDate,toDate:this.toDate});
-      this.timeSheetService.patchState({ searchTerm },"/searchTimesheet");
+      this.timeSheetService.patchState({ searchTerm },"/searchApprovalTimesheet");
     }
 
     // sorting
@@ -160,7 +163,7 @@ IFilterView {
 
     // pagination
     paginate(paginator: PaginatorState) {
-      this.timeSheetService.patchState({ paginator },"/searchTimesheet");
+      this.timeSheetService.patchState({ paginator },"/searchApprovalTimesheet");
     }
     // form actions
     setMonth(value){
@@ -170,7 +173,7 @@ IFilterView {
         this.toDate=position[1];
         var searchTerm='';
         this.timeSheetService.patchStateWithoutFetch({fromDate:this.fromDate,toDate:this.toDate});
-        this.timeSheetService.patchState({ searchTerm },"/searchTimesheet");
+        this.timeSheetService.patchState({ searchTerm },"/searchApprovalTimesheet");
       }else{
         alert("Select Valid Month")
       }
@@ -180,7 +183,7 @@ IFilterView {
       alert(this.toDate);
         var searchTerm='';
         this.timeSheetService.patchStateWithoutFetch({fromDate:this.fromDate,toDate:this.toDate});
-        this.timeSheetService.patchState({ searchTerm },"/searchTimesheet");
+        this.timeSheetService.patchState({ searchTerm },"/searchApprovalTimesheet");
     }
     setToDate(value){
       this.toDate=value;

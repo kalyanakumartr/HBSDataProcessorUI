@@ -5,14 +5,13 @@ import { environment } from '../../../../environments/environment';
 import { Observable, BehaviorSubject, of, Subscription, Subject } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { AuthHTTPService } from './auth-http';
-import { AttendanceModel } from '../../attendance/modal/attendance.model';
-import { TableAttendanceService } from 'src/app/_metronic/shared/crud-table/services/table.attendance.service';
-import { TimeSheetModel } from '../../attendance/modal/timesheet.model';
+import { TableApprovalService } from 'src/app/_metronic/shared/crud-table/services/table.attendanceapproval.service';
+import { Approval } from '../../time-tracker/modal/approval.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TimeSheetService  extends TableAttendanceService<TimeSheetModel> implements OnDestroy {
+export class TimeSheetApprovalService  extends TableApprovalService<Approval> implements OnDestroy {
     // public fields
     isLoadingSubject: BehaviorSubject<boolean>;
     private _errorMsg = new BehaviorSubject<string>('');
@@ -26,33 +25,13 @@ export class TimeSheetService  extends TableAttendanceService<TimeSheetModel> im
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
 
-  getMonthAttendanceWithTimeSheet(){
-    const auth = this.getAuthFromLocalStorage();
-    if (!auth || !auth.access_token) {
-      return of(undefined);
-    }
-
-    console.log("Inside Search TimeSheet");
-    const url = this.API_ADMIN_URL + '/searchTimesheet';
-    const httpHeaders = new HttpHeaders({
-      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
-    });
-    let formData: FormData = new FormData();
-    return this.http.post(url, formData,{headers: httpHeaders}).pipe(
-      catchError(err => {
-        this._errorMsg.next(err);
-        console.error('Error in Search TimeSheet', err);
-        return of("Error in Search TimeSheet");
-      })
-    );
-  }
   getApprovalTimeSheet(){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
       return of(undefined);
     }
 
-    console.log("Inside Search TimeSheet");
+    console.log("Inside Search approval TimeSheet");
     const url = this.API_ADMIN_URL + '/searchApprovalTimesheet';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,

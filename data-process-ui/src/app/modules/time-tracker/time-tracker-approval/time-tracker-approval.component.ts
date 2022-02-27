@@ -1,28 +1,25 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
 import { AttendanceModel } from '../../attendance/modal/attendance.model';
 import { DailyLogService } from '../../auth/_services/dailylog.services';
 import { ProjectService } from '../../auth/_services/project.services';
-import { UsersService } from '../../auth/_services/user.service';
+import { Approval } from '../modal/approval.model';
 import { DailyActivities } from '../modal/daily-activities.model';
+import { TimeSheetApproval } from '../modal/time-sheet-approval.model';
 import { UpdateDailyLog } from '../modal/update-dailylog.model';
 
 @Component({
-  selector: 'app-time-tracker',
-  templateUrl: './time-tracker.component.html',
-  styleUrls: ['./time-tracker.component.scss'],
-  providers: [
-    {provide: NgbDateAdapter, useClass: CustomAdapter},
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
-  ]
+  selector: 'app-time-tracker-approval',
+  templateUrl: './time-tracker-approval.component.html',
+  styleUrls: ['./time-tracker-approval.component.scss']
 })
-export class TimeTrackerComponent implements OnInit {
-  @Input() attendance: AttendanceModel;
+export class TimeTrackerApprovalComponent implements OnInit {
+  @Input() approval: Approval;
+  @Input() timeSheet: TimeSheetApproval;
   isLoading$;
   selValue:string;
   receivedDate:string;
@@ -72,10 +69,10 @@ export class TimeTrackerComponent implements OnInit {
       })).subscribe();
 
       this.getDailyLog();
-    console.log("Inside Time Tracker ngOnInit", this.attendance);
+    console.log("Inside Time Tracker ngOnInit", this.timeSheet.date);
   }
   private getDailyLog() {
-    var getDailyActivityDate = this.changeDate(this.attendance.date);
+    var getDailyActivityDate = this.changeDate(this.timeSheet.date);
     this.dailyLogService.getDailyActivities(getDailyActivityDate).pipe(
       tap((res: any) => {
         this.dailyActivities = res;
@@ -107,86 +104,7 @@ export class TimeTrackerComponent implements OnInit {
 
   }
 
-  save() {
 
-       var date =this.changeDate(this.attendance.date);
-
-       const sbUpdate = this.dailyLogService.submitDailyLog( date).pipe(
-        tap(() => {
-          this.modal.dismiss();
-        }),
-        catchError((errorMessage) => {
-          this.modal.dismiss(errorMessage);
-          this.openSnackBar(errorMessage,"X");
-          return of();
-        }),
-      ).subscribe(res =>this.openSnackBar("Time Sheet Submit "+res +" for the date " +date ,"."));
-
-  }
-  setProjectId(value){
-    this.projectId =value;
-    this.getProcess();
-  }
-  setProcess(value){
-    this.processtId=value;
-    for(let process of this.processList){
-      if (value == process.processId){
-        this.billable = process.billType == "Billable"?true:false;
-      }
-    }
-  }
-  getProcess(){
-    if(this.projectId != undefined || this.projectId !=''){
-      this.dailyLogService.getProcessList(this.projectId).pipe(
-        tap((res: any) => {
-          this.processList = res;
-          console.log("processList", this.processList)
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of({
-            items: []
-          });
-        })).subscribe();
-    }else{
-      alert("Select Project Id");
-    }
-  }
-  add(){
-    if(this.projectId ==""){
-      alert("Select Project");
-      return;
-    }
-    if(this.processtId ==""){
-      alert("Select Process");
-      return;
-    }
-    if(this.logTime ==""){
-      alert("Log Time");
-      return;
-    }
-    if(this.logTime.replace(":",".")>this.dailyActivities.max24Hours.replace(":",".")){
-      alert("TimeSheet you entered is more than 24 hours. Kindly verify the timesheet");
-      return;
-    }
-    this.updateDailyLog.projectId=this.projectId;
-    this.updateDailyLog.processId=this.processtId;
-    this.updateDailyLog.actualTime=this.logTime;//.replace(":",".");
-    this.updateDailyLog.comments=this.remarks;
-    this.updateDailyLog.date=this.changeDate(this.attendance.date);
-       const sbUpdate = this.dailyLogService.updateDailyLog( this.updateDailyLog).pipe(
-      tap(() => {
-        this.getDailyLog();
-        //this.modal.dismiss();
-        this.updateDailyLog = new UpdateDailyLog;
-      }),
-      catchError((errorMessage) => {
-        this.modal.dismiss(errorMessage);
-        this.openSnackBar(errorMessage,"X");
-        return of();
-      }),
-    ).subscribe();
-  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());

@@ -175,6 +175,15 @@ IFilterView {
         alert("Select Valid Month")
       }
     }
+    refresh(){
+      if(this.fromDate){
+
+        var searchTerm='';
+        this.timeSheetService.patchState({ searchTerm },"/searchTimesheet");
+      }else{
+        alert("Select Valid Month")
+      }
+    }
     searchDates(){
       alert(this.fromDate);
       alert(this.toDate);
