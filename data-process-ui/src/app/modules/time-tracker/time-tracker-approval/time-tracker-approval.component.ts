@@ -33,8 +33,10 @@ export class TimeTrackerApprovalComponent implements OnInit {
   dailyActivities: DailyActivities;
   logTime:string;
   remarks:string;
+  attendance:String;
   updateDailyLog: UpdateDailyLog;
   private subscriptions: Subscription[] = [];
+  changeAttendance: boolean;
   constructor(
     private snackBar: MatSnackBar,
     private dailyLogService: DailyLogService,
@@ -47,6 +49,7 @@ export class TimeTrackerApprovalComponent implements OnInit {
       this.selValue="0";
       this.projectId="CSAV1CM";
       this.billable=false;
+      this.changeAttendance =false;
       this.updateDailyLog = new UpdateDailyLog;
       this.formGroup = new FormGroup({
 
@@ -73,7 +76,7 @@ export class TimeTrackerApprovalComponent implements OnInit {
   }
   private getDailyLog() {
     var getDailyActivityDate = this.changeDate(this.timeSheet.date);
-    this.dailyLogService.getDailyActivities(getDailyActivityDate).pipe(
+    this.dailyLogService.getDailyActivitiesWithEmpId(getDailyActivityDate, this.approval.employeeId).pipe(
       tap((res: any) => {
         this.dailyActivities = res;
         console.log("DailyActivities", this.dailyActivities);
@@ -154,7 +157,7 @@ export class TimeTrackerApprovalComponent implements OnInit {
   }
   timesheetApprovalReject(status){
     var getDailyActivityDate = this.changeDate(this.timeSheet.date);
-    this.dailyLogService.timesheetApprovalReject(getDailyActivityDate,this.approval.timesheetId,status).pipe(
+    this.dailyLogService.timesheetApprovalReject(getDailyActivityDate,this.timeSheet.timesheetId,status).pipe(
       tap((res: any) => {
         console.log("timesheetApprovalReject", res);
       }),
@@ -164,5 +167,11 @@ export class TimeTrackerApprovalComponent implements OnInit {
           items: []
         });
       })).subscribe();
+  }
+  change(){
+    this.changeAttendance=true;
+  }
+  changeAttendanceMethod(value){
+    alert (value);
   }
 }

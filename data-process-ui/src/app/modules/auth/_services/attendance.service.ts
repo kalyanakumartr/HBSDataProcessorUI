@@ -12,6 +12,7 @@ import { TableAttendanceService } from 'src/app/_metronic/shared/crud-table/serv
   providedIn: 'root'
 })
 export class AttendanceService  extends TableAttendanceService<AttendanceModel> implements OnDestroy {
+
     // public fields
     isLoadingSubject: BehaviorSubject<boolean>;
     private _errorMsg = new BehaviorSubject<string>('');
@@ -121,6 +122,26 @@ export class AttendanceService  extends TableAttendanceService<AttendanceModel> 
         this._errorMsg.next(err);
         console.error('Error ingetAttendanceComboList', err);
         return of("Error in getAttendanceComboList");
+      })
+    );
+  }
+  getDateRange(){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    console.log("Inside getDateRange");
+    const url = this.API_URL + '/getDateRange';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    let formData: FormData = new FormData();
+    return this.http.post(url, formData,{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('Error getDateRange', err);
+        return of("Error in getDateRange");
       })
     );
   }

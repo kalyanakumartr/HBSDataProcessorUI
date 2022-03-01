@@ -165,7 +165,7 @@ export class TimeTrackerComponent implements OnInit {
       alert("Log Time");
       return;
     }
-    if(this.logTime.replace(":",".")>this.dailyActivities.max24Hours.replace(":",".")){
+    if(this.dailyActivities.sumTotalBillable && this.dailyActivities.max24Hours && this.logTime.replace(":",".")>this.dailyActivities.max24Hours.replace(":",".")){
       alert("TimeSheet you entered is more than 24 hours. Kindly verify the timesheet");
       return;
     }

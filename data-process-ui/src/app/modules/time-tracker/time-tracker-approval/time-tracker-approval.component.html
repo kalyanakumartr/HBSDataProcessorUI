@@ -5,7 +5,7 @@
 
         <b><label class="heading">
 
-          Daily Log for {{approval.userName}} {{approval.timesheetId}} </label></b>
+          Daily Log for {{approval.userName}}  </label></b>
 
     </div>
     <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
@@ -23,9 +23,21 @@
       </div>
       <div class="col-lg-2">
         <label>{{timeSheet.symbol}} Hrs</label>
-      </div>
-      <div class="col-lg-4">
+        <!--<span class="label label-lg label-inline" (click)= "change()">i</span>-->
 
+      </div>
+      <div class="col-lg-3">
+        <ng-container *ngIf="changeAttendance">
+
+          <select class="form-control form-control-lg form-control-solid" name="attendance" [(ngModel)]="attendance"
+               formControlName="attendance" (change)="changeAttendanceMethod($event.target.value)">
+              <option value="P8" >P8 - WFH</option>
+              <option value="P12" >P12 -WFH</option>
+              <option value="P8" >P8 -WFO</option>
+              <option value="P12" >P12 -WFO</option>
+
+            </select>
+          </ng-container>
       </div>
       <div class="col-lg-2">
         <label>Date :</label>
@@ -78,7 +90,7 @@
             <th nowrap >Project   </th>
             <th nowrap >Process   </th>
             <th nowrap >Billable   </th>
-            <th nowrap >Time   </th>
+            <th nowrap >Time <br/> (HH:MM) </th>
             <th nowrap >Remarks   </th>
           </tr>
         </thead>

@@ -13,6 +13,7 @@ import { Team } from '../_models/team.model';
 import { DailyActivities } from '../../time-tracker/modal/daily-activities.model';
 import { Process } from '../../time-tracker/modal/process.model';
 import { UpdateDailyLog } from '../../time-tracker/modal/update-dailylog.model';
+import { GetDailyLog } from '../../time-tracker/modal/getDailyLog.model';
 
 
 @Injectable({
@@ -34,7 +35,24 @@ export class DailyLogService  {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post<DailyActivities>(url, {"date" : date  },{headers: httpHeaders}).pipe(
+
+    return this.http.post<DailyActivities>(url, {"date":date},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+
+  getDailyActivitiesWithEmpId(date,empId){
+
+    const url = this.API_URL + "/getDailyActivities";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+
+    return this.http.post<DailyActivities>(url, {"date":date,"employeeIds":[empId]},{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);

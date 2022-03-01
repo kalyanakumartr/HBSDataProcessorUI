@@ -65,8 +65,8 @@ IFilterView {
     // this.fromDate="01/01/2022";
     // this.toDate="31/01/2022";
     this.getData();
-    this.headerListdays =['01','02','03','04','05','06','07'];
-    this.monthWeeklyList=[{"value":"31/01/2022 - 06/02/2022","label":"31st Jan to 06th Feb 2022"},{"value":"07/02/2022 - 13/02/2022","label":"07th Feb to 13th Feb 2022"},{"value":"14/02/2022 - 20/02/2022","label":"14th Feb to 20th Feb 2022"},{"value":"21/02/2022 - 27/02/2022","label":"21st Feb to 27th Feb 2022"},{"value":"28/02/2022 - 06/03/2022","label":"28th Feb to 06th Mar 2022"}]
+    this.getDateRange();
+    //this.monthWeeklyList=[{"value":"31/01/2022 - 06/02/2022","label":"31st Jan to 06th Feb 2022"},{"value":"07/02/2022 - 13/02/2022","label":"07th Feb to 13th Feb 2022"},{"value":"14/02/2022 - 20/02/2022","label":"14th Feb to 20th Feb 2022"},{"value":"21/02/2022 - 27/02/2022","label":"21st Feb to 27th Feb 2022"},{"value":"28/02/2022 - 01/03/2022","label":"28th Feb to 06th Mar 2022"}]
     //this.timeSheetService.getApprovalTimeSheet();
     //this.search("");
   }
@@ -93,6 +93,19 @@ IFilterView {
         console.log("adminSymbolList", this.adminSymbolList);
         this.employeeSymbolList = res["employee-symbol"];
         console.log("employeeSymbolList", this.employeeSymbolList);
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
+  private getDateRange() {
+    this.attendanceService.getDateRange().pipe(
+      tap((res: any) => {
+        console.log("res", res);
+        this.monthWeeklyList = res;
       }),
       catchError((err) => {
         console.log(err);
