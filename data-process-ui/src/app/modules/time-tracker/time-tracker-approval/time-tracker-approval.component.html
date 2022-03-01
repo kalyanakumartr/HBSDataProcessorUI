@@ -79,7 +79,7 @@
         <label nowrap>Discrencies Hours:</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.overTimeHours=="00:00"?dailyActivities.shortageHours:dailyActivities.overTimeHours}} H</label>
+        <label>{{dailyActivities.shortageHours}} H</label>
       </div>
     </div>
 
@@ -110,9 +110,9 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary btn-elevate" (click)="rejected()"
-    [disabled]="dailyActivities.sumTotal && dailyActivities.sumTotal!='00:00'">Rejected</button>
+    [disabled]="dailyActivities.sumTotalBillable && dailyActivities.shortageHours!='00:00'">Rejected</button>
     <button type="button" class="btn btn-primary btn-elevate" (click)="approve()"
-    [disabled]="dailyActivities.sumTotal && dailyActivities.sumTotal!='00:00'">Approve</button>
+    [disabled]="dailyActivities.sumTotalBillable && dailyActivities.shortageHours!='00:00'">Approve</button>
     <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
 
   </div>

@@ -62,7 +62,7 @@
       <table id="tablebox" class="table table-head-custom table-vertical-center ">
         <thead>
           <tr>
-          <th  *ngFor="let day of timeSheetService.headers$ | async ">
+          <th style="text-align: center;" *ngFor="let day of timeSheetService.headers$ | async ">
             {{day}}
 
           </th>
@@ -71,7 +71,7 @@
         <tbody>
           <tr *ngFor="let approvalTimeSheet of timeSheetService.items$ | async">
             <td noWrap>{{ approvalTimeSheet.userName}} </td>
-          <td *ngFor="let timeSheet of approvalTimeSheet.timesheets">
+          <td style="text-align: center;" *ngFor="let timeSheet of approvalTimeSheet.timesheets">
             <span class="label label-lg label-inline" (click)= "showTimeSheet(approvalTimeSheet,timeSheet)" [class.label-light-danger]="timeSheet.symbol === 'L'"
               [class.label-light-success]="timeSheet.symbol === 'P12'" [class.label-light-success]="timeSheet.symbol === 'P8'"
               [class.label-light-success]="timeSheet.symbol === 'H'"[class.label-light-primary]="timeSheet.symbol === 'A'">
