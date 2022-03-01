@@ -42,6 +42,20 @@ export class DailyLogService  {
       })
     );
   }
+  timesheetApprovalReject(date,timesheetId, status){
+
+    const url = this.API_URL + "/approveTimesheet";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"date" : date, "timesheetIds":[timesheetId] ,"etstatus":status },{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
   getProcessList(projectId){
     const url = this.API_URL + "/getProcessList";
     const httpHeaders = new HttpHeaders({

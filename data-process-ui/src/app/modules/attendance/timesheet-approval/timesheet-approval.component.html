@@ -4,14 +4,17 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Approve TimeSheet for Month </h3>
+      <h3 class="card-label">Approve TimeSheet </h3>
       <select class="form-control form-control-lg form-control-solid" name="monthYear" (change)="setMonth($event.target.value)">
-        <option [ngValue]="0" [selected]=true>Select Month</option>
-        <option *ngFor="let month of employeeMonthList" [value]="month.value">
-          {{ month.label }}
+        <option [ngValue]="0" [selected]=true>Select Week</option>
+        <option *ngFor="let week of monthWeeklyList" [value]="week.value">
+          {{ week.label }}
         </option>
       </select>
-
+      &nbsp;&nbsp;
+      <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "refresh()">
+        <mat-icon >refresh</mat-icon>
+      </button>
     </div>
 <!--
       <div class="form-group row">
@@ -60,72 +63,35 @@
         <thead>
           <tr>
 
-          <th class="sticky-header" nowrap >
-            Employee Id
 
-          </th>
-          <th class="sticky-header" nowrap >
+          <th class="sticky-header" nowrap *ngIf="timeSheetService.isLoading$">
             Employee Name
 
           </th>
-          <th class="sticky-header" nowrap >
-            Work Mode
+
+
+          <th  *ngFor="let day of timeSheetService.headers$ | async ">
+            {{day}}
 
           </th>
 
-          <th nowrap >
-            21 Feb 2022
-
-          </th>
-          <th nowrap >
-            22 Feb 2022
-
-          </th>
-
-          <th nowrap >
-            23 Feb 2022
-
-          </th>
-          <th nowrap >
-            24 Feb 2022
-
-          </th>
-          <th nowrap >
-            21 Feb 2022
-
-          </th>
-          <th nowrap >
-            25 Feb 2022
-
-          </th>
-          <th nowrap >
-            26 Feb 2022
-
-          </th>
 
 
         </tr>
         </thead>
         <tbody>
           <tr *ngFor="let approvalTimeSheet of timeSheetService.items$ | async">
-            <td>
-              <ng-container *ngIf="approvalTimeSheet.editable">
-                <button type="button" id="TimeSheet" mat-mini-fab color="primary">
-                  <mat-icon >edit</mat-icon>
-                </button>
-              </ng-container>
-            </td>
-            <td noWrap>{{ approvalTimeSheet.employeeId}} </td>
             <td noWrap>{{ approvalTimeSheet.userName}} </td>
           <td *ngFor="let timeSheet of approvalTimeSheet.timesheets">
             <span class="label label-lg label-inline" (click)= "showTimeSheet(approvalTimeSheet,timeSheet)" [class.label-light-danger]="timeSheet.symbol === 'L'"
               [class.label-light-success]="timeSheet.symbol === 'P12'" [class.label-light-success]="timeSheet.symbol === 'P8'"
               [class.label-light-success]="timeSheet.symbol === 'H'"[class.label-light-primary]="timeSheet.symbol === 'A'">
-              <ng-container *ngIf="timeSheet.symbol === 'P8'">P-8 Hrs</ng-container>
-              <ng-container *ngIf="timeSheet.symbol === 'P12'">P-12 Hrs</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'P8'">P8</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'P12'">P12</ng-container>
               <ng-container *ngIf="timeSheet.symbol === 'L'">L</ng-container>
               <ng-container *ngIf="timeSheet.symbol === 'A'">A</ng-container>
               <ng-container *ngIf="timeSheet.symbol === 'H'">H</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === '-'">N</ng-container>
             </span>
           </td>
 

@@ -5,7 +5,7 @@
 
         <b><label class="heading">
 
-          Daily Log for {{approval.userName}} </label></b>
+          Daily Log for {{approval.userName}} {{approval.timesheetId}} </label></b>
 
     </div>
     <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
@@ -39,19 +39,17 @@
         <label>Billable Hours :</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.sumTotalBillable?dailyActivities.sumTotalBillable:"0"}} H</label>
+        <label>{{dailyActivities.sumTotalBillable?dailyActivities.sumTotalBillable:"00:00"}} H</label>
       </div>
       <div class="col-lg-3">
 
       </div>
-      <div class="col-lg-1">
 
-      </div>
       <div class="col-lg-3">
         <label>Non Billable Hours :</label>
       </div>
-      <div class="col-lg-1">
-        <label>{{dailyActivities.sumTotalNonBillable?dailyActivities.sumTotalNonBillable:"0"}} H</label>
+      <div class="col-lg-2">
+        <label>{{dailyActivities.sumTotalNonBillable?dailyActivities.sumTotalNonBillable:"00:00"}} H</label>
       </div>
     </div>
     <div class="form-group row">
@@ -59,18 +57,16 @@
         <label nowrap>OverTime Hours:</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.overTimeHours?dailyActivities.overTimeHours:"0"}} H</label>
+        <label>{{dailyActivities.overTimeHours?dailyActivities.overTimeHours:"00:00"}} H</label>
       </div>
       <div class="col-lg-3">
 
       </div>
-      <div class="col-lg-1">
 
-      </div>
       <div class="col-lg-3">
         <label nowrap>Discrencies Hours:</label>
       </div>
-      <div class="col-lg-1">
+      <div class="col-lg-2">
         <label>{{dailyActivities.overTimeHours=="00:00"?dailyActivities.shortageHours:dailyActivities.overTimeHours}} H</label>
       </div>
     </div>
@@ -101,6 +97,10 @@
 
   </div>
   <div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-elevate" (click)="rejected()"
+    [disabled]="dailyActivities.sumTotal && dailyActivities.sumTotal!='00:00'">Rejected</button>
+    <button type="button" class="btn btn-primary btn-elevate" (click)="approve()"
+    [disabled]="dailyActivities.sumTotal && dailyActivities.sumTotal!='00:00'">Approve</button>
     <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
 
   </div>

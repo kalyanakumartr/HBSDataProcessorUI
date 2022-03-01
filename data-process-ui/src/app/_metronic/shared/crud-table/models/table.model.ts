@@ -48,6 +48,7 @@ export interface IApprovalTableState extends ITableState{
 
 export interface TableResponseModel<T> {
   items: T[];
+  headerList: T[];
   total: number;
 }
 

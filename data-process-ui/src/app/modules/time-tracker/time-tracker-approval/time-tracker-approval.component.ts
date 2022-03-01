@@ -146,4 +146,23 @@ export class TimeTrackerApprovalComponent implements OnInit {
   changeDate(date){
     return date.replace("-Jan-","/01/").replace("-Feb-","/02/").replace("-Mar-","/03/").replace("-Apr-","/04/").replace("-May-","/06/").replace("-Jun-","/06/").replace("-Jul-","/07/").replace("-Aug-","/08/").replace("-Sep-","/09/").replace("-Oct-","/10/").replace("-Nov-","/11/").replace("-Dec-","/12/");
   }
+  rejected(){
+    this.timesheetApprovalReject("Rejected");
+  }
+  approve(){
+    this.timesheetApprovalReject("Approved");
+  }
+  timesheetApprovalReject(status){
+    var getDailyActivityDate = this.changeDate(this.timeSheet.date);
+    this.dailyLogService.timesheetApprovalReject(getDailyActivityDate,this.approval.timesheetId,status).pipe(
+      tap((res: any) => {
+        console.log("timesheetApprovalReject", res);
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
 }

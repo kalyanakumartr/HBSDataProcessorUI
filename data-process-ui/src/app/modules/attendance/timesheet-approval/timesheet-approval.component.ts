@@ -38,8 +38,10 @@ IFilterView {
   searchGroup: FormGroup;
   fromDate:string;
   toDate:string;
+  headerListdays:string[];
   attendanceList:AttendanceModel[];
   employeeMonthList:LabelValueModel[];
+  monthWeeklyList:LabelValueModel[];
   statusList:LabelValueModel[];
   approverMonthList:LabelValueModel[];
   adminSymbolList:LabelValueModel[];
@@ -63,7 +65,19 @@ IFilterView {
     // this.fromDate="01/01/2022";
     // this.toDate="31/01/2022";
     this.getData();
+    this.headerListdays =['01','02','03','04','05','06','07'];
+    this.monthWeeklyList=[{"value":"31/01/2022 - 06/02/2022","label":"31st Jan to 06th Feb 2022"},{"value":"07/02/2022 - 13/02/2022","label":"07th Feb to 13th Feb 2022"},{"value":"14/02/2022 - 20/02/2022","label":"14th Feb to 20th Feb 2022"},{"value":"21/02/2022 - 27/02/2022","label":"21st Feb to 27th Feb 2022"},{"value":"28/02/2022 - 06/03/2022","label":"28th Feb to 06th Mar 2022"}]
+    //this.timeSheetService.getApprovalTimeSheet();
     //this.search("");
+  }
+  refresh(){
+    if(this.fromDate){
+
+      var searchTerm='';
+      this.timeSheetService.patchState({ searchTerm },"/searchApprovalTimesheet");
+    }else{
+      alert("Select Valid Month")
+    }
   }
   private getData() {
     this.attendanceService.getAttendanceComboList().pipe(
@@ -158,7 +172,7 @@ IFilterView {
       } else {
         sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
       }
-      this.timeSheetService.patchState({ sorting },"/searchTimesheet");
+      this.timeSheetService.patchState({ sorting },"/searchApprovalTimesheet");
     }
 
     // pagination
