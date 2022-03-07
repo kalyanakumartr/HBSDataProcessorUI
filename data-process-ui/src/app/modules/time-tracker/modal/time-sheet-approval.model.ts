@@ -10,6 +10,7 @@ export class TimeSheetApproval  {
   symbolLegend:string;
   status:string;
   lockStatus:string;
+  workMode:string;
   timesheetId:string;
 }
 

@@ -25,6 +25,7 @@ export class DailyLogService  {
     isLoadingSubject: BehaviorSubject<boolean>;
     protected http: HttpClient;
   API_URL = `${environment.viewApiUrl}`;
+  API_ADMIN_URL = `${environment.adminApiUrl}`;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     this.http=http;
   }
@@ -60,13 +61,13 @@ export class DailyLogService  {
       })
     );
   }
-  timesheetApprovalReject(date,timesheetId, status){
+  timesheetApprovalReject(date,timesheetId, status, comments){
 
-    const url = this.API_URL + "/approveTimesheet";
+    const url = this.API_ADMIN_URL + "/approveTimesheet";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post(url, {"date" : date, "timesheetIds":[timesheetId] ,"etstatus":status },{headers: httpHeaders}).pipe(
+    return this.http.post(url, {"date" : date, "timesheetIds":[timesheetId] ,"etstatus":status,"comments":comments },{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);
@@ -93,7 +94,7 @@ export class DailyLogService  {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post(url, {"date":date} ,{headers: httpHeaders}).pipe(
+    return this.http.post(url, {"date":date,"comments":" "} ,{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);

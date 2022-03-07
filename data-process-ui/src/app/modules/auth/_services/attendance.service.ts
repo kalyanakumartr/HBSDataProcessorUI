@@ -65,6 +65,26 @@ export class AttendanceService  extends TableAttendanceService<AttendanceModel> 
       })
     );
   }
+  markAttendanceOnBehalf(symbol,mode, currentDate, employeeIds){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    console.log("Inside mark Attendance On Behalf");
+    const url = this.API_ADMIN_URL + '/markAttendanceOnBehalf';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+
+    return this.http.post(url, {'symbol': symbol,'mode':mode,'date':currentDate,'employeeIds':[employeeIds]},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('Error in mark Attendance On Behalf', err);
+        return of("Error in mark Attendance On Behalf");
+      })
+    );
+  }
   getMonthAttendance(){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {

@@ -72,9 +72,8 @@
           <tr *ngFor="let approvalTimeSheet of timeSheetService.items$ | async">
             <td noWrap>{{ approvalTimeSheet.userName}} </td>
           <td style="text-align: center;" *ngFor="let timeSheet of approvalTimeSheet.timesheets">
-            <span class="label label-lg label-inline" (click)= "showTimeSheet(approvalTimeSheet,timeSheet)" [class.label-light-danger]="timeSheet.symbol === 'L'"
-              [class.label-light-success]="timeSheet.symbol === 'P12'" [class.label-light-success]="timeSheet.symbol === 'P8'"
-              [class.label-light-success]="timeSheet.symbol === 'H'"[class.label-light-primary]="timeSheet.symbol === 'A'">
+            <span class="label label-lg label-inline" (click)= "showTimeSheet(approvalTimeSheet,timeSheet)"
+            [class.label-light-warning]="timeSheet.status === 'None'" [class.label-light-success]="timeSheet.status === 'Approved'"  [class.label-light-danger]="timeSheet.status === 'Pending'" >
               <ng-container *ngIf="timeSheet.symbol === 'P8'">P8</ng-container>
               <ng-container *ngIf="timeSheet.symbol === 'P12'">P12</ng-container>
               <ng-container *ngIf="timeSheet.symbol === 'L'">L</ng-container>

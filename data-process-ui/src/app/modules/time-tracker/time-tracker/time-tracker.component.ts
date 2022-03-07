@@ -6,8 +6,11 @@ import { of, Subscription } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
 import { AttendanceModel } from '../../attendance/modal/attendance.model';
+import { TimeSheetModel } from '../../attendance/modal/timesheet.model';
 import { DailyLogService } from '../../auth/_services/dailylog.services';
 import { ProjectService } from '../../auth/_services/project.services';
+import { TimeSheetService } from '../../auth/_services/timesheet.service';
+import { TimeSheetApprovalService } from '../../auth/_services/timesheetapproval.service';
 import { UsersService } from '../../auth/_services/user.service';
 import { DailyActivities } from '../modal/daily-activities.model';
 import { UpdateDailyLog } from '../modal/update-dailylog.model';
@@ -22,7 +25,8 @@ import { UpdateDailyLog } from '../modal/update-dailylog.model';
   ]
 })
 export class TimeTrackerComponent implements OnInit {
-  @Input() attendance: AttendanceModel;
+  @Input() timeSheet:TimeSheetModel;
+  attendance: AttendanceModel;
   isLoading$;
   selValue:string;
   receivedDate:string;
@@ -42,6 +46,7 @@ export class TimeTrackerComponent implements OnInit {
     private snackBar: MatSnackBar,
     private dailyLogService: DailyLogService,
     private projectService: ProjectService,
+    public timeSheetService: TimeSheetService,
     private fb: FormBuilder, public modal: NgbActiveModal
     ) {
       this.logTime="";
@@ -57,6 +62,7 @@ export class TimeTrackerComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.attendance=this.timeSheet.attendance;
     var authModel =this.projectService.getAuthFromLocalStorage();
     console.log(authModel);
     this.projectService.getProjectList(authModel.divisionId).pipe(
@@ -114,6 +120,7 @@ export class TimeTrackerComponent implements OnInit {
        const sbUpdate = this.dailyLogService.submitDailyLog( date).pipe(
         tap(() => {
           this.modal.dismiss();
+          this.timeSheetService.filterData("");
         }),
         catchError((errorMessage) => {
           this.modal.dismiss(errorMessage);

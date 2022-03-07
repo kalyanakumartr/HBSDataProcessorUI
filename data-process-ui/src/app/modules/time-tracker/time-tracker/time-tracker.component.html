@@ -25,7 +25,7 @@
         <label>{{attendance.symbol}} Hrs</label>
       </div>
       <div class="col-lg-3">
-
+        <label>{{attendance.mode}} </label>
       </div>
       <div class="col-lg-2">
         <label>Date :</label>
@@ -39,7 +39,7 @@
         <label>Billable Hours :</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.sumTotalBillable?dailyActivities.sumTotalBillable:"00:00"}} H</label>
+        <label>{{dailyActivities.sumTotalBillable?dailyActivities.sumTotalBillable:"00:00"}} </label>
       </div>
       <div class="col-lg-3">
 
@@ -49,7 +49,7 @@
         <label>Non Billable Hours :</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.sumTotalNonBillable?dailyActivities.sumTotalNonBillable:"00:00"}} H</label>
+        <label>{{dailyActivities.sumTotalNonBillable?dailyActivities.sumTotalNonBillable:"00:00"}} </label>
       </div>
     </div>
     <div class="form-group row">
@@ -57,17 +57,17 @@
         <label nowrap>OverTime Hours:</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.overTimeHours?dailyActivities.overTimeHours:"00:00"}} H</label>
+        <label>{{dailyActivities.overTimeHours?dailyActivities.overTimeHours:"00:00"}} </label>
       </div>
       <div class="col-lg-3">
 
       </div>
 
       <div class="col-lg-3">
-        <label nowrap>Discrencies Hours:</label>
+        <label nowrap>Discrepancies Hours:</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.shortageHours}} H</label>
+        <label>{{dailyActivities.shortageHours?dailyActivities.shortageHours:"00:00"}} </label>
       </div>
     </div>
     <div class="form-group row">
@@ -96,8 +96,8 @@
         <label class="form-control form-control-lg form-control-solid" style ="padding: 0.825rem 0.42rem;">{{billable}}</label>
       </div>
       <div class="col-lg-2">
-        <label>Time</label>
-        <input type="time" class="form-control form-control-lg form-control-solid" name="time" placeholder="time" autocomplete="off"  [(ngModel)]="logTime" />
+        <label>Time (HH:MM)</label>
+        <input type="time" class="form-control form-control-lg form-control-solid" name="time" placeholder="time" min="00:00:00" max="12:00:00" autocomplete="off"  [(ngModel)]="logTime" />
       </div>
       <div class="col-lg-3">
         <label>Remarks</label>
@@ -117,7 +117,7 @@
             <th nowrap >Project   </th>
             <th nowrap >Process   </th>
             <th nowrap >Billable   </th>
-            <th nowrap >Time   </th>
+            <th nowrap >Time (HH:MM)  </th>
             <th nowrap >Remarks   </th>
           </tr>
         </thead>
@@ -145,6 +145,12 @@
 
   </div>
   <div class="modal-footer">
+    <ng-container *ngIf="timeSheet.comments && !(timeSheet.comments =='' || timeSheet.comments ==' ')">
+      <div class="col-lg-3">
+        <label><b>Approver Comments:</b></label>
+        <span>{{timeSheet.comments}}</span>
+      </div>
+    </ng-container>
     <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
 
 

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AttendanceComponent } from './attendance.component';
+import { ChangeAttendanceComponent } from './change-attendance/change-attendance.component';
 import { GroupAttendanceComponent } from './group-attendance/group-attendance.component';
 import { IndividualAttendanceComponent } from './individual-attendance/individual-attendance.component';
 import { MarkAttendanceComponent } from './mark-attendance/mark-attendance.component';
@@ -15,6 +16,10 @@ const routes: Routes = [
       {
         path: 'markAttendance',
         component: MarkAttendanceComponent,
+      },
+      {
+        path: 'changeAttendance',
+        component: ChangeAttendanceComponent,
       },
       {
         path: 'groupAttendance',

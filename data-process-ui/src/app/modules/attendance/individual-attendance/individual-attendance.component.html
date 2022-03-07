@@ -99,7 +99,7 @@
           <th  >Total Hours</th>
           <th  >OT Hours</th>
           <th  >Approved OT Hours</th>
-          <th  >Time Discrencies</th>
+          <th  >Time Discrepancies</th>
           <th nowrap >
             Remarks
 
@@ -112,7 +112,7 @@
           <tr *ngFor="let timeSheet of timeSheetService.items$ | async">
             <td>
               <ng-container *ngIf="timeSheet.editable">
-                <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "addTimeSheet(timeSheet.attendance)">
+                <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "addTimeSheet(timeSheet)">
                   <mat-icon >edit</mat-icon>
                 </button>
               </ng-container>
@@ -131,7 +131,12 @@
           </td>
           <td>{{ timeSheet.attendance.mode }}</td>
             <td>{{ timeSheet.attendance.leaveReason }}</td>
-            <td>{{ timeSheet.attendance.status }}</td>
+            <td>
+
+              <span title="{{timeSheet.comments}}" class="label label-lg label-inline" [class.label-light-danger]="timeSheet.status === 'Rejected'" [class.label-light-warning]="timeSheet.status === 'Pending'" [class.label-light-success]="timeSheet.status === 'Approved'">
+                {{timeSheet.status === 'Approved' || timeSheet.status === 'Rejected' || timeSheet.status === 'Pending' ? timeSheet.status:timeSheet.attendance.status }}
+              </span>
+            </td>
 
 
             <td>

@@ -115,9 +115,17 @@ IFilterView {
       })).subscribe();
   }
   showTimeSheet(approval,timesheet){
-    const modalRef = this.modalService.open(TimeTrackerApprovalComponent, { size: 'lg', animation :true });
-    modalRef.componentInstance.approval = approval;
-    modalRef.componentInstance.timeSheet = timesheet;
+    if(timesheet.status ==='Approved'){
+      if(confirm('Are you sure you want to approve again?')){
+        const modalRef = this.modalService.open(TimeTrackerApprovalComponent, { size: 'lg', animation :true });
+        modalRef.componentInstance.approval = approval;
+        modalRef.componentInstance.timeSheet = timesheet;
+      }
+    }else{
+      const modalRef = this.modalService.open(TimeTrackerApprovalComponent, { size: 'lg', animation :true });
+      modalRef.componentInstance.approval = approval;
+      modalRef.componentInstance.timeSheet = timesheet;
+    }
 
   }
     // filtration

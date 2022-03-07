@@ -85,9 +85,13 @@ IFilterView {
         });
       })).subscribe();
   }
-  addTimeSheet(attendance){
-    const modalRef = this.modalService.open(TimeTrackerComponent, { size: 'lg', animation :true });
-    modalRef.componentInstance.attendance = attendance;
+  addTimeSheet(timeSheet){
+    if(timeSheet.attendance.symbol == 'P8' || timeSheet.attendance.symbol == 'P12'){
+      const modalRef = this.modalService.open(TimeTrackerComponent, { size: 'lg', animation :true });
+      modalRef.componentInstance.timeSheet = timeSheet;
+    }else{
+      alert("Attendance Not Marked Yet");
+    }
 
   }
     // filtration

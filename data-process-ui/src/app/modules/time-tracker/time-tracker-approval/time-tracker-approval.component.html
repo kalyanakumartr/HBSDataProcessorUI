@@ -23,22 +23,11 @@
       </div>
       <div class="col-lg-2">
         <label>{{timeSheet.symbol}} Hrs</label>
-        <!--<span class="label label-lg label-inline" (click)= "change()">i</span>-->
-
+        <span class="label label-lg label-inline" (click)= "change()">i</span>
       </div>
       <div class="col-lg-3">
-        <ng-container *ngIf="changeAttendance">
-
-          <select class="form-control form-control-lg form-control-solid" name="attendance" [(ngModel)]="attendance"
-               formControlName="attendance" (change)="changeAttendanceMethod($event.target.value)">
-              <option value="P8" >P8 - WFH</option>
-              <option value="P12" >P12 -WFH</option>
-              <option value="P8" >P8 -WFO</option>
-              <option value="P12" >P12 -WFO</option>
-
-            </select>
-          </ng-container>
-      </div>
+        <label>{{timeSheet.workMode}} </label>
+       </div>
       <div class="col-lg-2">
         <label>Date :</label>
       </div>
@@ -51,7 +40,7 @@
         <label>Billable Hours :</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.sumTotalBillable?dailyActivities.sumTotalBillable:"00:00"}} H</label>
+        <label>{{dailyActivities.sumTotalBillable?dailyActivities.sumTotalBillable:"00:00"}} </label>
       </div>
       <div class="col-lg-3">
 
@@ -61,7 +50,7 @@
         <label>Non Billable Hours :</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.sumTotalNonBillable?dailyActivities.sumTotalNonBillable:"00:00"}} H</label>
+        <label>{{dailyActivities.sumTotalNonBillable?dailyActivities.sumTotalNonBillable:"00:00"}} </label>
       </div>
     </div>
     <div class="form-group row">
@@ -69,17 +58,17 @@
         <label nowrap>OverTime Hours:</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.overTimeHours?dailyActivities.overTimeHours:"00:00"}} H</label>
+        <label>{{dailyActivities.overTimeHours?dailyActivities.overTimeHours:"00:00"}} </label>
       </div>
       <div class="col-lg-3">
 
       </div>
 
       <div class="col-lg-3">
-        <label nowrap>Discrencies Hours:</label>
+        <label nowrap>Discrepancies Hours:</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.shortageHours}} H</label>
+        <label>{{dailyActivities.shortageHours?dailyActivities.shortageHours:"00:00"}} </label>
       </div>
     </div>
 
@@ -109,11 +98,21 @@
 
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary btn-elevate" (click)="rejected()"
-    [disabled]="dailyActivities.sumTotalBillable && dailyActivities.shortageHours!='00:00'">Rejected</button>
-    <button type="button" class="btn btn-primary btn-elevate" (click)="approve()"
-    [disabled]="dailyActivities.sumTotalBillable && dailyActivities.shortageHours!='00:00'">Approve</button>
-    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+    <ng-container *ngIf="timeSheet.timesheetId ==''">
+      <label>Time Sheet not Submited yet.</label>
+    </ng-container>
+    <ng-container *ngIf="timeSheet.timesheetId !=''">
+      <div class="col-lg-3">
+        <label>Comments</label>
+        <input type="textarea" class="form-control form-control-lg form-control-solid" name="Comments" placeholder="Comments" autocomplete="off" [(ngModel)]="comments"  />
+      </div>
+      <button type="button" class="btn btn-primary btn-elevate" (click)="rejected()"
+      [disabled]="dailyActivities.sumTotalBillable && dailyActivities.shortageHours!='00:00'">Rejected</button>
+      <button type="button" class="btn btn-primary btn-elevate" (click)="approve()"
+      [disabled]="  dailyActivities.sumTotalBillable && dailyActivities.shortageHours!='00:00'">Approve</button>
+  </ng-container>
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="cancel()">Cancel</button>
 
   </div>
+
 </div>

@@ -1,0 +1,38 @@
+<form>
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title h4" id="example-modal-sizes-title-lg">
+
+
+          <b><label class="heading">
+
+            Mark Attendance for {{userName}}  </label></b>
+
+      </div>
+      <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+    </div>
+
+
+      <div class="form-group row">
+          <div class="col-lg-12">
+            <label>Choose Attendance</label>
+            <select class="form-control form-control-lg form-control-solid" name="attendance" [(ngModel)]="attendance" >
+                <option value="P8-WFH" >P8 - WFH</option>
+                <option value="P12-WFH" >P12 - WFH</option>
+                <option value="P8-WFO" >P8 - WFO</option>
+                <option value="P12-WFO" >P12 - WFO</option>
+                <option value="A" >Absent</option>
+
+            </select>
+          </div>
+        </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"  >Mark Attendance</button>
+  </div>
+  </div>
+</form>
+
