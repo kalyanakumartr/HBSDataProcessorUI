@@ -50,5 +50,26 @@ export class WebUploadService  extends TableService<UploadedFiles> implements On
       })
     );
   }
+  deleteFile(urn:string){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
 
+    console.log("Inside Web Upload Delete");
+    const url = this.API_URL + '/deleteWebUpload';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    let formData: FormData = new FormData();
+
+    formData.append('dataURN', urn);
+    return this.http.post(url, {'dataURN': urn},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('Error in Web Upload Delete', err);
+        return of("Error in Web Upload Delete");
+      })
+    );
+  }
 }

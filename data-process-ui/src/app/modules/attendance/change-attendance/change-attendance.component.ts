@@ -33,10 +33,15 @@ export class ChangeAttendanceComponent implements OnInit {
     //alert(this.symbol.indexOf('P')+"----"+this.symbol+"---"+this.workMode+"----"+this.approveDate+"-----"+this.empId+"----"+ this.attendance +"------"+this.formatedDate);
   }
   markAttendanceOnBehalf(symbol, mode){
+    if(symbol == 'A'){
+      symbol='Absent';
+      mode='None';
+    }
     this.attendanceService.markAttendanceOnBehalf(symbol,mode, this.formatedDate,this.empId).pipe(
       tap((res: any) => {
         this.modal.dismiss();
         this.timeSheetService.filterData("");
+
         console.log("timesheetApprovalReject", res);
       }),
       catchError((err) => {

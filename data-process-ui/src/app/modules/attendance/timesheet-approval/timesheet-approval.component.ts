@@ -47,6 +47,7 @@ IFilterView {
   adminSymbolList:LabelValueModel[];
   employeeSymbolList:LabelValueModel[];
   private subscriptions: Subscription[] = [];
+  isClearFilter:boolean;
   constructor(
     private fb: FormBuilder,
     public modalService: NgbModal,
@@ -64,8 +65,13 @@ IFilterView {
 
     // this.fromDate="01/01/2022";
     // this.toDate="31/01/2022";
+    this.searchForm();
     this.getData();
     this.getDateRange();
+    this.isClearFilter=false;
+
+    const sb = this.timeSheetService.isLoading$.subscribe(res => this.isLoading = res);
+    this.subscriptions.push(sb);
     //this.monthWeeklyList=[{"value":"31/01/2022 - 06/02/2022","label":"31st Jan to 06th Feb 2022"},{"value":"07/02/2022 - 13/02/2022","label":"07th Feb to 13th Feb 2022"},{"value":"14/02/2022 - 20/02/2022","label":"14th Feb to 20th Feb 2022"},{"value":"21/02/2022 - 27/02/2022","label":"21st Feb to 27th Feb 2022"},{"value":"28/02/2022 - 01/03/2022","label":"28th Feb to 06th Mar 2022"}]
     //this.timeSheetService.getApprovalTimeSheet();
     //this.search("");
@@ -226,5 +232,17 @@ IFilterView {
     setFromDate(value){
       this.fromDate=value;
     }
+    clearFilter(){
 
+      if(this.isClearFilter){
+        (<HTMLInputElement>document.getElementById("searchText")).value="";
+        this.timeSheetService.setDefaults();
+       // this.timeSheetService.patchState({ searchTerm },"/searchApprovalTimesheet");
+        this.grouping = this.timeSheetService.grouping;
+        this.paginator = this.timeSheetService.paginator;
+        this.sorting = this.timeSheetService.sorting;
+      }else{
+        (<HTMLInputElement>document.getElementById("searchText")).value="";
+      }
+    }
 }
