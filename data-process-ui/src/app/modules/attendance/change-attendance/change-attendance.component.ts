@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
@@ -17,6 +17,7 @@ export class ChangeAttendanceComponent implements OnInit {
   @Input() workMode: string;
   @Input() userName: string;
   @Input() approveDate: string;
+  @Output() passEntry: EventEmitter<any> = new EventEmitter();
   attendance:string;
 
   symbolArray:string[] =['P12WFO','P8WFO','P12WFH','P8WFH'];
@@ -39,9 +40,9 @@ export class ChangeAttendanceComponent implements OnInit {
     }
     this.attendanceService.markAttendanceOnBehalf(symbol,mode, this.formatedDate,this.empId).pipe(
       tap((res: any) => {
+        this.passBack(symbol,mode);
         this.modal.dismiss();
         this.timeSheetService.filterData("");
-
         console.log("timesheetApprovalReject", res);
       }),
       catchError((err) => {
@@ -51,7 +52,9 @@ export class ChangeAttendanceComponent implements OnInit {
         });
       })).subscribe();
   }
-
+  passBack(symbol,mode) {
+    this.passEntry.emit(symbol+"-"+mode);
+    }
   save(){
     if(this.attendance.indexOf("-")>=0){
       var att =this.attendance.split("-");

@@ -79,6 +79,9 @@ export class TimeTrackerApprovalComponent implements OnInit {
 
       this.getDailyLog();
     console.log("Inside Time Tracker ngOnInit", this.timeSheet.date);
+
+
+
   }
   private getDailyLog() {
     var getDailyActivityDate = this.changeDate(this.timeSheet.date);
@@ -112,7 +115,6 @@ export class TimeTrackerApprovalComponent implements OnInit {
   setDefaultValue(){
 
   }
-
 
 
   ngOnDestroy(): void {
@@ -176,6 +178,7 @@ export class TimeTrackerApprovalComponent implements OnInit {
       tap((res: any) => {
         this.modal.dismiss();
         this.timeSheetService.filterData("");
+        this.dailyLogService.filterData("");
         console.log("timesheetApprovalReject", res);
       }),
       catchError((err) => {
@@ -191,6 +194,16 @@ export class TimeTrackerApprovalComponent implements OnInit {
     modalRef.componentInstance.workMode=this.timeSheet.workMode;
     modalRef.componentInstance.userName=this.approval.userName;
     modalRef.componentInstance.approveDate=this.timeSheet.date;
+
+    modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
+      console.log(receivedEntry);
+      var arr = receivedEntry.split("-");
+      if(receivedEntry.indexOf("-")>=0){
+        this.timeSheet.symbol=arr[0].indexOf("P")>=0?arr[0]:"A";
+        this.timeSheet.workMode=arr[1].indexOf("N")>=0?arr[0]:"";
+      }
+      this.getDailyLog();
+      })
   }
   changeAttendanceMethod(value){
     alert (value);

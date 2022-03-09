@@ -66,10 +66,10 @@ upload() {
 
     }),
     catchError((errorMessage) => {
-      this.openSnackBar(errorMessage,"X");
+      this.openSnackBar(errorMessage.error,"X");
       return of();
     }),
-  ).subscribe(res =>this.openSnackBar(res.messageCode?"Web Upload file Uploaded Successful":res,"!!"));
+  ).subscribe(res =>this.openSnackBar(res.messageCode?"Web Upload file Uploaded Successful":"File Uploaded "+res +". Further details check Uploaded Files Summary","!!"));
 
 }
 openSnackBar(message: string, action: string) {

@@ -42,13 +42,7 @@ export class WebUploadService  extends TableService<UploadedFiles> implements On
     let formData: FormData = new FormData();
     formData.append('projectId', projectId);
     formData.append('files[]', file);
-    return this.http.post(url, formData,{headers: httpHeaders}).pipe(
-      catchError(err => {
-        this._errorMsg.next(err);
-        console.error('Error in Web Upload', err);
-        return of("Error in Web Upload");
-      })
-    );
+    return this.http.post(url, formData,{headers: httpHeaders}    );
   }
   deleteFile(urn:string){
     const auth = this.getAuthFromLocalStorage();
