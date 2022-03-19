@@ -9,7 +9,8 @@ export class TimeSheetModel  {
   comments:string;
   eventTrack:string;
   hoursBillable:number;
-  hoursNonBillable:number;
+  hoursNBNP:number;
+  hoursNBP:number;
   lockStatus:string;
   markedTime:string;
   status:string;

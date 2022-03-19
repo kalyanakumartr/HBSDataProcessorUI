@@ -10,8 +10,6 @@ import { TimeSheetModel } from '../../attendance/modal/timesheet.model';
 import { DailyLogService } from '../../auth/_services/dailylog.services';
 import { ProjectService } from '../../auth/_services/project.services';
 import { TimeSheetService } from '../../auth/_services/timesheet.service';
-import { TimeSheetApprovalService } from '../../auth/_services/timesheetapproval.service';
-import { UsersService } from '../../auth/_services/user.service';
 import { DailyActivities } from '../modal/daily-activities.model';
 import { UpdateDailyLog } from '../modal/update-dailylog.model';
 
@@ -36,7 +34,7 @@ export class TimeTrackerComponent implements OnInit {
   projectSelected:any;
   projectList:any[];
   processList:any[];
-  billable:any;
+  billType:any;
   dailyActivities: DailyActivities;
   logTime:string;
   remarks:string;
@@ -54,7 +52,7 @@ export class TimeTrackerComponent implements OnInit {
       this.receivedDate="";
       this.selValue="0";
       this.projectId="CSAV1CM";
-      this.billable=false;
+      this.billType='NBNP';
       this.updateDailyLog = new UpdateDailyLog;
       this.formGroup = new FormGroup({
 
@@ -138,7 +136,7 @@ export class TimeTrackerComponent implements OnInit {
     this.processtId=value;
     for(let process of this.processList){
       if (value == process.processId){
-        this.billable = process.billType == "Billable"?true:false;
+        this.billType = process.billType;
       }
     }
   }
@@ -172,7 +170,7 @@ export class TimeTrackerComponent implements OnInit {
       alert("Log Time");
       return;
     }
-    if(this.dailyActivities.sumTotalBillable && this.dailyActivities.max24Hours && this.logTime.replace(":",".")>this.dailyActivities.max24Hours.replace(":",".")){
+    if(this.dailyActivities.totalBillable && this.dailyActivities.max24Hours && this.logTime.replace(":",".")>this.dailyActivities.max24Hours.replace(":",".")){
       alert("TimeSheet you entered is more than 24 hours. Kindly verify the timesheet");
       return;
     }

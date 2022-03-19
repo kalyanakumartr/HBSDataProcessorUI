@@ -78,6 +78,7 @@
       <table id="tablebox" class="table table-head-custom table-vertical-center ">
         <thead>
           <tr>
+            <th style="text-align: center;">Sl No.</th>
           <th style="text-align: center;" *ngFor="let day of timeSheetService.headers$ | async ">
             {{day}}
 
@@ -86,15 +87,22 @@
         </thead>
         <tbody>
           <tr *ngFor="let approvalTimeSheet of timeSheetService.items$ | async">
+
+            <td noWrap style="text-align: center;">{{ approvalTimeSheet.slNo}} </td>
+            <td noWrap style="text-align: center;">{{ approvalTimeSheet.userId}} </td>
             <td noWrap>{{ approvalTimeSheet.userName}} </td>
+            <td noWrap style="text-align: center;">{{ approvalTimeSheet.employmentStatus}} </td>
           <td style="text-align: center;" *ngFor="let timeSheet of approvalTimeSheet.timesheets">
             <span class="label label-lg label-inline" (click)= "showTimeSheet(approvalTimeSheet,timeSheet)"
             [class.label-light-warning]="timeSheet.status === 'None'" [class.label-light-success]="timeSheet.status === 'Approved'"  [class.label-light-danger]="timeSheet.status === 'Pending'" >
               <ng-container *ngIf="timeSheet.symbol === 'P8'">P8</ng-container>
               <ng-container *ngIf="timeSheet.symbol === 'P12'">P12</ng-container>
-              <ng-container *ngIf="timeSheet.symbol === 'L'">L</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'P4'">P4</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'MeL'">MeL</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'LnL'">LnL</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'Le'">Le</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'Ho'">Ho</ng-container>
               <ng-container *ngIf="timeSheet.symbol === 'A'">A</ng-container>
-              <ng-container *ngIf="timeSheet.symbol === 'H'">H</ng-container>
               <ng-container *ngIf="timeSheet.symbol === '-'">N</ng-container>
             </span>
           </td>

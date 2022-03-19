@@ -4,8 +4,10 @@ import { DailyLog } from "./dailylog.model";
 export class DailyActivities  {
   date:string;
   actualTime:string;
-  sumTotalBillable:string;
-  sumTotalNonBillable:string;
+  totalBillable:string;
+  totalNBNP:string;
+  totalNBP:string;
+  totalNB:string;
   sumTotal:string;
   max24Hours:string;
   overTimeHours:string;

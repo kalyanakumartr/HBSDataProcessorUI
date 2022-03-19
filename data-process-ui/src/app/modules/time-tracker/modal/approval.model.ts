@@ -16,6 +16,8 @@ export class Approval  {
   teamId:string;
   teamName:string;
   userName:string;
+  userId:string;
+  employmentStatus:string;
   timesheets: TimeSheetApproval[];
 
 }

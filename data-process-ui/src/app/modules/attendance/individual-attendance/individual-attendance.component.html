@@ -62,44 +62,45 @@
       <table id="tablebox" class="table table-head-custom table-vertical-center ">
         <thead>
           <tr>
-            <th nowrap >TimeSheet
+            <th nowrap style="text-align: center;">TimeSheet
 
             </th>
-          <th class="sticky-header" nowrap >
+          <th class="sticky-header" style="text-align: center;" nowrap >
             Date
 
           </th>
-          <th class="sticky-header" nowrap >
+          <th class="sticky-header" style="text-align: center;" nowrap >
             Attendance
 
           </th>
-          <th class="sticky-header" nowrap >
+          <th class="sticky-header"  style="text-align: center;" >
             Work Mode
 
           </th>
 
-          <th nowrap >
-            Reason for Leave
 
-          </th>
-          <th nowrap >
+          <th nowrap style="text-align: center;">
             Status
 
           </th>
 
-          <th nowrap >
+          <th  style="text-align: center;">
             Billable Hours
 
           </th>
 
-          <th  >
+          <th style="text-align: center;" >
             Non Billable Hours
 
           </th>
-          <th  >Total Hours</th>
-          <th  >OT Hours</th>
-          <th  >Approved OT Hours</th>
-          <th  >Time Discrepancies</th>
+          <th  style="text-align: center;">Total Hours</th>
+
+          <th  style="text-align: center;">OT Hours</th>
+          <th  style="text-align: center;">Time Discrepancies</th>
+          <th nowrap >
+            Reason for Leave
+
+          </th>
           <th nowrap >
             Remarks
 
@@ -110,28 +111,37 @@
         </thead>
         <tbody>
           <tr *ngFor="let timeSheet of timeSheetService.items$ | async">
-            <td>
+            <td style="text-align: center;">
               <ng-container *ngIf="timeSheet.editable">
                 <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "addTimeSheet(timeSheet)">
                   <mat-icon >edit</mat-icon>
                 </button>
               </ng-container>
+              <ng-container *ngIf="!timeSheet.editable">
+                <button type="button" id="TimeSheet" mat-mini-fab disabled>
+                  <mat-icon >edit</mat-icon>
+                </button>
+              </ng-container>
             </td>
-            <td noWrap>{{ timeSheet.attendance.date | date: 'dd-MMM-yyyy'}} </td>
-          <td>
-            <span class="label label-lg label-inline" [class.label-light-danger]="timeSheet.attendance.symbol === 'L'"
+            <td style="text-align: center;" noWrap>{{ timeSheet.attendance.date | date: 'dd-MMM-yyyy'}} </td>
+          <td style="text-align: center;">
+            <span class="label label-lg label-inline" [class.label-light-danger]="timeSheet.attendance.symbol === 'Le'"
               [class.label-light-success]="timeSheet.attendance.symbol === 'P12'" [class.label-light-success]="timeSheet.attendance.symbol === 'P8'"
-              [class.label-light-success]="timeSheet.attendance.symbol === 'H'"[class.label-light-primary]="timeSheet.attendance.symbol === 'A'">
-              <ng-container *ngIf="timeSheet.attendance.symbol === 'P8'">P-8 Hrs</ng-container>
-              <ng-container *ngIf="timeSheet.attendance.symbol === 'P12'">P-12 Hrs</ng-container>
-              <ng-container *ngIf="timeSheet.attendance.symbol === 'L'">L</ng-container>
+              [class.label-light-primary]="timeSheet.attendance.symbol === 'Ho'"[class.label-light-danger]="timeSheet.attendance.symbol === 'A'">
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'P8'">P8</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'P12'">P12</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'P4'">P4</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'MeL'">MeL</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'LnL'">LnL</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'Le'">Le</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === 'Ho'">Ho</ng-container>
               <ng-container *ngIf="timeSheet.attendance.symbol === 'A'">A</ng-container>
-              <ng-container *ngIf="timeSheet.attendance.symbol === 'H'">H</ng-container>
+              <ng-container *ngIf="timeSheet.attendance.symbol === '-'">N</ng-container>
             </span>
           </td>
-          <td>{{ timeSheet.attendance.mode }}</td>
-            <td>{{ timeSheet.attendance.leaveReason }}</td>
-            <td>
+          <td style="text-align: center;">{{ timeSheet.attendance.mode }}</td>
+
+            <td style="text-align: center;">
 
               <span title="{{timeSheet.comments}}" class="label label-lg label-inline" [class.label-light-danger]="timeSheet.status === 'Rejected'" [class.label-light-warning]="timeSheet.status === 'Pending'" [class.label-light-success]="timeSheet.status === 'Approved'">
                 {{timeSheet.status === 'Approved' || timeSheet.status === 'Rejected' || timeSheet.status === 'Pending' ? timeSheet.status:timeSheet.attendance.status }}
@@ -139,23 +149,22 @@
             </td>
 
 
-            <td>
+            <td style="text-align: center;">
               {{ timeSheet.hoursBillable }}
             </td>
-            <td>
-              {{ timeSheet.hoursNonBillable }}
+            <td style="text-align: center;">
+              {{ timeSheet.totalNBHours}}
             </td>
 
-            <td>
+            <td style="text-align: center;">
               {{ timeSheet.totalHours }}
             </td>
-            <td>
-              {{ timeSheet.otHours }}
+
+            <td style="text-align: center;">
+              {{ timeSheet.hoursOTApproved }}
             </td>
-            <td>
-              {{ timeSheet.approvedOtHours }}
-            </td>
-            <td>{{ timeSheet.discrepencies }}</td>
+            <td style="text-align: center;">{{ timeSheet.discrepencies }}</td>
+            <td>{{ timeSheet.attendance.leaveReason }}</td>
             <td>{{ timeSheet.attendance.remarks }}</td>
 
           </tr>

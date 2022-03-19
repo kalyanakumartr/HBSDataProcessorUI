@@ -39,7 +39,7 @@
         <label>Billable Hours :</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.sumTotalBillable?dailyActivities.sumTotalBillable:"00:00"}} </label>
+        <label>{{dailyActivities.totalBillable?dailyActivities.totalBillable:"00:00"}} </label>
       </div>
       <div class="col-lg-3">
 
@@ -49,7 +49,7 @@
         <label>Non Billable Hours :</label>
       </div>
       <div class="col-lg-2">
-        <label>{{dailyActivities.sumTotalNonBillable?dailyActivities.sumTotalNonBillable:"00:00"}} </label>
+        <label>{{dailyActivities.totalNB?dailyActivities.totalNB:"00:00"}} </label>
       </div>
     </div>
     <div class="form-group row">
@@ -93,7 +93,7 @@
       </div>
       <div class="col-lg-1">
         <label>Billable</label>
-        <label class="form-control form-control-lg form-control-solid" style ="padding: 0.825rem 0.42rem;">{{billable}}</label>
+        <label class="form-control form-control-lg form-control-solid" style ="padding: 0.825rem 0.42rem;">{{billType}}</label>
       </div>
       <div class="col-lg-2">
         <label>Time (HH:MM)</label>
@@ -126,7 +126,7 @@
 
             <td>{{ dailyLog.projectName }}</td>
             <td>{{dailyLog.processName }}</td>
-            <td>{{dailyLog.billable }}</td>
+            <td>{{dailyLog.billableType }}</td>
             <td>{{dailyLog.actualTime.replace(".",":") }}</td>
             <td>{{dailyLog.remarks }}</td>
             <td>
