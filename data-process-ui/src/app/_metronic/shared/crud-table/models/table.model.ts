@@ -59,6 +59,9 @@ export interface TableResponseModel<T> {
   items: T[];
   headerList: T[];
   total: number;
+  leaveBalanceCount:number;
+  approvedLeaveCount:number;
+  unApprovedLeaveCount:number;
 }
 
 export interface ICreateAction {

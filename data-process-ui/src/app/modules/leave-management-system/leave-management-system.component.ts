@@ -45,6 +45,7 @@ IFilterView {
     this.fromDate='01/01/2022';
     this.toDate='31/12/2022';
     this.search('');
+    this.leaveService.items$
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {

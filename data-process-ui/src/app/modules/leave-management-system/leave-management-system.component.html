@@ -3,9 +3,19 @@
     <div class="card-title">
       <h3 class="card-label">Leave Management System</h3>
     </div>
+    <div class="card-title1">
+      Leave Balance :{{leaveService.leaveBalanceCount$}}
+    </div>
+    <div class="card-title1">
+      Approved Leave :{{leaveService.approvedLeaveCount$}}
+    </div>
+    <div class="card-title1">
+      Unapproved Leave :{{leaveService.unApprovedLeaveCount$}}
+    </div>
     <div class="card-toolbar">
       <button type="button" class="btn btn-primary" (click)="applyLeave(2)">Apply Leave</button>
     </div>
+
   </div>
   <div class="card-body">
 

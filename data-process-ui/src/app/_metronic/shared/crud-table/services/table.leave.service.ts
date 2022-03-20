@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TableService } from './table.service';
 import { BehaviorSubject } from 'rxjs';
-import { GroupingState, IAttendanceTableState, ILeaveTableState, MonthPaginatorState, PaginatorState, SortStateAttendance, SortStateLeave } from '..';
+import { GroupingState, IAttendanceTableState, ILeaveTableState, MonthPaginatorState, PaginatorState, SortStateAttendance, SortStateLeave, TableExtendedService } from '..';
 
 const DEFAULT_STATE: IAttendanceTableState = {
   filter: {},
