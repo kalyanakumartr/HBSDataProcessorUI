@@ -27,6 +27,8 @@ export class ApplyLeaveComponent implements OnInit {
   formGroup: FormGroup;
   minDate : NgbDateStruct;
   maxDate : NgbDateStruct;
+  toMinDate : NgbDateStruct;
+  toMaxDate : NgbDateStruct;
   leave:LeaveModel;
   //leaveTypeList:{ [key: number]: string }=[{"key":"leave","value":"Full Day Leave"},{"key":"p4","value":"Half Day Leave"},{"key":"longleave","value":"Long Leave"}, {"key":"medicalleave","value":"Medical Leave"}];
   leaveTypeList:{ [key: string]: string }={"Leave":"Leave","P4":"Half Day Leave","Long_Leave":"Long Leave","Medical_Leave":"Medical Leave"};
@@ -41,12 +43,26 @@ export class ApplyLeaveComponent implements OnInit {
       this.leave= new LeaveModel();
       const current = new Date();
         console.log(current.getFullYear(), current.getMonth(), current.getDate())
-
+        this.maxDate={
+          year: current.getFullYear(),
+          month: current.getMonth() + 3,
+          day: current.getDate()
+        };
       this.minDate = {
-        year: current.getFullYear()-18,
+        year: current.getFullYear(),
         month: current.getMonth() + 1,
         day: current.getDate()
       };
+      this.toMaxDate={
+        year: current.getFullYear(),
+        month: current.getMonth() + 3,
+        day: current.getDate()
+      };
+    this.toMinDate = {
+      year: current.getFullYear(),
+      month: current.getMonth() + 1,
+      day: current.getDate()
+    };
       this.formGroup = new FormGroup({
         fromDate: new FormControl(),
         toDate: new FormControl(),
@@ -85,21 +101,61 @@ export class ApplyLeaveComponent implements OnInit {
         this.add();
 
   }
+  setToDate(){
+    const formData = this.formGroup.value;
+    var fromDate =new Date(formData.fromDate);
+    this.formGroup.value.toDate=undefined;
+    var leaveType = formData.leaveType;
 
+    this.toMinDate = {
+      year: fromDate.getFullYear(),
+      month: fromDate.getMonth() + 1,
+      day: fromDate.getDate()
+    };
+    if(leaveType=="Leave"){
+      this.toMaxDate = {
+        year: fromDate.getFullYear(),
+        month: fromDate.getMonth() + 1,
+        day: fromDate.getDate()+2
+      };
+    }
+    if(leaveType=="P4"){
+      this.toMaxDate = {
+        year: fromDate.getFullYear(),
+        month: fromDate.getMonth() + 1,
+        day: fromDate.getDate()
+      };
+    }
+  }
+  resetDateFields(){
+
+    this.formGroup.value.fromDate=undefined;
+    this.formGroup.value.toDate=undefined;
+  }
   add(){
+    const formData = this.formGroup.value;
+    if(formData.fromDate){
+      alert("Please Select the correct From Date");
+      return;
+    }
+    if(formData.toDate){
+      alert("Please Select the correct To Date");
+      return;
+    }
     this.prepareCustomer();
     console.log("leave:",this.leave);
     const sbUpdate = this.leaveServices.applyLeave(this.leave).pipe(
       tap(() => {
-        this.leaveServices.filterAssetData("");
+        this.leaveServices.filterData("");
         this.modal.dismiss();
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
+        this.leaveServices.filterData("");
         this.openSnackBar(errorMessage,"X");
         return of();
       }),
-    ).subscribe(res =>this.openSnackBar(res,"!!"));
+    ).subscribe(res =>this.openSnackBar(res.messageCode,"!!"));
   }
   private prepareCustomer() {
     const formData = this.formGroup.value;

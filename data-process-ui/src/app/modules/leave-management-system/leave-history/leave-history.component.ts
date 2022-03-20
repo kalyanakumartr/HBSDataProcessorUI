@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of } from 'rxjs';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { GroupingState, IFilterView, IGroupingView, ISearchView, ISortView, PaginatorState, SortStateLeave } from 'src/app/_metronic/shared/crud-table';
+import { GroupingState, IFilterView, IGroupingView, ISearchView, ISortView, PaginatorState, SortStateAttendance, SortStateLeave } from 'src/app/_metronic/shared/crud-table';
 import { LeaveService } from '../../auth/_services/leave.services';
 import { ApplyLeaveComponent } from '../apply-leave/apply-leave.component';
 
+
 @Component({
-  selector: 'app-approve-leave',
-  templateUrl: './approve-leave.component.html',
-  styleUrls: ['./approve-leave.component.scss']
+  selector: 'app-leave-history',
+  templateUrl: './leave-history.component.html',
+  styleUrls: ['./leave-history.component.scss']
 })
-export class ApproveLeaveComponent implements OnInit,
+export class LeaveHistoryComponent implements OnInit,
 ISortView,
 IFilterView,
 IGroupingView,
@@ -29,7 +30,6 @@ IFilterView {
   fromDate:string;
   toDate:string;
   subscriptions: any;
-  comments:any;
   constructor(
     private fb: FormBuilder,
     public modalService: NgbModal,
@@ -37,7 +37,7 @@ IFilterView {
     private _router: Router,
     public leaveService: LeaveService) {
       this.leaveService.listen().subscribe((m:any)=>{
-        console.log("LS -- -- --",m);
+        console.log("m -- -- --",m);
         this.filter();
       });
     }
@@ -45,6 +45,7 @@ IFilterView {
     this.fromDate='01/01/2022';
     this.toDate='31/12/2022';
     this.search('');
+    this.leaveService.items$
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -52,7 +53,11 @@ IFilterView {
       verticalPosition:"bottom"
     });
   }
+  applyLeave(id: number) {
+    const modalRef = this.modalService.open(ApplyLeaveComponent, { size: 'xl' });
+    modalRef.componentInstance.id = id;
 
+ }
   // filtration
   filterForm() {
       this.filterGroup = this.fb.group({
@@ -78,7 +83,7 @@ IFilterView {
   if (type) {
     filter['type'] = type;
   }*/
-  this.leaveService.patchState({ filter },"/searchApprovalLeave");
+  this.leaveService.patchState({ filter },"/searchLeave");
 }
 
     // search
@@ -104,7 +109,8 @@ IFilterView {
 
     search(searchTerm: string) {
       this.leaveService.patchStateWithoutFetch({fromDate:this.fromDate,toDate:this.toDate});
-      this.leaveService.patchState({ searchTerm },"/searchApprovalLeave");
+      //this.leaveService.patchState({ searchTerm },"/searchLeave");
+      this.leaveService.fetch("/searchLeave");
     }
 
     // sorting
@@ -117,12 +123,12 @@ IFilterView {
       } else {
         sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
       }
-      this.leaveService.patchState({ sorting },"/searchApprovalLeave");
+      this.leaveService.patchState({ sorting },"/searchLeave");
     }
 
     // pagination
     paginate(paginator: PaginatorState) {
-      this.leaveService.patchState({ paginator },"/searchApprovalLeave");
+      this.leaveService.patchState({ paginator },"/searchLeave");
     }
     // form actions
     setMonth(value){
@@ -132,7 +138,7 @@ IFilterView {
         this.toDate=position[1];
         var searchTerm='';
         this.leaveService.patchStateWithoutFetch({fromDate:this.fromDate,toDate:this.toDate});
-        this.leaveService.patchState({ searchTerm },"/searchApprovalLeave");
+        this.leaveService.patchState({ searchTerm },"/searchLeave");
       }else{
         alert("Select Valid Month")
       }
@@ -140,7 +146,7 @@ IFilterView {
     searchDates(){
         var searchTerm='';
         this.leaveService.patchStateWithoutFetch({fromDate:this.fromDate,toDate:this.toDate});
-        this.leaveService.patchState({ searchTerm },"/searchApprovalLeave");
+        this.leaveService.patchState({ searchTerm },"/searchLeave");
     }
     setToDate(value){
       this.toDate=value;
@@ -152,26 +158,15 @@ IFilterView {
 
 
     }
-    approve(leaveId){
-      const sbUpdate = this.leaveService.approveRejectLeave(leaveId,"Approved",this.comments).pipe(
-        tap(() => {
-          this.leaveService.filterAssetData("");
-          this.search('');
-        }),
-        catchError((errorMessage) => {
-          this.openSnackBar(errorMessage,"X");
-          return of();
-        }),
-      ).subscribe(res =>this.openSnackBar(res.messageCode,"!!"));
-    }
-    reject(leaveId){
-      const sbUpdate = this.leaveService.approveRejectLeave(leaveId,"Denied",this.comments).pipe(
+    cancel(leaveId){
+      const sbUpdate = this.leaveService.cancelLeave(leaveId).pipe(
         tap(() => {
           this.filter();
-          this.search('');
+         // this.search('');
         }),
         catchError((errorMessage) => {
           this.openSnackBar(errorMessage,"X");
+          this.filter();
           return of();
         }),
       ).subscribe(res =>this.openSnackBar(res.messageCode,"!!"));

@@ -14,13 +14,16 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ApplyLeaveComponent } from './apply-leave/apply-leave.component';
 import { ApproveLeaveComponent } from './approve-leave/approve-leave.component';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
+import { routes } from 'src/app/app-routing.module';
+import { LeaveHistoryComponent } from './leave-history/leave-history.component';
 
 
 
 @NgModule({
-  declarations: [LeaveManagementSystemComponent, ApplyLeaveComponent, ApproveLeaveComponent],
+  declarations: [LeaveManagementSystemComponent, ApplyLeaveComponent, ApproveLeaveComponent, LeaveHistoryComponent],
   imports: [
-    CommonModule, FormsModule,    ReactiveFormsModule, LeaveManagementRoutingModule,InlineSVGModule, NgbDatepickerModule,NgbModalModule, MatSnackBarModule, MatButtonModule,MatIconModule,GeneralModule
+    RouterModule.forChild(routes),CommonModule, FormsModule,    ReactiveFormsModule, LeaveManagementRoutingModule,InlineSVGModule, NgbDatepickerModule,NgbModalModule, MatSnackBarModule, MatButtonModule,MatIconModule,GeneralModule
   ],
   providers: [MatDatepickerModule, MatNativeDateModule],
 })

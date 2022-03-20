@@ -24,7 +24,7 @@
         <div class="form-group row">
           <div class="col-lg-6">
             <label>Leave Type</label>
-            <select class="form-control form-control-lg form-control-solid" name="leaveType"
+            <select class="form-control form-control-lg form-control-solid" name="leaveType" (change)="resetDateFields()"
               [class.is-invalid]="isControlInvalid('leaveType')" formControlName="leaveType" >
               <option  [selected]=true>Choose Leave Type</option>
               <option *ngFor="let leaveType of leaveTypeList | keyvalue" [value] ="leaveType.key">
@@ -41,8 +41,8 @@
               <label>From Date</label>
               <div class="input-group input-group-solid">
                 <div class="input-group input-group-solid">
-                  <input type="text" name="fromDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                    placeholder="mm/dd/yyyy" ngbDatepicker [minDate]="minDate" #fromd="ngbDatepicker" [class.is-invalid]="isControlInvalid('fromDate')"
+                  <input type="text" name="fromDate" class="form-control form-control-lg form-control-solid" autocomplete="off" (dateSelect)="setToDate()"
+                    placeholder="mm/dd/yyyy" ngbDatepicker [minDate]="minDate" [maxDate]="maxDate" #fromd="ngbDatepicker" [class.is-invalid]="isControlInvalid('fromDate')"
                     [class.is-valid]="isControlValid('fromDate')" formControlName="fromDate" readonly="true" /> {{formGroup.value.fromDate | date: 'dd-MMM-yyyy'}}
                   <div class="input-group-append" (click)="fromd.toggle()">
                     <span class="input-group-text">
@@ -57,7 +57,7 @@
               <label>To Date</label>
               <div class="input-group input-group-solid">
                 <input type="text" name="toDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                  placeholder="mm/dd/yyyy" ngbDatepicker [minDate]="minDate" #tod="ngbDatepicker" [class.is-invalid]="isControlInvalid('toDate')"
+                  placeholder="mm/dd/yyyy" ngbDatepicker [minDate]="toMinDate" [maxDate]="toMaxDate" #tod="ngbDatepicker" [class.is-invalid]="isControlInvalid('toDate')"
                   [class.is-valid]="isControlValid('toDate')" formControlName="toDate" readonly="true" /> {{formGroup.value.toDate | date: 'dd-MMM-yyyy'}}
                 <div class="input-group-append" (click)="tod.toggle()">
                   <span class="input-group-text">

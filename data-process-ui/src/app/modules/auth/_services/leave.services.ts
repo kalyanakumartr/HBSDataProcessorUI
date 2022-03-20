@@ -54,6 +54,20 @@ export class LeaveService  extends TableLeaveService<LeaveModel> implements OnDe
 
     return this.http.post(url, {leaveId},{headers: httpHeaders});
   }
+  approveRejectLeave(leaveId:any, status:any, comments:any){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    console.log("Inside Cancel Leave");
+    const url = this.API_ADMIN_URL + '/approveLeave';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+
+    return this.http.post(url, {"leaveId":leaveId,"status":status,"comments":comments},{headers: httpHeaders});
+  }
   getLeaveHistory(){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
