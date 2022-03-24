@@ -16,6 +16,7 @@ export class ChangeAttendanceComponent implements OnInit {
   @Input() symbol: string;
   @Input() workMode: string;
   @Input() userName: string;
+  @Input() employeeId  : string;
   @Input() approveDate: string;
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
   attendance:string;
@@ -28,10 +29,16 @@ export class ChangeAttendanceComponent implements OnInit {
     public attendanceService: AttendanceService, public modal: NgbActiveModal) { }
 
   ngOnInit(): void {
-   this.empId = this.userName.slice(this.userName.indexOf("(")+1,this.userName.lastIndexOf(")"));
+   this.empId = this.employeeId;
    this.attendance= this.symbol.indexOf('P')>=0?this.symbol+"-"+this.workMode:'A';
     this.formatedDate =this.changeDate(this.approveDate)
     //alert(this.symbol.indexOf('P')+"----"+this.symbol+"---"+this.workMode+"----"+this.approveDate+"-----"+this.empId+"----"+ this.attendance +"------"+this.formatedDate);
+  }
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition:"top"
+    });
   }
   markAttendanceOnBehalf(symbol, mode){
     if(symbol == 'A'){
@@ -40,7 +47,9 @@ export class ChangeAttendanceComponent implements OnInit {
     }
     this.attendanceService.markAttendanceOnBehalf(symbol,mode, this.formatedDate,this.empId).pipe(
       tap((res: any) => {
-        this.passBack(symbol,mode);
+        if(res.messageCode.indexOf("Marked")>0){
+          this.passBack(symbol,mode);
+        }
         this.modal.dismiss();
         this.timeSheetService.filterData("");
         console.log("timesheetApprovalReject", res);
@@ -50,7 +59,7 @@ export class ChangeAttendanceComponent implements OnInit {
         return of({
           items: []
         });
-      })).subscribe();
+      })).subscribe(res =>this.openSnackBar(res.messageCode,"!!"));
   }
   passBack(symbol,mode) {
     this.passEntry.emit(symbol+"-"+mode);

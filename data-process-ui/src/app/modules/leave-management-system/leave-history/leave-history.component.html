@@ -52,14 +52,11 @@
                 <td noWrap>{{ leave.reason}} </td>
                 <td noWrap style="text-align: center;">
                   <ng-container *ngIf="leave.editable">
-                    <button type="button" id="log" mat-mini-fab color="warn" (click)= "cancel(leave.leaveId)">
-                      <mat-icon >delete</mat-icon>
-                    </button>
+                    <button type="button" class="btn btn-danger btn-elevate" (click)="cancel(leave.leaveId)" >Cancel</button>
                   </ng-container>
                   <ng-container *ngIf="!leave.editable">
-                    <button type="button" id="log" mat-mini-fab disabled>
-                      <mat-icon >delete</mat-icon>
-                    </button>
+                    <button type="button" class="btn btn-danger btn-elevate" disabled>Cancel</button>
+
                   </ng-container>
                 </td>
               </tr>

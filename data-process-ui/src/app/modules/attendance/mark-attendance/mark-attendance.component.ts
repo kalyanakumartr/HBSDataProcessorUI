@@ -21,20 +21,37 @@ export class MarkAttendanceComponent implements OnInit {
   }
   markAttendance(symbol, mode){
 
-      for(var sym of this.symbolArray){
-        (<HTMLInputElement>document.getElementById(sym)).classList.remove('mat-accent');
-        (<HTMLInputElement>document.getElementById(sym)).classList.add('mat-primary');
-      }
-    (<HTMLInputElement>document.getElementById(symbol+mode)).classList.remove('mat-primary');
-    (<HTMLInputElement>document.getElementById(symbol+mode)).classList.add('mat-accent');
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
 
     var currentDate = dd + '/' + mm + '/' + yyyy;
-    this.attendanceService.markAttendance(symbol,mode, currentDate).subscribe();
+    this.attendanceService.markAttendance(symbol,mode, currentDate).pipe(
+      tap((res) => {
+        if(res.messageCode.indexOf("Marked")>0){
+            for(var sym of this.symbolArray){
+              (<HTMLInputElement>document.getElementById(sym)).classList.remove('mat-accent');
+              (<HTMLInputElement>document.getElementById(sym)).classList.remove('green');
+              (<HTMLInputElement>document.getElementById(sym)).classList.add('mat-primary');
+            }
+          (<HTMLInputElement>document.getElementById(symbol+mode)).classList.remove('mat-primary');
+          (<HTMLInputElement>document.getElementById(symbol+mode)).classList.add('mat-accent');
+          (<HTMLInputElement>document.getElementById(symbol+mode)).classList.add('green');
+        }
+      }),
+      catchError((errorMessage) => {
+        this.openSnackBar(errorMessage,"X");
+        return of();
+      }),
+    ).subscribe(res =>this.openSnackBar(res.messageCode,"!!"));
 
+  }
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition:"top"
+    });
   }
   getMarkedAttendance(){
 
@@ -47,6 +64,7 @@ export class MarkAttendanceComponent implements OnInit {
             console.log(sym,"-------------",this.markAttendanceModel.symbol+this.markAttendanceModel.mode);
             (<HTMLInputElement>document.getElementById(sym)).classList.remove('mat-primary');
             (<HTMLInputElement>document.getElementById(sym)).classList.add('mat-accent');
+            (<HTMLInputElement>document.getElementById(sym)).classList.add('green');
           }
         }
       }),

@@ -51,7 +51,7 @@ export class ApplyLeaveComponent implements OnInit {
       this.minDate = {
         year: current.getFullYear(),
         month: current.getMonth() + 1,
-        day: current.getDate()
+        day: current.getDate()-7
       };
       this.toMaxDate={
         year: current.getFullYear(),
@@ -61,7 +61,7 @@ export class ApplyLeaveComponent implements OnInit {
     this.toMinDate = {
       year: current.getFullYear(),
       month: current.getMonth() + 1,
-      day: current.getDate()
+      day: current.getDate()-7
     };
       this.formGroup = new FormGroup({
         fromDate: new FormControl(),
@@ -126,6 +126,13 @@ export class ApplyLeaveComponent implements OnInit {
         day: fromDate.getDate()
       };
     }
+    if(leaveType=="Long_Leave" || leaveType=="Medical_Leave"){
+      this.toMaxDate = {
+        year: fromDate.getFullYear(),
+        month: fromDate.getMonth() + 3,
+        day: fromDate.getDate()
+      };
+    }
   }
   resetDateFields(){
 
@@ -134,11 +141,11 @@ export class ApplyLeaveComponent implements OnInit {
   }
   add(){
     const formData = this.formGroup.value;
-    if(formData.fromDate){
+    if(!formData.fromDate){
       alert("Please Select the correct From Date");
       return;
     }
-    if(formData.toDate){
+    if(!formData.toDate){
       alert("Please Select the correct To Date");
       return;
     }

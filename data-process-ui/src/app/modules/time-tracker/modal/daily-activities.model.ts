@@ -8,7 +8,7 @@ export class DailyActivities  {
   totalNBNP:string;
   totalNBP:string;
   totalNB:string;
-  sumTotal:string;
+  total:string;
   max24Hours:string;
   overTimeHours:string;
   shortageHours:string;

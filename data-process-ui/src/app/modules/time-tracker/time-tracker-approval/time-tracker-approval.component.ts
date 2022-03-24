@@ -158,14 +158,14 @@ export class TimeTrackerApprovalComponent implements OnInit {
     return date.replace("-Jan-","/01/").replace("-Feb-","/02/").replace("-Mar-","/03/").replace("-Apr-","/04/").replace("-May-","/06/").replace("-Jun-","/06/").replace("-Jul-","/07/").replace("-Aug-","/08/").replace("-Sep-","/09/").replace("-Oct-","/10/").replace("-Nov-","/11/").replace("-Dec-","/12/");
   }
   rejected(){
-    if(this.dailyActivities.totalBillable && this.dailyActivities.shortageHours && parseFloat(this.dailyActivities.sumTotal.replace(":","."))>0 && parseFloat(this.dailyActivities.shortageHours.replace(":","."))==0){
+    if(this.dailyActivities.totalBillable && this.dailyActivities.shortageHours && parseFloat(this.dailyActivities.total.replace(":","."))>0 && parseFloat(this.dailyActivities.shortageHours.replace(":","."))==0){
       this.timesheetApprovalReject("Rejected");
     }else{
       alert("Hours not Correct");
     }
   }
   approve(){
-  if(this.dailyActivities.totalBillable && this.dailyActivities.shortageHours && parseFloat(this.dailyActivities.sumTotal.replace(":","."))>0 && parseFloat(this.dailyActivities.shortageHours.replace(":","."))==0){
+  if(this.dailyActivities.totalBillable && this.dailyActivities.shortageHours && parseFloat(this.dailyActivities.total.replace(":","."))>0 && parseFloat(this.dailyActivities.shortageHours.replace(":","."))==0){
     this.timesheetApprovalReject("Approved");
   }else{
     alert("Hours not Correct");
@@ -193,6 +193,7 @@ export class TimeTrackerApprovalComponent implements OnInit {
     modalRef.componentInstance.symbol=this.timeSheet.symbol;
     modalRef.componentInstance.workMode=this.timeSheet.workMode;
     modalRef.componentInstance.userName=this.approval.userName;
+    modalRef.componentInstance.employeeId =this.approval.employeeId;
     modalRef.componentInstance.approveDate=this.timeSheet.date;
 
     modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
