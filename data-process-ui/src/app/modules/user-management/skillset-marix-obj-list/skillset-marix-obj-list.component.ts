@@ -157,6 +157,7 @@ show:boolean =true;
     });
   }
   onSearchChange(searchValue: string): void {
+    console.log("searchValue",searchValue);
     if(searchValue.length>=3){
       this.getData(searchValue);
     }

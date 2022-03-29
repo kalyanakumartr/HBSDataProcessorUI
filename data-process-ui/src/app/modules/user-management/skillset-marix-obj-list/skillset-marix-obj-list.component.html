@@ -55,7 +55,7 @@
     <div class="grid-container">
       <div class="grid-item">
     <input type="search" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
-      formControlName="searchTerm" /></div>
+      formControlName="searchTerm" (keyup)="applyFilter($event.target.value)" (click)="applyFilter('')"/></div>
       <div class="grid-item" style="cursor: pointer;">
         &nbsp;&nbsp;
       <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>

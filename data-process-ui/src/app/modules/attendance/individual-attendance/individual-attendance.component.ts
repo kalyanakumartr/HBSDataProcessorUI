@@ -86,7 +86,7 @@ IFilterView {
       })).subscribe();
   }
   addTimeSheet(timeSheet){
-    if(timeSheet.attendance.symbol == 'P8' || timeSheet.attendance.symbol == 'P12'){
+    if(timeSheet.attendance.symbol == 'P8' || timeSheet.attendance.symbol == 'P12' || timeSheet.attendance.symbol == 'P4'){
       const modalRef = this.modalService.open(TimeTrackerComponent, { size: 'lg', animation :true });
       modalRef.componentInstance.timeSheet = timeSheet;
     }else{
