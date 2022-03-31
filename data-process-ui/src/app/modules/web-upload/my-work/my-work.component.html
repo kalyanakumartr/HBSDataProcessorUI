@@ -139,10 +139,13 @@
           <th nowrap >WU Miles</th>
           <th nowrap >Sub Country Name</th>
           <th nowrap >Road Type</th>
-          <th nowrap >Uploaded Status</th>
-          <th nowrap >Current WU Status</th>
 
-          <th nowrap >Completed Miles</th>
+          <th nowrap >Current WU Status</th>
+          <ng-container *ngIf="isAssigned">
+            <th nowrap >Assigned To </th>
+          </ng-container>
+          <th nowrap >Hold Reason </th>
+
 
           <th >Primary Non-Div Motorways</th>
           <th >Primary Non-Div Trunk</th>
@@ -191,7 +194,7 @@
               </td>
             <td>
 
-              {{ task.coreData.roadData.receivedDate | date: 'dd-MMM-yyyy'}}</td>
+              {{ task.coreData.roadData.receivedDate }}</td>
 
 
             <td>
@@ -202,15 +205,19 @@
             <td>
               {{ task.coreData.roadData.roadTypeMap.roadName }}
             </td>
-            <td>
-              {{ task.coreData.roadData.roadTypeMap.roadName }}
-            </td>
+
             <td>
               {{ task.currentQueue }}
             </td>
+            <ng-container *ngIf="isAssigned">
+              <td>
+                {{ task.assignedTo }}
+              </td>
+            </ng-container>
             <td>
-              {{ task.coreData.roadData.roadTypeMap.miles }}
+              {{ task.reason? task.reason.reason =='NO REASON'?"":task.reason.reason :""}}
             </td>
+
 
 
 
@@ -226,7 +233,7 @@
               {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[2].miles :""}}
             </td>
             <td>
-              {{task.duration}}
+              {{ task.coreData.roadData.roadTypeMap.multiType? task.coreData.roadData.roadTypeMap.roadTypeList[3].miles :""}}
             </td>
             <td>
               {{ task.status }}

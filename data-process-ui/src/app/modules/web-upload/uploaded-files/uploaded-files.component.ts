@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { of, Subscription } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { GroupingState, IDeleteAction, IDeleteSelectedAction, IFetchSelectedAction, IFilterView, IGroupingView, ISearchView, ISortView, IUpdateStatusForSelectedAction, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
 import { AuthModel } from '../../auth/_models/auth.model';
 import { UsersService } from '../../auth/_services/user.service';
@@ -127,14 +127,25 @@ authModel:AuthModel;
   }
   // form actions
 
-
-
-
-
   delete(id: number) {
-    // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
-    // modalRef.componentInstance.id = id;
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
+  }
+
+
+
+  deleteFile(urn: string) {
+    if(confirm("Are you Sure you want to delete the uploaded file?")){
+      this.webUploadService.deleteFile(urn).pipe(
+        tap((res: any) => {
+          console.log("res", res);
+          this.webUploadService.patchState({  },"/searchWebUpload");
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: []
+          });
+        })).subscribe();
+    }
   }
 
   deleteSelected() {

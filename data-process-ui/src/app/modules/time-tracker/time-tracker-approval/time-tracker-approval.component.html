@@ -1,0 +1,118 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+
+
+        <b><label class="heading">
+
+          Daily Log for {{approval.userName}}  </label></b>
+
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+    <div class="form-group row">
+      <div class="col-lg-2">
+        <label>Shift :</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{timeSheet.symbol}} Hrs</label>
+        <span class="label label-lg label-inline" (click)= "change()">i</span>
+      </div>
+      <div class="col-lg-3">
+        <label>{{timeSheet.workMode}} </label>
+       </div>
+      <div class="col-lg-2">
+        <label>Date :</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{timeSheet.date}}</label>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-lg-2">
+        <label>Billable Hours :</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{dailyActivities.totalBillable?dailyActivities.totalBillable:"00:00"}} </label>
+      </div>
+      <div class="col-lg-3">
+
+      </div>
+
+      <div class="col-lg-3">
+        <label>Non Billable Hours :</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{dailyActivities.totalNB?dailyActivities.totalNB:"00:00"}} </label>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-lg-2">
+        <label nowrap>OverTime Hours:</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{dailyActivities.overTimeHours?dailyActivities.overTimeHours:"00:00"}} </label>
+      </div>
+      <div class="col-lg-3">
+
+      </div>
+
+      <div class="col-lg-3">
+        <label nowrap>Discrepancies Hours:</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{dailyActivities.shortageHours?dailyActivities.shortageHours:"00:00"}} </label>
+      </div>
+    </div>
+
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="tablebox" class="table table-head-custom table-vertical-center ">
+        <thead>
+          <tr>
+            <th nowrap >Project   </th>
+            <th nowrap >Process   </th>
+            <th nowrap >Billable   </th>
+            <th nowrap >Time <br/> (HH:MM) </th>
+            <th nowrap >Remarks   </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dailyLog of dailyActivities.dailyLogList">
+
+            <td>{{dailyLog.projectName }}</td>
+            <td>{{dailyLog.processName }}</td>
+            <td>{{dailyLog.billableType }}</td>
+            <td>{{dailyLog.actualTime.replace(".",":") }}</td>
+            <td>{{dailyLog.remarks }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <ng-container *ngIf="timeSheet.timesheetId ==''">
+      <label>Time Sheet not Submited yet.</label>
+    </ng-container>
+    <ng-container *ngIf="timeSheet.timesheetId !=''">
+      <div class="col-lg-3">
+        <label>Comments</label>
+        <input type="textarea" class="form-control form-control-lg form-control-solid" name="Comments" placeholder="Comments" autocomplete="off" [(ngModel)]="comments"  />
+      </div>
+      <button type="button" class="btn btn-primary btn-elevate" (click)="rejected()"
+      [disabled]="dailyActivities.totalBillable && dailyActivities.shortageHours!='00:00'">Rejected</button>
+      <button type="button" class="btn btn-primary btn-elevate" (click)="approve()"
+      [disabled]="  dailyActivities.totalBillable && dailyActivities.shortageHours!='00:00'">Approve</button>
+  </ng-container>
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="cancel()">Cancel</button>
+
+  </div>
+
+</div>

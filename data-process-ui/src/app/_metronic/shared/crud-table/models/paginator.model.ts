@@ -19,6 +19,17 @@ export class PaginatorState implements IPaginatorState {
   }
 }
 
+export class MonthPaginatorState implements IPaginatorState {
+  page = 1;
+  pageSize = 31;
+  total = 0;
+  pageSizes: number[] = [];
+
+  recalculatePaginator(total: number): PaginatorState {
+    this.total = total;
+    return this;
+  }
+}
 export interface IPaginatorView {
   paginator: PaginatorState;
   ngOnInit(): void;

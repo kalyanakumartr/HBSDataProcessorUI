@@ -18,6 +18,9 @@ const DEFAULT_STATE: ITableState = {
   divisionId: '',
   departmentId: '',
   projectId: '',
+  status:'',
+  fromDate: '',
+  toDate: '',
   grouping: new GroupingState(),
   entityId: undefined
 };
@@ -25,16 +28,32 @@ const DEFAULT_STATE: ITableState = {
 export abstract class TableService<T> {
   // Private fields
   private _items$ = new BehaviorSubject<T[]>([]);
+  private _headers$ = new BehaviorSubject<T[]>([]);
   private _isLoading$ = new BehaviorSubject<boolean>(false);
   private _isFirstLoading$ = new BehaviorSubject<boolean>(true);
   public _tableState$ = new BehaviorSubject<ITableState>(DEFAULT_STATE);
   private _errorMessage = new BehaviorSubject<string>('');
   private _subscriptions: Subscription[] = [];
   private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
+  private _leaveBalanceCount$ :number;
+  private _approvedLeaveCount$ :number;
+  private _unApprovedLeaveCount$ :number;
 
+  get approvedLeaveCount$():number {
+    return this._approvedLeaveCount$;
+  }
+  get leaveBalanceCount$() {
+    return this._leaveBalanceCount$;
+  }
+  get unApprovedLeaveCount$() {
+    return this._unApprovedLeaveCount$;
+  }
   // Getters
   get items$() {
     return this._items$.asObservable();
+  }
+  get headers$() {
+    return this._headers$.asObservable();
   }
   get isLoading$() {
     return this._isLoading$.asObservable();
@@ -103,7 +122,7 @@ export abstract class TableService<T> {
       catchError(err => {
         this._errorMessage.next(err);
         console.error('FIND ITEMS', err);
-        return of({ items: [], total: 0 });
+        return of({ items: [],headerList: [], total: 0, leaveBalanceCount: 0, approvedLeaveCount:0, unApprovedLeaveCount:0 });
       })
     );
   }
@@ -198,6 +217,10 @@ export abstract class TableService<T> {
       .pipe(
         tap((res: TableResponseModel<T>) => {
           this._items$.next(res.items);
+          this._headers$.next(res.headerList);
+          this._leaveBalanceCount$=res.leaveBalanceCount;
+          this._approvedLeaveCount$=res.approvedLeaveCount;
+          this._unApprovedLeaveCount$=res.unApprovedLeaveCount;
           this.patchStateWithoutFetch({
             paginator: this._tableState$.value.paginator.recalculatePaginator(
               res.total

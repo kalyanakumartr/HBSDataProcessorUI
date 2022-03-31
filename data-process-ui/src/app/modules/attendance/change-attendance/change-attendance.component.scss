@@ -1,0 +1,38 @@
+
+
+// Buttons
+.mat-fab,
+.mat-mini-fab,
+.mat-button,
+.mat-raised-button,
+.mat-stroked-button,
+.mat-icon-button {
+    outline: none !important;
+}
+
+mat-radio-button {
+	padding-right: 16px;
+}
+
+mat-radio-button {
+	.mat-radio-label { margin-bottom: 4px; }
+}
+.top-margin-icon{
+  top: 20px;
+}
+.top-margin-text{
+  top: 25px;
+
+}
+.top-margin-button{
+  top: 1px;
+}
+
+.white-icon {
+  color: red;
+}
+.toolbar-button {
+  padding: 0;
+}
+#leg legend {font-family:"Courier New",Courier;font-size:0.5em;font-weight:bold};
+

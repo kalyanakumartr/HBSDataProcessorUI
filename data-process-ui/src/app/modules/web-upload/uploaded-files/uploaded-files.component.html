@@ -3,20 +3,21 @@
     <div class="card-title">
       <h3 class="card-label">Uploaded Files Summary</h3>
     </div>
-
-  </div>
-  <div class="card-body">
     <!-- begin: Filtration form -->
     <div class="form form-label-right">
       <div class="form-group row">
 
-        <div class="col-lg-2" [formGroup]="searchGroup">
-          <input type="text" class="form-control" name="searchText" placeholder="Search" value=""
-            formControlName="searchTerm" /><small class="form-text text-muted"><b>Search</b> in all fields</small>
+        <div class="col-lg-12" [formGroup]="searchGroup">
+          <input type="search" class="form-control" name="searchText" placeholder="Search" value=""
+            formControlName="searchTerm" />
+
         </div>
       </div>
     </div>
     <!-- end: Filtration form -->
+  </div>
+  <div class="card-body">
+
 
 
     <!-- begin:Table -->
@@ -24,6 +25,7 @@
       <table id="tablebox" class="table table-head-custom table-vertical-center ">
         <thead>
           <tr>
+            <th nowrap >Action</th>
           <th class="sticky-header">File Name</th>
           <th nowrap >Trace</th>
 
@@ -41,6 +43,13 @@
         <tbody>
           <tr *ngFor="let uploadFiles of webUploadService.items$ | async">
 
+            <td>
+              <ng-container *ngIf="uploadFiles.trace != 'Deleted'">
+                <button type="button" id="TimeSheet" mat-mini-fab color="warn" (click)= "deleteFile(uploadFiles.dataURN)">
+                  <mat-icon >delete</mat-icon>
+                </button>
+              </ng-container>
+            </td>
             <td>  {{ uploadFiles.uploadFileName }}</td>
 
 

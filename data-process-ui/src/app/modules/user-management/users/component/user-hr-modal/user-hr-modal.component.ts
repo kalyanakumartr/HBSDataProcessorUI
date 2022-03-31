@@ -6,13 +6,12 @@ import { catchError, finalize, first, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter, getDateFromString } from '../../../../../_metronic/core';
 import { UsersService } from 'src/app/modules/auth/_services/user.service';
 
-import { UserITModel } from 'src/app/modules/auth/_models/user-it.model';
 import { BaseModel } from 'src/app/_metronic/shared/crud-table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserHRModel } from 'src/app/modules/auth/_models/user-hr.model';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { Media } from 'src/app/modules/auth/_models/media.model';
-import { BinaryOperatorToken } from 'typescript';
+
 import { FormControl } from '@angular/forms';
 
 const EMPTY_CUSTOMER: UserModel = {

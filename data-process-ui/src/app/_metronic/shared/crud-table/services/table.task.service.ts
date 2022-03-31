@@ -15,6 +15,9 @@ const DEFAULT_STATE: ITaskTableState = {
   grouping: new GroupingState(),
   entityId: undefined,
   employeeId: '',
+  fromDate: '',
+  toDate: '',
+  status: '',
   queueList:[],
   taskStatusList:[]
 

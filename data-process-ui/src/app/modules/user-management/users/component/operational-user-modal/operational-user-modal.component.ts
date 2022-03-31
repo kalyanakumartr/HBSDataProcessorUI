@@ -226,6 +226,8 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
   userId: BaseModel;
   userOPRModel :UserOperationalModel;
   formGroup: FormGroup;
+  projectDefault:string;
+  groupTeamDefault:string;
   private subscriptions: Subscription[] = [];
   constructor(
     private snackBar: MatSnackBar,
@@ -240,7 +242,8 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
       this.userOPRModel =new UserOperationalModel;
       this.userId= new UserOperationalModel;
       this.isAdminRole=false;
-
+      this.projectDefault='None';
+      this.groupTeamDefault='NoTeam';
     }
 
   ngOnInit(): void {
