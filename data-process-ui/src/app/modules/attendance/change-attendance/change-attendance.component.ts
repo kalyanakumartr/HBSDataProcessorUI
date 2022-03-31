@@ -37,7 +37,8 @@ export class ChangeAttendanceComponent implements OnInit {
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 4000,
-      verticalPosition:"top"
+      verticalPosition:"top",
+      horizontalPosition:"right"
     });
   }
   markAttendanceOnBehalf(symbol, mode){
@@ -56,6 +57,9 @@ export class ChangeAttendanceComponent implements OnInit {
       }),
       catchError((err) => {
         console.log(err);
+        console.log(err.status);
+        console.log(err.error);
+        this.openSnackBar(err.error.error_description,"!!")
         return of({
           items: []
         });

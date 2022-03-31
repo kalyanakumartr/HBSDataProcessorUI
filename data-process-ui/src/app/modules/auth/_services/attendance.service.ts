@@ -71,13 +71,7 @@ export class AttendanceService  extends TableAttendanceService<AttendanceModel> 
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
 
-    return this.http.post(url, {'symbol': symbol,'mode':mode,'date':currentDate,'employeeIds':[employeeIds]},{headers: httpHeaders}).pipe(
-      catchError(err => {
-        this._errorMsg.next(err);
-        console.error('Error in mark Attendance On Behalf', err);
-        return of("Error in mark Attendance On Behalf");
-      })
-    );
+    return this.http.post(url, {'symbol': symbol,'mode':mode,'date':currentDate,'employeeIds':[employeeIds]},{headers: httpHeaders});
   }
   getMonthAttendance(){
     const auth = this.getAuthFromLocalStorage();
