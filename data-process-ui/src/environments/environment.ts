@@ -12,6 +12,9 @@ export const environment = {
   apiJsonUrl:'http://localhost:3000',
   viewApiUrl:'http://localhost:9300/edr-view',
   edrReaderApi:'http://localhost:9400/edr-reader',
+  taleApi:'http://localhost:9600/core-tale',
+  reportsApi:'http://localhost:9700/edr-reports',
+  schedulersApi:'http://localhost:9500/edr-schedulers',
 
   /*apiUrl: 'http://180.151.61.19:19000',
   adminApiUrl: 'http://180.151.61.19:19100/core-admin',

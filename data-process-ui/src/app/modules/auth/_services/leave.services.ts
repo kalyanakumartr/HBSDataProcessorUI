@@ -18,9 +18,11 @@ export class LeaveService  extends TableLeaveService<LeaveModel> implements OnDe
     private _errorMsg = new BehaviorSubject<string>('');
     protected http: HttpClient;
     API_ADMIN_URL = `${environment.adminApiUrl}`;
+    TALE_API_URL = `${environment.taleApi}`;
 
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
+    this.API_URL = `${environment.taleApi}`;
   }
   ngOnDestroy() {
     this.subscriptions.forEach(sb => sb.unsubscribe());
@@ -33,7 +35,7 @@ export class LeaveService  extends TableLeaveService<LeaveModel> implements OnDe
     }
 
     console.log("Inside Apply Leave");
-    const url = this.API_ADMIN_URL + '/applyLeave';
+    const url = this.TALE_API_URL + '/applyLeave';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -47,7 +49,7 @@ export class LeaveService  extends TableLeaveService<LeaveModel> implements OnDe
     }
 
     console.log("Inside Cancel Leave");
-    const url = this.API_ADMIN_URL + '/cancelLeave';
+    const url = this.TALE_API_URL + '/cancelLeave';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -61,7 +63,7 @@ export class LeaveService  extends TableLeaveService<LeaveModel> implements OnDe
     }
 
     console.log("Inside Cancel Leave");
-    const url = this.API_ADMIN_URL + '/approveLeave';
+    const url = this.TALE_API_URL + '/approveLeave';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -75,7 +77,7 @@ export class LeaveService  extends TableLeaveService<LeaveModel> implements OnDe
     }
 
     console.log("Inside  Leave History");
-    const url = this.API_ADMIN_URL + '/searchLeave';
+    const url = this.TALE_API_URL + '/searchLeave';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });

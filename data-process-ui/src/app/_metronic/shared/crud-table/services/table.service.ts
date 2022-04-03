@@ -9,6 +9,9 @@ import { SortState } from '../models/sort.model';
 import { GroupingState } from '../models/grouping.model';
 import { environment } from '../../../../../environments/environment';
 import { AuthModel } from 'src/app/modules/auth/_models/auth.model';
+import { LeaveModel } from 'src/app/modules/leave-management-system/modal/leave.model';
+import { AttendanceModel } from 'src/app/modules/attendance/modal/attendance.model';
+import { TimeSheetModel } from 'src/app/modules/attendance/modal/timesheet.model';
 
 const DEFAULT_STATE: ITableState = {
   filter: {},
@@ -88,6 +91,9 @@ export abstract class TableService<T> {
   // API URL has to be overrided
   API_URL = `${environment.adminApiUrl}`;
   constructor(http: HttpClient) {
+    // if(this instanceof LeaveModel || this instanceof AttendanceModel || this instanceof TimeSheetModel){
+    //  this.API_URL = `${environment.taleApi}`;
+    // }
     this.http = http;
   }
 

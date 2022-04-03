@@ -26,6 +26,7 @@ export class DailyLogService  {
     protected http: HttpClient;
   API_URL = `${environment.viewApiUrl}`;
   API_ADMIN_URL = `${environment.adminApiUrl}`;
+  TALE_API_URL = `${environment.taleApi}`;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     this.http=http;
   }
@@ -63,7 +64,7 @@ export class DailyLogService  {
   }
   timesheetApprovalReject(date,timesheetId, status, comments){
 
-    const url = this.API_ADMIN_URL + "/approveTimesheet";
+    const url = this.TALE_API_URL + "/approveTimesheet";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });

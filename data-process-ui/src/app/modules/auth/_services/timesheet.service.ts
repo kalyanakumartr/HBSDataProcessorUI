@@ -18,9 +18,11 @@ export class TimeSheetService  extends TableAttendanceService<TimeSheetModel> im
     private _errorMsg = new BehaviorSubject<string>('');
     protected http: HttpClient;
     API_ADMIN_URL = `${environment.adminApiUrl}`;
+    TALE_API_URL = `${environment.taleApi}`;
 
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
+    this.API_URL = `${environment.taleApi}`;
   }
   ngOnDestroy() {
     this.subscriptions.forEach(sb => sb.unsubscribe());
@@ -33,7 +35,7 @@ export class TimeSheetService  extends TableAttendanceService<TimeSheetModel> im
     }
 
     console.log("Inside Search TimeSheet");
-    const url = this.API_ADMIN_URL + '/searchTimesheet';
+    const url = this.TALE_API_URL + '/searchTimesheet';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -53,7 +55,7 @@ export class TimeSheetService  extends TableAttendanceService<TimeSheetModel> im
     }
 
     console.log("Inside Search TimeSheet");
-    const url = this.API_ADMIN_URL + '/searchApprovalTimesheet';
+    const url = this.TALE_API_URL + '/searchApprovalTimesheet';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
