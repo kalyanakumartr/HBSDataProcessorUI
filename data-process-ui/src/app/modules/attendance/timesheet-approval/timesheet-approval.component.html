@@ -1,7 +1,7 @@
 
 
 
-<div class="card card-custom gutter-b">
+<div class="card card-custom gutter-b" [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': isLoading}">
   <div class="card-header">
     <div class="card-title">
       <h3 class="card-label">Approve TimeSheet </h3>
@@ -111,5 +111,6 @@
       </table>
     </div>
     <!-- end: Table -->
+
   </div>
 

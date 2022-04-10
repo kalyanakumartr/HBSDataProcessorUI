@@ -98,10 +98,10 @@
 
   </div>
   <div class="modal-footer">
-    <ng-container *ngIf="timeSheet.timesheetId ==''">
+    <ng-container *ngIf="!dailyActivities.approveEditable">
       <label>Time Sheet not Submited yet.</label>
     </ng-container>
-    <ng-container *ngIf="timeSheet.timesheetId !=''">
+    <ng-container *ngIf="dailyActivities.approveEditable">
       <div class="col-lg-3">
         <label>Comments</label>
         <input type="textarea" class="form-control form-control-lg form-control-solid" name="Comments" placeholder="Comments" autocomplete="off" [(ngModel)]="comments"  />

@@ -196,8 +196,8 @@ export class TimeTrackerComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
-  deleteDailyLog(id){
-    this.dailyLogService.deleteDailyLog(id).pipe(
+  deleteDailyLog(id, timesheetId){
+    this.dailyLogService.deleteDailyLog(id,timesheetId).pipe(
       tap((res: any) => {
         this.dailyActivities = res;
         this.getDailyLog();

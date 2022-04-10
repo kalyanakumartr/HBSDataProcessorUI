@@ -15,6 +15,8 @@ export class DailyActivities  {
   attendanceHours:string;
   dailyLogList: DailyLog[];
   editable:boolean;
+  approveEditable:boolean;
+  timesheetId:string;
 }
 
 

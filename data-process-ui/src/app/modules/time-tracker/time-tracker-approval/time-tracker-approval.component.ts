@@ -120,20 +120,7 @@ export class TimeTrackerApprovalComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
-  deleteDailyLog(id){
-    this.dailyLogService.deleteDailyLog(id).pipe(
-      tap((res: any) => {
-        this.dailyActivities = res;
-        this.getDailyLog();
-        console.log("DailyActivities", this.dailyActivities)
-      }),
-      catchError((err) => {
-        console.log(err);
-        return of({
-          items: []
-        });
-      })).subscribe();
-  }
+
   // helpers for View
   isControlValid(controlName: string): boolean {
     const control = this.formGroup.controls[controlName];

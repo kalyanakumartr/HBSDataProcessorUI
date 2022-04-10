@@ -117,13 +117,13 @@ export class DailyLogService  {
       })
     );
   }
-  deleteDailyLog(id){
+  deleteDailyLog(id, timesheetId){
 
     const url = this.API_URL + "/deleteDailyLog";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post(url, {"autoId":id },{headers: httpHeaders}).pipe(
+    return this.http.post(url, {"autoId":id, "timesheetId":timesheetId},{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);
