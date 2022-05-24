@@ -24,6 +24,19 @@ const DEFAULT_STATE: ITableState = {
   status:'',
   fromDate: '',
   toDate: '',
+  workUnitId:  '',
+  startWUMiles: '',
+  endWUMiles: '',
+  reasonId: '',
+  roadTypeMapId: '',
+  startAssignedDate: '',
+  startProcessedDate: '',
+  startReceivedDate: '',
+  endAssignedDate: '',
+  endProcessedDate: '',
+  endReceivedDate: '',
+  teamName: '',
+  subCountryId: '',
   grouping: new GroupingState(),
   entityId: undefined
 };
@@ -263,6 +276,19 @@ export abstract class TableService<T> {
     this.patchStateWithoutFetch({ divisionId: '' });
     this.patchStateWithoutFetch({ departmentId: '' });
     this.patchStateWithoutFetch({ projectId: '' });
+    this.patchStateWithoutFetch({ workUnitId: '' });
+    this.patchStateWithoutFetch({ startWUMiles: '' });
+    this.patchStateWithoutFetch({ endWUMiles: '' });
+    this.patchStateWithoutFetch({ reasonId: '' });
+    this.patchStateWithoutFetch({ roadTypeMapId: '' });
+    this.patchStateWithoutFetch({ startAssignedDate: '' });
+    this.patchStateWithoutFetch({ startProcessedDate: '' });
+    this.patchStateWithoutFetch({ startReceivedDate: '' });
+    this.patchStateWithoutFetch({ endAssignedDate: '' });
+    this.patchStateWithoutFetch({ endProcessedDate: '' });
+    this.patchStateWithoutFetch({ endReceivedDate: '' });
+    this.patchStateWithoutFetch({ teamName: '' });
+    this.patchStateWithoutFetch({ subCountryId: '' });
     this.patchStateWithoutFetch({
       paginator: new PaginatorState()
     });

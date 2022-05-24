@@ -27,7 +27,9 @@ import { ProjectService } from '../../auth/_services/project.services';
 import { AuthService, UserModel } from '../../auth';
 import { TaskBatch } from '../modal/taskbatch.model';
 import { WorkUnitEditComponent } from '../work-unit-edit/work-unit-edit.component';
-
+import KTLayoutQuickUser from '../../../../assets/js/layout/extended/quick-user';
+import { KTUtil } from '../../../../assets/js/components/util';
+import { WorkUnitSearchComponent } from '../work-unit-search/work-unit-search.component';
 @Component({
   selector: 'app-my-work',
   templateUrl: './my-work.component.html',
@@ -103,7 +105,14 @@ export class MyWorkComponent
       this.filter();
     });
   }
+  ngAfterViewInit(): void {
+    KTUtil.ready(() => {
 
+      // Init Quick Offcanvas Panel
+      KTLayoutQuickUser.init('kt_advance_search');
+
+  })
+}
   ngOnInit(): void {
     //this.filterForm();
     this.user$ = this.authService.currentUserSubject.asObservable();
@@ -166,6 +175,11 @@ export class MyWorkComponent
       }
     }
   }
+  advanceSearch(id: number) {
+    const modalRef = this.modalService.open(WorkUnitSearchComponent, { size: 'sm' });
+    modalRef.componentInstance.id = id;
+
+ }
   public getTasks() {
     console.log('Inside get Tasks');
     this.workAllocationService

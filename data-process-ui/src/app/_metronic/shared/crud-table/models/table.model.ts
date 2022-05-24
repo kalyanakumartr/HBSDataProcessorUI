@@ -13,6 +13,20 @@ export interface ITableState {
   fromDate: string;
   toDate: string;
   status: string;
+  workUnitId: string;
+  startWUMiles:string;
+  endWUMiles:string;
+  reasonId:string;
+  roadTypeMapId:string;
+  startAssignedDate:string;
+  startProcessedDate:string;
+  startReceivedDate:string;
+  endAssignedDate:string;
+  endProcessedDate:string;
+  endReceivedDate:string;
+  teamName:string;
+  subCountryId:string;
+
   grouping: GroupingState;
   entityId: number | undefined;
 }

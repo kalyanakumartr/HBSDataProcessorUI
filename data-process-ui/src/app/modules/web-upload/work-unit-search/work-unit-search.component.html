@@ -1,0 +1,129 @@
+<!-- begin::User Panel-->
+
+  <div id="kt_advance_search" class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title h4" id="example-modal-sizes-title-lg">
+
+
+          <b><label class="heading">
+
+         Advance Search </label></b>
+
+
+
+      </div>
+      <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+      <ng-container *ngIf="isLoading$ | async">
+        <div class="overlay-layer bg-transparent">
+          <div class="spinner spinner-lg spinner-success"></div>
+        </div>
+      </ng-container>
+
+
+        <form action="#" name="timeTrackerForm" id="assetForm" class="form form-label-right" [formGroup]="formGroup">
+          <div class="form-group row">
+            <div class="col-lg-12">
+              <label>WorkUnits</label>
+              <input type="text" class="form-control" name="workUnits" id ="workUnits" placeholder="workUnits" value=""
+                formControlName="workUnits" />
+              </div>
+
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label>WU min Miles</label>
+              <input type="text" class="form-control" name="wuMinMiles" id ="wuMinMiles" placeholder="min" value=""
+              formControlName="wuMinMiles" />
+            </div>
+            <div class="col-lg-6">
+              <label>&nbsp;</label>
+                <input type="text" class="form-control" name="wuMaxMiles" id ="wuMaxMiles" placeholder="max" value=""
+                formControlName="wuMaxMiles" />
+              </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-lg-12">
+              <label>SubCountry</label>
+              <select class="form-control form-control-lg form-control-solid" name="subCountry" (change)="resetDateFields()"
+                [class.is-invalid]="isControlInvalid('subCountry')" formControlName="subCountry" >
+                <option  [selected]=true>Choose sub country</option>
+                <option *ngFor="let subCountry of subCountryList | keyvalue" [value] ="subCountry.key">
+                  {{ subCountry.value }}
+                </option>
+              </select>
+            </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-12">
+                <label>Road Type</label>
+                <select class="form-control form-control-lg form-control-solid" name="roadType" (change)="resetDateFields()"
+                  [class.is-invalid]="isControlInvalid('roadType')" formControlName="roadType" >
+                  <option  [selected]=true>Choose Road Type</option>
+                  <option *ngFor="let roadType of roadTypeList | keyvalue" [value] ="roadType.key">
+                    {{ roadType.value }}
+                  </option>
+                </select>
+              </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-lg-12">
+                  <label>Hold Reasons</label>
+                  <select class="form-control form-control-lg form-control-solid" name="holdReason" (change)="resetDateFields()"
+                    [class.is-invalid]="isControlInvalid('holdReason')" formControlName="holdReason" >
+                    <option  [selected]=true>Choose Hold Reason</option>
+                    <option *ngFor="let holdReason of holdReasonList | keyvalue" [value] ="holdReason.key">
+                      {{ holdReason.value }}
+                    </option>
+                  </select>
+                </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <label>Team</label>
+                    <select class="form-control form-control-lg form-control-solid" name="team" (change)="resetDateFields()"
+                      [class.is-invalid]="isControlInvalid('team')" formControlName="team" >
+                      <option  [selected]=true>Choose Team</option>
+                      <option *ngFor="let team of teamList | keyvalue" [value] ="team.key">
+                        {{ team.value }}
+                      </option>
+                    </select>
+                  </div>
+                  </div>
+            <div class="form-group row">
+
+              <div class="col-lg-12">
+                <label>WU Date</label>
+                <div class="input-group input-group-solid">
+                  <div class="input-group input-group-solid">
+                    <input type="text" name="fromDate" class="form-control form-control-lg form-control-solid" autocomplete="off" (dateSelect)="setToDate()"
+                      placeholder="mm/dd/yyyy" ngbDatepicker [minDate]="minDate" [maxDate]="maxDate" #fromd="ngbDatepicker" [class.is-invalid]="isControlInvalid('fromDate')"
+                      [class.is-valid]="isControlValid('fromDate')" formControlName="fromDate" readonly="true" /> {{formGroup.value.fromDate | date: 'dd-MMM-yyyy'}}
+                    <div class="input-group-append" (click)="fromd.toggle()">
+                      <span class="input-group-text">
+                        <i class="text-dark-50 flaticon-calendar"></i>
+                      </span>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+
+        </form>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+
+        <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+          [disabled]="formGroup.invalid">Save</button>
+    </div>
+  </div>
+
