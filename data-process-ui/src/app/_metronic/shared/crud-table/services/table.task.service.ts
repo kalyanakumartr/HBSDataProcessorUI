@@ -25,12 +25,13 @@ const DEFAULT_STATE: ITaskTableState = {
   roadTypeMapId: '',
   startAssignedDate: '',
   startProcessedDate: '',
-  startReceivedDate: '',
+  receivedDate: '',
   endAssignedDate: '',
   endProcessedDate: '',
   endReceivedDate: '',
   teamName: '',
   subCountryId: '',
+  isAdvanceSearch:false,
   queueList:[],
   taskStatusList:[]
 
@@ -67,7 +68,18 @@ export class TableTaskService<WorkUnitModel> extends TableService<WorkUnitModel>
 
     this.patchStateWithoutFetch({ employeeId: empId });
     this.patchStateWithoutFetch({ queueList: [queue]});
-    this.patchStateWithoutFetch({ taskStatusList: [status] });
+    const statusList: string[] = status.split(',');
+      if(statusList.length>0){
+
+        this.patchStateWithoutFetch({
+          taskStatusList: statusList,
+      });
+      }
+      else{
+        this.patchStateWithoutFetch({
+          taskStatusList: [status],
+      });
+      }
 
   }
 }

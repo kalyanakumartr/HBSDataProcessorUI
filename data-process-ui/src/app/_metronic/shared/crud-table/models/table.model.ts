@@ -20,13 +20,13 @@ export interface ITableState {
   roadTypeMapId:string;
   startAssignedDate:string;
   startProcessedDate:string;
-  startReceivedDate:string;
+  receivedDate:string;
   endAssignedDate:string;
   endProcessedDate:string;
   endReceivedDate:string;
   teamName:string;
   subCountryId:string;
-
+  isAdvanceSearch:boolean;
   grouping: GroupingState;
   entityId: number | undefined;
 }

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -8,15 +8,18 @@ import { catchError, tap } from 'rxjs/operators';
 import { LayoutService } from 'src/app/_metronic/core';
 import { ProjectService } from '../../auth/_services/project.services';
 import { WorkAllocationService } from '../../auth/_services/workallocation.service';
+import { MyWorkComponent } from '../my-work/my-work.component';
 
 @Component({
   selector: 'app-work-unit-search',
   templateUrl: './work-unit-search.component.html',
-  styleUrls: ['./work-unit-search.component.scss']
+  styleUrls: ['./work-unit-search.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class WorkUnitSearchComponent implements OnInit {
   @Input() projectId: any;
   @Input() group: any;
+  @Output() passEntry: EventEmitter<any> = new EventEmitter();
   isLoading$;
   selValue:string;
   receivedDate:string;
@@ -46,6 +49,7 @@ export class WorkUnitSearchComponent implements OnInit {
     ) {
       this.receivedDate="";
       this.selValue="0";
+      this.roadType="0";
         const current = new Date();
         console.log(current.getFullYear(), current.getMonth(), current.getDate())
         this.maxDate={
@@ -69,8 +73,7 @@ export class WorkUnitSearchComponent implements OnInit {
       day: current.getDate()-7
     };
       this.formGroup = new FormGroup({
-        fromDate: new FormControl(),
-        toDate: new FormControl(),
+        receivedDate: new FormControl(),
         workUnits: new FormControl(),
         wuMinMiles: new FormControl(),
         wuMaxMiles: new FormControl(),
@@ -82,10 +85,15 @@ export class WorkUnitSearchComponent implements OnInit {
     }
 
   ngOnInit(): void {
+
     this.getReceivedDateList(this.projectId);
     this.getRoadTypeMapList(this.projectId);
-    this.getReceivedDateList(this.projectId);
-
+    this.getSubCountryList(this.projectId);
+    this.getTeamForGroup();
+    this.getHoldReason(this.projectId);
+  }
+  ngAfterContentInit(): void{
+    this.formGroup.value.roadType="0";
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -97,13 +105,12 @@ export class WorkUnitSearchComponent implements OnInit {
   loadForm() {
     this.formGroup = this.fb.group({
 
-      fromDate: ['', Validators.compose([ ])],
-      toDate: ['', Validators.compose([ ])],
+      receivedDate: ['', Validators.compose([ ])],
       workUnits: [''],
       wuMinMiles: ['', Validators.compose([ ])],
       wuMaxMiles:[''],
       subCountry: ['', Validators.compose([ ])],
-      roadType:['', Validators.compose([ ])],
+      roadType:['0', Validators.compose([ ])],
       holdReason: ['', Validators.compose([ ])],
       team: ['', Validators.compose([ ])],
 
@@ -118,8 +125,28 @@ export class WorkUnitSearchComponent implements OnInit {
     this.workAllocationService.getReceivedDateList(projectId).pipe(
       tap((res: any) => {
         this.receivedDateList = res;
-        if(this.receivedDateList.length>0){
-          this.receivedDate = this.receivedDateList[0].projectId;
+
+            this.formGroup.patchValue({
+              receivedDate : "0"
+            });
+
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
+  getHoldReason(projectId){
+    this.holdReasonList=[];
+    this.workAllocationService.getHoldReasonList(projectId).pipe(
+      tap((res: any) => {
+        this.holdReasonList = res;
+        if(this.holdReasonList.length>0){
+          this.formGroup.patchValue({
+            holdReason : "0"
+          });
         }
       }),
       catchError((err) => {
@@ -135,7 +162,9 @@ export class WorkUnitSearchComponent implements OnInit {
       tap((res: any) => {
         this.subCountryList = res;
         if(this.subCountryList.length>0){
-          this.subCountry = this.subCountryList[0].projectId;
+          this.formGroup.patchValue({
+            subCountry : "0"
+          });
         }
       }),
       catchError((err) => {
@@ -150,9 +179,9 @@ export class WorkUnitSearchComponent implements OnInit {
     this.workAllocationService.getRoadTypeMapList(projectId).pipe(
       tap((res: any) => {
         this.roadTypeList = res;
-        if(this.roadTypeList.length>0){
-          this.roadType = this.roadTypeList[0].projectId;
-        }
+        this.formGroup.patchValue({
+          roadType : "0"
+        });
       }),
       catchError((err) => {
         console.log(err);
@@ -166,7 +195,9 @@ export class WorkUnitSearchComponent implements OnInit {
     this.projectService.getTeamList(this.group).pipe(
       tap((res: any) => {
         this.teamList = res;
-        console.log("teamList", this.teamList)
+        this.formGroup.patchValue({
+          team : "0"
+        });
       }),
       catchError((err) => {
         console.log(err);
@@ -175,37 +206,41 @@ export class WorkUnitSearchComponent implements OnInit {
         });
       })).subscribe();
   }
-  save() {
-
-
+  advanceSearch() {
+    const filter = {};
+    const workUnits = this.formGroup.get('workUnits').value;
+    const wuMinMiles = this.formGroup.get('wuMinMiles').value;
+    const wuMaxMiles = this.formGroup.get('wuMaxMiles').value;
+    const subCountry = this.formGroup.get('subCountry').value;
+    const team = this.formGroup.get('team').value;
+    const roadType = this.formGroup.get('roadType').value;
+    const receivedDate = this.formGroup.get('receivedDate').value;
+    const reasonId = this.formGroup.get('holdReason').value;
+    this.workAllocationService.patchStateWithoutFetch({
+      workUnitId:workUnits,
+      startWUMiles:wuMinMiles,
+      endWUMiles: wuMaxMiles,
+      roadTypeMapId:roadType=="0"?"":roadType,
+      subCountryId:subCountry=="0"?"":subCountry,
+      teamName:team=="0"?"":team,
+      receivedDate:receivedDate=="0"?"":receivedDate,
+      reasonId:reasonId =="0"?"":reasonId,
+      isAdvanceSearch:true,
+    });
+    this.workAllocationService.fetch('/searchTask');
+    this.passEntry.emit(true);
+    this.modal.dismiss();
 
   }
-  setToDate(){
-    const formData = this.formGroup.value;
-    var fromDate =new Date(formData.fromDate);
-    this.formGroup.value.toDate=undefined;
 
-
-    this.toMinDate = {
-      year: fromDate.getFullYear(),
-      month: fromDate.getMonth() + 1,
-      day: fromDate.getDate()
-    };
-
-  }
   resetDateFields(){
 
-    this.formGroup.value.fromDate=undefined;
-    this.formGroup.value.toDate=undefined;
+
   }
   private prepareCustomer() {
     const formData = this.formGroup.value;
 
 
-    // this.leave.date = this.getFormatedDate(formData.fromDate,"dd/MM/yyyy");
-    // this.leave.toDate =  this.getFormatedDate(formData.toDate,"dd/MM/yyyy");
-    // this.leave.symbol = formData.leaveType;
-    // this.leave.reason =formData.reason;
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());

@@ -31,12 +31,13 @@ const DEFAULT_STATE: ITableState = {
   roadTypeMapId: '',
   startAssignedDate: '',
   startProcessedDate: '',
-  startReceivedDate: '',
+  receivedDate: '',
   endAssignedDate: '',
   endProcessedDate: '',
   endReceivedDate: '',
   teamName: '',
   subCountryId: '',
+  isAdvanceSearch:false,
   grouping: new GroupingState(),
   entityId: undefined
 };
@@ -283,7 +284,7 @@ export abstract class TableService<T> {
     this.patchStateWithoutFetch({ roadTypeMapId: '' });
     this.patchStateWithoutFetch({ startAssignedDate: '' });
     this.patchStateWithoutFetch({ startProcessedDate: '' });
-    this.patchStateWithoutFetch({ startReceivedDate: '' });
+    this.patchStateWithoutFetch({ receivedDate: '' });
     this.patchStateWithoutFetch({ endAssignedDate: '' });
     this.patchStateWithoutFetch({ endProcessedDate: '' });
     this.patchStateWithoutFetch({ endReceivedDate: '' });

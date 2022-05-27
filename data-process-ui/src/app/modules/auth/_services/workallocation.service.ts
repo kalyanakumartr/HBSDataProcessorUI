@@ -259,6 +259,23 @@ export class WorkAllocationService extends TableTaskService<WorkUnitModel> imple
       headers: httpHeaders,
     });
   }
+  getHoldReasonList(projectId: any) {
+    const url = this.API_URL + '/getHoldReasonList';
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${auth.access_token}`,
+    });
+    //this.isLoadingSubject.next(true);
+    console.log("Inside get Hold Reason");
+    return this.http.post(url, {
+        "projectId" : projectId
+    },{
+      headers: httpHeaders,
+    });
+  }
   getReceivedDateList(projectId: any) {
     const url = this.API_URL + '/getReceivedDateList';
     const auth = this.getAuthFromLocalStorage();

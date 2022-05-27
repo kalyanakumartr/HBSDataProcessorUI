@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of, Subscription } from 'rxjs';
@@ -30,10 +30,12 @@ import { WorkUnitEditComponent } from '../work-unit-edit/work-unit-edit.componen
 import KTLayoutQuickUser from '../../../../assets/js/layout/extended/quick-user';
 import { KTUtil } from '../../../../assets/js/components/util';
 import { WorkUnitSearchComponent } from '../work-unit-search/work-unit-search.component';
+
 @Component({
   selector: 'app-my-work',
   templateUrl: './my-work.component.html',
   styleUrls: ['./my-work.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MyWorkComponent
   implements
@@ -79,7 +81,7 @@ export class MyWorkComponent
   batch:string = "New";
   new:string = "New";
   project:any;
-
+  groupId:string;
   private subscriptions: Subscription[] = [];
   authModel: AuthModel;
   user$: Observable<UserModel>;
@@ -100,6 +102,7 @@ export class MyWorkComponent
     this.hasEdit=false;
     this.hasCheckbox = false;
     this.isAssigned = false;
+    this.groupId='';
     this.workAllocationService.listen().subscribe((m:any)=>{
       console.log("m -- -- --",m);
       this.filter();
@@ -119,7 +122,7 @@ export class MyWorkComponent
     this.getQueues();
     this.hasBatch=false;
     this.hasDeliverToClient=false;
-    this.user$.pipe(first()).subscribe(value => { this.getProjectForDivision(value.operationalRecord.division.divisionId);this.selectedUser=value.userId; });
+    this.user$.pipe(first()).subscribe(value => { this.getProjectForDivision(value.operationalRecord.division.divisionId);this.selectedUser=value.userId;this.setGroup(value.operationalRecord.group.teamId,); });
 
     setTimeout(() => {
       //this.workAllocationService.patchStateWithoutFetch({ this.sorting});
@@ -129,9 +132,18 @@ export class MyWorkComponent
       this.workAllocationService.patchStateWithoutFetch({
         queueList: [this.selectedQueue],
       });
-      this.workAllocationService.patchStateWithoutFetch({
-        taskStatusList: [this.selectedStatus],
+      const statusList: string[] = this.selectedStatus.split(',');
+      if(statusList.length>0){
+
+        this.workAllocationService.patchStateWithoutFetch({
+          taskStatusList: statusList,
       });
+      }
+      else{
+        this.workAllocationService.patchStateWithoutFetch({
+          taskStatusList: [this.selectedStatus],
+      });
+      }
       this.workAllocationService.fetch('/searchTask');
     }, 1000);
     this.searchForm();
@@ -144,6 +156,9 @@ export class MyWorkComponent
       (res) => (this.isLoading = res)
     );
     this.subscriptions.push(sb);
+  }
+  setGroup(groupId){
+    this.groupId =groupId;
   }
   getProjectForDivision(division){
     this.projectList=[];
@@ -176,8 +191,12 @@ export class MyWorkComponent
     }
   }
   advanceSearch(id: number) {
-    const modalRef = this.modalService.open(WorkUnitSearchComponent, { size: 'sm' });
-    modalRef.componentInstance.id = id;
+    const modalRef = this.modalService.open(WorkUnitSearchComponent, { size: 'sm' ,windowClass: 'custom-class'});
+    modalRef.componentInstance.projectId = this.project;
+    modalRef.componentInstance.group = this.groupId;
+    modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
+        this.getWorkUnitIds();
+    });
 
  }
   public getTasks() {

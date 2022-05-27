@@ -22,6 +22,7 @@ export class TimeSheetApprovalService  extends TableApprovalService<Approval> im
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
     this.API_URL = `${environment.taleApi}`;
+
   }
   ngOnDestroy() {
     this.subscriptions.forEach(sb => sb.unsubscribe());
@@ -46,6 +47,24 @@ export class TimeSheetApprovalService  extends TableApprovalService<Approval> im
         return of("Error in Search TimeSheet");
       })
     );
+  }
+  getUserList(divisionId){
+    const url = this.API_ADMIN_URL + '/getUserList';
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${auth.access_token}`,
+    });
+    //this.isLoadingSubject.next(true);
+    console.log("Inside get Hold Reason");
+    return this.http.post(url, {
+      "divisionId":divisionId,
+      "searchParam":"",
+    },{
+      headers: httpHeaders,
+    });
   }
   private _listners = new Subject<any>();
   listen(): Observable<any>{

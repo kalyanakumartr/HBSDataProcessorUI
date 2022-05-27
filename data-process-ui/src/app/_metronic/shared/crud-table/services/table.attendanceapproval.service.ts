@@ -25,12 +25,13 @@ const DEFAULT_STATE: IApprovalTableState = {
   roadTypeMapId: '',
   startAssignedDate: '',
   startProcessedDate: '',
-  startReceivedDate: '',
+  receivedDate: '',
   endAssignedDate: '',
   endProcessedDate: '',
   endReceivedDate: '',
   teamName: '',
   subCountryId: '',
+  isAdvanceSearch:false,
   queueList:[],
   taskStatusList:[]
 
