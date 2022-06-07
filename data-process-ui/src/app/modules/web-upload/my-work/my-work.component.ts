@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, first, tap } from 'rxjs/operators';
@@ -68,8 +68,11 @@ export class MyWorkComponent
   isAssigned:boolean;
   hasGroup:boolean;
   hasBatch:boolean;
+  wuCount:number;
+  wuTotalMiles:number;
   hasDeliverToClient:boolean;
   allWorkUnitIds: string[] = [];
+  allWUMiles: Map<string, string> ;
   selectedWorkUnitIds: string[] = [];
   selectedQueue: string;
   mappedSkill: string;
@@ -81,6 +84,7 @@ export class MyWorkComponent
   batch:string = "New";
   new:string = "New";
   project:any;
+  formGroup: FormGroup;
   groupId:string;
   private subscriptions: Subscription[] = [];
   authModel: AuthModel;
@@ -97,6 +101,7 @@ export class MyWorkComponent
     this.statusList = [];
     this.projectList=[];
     this.allWorkUnitIds = [];
+    this.allWUMiles = new Map<string, string>();
     this.selectedWorkUnitIds = [];
     this.hasLink = true;
     this.hasEdit=false;
@@ -106,6 +111,11 @@ export class MyWorkComponent
     this.workAllocationService.listen().subscribe((m:any)=>{
       console.log("m -- -- --",m);
       this.filter();
+    });
+    this.formGroup = new FormGroup({
+      project: new FormControl(),
+      selectedQueue: new FormControl(),
+      selectedStatus: new FormControl(),
     });
   }
   ngAfterViewInit(): void {
@@ -123,7 +133,8 @@ export class MyWorkComponent
     this.hasBatch=false;
     this.hasDeliverToClient=false;
     this.user$.pipe(first()).subscribe(value => { this.getProjectForDivision(value.operationalRecord.division.divisionId);this.selectedUser=value.userId;this.setGroup(value.operationalRecord.group.teamId,); });
-
+    this.wuTotalMiles=0.00;
+    this.wuCount=0;
     setTimeout(() => {
       //this.workAllocationService.patchStateWithoutFetch({ this.sorting});
       this.workAllocationService.patchStateWithoutFetch({
@@ -156,6 +167,17 @@ export class MyWorkComponent
       (res) => (this.isLoading = res)
     );
     this.subscriptions.push(sb);
+    this.formGroup = this.fb.group({
+
+      project: ['', Validators.compose([ ])],
+      selectedQueue: [''],
+      selectedStatus: ['', Validators.compose([ ])]
+    });
+    this.formGroup.patchValue({
+      project : "0: 0",
+      selectedQueue:"0",
+      selectedStatus:"0"
+    });
   }
   setGroup(groupId){
     this.groupId =groupId;
@@ -274,20 +296,33 @@ export class MyWorkComponent
   }
   //CheckBox
   checkAll() {
+    var i=0;
     var checkAllValue = false;
     if ((<HTMLInputElement>document.getElementById('checkAllBox')).checked) {
       checkAllValue = true;
     }
+    this.wuCount=0;
+    this.wuTotalMiles=0.00;
     this.allWorkUnitIds.forEach(function (workunit) {
       console.log('WU', workunit);
       (<HTMLInputElement>document.getElementById(workunit)).checked =
         checkAllValue;
+        this.wuCount++;
+        this.wuTotalMiles = this.wuTotalMiles + parseFloat(this.allWUMiles.get(workunit));
+        i++;
     });
   }
   checkBoxWorkUnit(id) {
+    var miles =parseFloat(this.allWUMiles.get(id));
+    miles = miles == NaN?0.00:miles;
     if ((<HTMLInputElement>document.getElementById(id)).checked == false) {
       (<HTMLInputElement>document.getElementById('checkAllBox')).checked =
         false;
+        this.wuCount--;
+        this.wuTotalMiles = this.wuTotalMiles - miles;
+    }else{
+      this.wuCount++;
+      this.wuTotalMiles = this.wuTotalMiles + miles;
     }
   }
 
@@ -369,20 +404,31 @@ export class MyWorkComponent
 
   getWorkUnitIds() {
     var ids = [];
+    let miles : Map<string, string> = new Map<string, string>();
     const that = this;
     this.workAllocationService.items$.forEach(function (items) {
       ids=[];
+      var i=0;
       items.forEach(function (item) {
+
         if(that.isAssigned){
           ids.push(item.nextAllocationId);
         }else{
           ids.push(item.allocationId);
         }
+        that.allWUMiles.set(ids[i],item.coreData.roadData.wuMiles);
+        console.log(miles, item.allocationId,item.coreData.roadData.wuMiles);
+        i++;
       });
       console.log(ids,"before Slice", that.allWorkUnitIds);
       that.allWorkUnitIds.slice(0, that.allWorkUnitIds.length - 1);
+
     console.log(ids,"After Slice", that.allWorkUnitIds);
     that.allWorkUnitIds = ids;
+
+
+
+    console.log(miles,"After Assign New Miles", that.allWUMiles);
     console.log(ids,"After Assign New ids", that.allWorkUnitIds);
     });
 

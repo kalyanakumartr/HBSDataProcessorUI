@@ -23,5 +23,5 @@ export class WorkUnitModel implements BaseModel {
   endTime: string;
   allotedDate: string;
   status: string;
-
+  wuMiles:number;
 }

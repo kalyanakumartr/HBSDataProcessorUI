@@ -32,6 +32,7 @@ const DEFAULT_STATE: ITaskTableState = {
   teamName: '',
   subCountryId: '',
   isAdvanceSearch:false,
+  isDirectReport:true,
   queueList:[],
   taskStatusList:[]
 

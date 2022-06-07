@@ -2,6 +2,16 @@
   <div class="form form-label-right">
     <div class="card-header">
     <div class="form-group row">
+      <div class="col-sm-2"></div>
+          <div class="col-sm-4">
+          <label><b>Selected WU Count: {{wuCount}} </b></label>
+          </div>
+          <div class="col-sm-6">
+            <label><b>Selected WU Total Miles : {{wuTotalMiles}} </b></label>
+          </div>
+      </div>
+      <div class="form-group row">
+
       <div class="col-sm-2">
           <div class="card-title">
             <h3 class="card-label">My {{selectedQueue}} Task List</h3>
@@ -9,7 +19,7 @@
 
        </div>
        <div class="col-sm-2">
-          <label>Project</label>
+          <label><b>Select Project </b></label>
           <select class="form-control  " name="project" [(ngModel)]="project"
              formControlName="project" (change)="setProject($event.target.value)">
              <option [ngValue]="0" [selected]=true>Select Project</option>
@@ -20,7 +30,7 @@
 
         </div>
         <div class="col-sm-2">
-          <label>Work Allocation</label>
+          <label><b>Work Allocation</b></label>
           <select class="form-control  " name="selectedQueue" (change)="selectQueue($event.target.value)"
              formControlName="selectedQueue">
             <option *ngFor="let queue of queueList" [ngValue]="queue.queueId">

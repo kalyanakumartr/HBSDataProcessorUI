@@ -27,6 +27,7 @@ export interface ITableState {
   teamName:string;
   subCountryId:string;
   isAdvanceSearch:boolean;
+  isDirectReport:boolean;
   grouping: GroupingState;
   entityId: number | undefined;
 }

@@ -48,6 +48,7 @@ IFilterView {
   employeeSymbolList:LabelValueModel[];
   private subscriptions: Subscription[] = [];
   isClearFilter:boolean;
+  isDirectReport:boolean;
   selectedUser:string;
   userList:any;
   constructor(
@@ -71,7 +72,7 @@ IFilterView {
     this.getData();
     this.getDateRange();
     this.isClearFilter=false;
-
+    this.isDirectReport=true;
     const sb = this.timeSheetService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
     //this.monthWeeklyList=[{"value":"31/01/2022 - 06/02/2022","label":"31st Jan to 06th Feb 2022"},{"value":"07/02/2022 - 13/02/2022","label":"07th Feb to 13th Feb 2022"},{"value":"14/02/2022 - 20/02/2022","label":"14th Feb to 20th Feb 2022"},{"value":"21/02/2022 - 27/02/2022","label":"21st Feb to 27th Feb 2022"},{"value":"28/02/2022 - 01/03/2022","label":"28th Feb to 06th Mar 2022"}]
@@ -105,6 +106,15 @@ IFilterView {
     }else{
       alert("Select Valid Month")
     }
+  }
+  setDirectReporting(){
+    if(this.isDirectReport){
+      this.isDirectReport=false;
+    }else{
+      this.isDirectReport=true;
+    }
+    this.timeSheetService.patchStateWithoutFetch({isDirectReport:this.isDirectReport});
+    this.timeSheetService.patchState({  },"/searchApprovalTimesheet");
   }
   private getData() {
     this.attendanceService.getAttendanceComboList().pipe(
@@ -244,6 +254,9 @@ IFilterView {
     setEmployeeId(value){
 
         var searchTerm='';
+        if(value == "Select Leader"){
+          value="";
+        }
         this.timeSheetService.patchStateWithoutFetch({employeeId:value});
         this.timeSheetService.patchState({ searchTerm },"/searchApprovalTimesheet");
 

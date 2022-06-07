@@ -38,6 +38,7 @@ const DEFAULT_STATE: ITableState = {
   teamName: '',
   subCountryId: '',
   isAdvanceSearch:false,
+  isDirectReport:true,
   grouping: new GroupingState(),
   entityId: undefined
 };
