@@ -213,6 +213,10 @@ export class MyWorkComponent
     }
   }
   advanceSearch(id: number) {
+    if(this.project.includes('NoProject')){
+      alert("Please Select Project");
+      return;
+    }
     const modalRef = this.modalService.open(WorkUnitSearchComponent, { size: 'sm' ,windowClass: 'custom-class'});
     modalRef.componentInstance.projectId = this.project;
     modalRef.componentInstance.group = this.groupId;
@@ -303,18 +307,22 @@ export class MyWorkComponent
     }
     this.wuCount=0;
     this.wuTotalMiles=0.00;
+    console.log("WU Ids",this.allWorkUnitIds);
+    const that = this;
     this.allWorkUnitIds.forEach(function (workunit) {
       console.log('WU', workunit);
       (<HTMLInputElement>document.getElementById(workunit)).checked =
         checkAllValue;
-        this.wuCount++;
-        this.wuTotalMiles = this.wuTotalMiles + parseFloat(this.allWUMiles.get(workunit));
+        if(checkAllValue){
+          that.wuCount++;
+          that.wuTotalMiles = that.wuTotalMiles + parseFloat(that.allWUMiles.get(workunit));
+        }
         i++;
     });
   }
   checkBoxWorkUnit(id) {
-    var miles =parseFloat(this.allWUMiles.get(id));
-    miles = miles == NaN?0.00:miles;
+    console.log(id, this.allWUMiles, this.allWUMiles.get(id));
+    var miles =parseFloat(this.allWUMiles.get(id) == undefined?"0":this.allWUMiles.get(id));
     if ((<HTMLInputElement>document.getElementById(id)).checked == false) {
       (<HTMLInputElement>document.getElementById('checkAllBox')).checked =
         false;
@@ -364,8 +372,13 @@ export class MyWorkComponent
         this.hasCheckbox = false;
         this.getBatchList();
       }else{
-
-        if (['HoldQueue'].includes(this.selectedQueue) && ['Ready'].includes(this.selectedStatus)) {
+        if (this.selectedStatus.includes(',')) {
+          this.hasCheckbox = false;
+          this.hasBatch=false;
+          this.hasLink = false;
+          this.hasDeliverToClient=false;
+          this.hasGroup=false;
+        }else if (['HoldQueue'].includes(this.selectedQueue) && ['Ready'].includes(this.selectedStatus)) {
           this.hasCheckbox = true;
           this.hasBatch=false;
           this.hasDeliverToClient=false;
@@ -605,6 +618,7 @@ export class MyWorkComponent
     }else{
       this.isAssigned=false;
     }
+    this.getWorkUnitIds();
   }
   // filtration
   filterForm() {

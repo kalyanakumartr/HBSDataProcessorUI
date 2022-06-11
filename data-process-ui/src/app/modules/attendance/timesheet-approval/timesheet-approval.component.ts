@@ -254,7 +254,7 @@ IFilterView {
     setEmployeeId(value){
 
         var searchTerm='';
-        if(value == "Select Leader"){
+        if(value == "My Team"){
           value="";
         }
         this.timeSheetService.patchStateWithoutFetch({employeeId:value});

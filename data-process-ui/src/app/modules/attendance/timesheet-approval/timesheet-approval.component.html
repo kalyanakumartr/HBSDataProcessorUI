@@ -3,11 +3,12 @@
 
 <div class="card card-custom gutter-b" [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': isLoading}">
   <div class="card-header">
-    <br/>
-    <h4 class="card-label">Approve TimeSheet </h4>
-    <div class="form-group row">&nbsp;</div>
-  <div class="form-group row">
-        <div class="col-md-4" >
+    <div class="card-title">
+      <div class="form-group row">
+        <div class="col-md-2" >
+          <h3 class="card-label">Approve TimeSheet </h3>
+      </div>
+          <div class="col-md-3" >
 
           <select class="form-control form-control-lg " name="monthYear" (change)="setMonth($event.target.value)">
             <option [ngValue]="0" [selected]=true>Select Week</option>
@@ -23,7 +24,7 @@
       </div>
       <div class="col-md-2">
         <select class="form-control form-control-lg " name="monthYear" (change)="setEmployeeId($event.target.value)">
-          <option [ngValue]="0" [selected]=true>Select Leader</option>
+          <option [ngValue]="0" [selected]=true>My Team</option>
           <option *ngFor="let user of userList" [value]="user.employeeId">
             {{ user.fullName }}
           </option>
@@ -52,6 +53,7 @@
 
             </div>
           </div>
+      </div>
 </div>
     <!-- end: Filtration form -->
 
