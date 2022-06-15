@@ -269,6 +269,22 @@ export abstract class TableService<T> {
       .subscribe();
     this._subscriptions.push(request);
   }
+  public exportExcel(path:string) {
+    console.log("Inside exportExcel Path is >>>>" , path);
+    if(path==""){
+      path="/exportToExcelOperRecord"
+    }
+   // this._isLoading$.next(true);
+    this._errorMessage.next('');
+    const url = this.API_URL + path;//'/searchUser';
+    this._errorMessage.next('');
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+
+    });
+    return this.http.post(url, this._tableState$.value,{headers: httpHeaders,responseType: 'blob'});
+
+  }
 
   public setDefaults() {
     this.patchStateWithoutFetch({ filter: {} });

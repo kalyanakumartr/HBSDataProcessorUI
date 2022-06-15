@@ -288,4 +288,19 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
       })
     );
   }
+  /*public exportExcel(path:string) {
+    console.log("Inside exportExcel Path is >>>>" , path);
+    if(path==""){
+      path="/exportToExcelOperRecord"
+    }
+
+    const url = this.API_URL + path;//'/searchUser';
+
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+
+    });
+    return this.http.get(url, {headers: httpHeaders});
+
+  }*/
 }
