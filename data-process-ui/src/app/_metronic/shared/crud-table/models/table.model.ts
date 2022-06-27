@@ -10,6 +10,8 @@ export interface ITableState {
   divisionId:string;
   departmentId: string;
   projectId: string;
+  groupId:string;
+  teamId:string;
   fromDate: string;
   toDate: string;
   status: string;

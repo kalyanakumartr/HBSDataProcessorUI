@@ -12,6 +12,8 @@ const DEFAULT_STATE: IAttendanceTableState = {
   divisionId: '',
   departmentId: '',
   projectId: '',
+  groupId:'',
+  teamId:'',
   grouping: new GroupingState(),
   entityId: undefined,
   employeeId: '',

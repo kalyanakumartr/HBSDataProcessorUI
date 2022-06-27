@@ -21,6 +21,8 @@ const DEFAULT_STATE: ITableState = {
   divisionId: '',
   departmentId: '',
   projectId: '',
+  groupId:'',
+  teamId:'',
   status:'',
   fromDate: '',
   toDate: '',
@@ -105,6 +107,7 @@ export abstract class TableService<T> {
   protected http: HttpClient;
   // API URL has to be overrided
   API_URL = `${environment.adminApiUrl}`;
+  REPORT_API_URL = `${environment.reportsApi}`;
   constructor(http: HttpClient) {
     // if(this instanceof LeaveModel || this instanceof AttendanceModel || this instanceof TimeSheetModel){
     //  this.API_URL = `${environment.taleApi}`;
@@ -133,8 +136,12 @@ export abstract class TableService<T> {
   // READ (Returning filtered list of entities)
   find(tableState: ITableState ,path: string): Observable<TableResponseModel<T>> {
     console.log("Inside find >>>");
-
-    const url = this.API_URL + path;//'/searchUser';
+    var url ='';
+    if(path.endsWith("Report")){
+      url = this.REPORT_API_URL + path;//'/searchUser';
+    }else{
+       url = this.API_URL + path;//'/searchUser';
+    }
     this._errorMessage.next('');
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
@@ -269,14 +276,21 @@ export abstract class TableService<T> {
       .subscribe();
     this._subscriptions.push(request);
   }
-  public exportExcel(path:string) {
+  public exportExcel(path:string,serverType:string) {
     console.log("Inside exportExcel Path is >>>>" , path);
     if(path==""){
       path="/exportToExcelOperRecord"
     }
    // this._isLoading$.next(true);
+   this._tableState$.value.paginator.pageSize=100;
     this._errorMessage.next('');
-    const url = this.API_URL + path;//'/searchUser';
+    var url ='';
+    if(serverType == 'Admin'){
+      url = this.API_URL + path;//'/searchUser';
+    }else if(serverType == 'Report'){
+      url = this.REPORT_API_URL + path;//'/searchUser';
+    }
+
     this._errorMessage.next('');
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,

@@ -333,7 +333,7 @@ itAsset(id: string, name:string,userId:string){
     }
   }
   exportExcel(){
-    this.userService.exportExcel("/exportToExcelITRecord").subscribe(
+    this.userService.exportExcel("/exportToExcelITRecord","Admin").subscribe(
       responseObj => {
         console.log("report success", responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);

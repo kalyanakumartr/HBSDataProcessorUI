@@ -28,6 +28,7 @@ export const locale = {
       PERFORMANCE:'Performance',
       'DAILY LOG':'Daily Log',
       REPORTS:'Reports',
+      WEBUPLOAD:'Web Upload',
       USERMANAGEMENT:'Employee Management',
       USERS:'Employees',
       HROPERATIONS:'HR Operations',

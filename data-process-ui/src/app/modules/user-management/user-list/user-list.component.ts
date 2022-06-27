@@ -349,7 +349,7 @@ authModel:AuthModel;
     }
   }
   exportExcel(){
-    this.userService.exportExcel("/exportToExcelOperRecord").subscribe(
+    this.userService.exportExcel("/exportToExcelOperRecord","Admin").subscribe(
       responseObj => {
         console.log("report success", responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);

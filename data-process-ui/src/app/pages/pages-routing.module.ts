@@ -26,6 +26,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'report',
+        loadChildren: () =>
+          import('../modules/reports/reports.module').then(
+            (m) => m.ReportsModule
+          ),
+      },
+      {
         path: 'leave-management',
         loadChildren: () =>
           import('../modules/leave-management-system/leave-management-system.module').then(

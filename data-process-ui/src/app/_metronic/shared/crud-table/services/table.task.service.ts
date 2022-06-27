@@ -12,6 +12,8 @@ const DEFAULT_STATE: ITaskTableState = {
   divisionId: '',
   departmentId: '',
   projectId: '',
+  groupId:'',
+  teamId:'',
   grouping: new GroupingState(),
   entityId: undefined,
   employeeId: '',
