@@ -21,11 +21,16 @@ import { ReportsComponent } from './reports.component';
 import { ReportsRoutingModule } from './reports-routing.module';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { MatIconModule } from '@angular/material/icon';
+import { HoldWorkunitListComponent } from './hold-workunit-list/hold-workunit-list.component';
+import { DeliverySummaryComponent } from './delivery-summary/delivery-summary.component';
+import { WuDeliveryListComponent } from './wu-delivery-list/wu-delivery-list.component';
+import { ProjectStatusComponent } from './project-status/project-status.component';
+import { WuHoldSummaryComponent } from './wu-hold-summary/wu-hold-summary.component';
 
 
 
 @NgModule({
-  declarations: [WebUploadReportComponent,  ReportsComponent],
+  declarations: [WebUploadReportComponent,  ReportsComponent, HoldWorkunitListComponent, DeliverySummaryComponent, WuDeliveryListComponent, ProjectStatusComponent, WuHoldSummaryComponent],
   imports: [
     CommonModule, ReportsRoutingModule,CommonModule,   HttpClientModule,
     CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatPaginatorModule, MatTableModule,MatSortModule, MatDividerModule, MatExpansionModule,MatDatepickerModule,MatNativeDateModule, MatIconModule,MatFormFieldModule,MatInputModule], providers: [MatDatepickerModule, MatNativeDateModule],

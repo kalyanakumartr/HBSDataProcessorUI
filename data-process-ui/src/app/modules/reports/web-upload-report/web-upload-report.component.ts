@@ -195,6 +195,9 @@ export class WebUploadReportComponent implements
         alert("Please select Project");
         return;
       }
+      if(this.group === undefined){
+        this.group='';
+      }
       var fromDat=this.myFunction(this.fromDate);
       var toDat=this.myFunction(this.toDate);
       if(fromDat.length<=0){

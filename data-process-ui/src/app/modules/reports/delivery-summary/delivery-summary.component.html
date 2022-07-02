@@ -1,7 +1,7 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Web Upload</h3>
+      <h3 class="card-label">Work Unit Summary</h3>
     </div>
     <div class="card-toolbar">
       <div class="form-group row">
@@ -100,14 +100,7 @@
 
         </div>
         <div  class="col-lg-3">
-          <label>Select Group</label>
-            <select class="form-control form-control-lg form-control-solid " name="groupId" [(ngModel)]="group" (change)="setGroup($event.target.value)">
-              <option [ngValue]="groupTeamDefault" [selected]=true>Select Group</option>
-              <option *ngFor="let group of groupList" [ngValue]="group.teamId">
-                {{ group.teamName }}
-              </option>
 
-            </select>
         </div>
         <div class="col-lg-2" >
 
@@ -128,59 +121,51 @@
       <table id="tablebox" class="table table-head-custom table-vertical-center ">
         <thead>
           <tr>
+            <th nowrap >
+              SL #
 
-          <th nowrap >
-            SL #
+            </th>
 
-          </th>
           <th nowrap >
             WU Received Date
 
           </th>
           <th nowrap >
-            Group
+            Task Name
 
           </th>
           <th nowrap >
-            Project Code
+            Work Unit #
 
           </th>
-          <th nowrap >Work Unit Id</th>
-
-
-
-
-          <th nowrap >Subcountry</th>
+          <th nowrap> SubCountry</th>
 
 
           <th nowrap >WU Miles</th>
 
+          <th nowrap >Road Type </th>
+          <th nowrap >Data collection Status</th>
+          <th nowrap >Reason for On hold</th>
           <th nowrap >Remarks</th>
-
-          <th nowrap >Road Type Classification</th>
-          <th nowrap >Primary_Non-Divided_Road_Motorways</th>
-          <th nowrap >Primary_Non-Divided_Road_Trunk</th>
-          <th nowrap >Primary_Non-Divided_Road_Urban</th>
-          <th nowrap >Access_Ramp</th>
+          <th nowrap >Submitted Date</th>
 
 
         </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let webUpload of webUploadService.items$ | async">
-            <td>{{ webUpload.serialNo }}</td>
-            <td>{{ webUpload.receivedDate | date: 'dd-MMM-yyyy'}} </td>
-            <td>{{ webUpload.group}} </td>
-            <td>{{ webUpload.projectCode}} </td>
-            <td>{{ webUpload.workUnitId}} </td>
-            <td>{{ webUpload.subCountry}} </td>
-            <td>{{ webUpload.miles}} </td>
-            <td>{{ webUpload.remarks}} </td>
-            <td>{{ webUpload.roadTypeClassification}} </td>
-            <td>{{ webUpload.primaryNonDividedRoadMotorways}} </td>
-            <td>{{ webUpload.primaryNonDividedRoadTrunk}} </td>
-            <td>{{ webUpload.primaryNonDividedRoadUrban}} </td>
-            <td>{{ webUpload.accessRamp}} </td>
+          <tr *ngFor="let deliveryTracker of deliveryTrackerService.items$ | async">
+            <td>{{ deliveryTracker.serialNo}} </td>
+            <td>{{ deliveryTracker.receivedDate | date: 'dd-MMM-yyyy'}} </td>
+            <td>{{ deliveryTracker.projectCode}} </td>
+            <td>{{ deliveryTracker.workUnitId}} </td>
+            <td>{{ deliveryTracker.subCountry}} </td>
+            <td>{{ deliveryTracker.miles}} </td>
+            <td>{{ deliveryTracker.roadTypeClassification}} </td>
+            <td>{{ deliveryTracker.status}} </td>
+            <td>{{ deliveryTracker.reason}} </td>
+            <td>{{ deliveryTracker.remarks}} </td>
+            <td>{{ deliveryTracker.allotedDate}} </td>
+
 
           </tr>
         </tbody>
