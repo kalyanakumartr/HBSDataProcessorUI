@@ -5,8 +5,15 @@
     </div>
     <div class="card-toolbar">
       <div class="form-group row">
-
-        <div class="col-lg-6">
+        <div class="col-lg-12">
+        <select class="form-control form-control-lg " name="monthYear" (change)="setMonth($event.target.value)">
+          <option [ngValue]="0" [selected]=true>Select Month</option>
+          <option *ngFor="let month of monthlyList" [value]="month.value">
+            {{ month.label }}
+          </option>
+        </select>
+      </div>
+        <!--<div class="col-lg-5">
           <label>From Date</label>
           <div class="input-group input-group-solid">
             <div class="input-group input-group-solid">
@@ -22,7 +29,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-5">
           <label>To Date</label>
           <div class="input-group input-group-solid">
             <input type="text" name="toDate" class="form-control form-control-lg " autocomplete="off" (dateSelect)="setToDate()" [(ngModel)]="toDate"
@@ -36,7 +43,7 @@
             </div>
           </div>
 
-        </div>
+        </div> -->
 
       </div>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -42,6 +42,26 @@ export class DeliveryTrackerService extends TableService<DeliveryModel> implemen
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
+  getMonthlyDateRange(){
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+
+    console.log("Inside getMonthlyDateRange");
+    const url = this.REPORT_API_URL + '/getMonthlyDateRange';
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+
+  }
   getWUHold(){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {
