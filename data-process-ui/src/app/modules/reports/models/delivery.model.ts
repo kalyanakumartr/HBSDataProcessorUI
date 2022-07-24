@@ -18,4 +18,37 @@ export class DeliveryModel implements BaseModel {
   allotedDate:string;
   processedBy:string;
   processedDate:string;
+  department:string;
+  division:string;
+  groupName: string;
+  teamName: string;
+  pdDoneBy: string;
+  pdAllottedDate: string;
+  pdCompletedDate: string;
+  pdCompletedMiles: string;
+  pdTimeTaken: string;
+  pdEstimatedTime: string;
+  pdEfficiency: string;
+  pdStatus: string;
+  pdReason: string;
+  pdRemarks: string;
+  qcDoneBy: string;
+  qcAllottedDate: string;
+  qcCompletedDate: string;
+  qcCompletedMiles: string;
+  qcTimeTaken: string;
+  qcEstimatedTime: string;
+  qcEfficiency: string;
+  qcStatus: string;
+  qcReason: string;
+  qcRemarks: string;
+  qaDoneBy: string;
+  qaAllottedDate: string;
+  qaCompletedDate: string;
+  qaBatchNumber: string;
+  qaStatus: string;
+  qaRemarks: string;
+  deliveryStatus: string;
+  deliveredDate: string;
+
 }

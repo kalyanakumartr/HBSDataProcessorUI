@@ -53,6 +53,8 @@ divisionList:any[];
 division:any;
 projectList:any[];
 project:any;
+groupList:any[];
+group:string;
 isClearFilter:boolean;
 fromDate:any;
 toDate:any;
@@ -98,9 +100,10 @@ authModel:AuthModel;
     if(!this.showDivision){
       this.deliveryTrackerService.patchStateWithoutFetch({ departmentId:this.department,divisionId:this.division});
       this.getProjectForDivision();
+      this.getGroupForDivision();
       this.isClearFilter=true;
     }
-    this.deliveryTrackerService.fetch("/deliveryCompletedReport");
+    this.deliveryTrackerService.fetch("/projectStatusReport");
     console.log("UserList :", this.subscriptions)
     this.grouping = this.deliveryTrackerService.grouping;
     this.paginator = this.deliveryTrackerService.paginator;
@@ -153,7 +156,7 @@ authModel:AuthModel;
     if (type) {
       filter['type'] = type;
     }*/
-    this.deliveryTrackerService.patchState({ filter },"/deliveryCompletedReport");
+    this.deliveryTrackerService.patchState({ filter },"/projectStatusReport");
   }
 
   // search
@@ -178,7 +181,7 @@ authModel:AuthModel;
   }
 
   search(searchTerm: string) {
-    this.deliveryTrackerService.patchState({ searchTerm },"/deliveryCompletedReport");
+    this.deliveryTrackerService.patchState({ searchTerm },"/projectStatusReport");
   }
   SearchFilter(){
     if(this.department.length<=3){
@@ -194,7 +197,9 @@ authModel:AuthModel;
       alert("Please select Project");
       return;
     }
-
+    if(this.group === undefined){
+      this.group='';
+    }
     var fromDat=this.myFunction(this.fromDate);
     var toDat=this.myFunction(this.toDate);
     if(fromDat.length<=0){
@@ -205,7 +210,7 @@ authModel:AuthModel;
       alert("Please select To Date");
       return;
     }
-    this.deliveryTrackerService.patchState({ departmentId:this.department,divisionId:this.division,projectId:this.project,fromDate:fromDat,toDate:toDat},"/deliveryCompletedReport");
+    this.deliveryTrackerService.patchState({ departmentId:this.department,divisionId:this.division,projectId:this.project,groupId:this.group,fromDate:fromDat,toDate:toDat},"/projectStatusReport");
   }
   setFromDate(){
 
@@ -241,12 +246,12 @@ authModel:AuthModel;
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.deliveryTrackerService.patchState({ sorting },"/deliveryCompletedReport");
+    this.deliveryTrackerService.patchState({ sorting },"/projectStatusReport");
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.deliveryTrackerService.patchState({ paginator },"/deliveryCompletedReport");
+    this.deliveryTrackerService.patchState({ paginator },"/projectStatusReport");
   }
   // form actions
 
@@ -299,7 +304,7 @@ authModel:AuthModel;
       if(this.department != "0"){
         this.isClearFilter=true;
         this.getDivisionForDepartment();
-       // this.deliveryTrackerService.patchState({ departmentId:this.department },"/deliveryCompletedReport");
+       // this.deliveryTrackerService.patchState({ departmentId:this.department },"/projectStatusReport");
       }
     }
   }
@@ -309,7 +314,8 @@ authModel:AuthModel;
       this.division= position[1].toString().trim();
       if(this.division != "0"){
         this.getProjectForDivision();
-       // this.deliveryTrackerService.patchState({ divisionId:this.division },"/deliveryCompletedReport");
+        this.getGroupForDivision();
+       // this.deliveryTrackerService.patchState({ divisionId:this.division },"/projectStatusReport");
       }
     }
   }
@@ -328,10 +334,31 @@ authModel:AuthModel;
         });
       })).subscribe();
   }
+  getGroupForDivision(){
+    this.groupList=[];
+    this.projectService.getGroupList(this.division).pipe(
+      tap((res: any) => {
+        this.groupList = res;
+        console.log("groupList", this.groupList)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
   setProject(value){
     var position =value.split(":")
     if(position.length>1){
       this.project= position[1].toString().trim();
+
+    }
+  }
+  setGroup(value){
+    var position =value.split(":")
+    if(position.length>1){
+      this.group= position[1].toString().trim();
 
     }
   }
@@ -374,7 +401,10 @@ authModel:AuthModel;
         if(this.projectList.length>0){
           this.projectList.splice(0, this.projectList.length);
         }
-
+        this.group="0: 0";
+        if(this.groupList.length>0){
+          this.groupList.splice(0, this.groupList.length);
+        }
       }else{
         this.project="0: 0";
       }
@@ -382,9 +412,9 @@ authModel:AuthModel;
       (<HTMLInputElement>document.getElementById("searchText")).value="";
       this.deliveryTrackerService.setDefaults();
       if(this.showDepartment){
-        this.deliveryTrackerService.patchState({ },"/deliveryCompletedReport");
+        this.deliveryTrackerService.patchState({ },"/projectStatusReport");
       }else{
-        this.deliveryTrackerService.patchState({ departmentId:this.department,divisionId:this.division,fromDate:this.fromDate,toDate:this.toDate},"/deliveryCompletedReport");
+        this.deliveryTrackerService.patchState({ departmentId:this.department,divisionId:this.division,fromDate:this.fromDate,toDate:this.toDate},"/projectStatusReport");
       }
       this.grouping = this.deliveryTrackerService.grouping;
       this.paginator = this.deliveryTrackerService.paginator;
@@ -397,13 +427,13 @@ authModel:AuthModel;
     }
   }
   exportExcel(){
-    this.deliveryTrackerService.exportExcel("/exportToExcelDeliveryCompleted","Report").subscribe(
+    this.deliveryTrackerService.exportExcel("/exportToExcelProjectStatus","Report").subscribe(
       responseObj => {
         console.log("report success", responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);
         var link = document.createElement('a');
         link.href = downloadURL;
-        link.download = "DeliverySummary.xlsx";
+        link.download = "ProjectStatus.xlsx";
         link.click();
 
       },
@@ -417,4 +447,3 @@ authModel:AuthModel;
   }
 
 }
-
