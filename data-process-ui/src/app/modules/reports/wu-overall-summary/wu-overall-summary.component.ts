@@ -22,14 +22,12 @@ import { ProjectService } from '../../auth/_services/project.services';
 import { DeliveryTrackerService } from '../../auth/_services/delivery-tracker.service';
 
 
-
-
 @Component({
-  selector: 'app-wu-hold-summary',
-  templateUrl: './wu-hold-summary.component.html',
-  styleUrls: ['./wu-hold-summary.component.scss']
+  selector: 'app-wu-overall-summary',
+  templateUrl: './wu-overall-summary.component.html',
+  styleUrls: ['./wu-overall-summary.component.scss']
 })
-export class WuHoldSummaryComponent implements OnInit,
+export class WuOverallSummaryComponent implements OnInit,
 OnDestroy,
 IDeleteAction,
 IDeleteSelectedAction,
@@ -205,7 +203,7 @@ authModel:AuthModel;
       alert("Please select To Date");
       return;
     }
-    this.deliveryTrackerService.patchState({ departmentId:this.department,divisionId:this.division,projectId:this.project,fromDate:fromDat,toDate:toDat},"/exportToExcelDeliveryCompletedMonthly");
+    this.deliveryTrackerService.patchState({ departmentId:this.department,divisionId:this.division,projectId:this.project,fromDate:fromDat,toDate:toDat},"/deliveryCompletedReport");
   }
   setFromDate(){
 
@@ -397,38 +395,13 @@ authModel:AuthModel;
     }
   }
   exportExcel(){
-    if(this.department.length<=3){
-      alert("Please select Department");
-      return;
-    }
-    if(this.division.length<=3){
-      alert("Please select Division");
-      return;
-    }
-
-    if(this.project.length<=5){
-      alert("Please select Project");
-      return;
-    }
-
-    var fromDat=this.myFunction(this.fromDate);
-    var toDat=this.myFunction(this.toDate);
-    if(fromDat.length<=0){
-      alert("Please select From Date");
-      return;
-    }
-    if(toDat.length<=0){
-      alert("Please select To Date");
-      return;
-    }
-    this.deliveryTrackerService.patchStateWithoutFetch({ departmentId:this.department,divisionId:this.division,projectId:this.project,fromDate:fromDat,toDate:toDat});
-    this.deliveryTrackerService.exportExcel("/exportToExcelDeliveryCompletedMonthly","Report").subscribe(
+    this.deliveryTrackerService.exportExcel("/exportToExcelDeliveryCompleted","Report").subscribe(
       responseObj => {
         console.log("report success", responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);
         var link = document.createElement('a');
         link.href = downloadURL;
-        link.download = "DeliverySummaryMonthly.xlsx";
+        link.download = "DeliverySummary.xlsx";
         link.click();
 
       },
@@ -442,4 +415,3 @@ authModel:AuthModel;
   }
 
 }
-

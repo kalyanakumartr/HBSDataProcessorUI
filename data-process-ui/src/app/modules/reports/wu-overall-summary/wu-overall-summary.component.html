@@ -1,7 +1,7 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Work Unit Hold Summary</h3>
+      <h3 class="card-label">Work Unit Overall Summary</h3>
     </div>
     <div class="card-toolbar">
       <div class="form-group row">
@@ -104,7 +104,11 @@
         </div>
         <div class="col-lg-2" >
 
-
+            <div class="grid-item" style="cursor: pointer;">
+              &nbsp;<br/>&nbsp;
+              <button type="button" id="submit"class="btn btn-primary btn-elevate" (click)="SearchFilter()">Submit</button>&nbsp;&nbsp;
+            <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+            </div>
           </div>
         </div>
       </div>

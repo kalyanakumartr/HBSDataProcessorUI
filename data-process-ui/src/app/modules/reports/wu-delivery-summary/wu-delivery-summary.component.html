@@ -1,7 +1,7 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Work Unit Hold Summary</h3>
+      <h3 class="card-label">Work Unit Delivery Summary</h3>
     </div>
     <div class="card-toolbar">
       <div class="form-group row">
@@ -10,8 +10,8 @@
           <label>From Date</label>
           <div class="input-group input-group-solid">
             <div class="input-group input-group-solid">
-              <input type="text" name="fromDate" class="form-control form-control-lg form-control-solid" autocomplete="off" (dateSelect)="setFromDate()" [(ngModel)]="fromDate"
-                placeholder="mm/dd/yyyy" ngbDatepicker [minDate]="minDate" [maxDate]="maxDate" #fromd="ngbDatepicker"
+              <input type="text" name="fromDate" class="form-control form-control-lg " autocomplete="off" (dateSelect)="setFromDate()" [(ngModel)]="fromDate"
+                placeholder="yyyy-mm-dd" ngbDatepicker [minDate]="minDate" [maxDate]="maxDate" #fromd="ngbDatepicker"
                  readonly="true" />
               <div class="input-group-append" (click)="fromd.toggle()">
                 <span class="input-group-text">
@@ -25,8 +25,8 @@
         <div class="col-lg-6">
           <label>To Date</label>
           <div class="input-group input-group-solid">
-            <input type="text" name="toDate" class="form-control form-control-lg form-control-solid" autocomplete="off" (dateSelect)="setToDate()" [(ngModel)]="toDate"
-              placeholder="mm/dd/yyyy" ngbDatepicker [minDate]="toMinDate" [maxDate]="toMaxDate" #tod="ngbDatepicker"
+            <input type="text" name="toDate" class="form-control form-control-lg " autocomplete="off" (dateSelect)="setToDate()" [(ngModel)]="toDate"
+              placeholder="yyyy-mm-dd" ngbDatepicker [minDate]="toMinDate" [maxDate]="toMaxDate" #tod="ngbDatepicker"
              readonly="true" />
             <div class="input-group-append" (click)="tod.toggle()">
               <span class="input-group-text">

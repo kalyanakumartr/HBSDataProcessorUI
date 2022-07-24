@@ -33,6 +33,8 @@ export const locale = {
       PROJECTSTATUS:'Project Status',
       DELIVERYLIST:'Delivery List',
       DELIVERYSUM:'Delivery Summary',
+      HOLDSUM:'Hold Summary',
+      OVERALLSUM:'OverAll Summary',
       USERMANAGEMENT:'Employee Management',
       USERS:'Employees',
       HROPERATIONS:'HR Operations',

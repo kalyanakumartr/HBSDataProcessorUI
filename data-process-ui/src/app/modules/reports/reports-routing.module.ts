@@ -5,7 +5,9 @@ import { ProjectStatusComponent } from './project-status/project-status.componen
 import { ReportsComponent } from './reports.component';
 import { WebUploadReportComponent } from './web-upload-report/web-upload-report.component';
 import { WuDeliveryListComponent } from './wu-delivery-list/wu-delivery-list.component';
+import { WuDeliverySummaryComponent } from './wu-delivery-summary/wu-delivery-summary.component';
 import { WuHoldSummaryComponent } from './wu-hold-summary/wu-hold-summary.component';
+import { WuOverallSummaryComponent } from './wu-overall-summary/wu-overall-summary.component';
 
 
 const routes: Routes = [
@@ -24,6 +26,14 @@ const routes: Routes = [
       {
         path: 'deliverylist',
         component: WuDeliveryListComponent,
+      },
+      {
+        path: 'deliverysummary',
+        component: WuDeliverySummaryComponent,
+      },
+      {
+        path: 'overallsummary',
+        component: WuOverallSummaryComponent,
       },
       {
         path: 'projectstatus',

@@ -22,14 +22,12 @@ import { ProjectService } from '../../auth/_services/project.services';
 import { DeliveryTrackerService } from '../../auth/_services/delivery-tracker.service';
 
 
-
-
 @Component({
-  selector: 'app-wu-hold-summary',
-  templateUrl: './wu-hold-summary.component.html',
-  styleUrls: ['./wu-hold-summary.component.scss']
+  selector: 'app-wu-delivery-summary',
+  templateUrl: './wu-delivery-summary.component.html',
+  styleUrls: ['./wu-delivery-summary.component.scss']
 })
-export class WuHoldSummaryComponent implements OnInit,
+export class WuDeliverySummaryComponent implements OnInit,
 OnDestroy,
 IDeleteAction,
 IDeleteSelectedAction,

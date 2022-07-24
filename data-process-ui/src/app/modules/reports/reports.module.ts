@@ -26,11 +26,13 @@ import { DeliverySummaryComponent } from './delivery-summary/delivery-summary.co
 import { WuDeliveryListComponent } from './wu-delivery-list/wu-delivery-list.component';
 import { ProjectStatusComponent } from './project-status/project-status.component';
 import { WuHoldSummaryComponent } from './wu-hold-summary/wu-hold-summary.component';
+import { WuDeliverySummaryComponent } from './wu-delivery-summary/wu-delivery-summary.component';
+import { WuOverallSummaryComponent } from './wu-overall-summary/wu-overall-summary.component';
 
 
 
 @NgModule({
-  declarations: [WebUploadReportComponent,  ReportsComponent, HoldWorkunitListComponent, DeliverySummaryComponent, WuDeliveryListComponent, ProjectStatusComponent, WuHoldSummaryComponent],
+  declarations: [WebUploadReportComponent,  ReportsComponent, HoldWorkunitListComponent, DeliverySummaryComponent, WuDeliveryListComponent, ProjectStatusComponent, WuHoldSummaryComponent, WuDeliverySummaryComponent, WuOverallSummaryComponent],
   imports: [
     CommonModule, ReportsRoutingModule,CommonModule,   HttpClientModule,
     CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatPaginatorModule, MatTableModule,MatSortModule, MatDividerModule, MatExpansionModule,MatDatepickerModule,MatNativeDateModule, MatIconModule,MatFormFieldModule,MatInputModule], providers: [MatDatepickerModule, MatNativeDateModule],
