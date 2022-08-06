@@ -434,6 +434,8 @@ export class WebUploadReportComponent implements
       }
     }
     exportExcel(){
+      (<HTMLInputElement>document.getElementById("exportExcel")).disabled=true;
+    (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = false;
       this.webUploadService.exportExcel("/exportToExcelWebUpload","Report").subscribe(
         responseObj => {
           console.log("report success", responseObj);
@@ -442,11 +444,13 @@ export class WebUploadReportComponent implements
           link.href = downloadURL;
           link.download = "WebUpload.xlsx";
           link.click();
-
+          (<HTMLInputElement>document.getElementById("exportExcel")).disabled=false;
+          (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = true;
         },
         error => {
           console.log("report error", error);
-
+          (<HTMLInputElement>document.getElementById("exportExcel")).disabled=false;
+          (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = true;
 
         }
       );
