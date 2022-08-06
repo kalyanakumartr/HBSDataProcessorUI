@@ -82,7 +82,7 @@ authModel:AuthModel;
       this.showDivision=true;
       this.showDepartment=true;
       this.roleId = authService.currentUserSubject.value.roleId;
-      if(this.roleId.endsWith('ProjectLeader')){
+      if(this.roleId.includes('ProjectLeader')){
         this.divisionName = authService.currentUserSubject.value.operationalRecord.division.divisionName;
         this.departmentName = authService.currentUserSubject.value.operationalRecord.department.departmentName;
         this.division = authService.currentUserSubject.value.operationalRecord.division.divisionId;
@@ -91,6 +91,15 @@ authModel:AuthModel;
         this.showDepartment=false;
 
       }
+      if(this.roleId.includes('TeamLeader')){
+        this.divisionName = authService.currentUserSubject.value.operationalRecord.division.divisionName;
+        this.departmentName = authService.currentUserSubject.value.operationalRecord.department.departmentName;
+        this.division = authService.currentUserSubject.value.operationalRecord.division.divisionId;
+        this.department = authService.currentUserSubject.value.operationalRecord.department.departmentId;
+        this.showDivision=false;
+        this.showDepartment=false;
+      }
+
   }
 
   ngOnInit(): void {
