@@ -20,6 +20,7 @@ import { AuthService, UserModel } from '../../auth';
 import { AuthModel } from '../../auth/_models/auth.model';
 import { ProjectService } from '../../auth/_services/project.services';
 import { DeliveryTrackerService } from '../../auth/_services/delivery-tracker.service';
+import { LabelValueModel } from '../../attendance/modal/value-lable.model';
 
 
 @Component({
@@ -64,7 +65,9 @@ minDate : NgbDateStruct;
 maxDate : NgbDateStruct;
 toMinDate : NgbDateStruct;
 toMaxDate : NgbDateStruct;
+monthlyList: LabelValueModel[];
 isLoading$;
+exportTrue:boolean =false;
 private subscriptions: Subscription[] = [];
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
@@ -93,6 +96,7 @@ authModel:AuthModel;
   ngOnInit(): void {
     //this.filterForm();
     this.searchForm();
+    this.getDateRange();
     if(!this.showDivision){
       this.deliveryTrackerService.patchStateWithoutFetch({ departmentId:this.department,divisionId:this.division});
       this.getProjectForDivision();
@@ -112,6 +116,28 @@ authModel:AuthModel;
       this.department="0";
     }
     this.project="0";
+  }
+  private getDateRange() {
+    this.deliveryTrackerService.getMonthlyDateRange().pipe(
+      tap((res: any) => {
+        console.log("res", res);
+        this.monthlyList = res;
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
+  }
+  setMonth(value){
+    var position =value.split("#");
+    if(position.length>1){
+      this.fromDate=position[0];
+      this.toDate=position[1];
+    }else{
+      alert("Select Valid Month")
+    }
   }
   public getUsers() {
     console.log("Inside get Users")
@@ -203,7 +229,7 @@ authModel:AuthModel;
       alert("Please select To Date");
       return;
     }
-    this.deliveryTrackerService.patchState({ departmentId:this.department,divisionId:this.division,projectId:this.project,fromDate:fromDat,toDate:toDat},"/deliveryCompletedReport");
+    this.deliveryTrackerService.patchState({ departmentId:this.department,divisionId:this.division,projectId:this.project,fromDate:fromDat,toDate:toDat},"/exportToExcelDeliveryCompletedMonthly");
   }
   setFromDate(){
 
@@ -394,22 +420,59 @@ authModel:AuthModel;
       (<HTMLInputElement>document.getElementById("searchText")).value="";
     }
   }
+  setExportFlag(){
+    this.exportTrue=true;
+  }
   exportExcel(){
-    this.deliveryTrackerService.exportExcel("/exportToExcelDeliveryCompleted","Report").subscribe(
+
+    if(this.department.length<=3){
+      alert("Please select Department");
+      return;
+    }
+    if(this.division.length<=3){
+      alert("Please select Division");
+      return;
+    }
+
+    if(this.project.length<=5){
+      alert("Please select Project");
+      return;
+    }
+
+  //  var fromDat=this.myFunction(this.fromDate);
+  //  var toDat=this.myFunction(this.toDate);
+    if(this.fromDate.length<=0){
+      alert("Please select Month");
+      return;
+    }
+    if(this.toDate.length<=0){
+      alert("Please select Month");
+      return;
+    }
+    (<HTMLInputElement>document.getElementById("exportExcel")).disabled=true;
+    (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = false;
+    this.deliveryTrackerService.patchStateWithoutFetch({ departmentId:this.department,divisionId:this.division,projectId:this.project,fromDate:this.fromDate,toDate:this.toDate});
+    this.deliveryTrackerService.exportExcel("/exportToExcelDeliveryCompletedOverAll","Report").subscribe(
       responseObj => {
-        console.log("report success", responseObj);
+
+        console.log( this.exportTrue, "report success", responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);
         var link = document.createElement('a');
         link.href = downloadURL;
-        link.download = "DeliverySummary.xlsx";
+        link.download = "OverAllSummary.xlsx";
         link.click();
+        console.log( this.exportTrue, "report success", responseObj);
+        (<HTMLInputElement>document.getElementById("exportExcel")).disabled=false;
+        (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = true;
+
 
       },
       error => {
         console.log("report error", error);
-
-
+        (<HTMLInputElement>document.getElementById("exportExcel")).disabled=false;
+        (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = true;
       }
+
     );
 
   }

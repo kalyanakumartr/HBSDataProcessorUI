@@ -444,6 +444,8 @@ authModel:AuthModel;
       alert("Please select Month");
       return;
     }
+    (<HTMLInputElement>document.getElementById("exportExcel")).disabled=true;
+    (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = false;
     this.deliveryTrackerService.patchStateWithoutFetch({ departmentId:this.department,divisionId:this.division,projectId:this.project,fromDate:this.fromDate,toDate:this.toDate});
     this.deliveryTrackerService.exportExcel("/exportToExcelDeliveryCompletedMonthly","Report").subscribe(
       responseObj => {
@@ -453,11 +455,14 @@ authModel:AuthModel;
         link.href = downloadURL;
         link.download = "DeliverySummaryMonthly.xlsx";
         link.click();
+        (<HTMLInputElement>document.getElementById("exportExcel")).disabled=false;
+        (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = true;
 
       },
       error => {
         console.log("report error", error);
-
+        (<HTMLInputElement>document.getElementById("exportExcel")).disabled=false;
+        (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = true;
 
       }
     );

@@ -446,20 +446,24 @@ authModel:AuthModel;
       alert("Please select Month");
       return;
     }
+    (<HTMLInputElement>document.getElementById("exportExcel")).disabled=true;
+    (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = false;
     this.deliveryTrackerService.patchStateWithoutFetch({ departmentId:this.department,divisionId:this.division,projectId:this.project,fromDate:this.fromDate,toDate:this.toDate});
-    this.deliveryTrackerService.exportExcel("/exportToExcelHolfCompletedMonthly","Report").subscribe(
+    this.deliveryTrackerService.exportExcel("/exportToExcelWorkUnitHoldMonthly","Report").subscribe(
       responseObj => {
         console.log("report success", responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);
         var link = document.createElement('a');
         link.href = downloadURL;
-        link.download = "HoldSummaryMonthly.xlsx";
+        link.download = "WorkUnitHoldMonthly.xlsx";
         link.click();
-
+        (<HTMLInputElement>document.getElementById("exportExcel")).disabled=false;
+        (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = true;
       },
       error => {
         console.log("report error", error);
-
+        (<HTMLInputElement>document.getElementById("exportExcel")).disabled=false;
+        (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = true;
 
       }
     );
