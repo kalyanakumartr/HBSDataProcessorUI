@@ -1,0 +1,64 @@
+<div class="card card-custom bg-gray-100 card-stretch gutter-b">
+  <!-- Header -->
+  <div class="card-header border-0 bg-blue py-5">
+    <h3 class="card-title font-weight-bolder text-white">Work Allocation</h3>
+    <div class="card-toolbar">
+
+    </div>
+  </div>
+  <!-- Body -->
+
+    <!-- Body -->
+  <div class="">
+    <div class="timeline timeline-12 mt-3">
+     <!--begin::Item-->
+     <div class="timeline-item align-items-start">
+      <!--begin::Label-->
+      <div
+        class="timeline-label font-weight-bolder text-dark-75 font-size-lg align-items-center"
+      >
+      <div style=" padding: 0px 5px 5px 5px;">
+        <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="queue">
+            <mat-header-cell style="justify-content:left" *matHeaderCellDef mat-sort-header> Queue </mat-header-cell>
+            <mat-cell style="justify-content:left" *matCellDef="let element"> {{element.queue}} </mat-cell>
+          </ng-container>
+          <!-- Name Column -->
+          <ng-container matColumnDef="Ready">
+            <mat-header-cell  *matHeaderCellDef mat-sort-header left> Ready </mat-header-cell>
+            <mat-cell  *matCellDef="let element"> {{element.status[0].count}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Assigned">
+            <mat-header-cell  *matHeaderCellDef> Assigned </mat-header-cell>
+            <mat-cell  *matCellDef="let element"> {{element.status[1].count}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="In Progress">
+            <mat-header-cell   *matHeaderCellDef> InProgress </mat-header-cell>
+            <mat-cell *matCellDef="let element">  {{element.status[2].count}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Completed">
+            <mat-header-cell *matHeaderCellDef> Completed </mat-header-cell>
+            <mat-cell  *matCellDef="let element"> {{element.status[3].count}} </mat-cell>
+          </ng-container>
+         <!-- <ng-container matColumnDef="Reject">
+            <mat-header-cell  *matHeaderCellDef> Reject </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.status[4].count}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Hold">
+            <mat-header-cell *matHeaderCellDef> Hold </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.status[5].count}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Revoke">
+            <mat-header-cell *matHeaderCellDef> Revoke </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.status[6].count}} </mat-cell>
+          </ng-container> -->
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>

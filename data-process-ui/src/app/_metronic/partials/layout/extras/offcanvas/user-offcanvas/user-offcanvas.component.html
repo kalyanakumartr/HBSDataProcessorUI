@@ -4,7 +4,7 @@
     <!--begin::Header-->
     <div class="offcanvas-header d-flex align-items-center justify-content-between pb-5">
       <h3 class="font-weight-bold m-0">
-        User Profile
+        Employee Profile
         <!--<small class="text-muted font-size-sm ml-2">12 messages</small>-->
       </h3>
       <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
@@ -18,15 +18,20 @@
       <!--begin::Header-->
       <div class="d-flex align-items-center mt-5">
         <div class="symbol symbol-100 mr-5">
-          <div class="symbol-label" style="background-image: url('./assets/media/users/Ananth.jpg');"></div>
+          <div class="symbol bg-white-o-15 mr-3">
+            <span
+              class="symbol-label text-success font-weight-bold font-size-h4"
+              >{{ _user.userName | firstLetter }}</span
+            >
+          </div>
           <i class="symbol-badge bg-success"></i>
         </div>
         <div class="d-flex flex-column">
           <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">
-            {{ _user.firstname }} {{ _user.lastname }}
+            {{ _user.userName }} {{ _user.lastname }}
           </a>
           <div class="text-muted mt-1">
-            Project Manager
+            {{_user.roleName}}
           </div>
           <div class="navi mt-2">
             <a href="#" class="navi-item">
@@ -37,7 +42,7 @@
                     " cacheSVG="true" class="svg-icon svg-icon-lg svg-icon-primary"></span>
                 </span>
                 <span class="navi-text text-muted text-hover-primary">{{
-                  _user.email
+                  _user.mediaList[0].emailId
                 }}</span>
               </span>
             </a>
@@ -48,12 +53,488 @@
         </div>
       </div>
       <!--end::Header-->
+      <div class="card-body">
+        <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+          <li class="nav-item cursor-pointer" (click)="changeTab(tabs.PERSONAL_TAB)">
+            <a
+              class="nav-link"
+              data-toggle="tab"
+              role="tab"
+              [attr.aria-selected]="activeTabId === tabs.PERSONAL_TAB"
+              [class.active]="activeTabId === tabs.PERSONAL_TAB"
+            >
+              Personal
+            </a>
+          </li>
+          <li
+            class="nav-item cursor-pointer"
+            (click)="changeTab(tabs.HR_TAB)"
+          >
+            <a
+              class="nav-link"
+              data-toggle="tab"
+              role="button"
+              [attr.aria-selected]="activeTabId === tabs.HR_TAB"
+              [class.active]="activeTabId === tabs.HR_TAB"
+              >HR</a
+            >
+          </li>
+          <li
+            class="nav-item cursor-pointer"
+            (click)="changeTab(tabs.IT_TAB)"
+          >
+            <a
+              class="nav-link"
+              data-toggle="tab"
+              role="button"
+              [attr.aria-selected]="activeTabId === tabs.IT_TAB"
+              [class.active]="activeTabId === tabs.IT_TAB"
+              >IT</a
+            >
+          </li>
+          <li
+            class="nav-item cursor-pointer"
+            (click)="changeTab(tabs.OPERATIONAL_TAB)"
+          >
+            <a
+              class="nav-link"
+              data-toggle="tab"
+              role="tab"
+              [attr.aria-selected]="activeTabId === tabs.OPERATIONAL_TAB"
+              [class.active]="activeTabId === tabs.OPERATIONAL_TAB"
+              >Operational</a
+            >
+          </li>
+        </ul>
 
-      <!--begin::Separator-->
-      <div class="separator separator-dashed mt-8 mb-5"></div>
-      <!--end::Separator-->
+        <ng-container *ngIf="activeTabId === tabs.PERSONAL_TAB">
+           <!--begin::Separator-->
+          <div class="separator separator-dashed mt-8 mb-5">
+            <div class="form-group row">
+              <div class="col-lg-7">
+                  Name:
+              </div>
+              <div class="col-lg-2">
+                {{_user.fullName}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Blood Group:
+              </div>
+              <div class="col-lg-2 nowrap">
+                {{_user.bloodGroup}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                DOB:
+              </div>
+              <div class="col-lg-2 nowrap">
+                {{_user.dob | date: 'dd-MMM-yyyy'}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Gender:
+              </div>
+              <div class="col-lg-2">
+                {{_user.sex}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Marital Status:
+              </div>
+              <div class="col-lg-2">
+                {{_user.martial}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Spouse Name:
+              </div>
+              <div class="col-lg-2">
+                {{_user.spouseName}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Father Name:
+              </div>
+              <div class="col-lg-2 ">
+                {{_user.fatherName}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Current Address:
+              </div>
+              <div class="col-lg-2">
+                {{_user.mediaList[0].communicationAddress}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Email Id:
+              </div>
+              <div class="col-lg-2">
+                {{_user.mediaList[0].personalEmailId}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Permanent Address:
+              </div>
+              <div class="col-lg-2">
+                {{_user.mediaList[0].permanentAddress}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Mobile Number:
+              </div>
+              <div class="col-lg-2">
+                {{_user.mediaList[0].mobileNo}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Alternate Mobile Number:
+              </div>
+              <div class="col-lg-2">
+                {{_user.mediaList[0].alternateMobile}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Emergency Number:
+              </div>
+              <div class="col-lg-2">
+                {{_user.mediaList[0].emergencyContactNo}}
+               </div>
+            </div>
 
-     
+
+          </div>
+          <!--end::Separator-->
+        </ng-container>
+        <ng-container *ngIf="activeTabId === tabs.HR_TAB" >
+           <!--begin::Separator-->
+          <div class="separator separator-dashed mt-8 mb-5">
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Employee Id:
+              </div>
+              <div class="col-lg-2">
+                {{_user.userId}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Date Of Joining:
+              </div>
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.dateOfJoin | date: 'dd-MMM-yyyy'}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Leave Balance :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.employmentInfo.approvedLeaveBalance}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                InfoAPL :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.employmentInfo.infoAPL}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Employment Status :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.employmentInfo.employmentStatus}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Experience In EDR :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.employmentInfo.experienceInEDR}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Experience Out EDR :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.employmentInfo.experienceOutEDR}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                From Notice Period :
+              </div>
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.fromNoticePeriod | date: 'dd-MMM-yyyy'}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                To Notice Period :
+              </div>
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.toNoticePeriod | date: 'dd-MMM-yyyy'}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Long Leave From :
+              </div>
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.longLeaveFromDate | date: 'dd-MMM-yyyy'}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Long Leave To :
+              </div>
+              <div class="col-lg-2 nowrap">
+                {{_user.hrRecord.employmentInfo.longLeaveToDate | date: 'dd-MMM-yyyy'}}
+               </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Bank Account Number :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.bankAccounts.accountNo}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Bank Name :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.bankAccounts.bankName}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Branch Name :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.bankAccounts.bankBranch}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                IFSC Code :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.bankAccounts.ifscCode}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                PAN Number :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.taxInfo.pan}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Adhar Number :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.taxInfo.aadhar}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                PF Number :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.taxInfo.providentFund}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                ESIC Number :
+              </div>
+              <div class="col-lg-2">
+                {{_user.hrRecord.taxInfo.esic}}
+               </div>
+            </div>
+
+          </div>
+          <!--end::Separator-->
+
+        </ng-container>
+        <ng-container *ngIf="activeTabId === tabs.IT_TAB" >
+          <!--begin::Separator-->
+         <div class="separator separator-dashed mt-8 mb-5">
+          <div class="form-group row">
+            <div class="col-lg-7">
+              Work Mode:
+            </div>
+            <div class="col-lg-2">
+              {{_user.itRecord.workMode}}
+             </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-7">
+              Broad Band Account:
+            </div>
+            <div class="col-lg-2">
+              {{_user.itRecord.broadBandAccount}}
+             </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-7">
+              Broad Band By:
+            </div>
+            <div class="col-lg-2">
+              {{_user.itRecord.broadBandBy}}
+             </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-7">
+              Internet Plan:
+            </div>
+            <div class="col-lg-2">
+              {{_user.itRecord.internetPlan}}
+             </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-7">
+              IS Downgraded
+            </div>
+            <div class="col-lg-2">
+              {{_user.itRecord.isDowngraded}}
+             </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-7">
+              ISP Name:
+            </div>
+            <div class="col-lg-2">
+              {{_user.itRecord.ispName}}
+             </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-7">
+              Static IP Address:
+            </div>
+            <div class="col-lg-2">
+              {{_user.itRecord.staticIPAddress}}
+             </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-7">
+              IP While Listed
+            </div>
+            <div class="col-lg-2">
+              {{_user.itRecord.staticWhiteList}}
+             </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-7">
+              System Serial No
+            </div>
+            <div class="col-lg-2">
+              {{_user.itRecord.systemSerialNo}}
+             </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-7">
+              System to Home
+            </div>
+            <div class="col-lg-2">
+              {{_user.itRecord.systemToHome}}
+             </div>
+          </div>
+         </div>
+         <!--end::Separator-->
+
+       </ng-container>
+        <ng-container *ngIf="activeTabId === tabs.OPERATIONAL_TAB">
+           <!--begin::Separator-->
+          <div class="separator separator-dashed mt-8 mb-5">
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Department:
+              </div>
+              <div class="col-lg-2 nowrap">
+                {{_user.operationalRecord.department.departmentName}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Division:
+              </div>
+              <div class="col-lg-2">
+                {{_user.operationalRecord.division.divisionName}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Project:
+              </div>
+              <div class="col-lg-2">
+                {{_user.operationalRecord.project !=null? _user.operationalRecord.project.projectName:''}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Reporting To:
+              </div>
+              <div class="col-lg-2">
+                {{_user.operationalRecord.reportingTo}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                RFDB BPS ID:
+              </div>
+              <div class="col-lg-2">
+                {{_user.operationalRecord.loginRFDB_BPS}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Group:
+              </div>
+              <div class="col-lg-2 nowrap">
+                {{_user.operationalRecord.group.teamName}}
+               </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-7">
+                Team:
+              </div>
+              <div class="col-lg-2">
+                {{_user.operationalRecord.team.teamName}}
+               </div>
+            </div>
+
+
+          </div>
+          <!--end::Separator-->
+          </ng-container>
+      </div>
+
+
+
       <!--end::Notifications-->
     </div>
     <!--end::Content-->

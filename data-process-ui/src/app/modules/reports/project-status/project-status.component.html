@@ -1,0 +1,245 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Project Status</h3>
+    </div>
+    <div class="card-toolbar">
+      <div class="form-group row">
+
+        <div class="col-lg-6">
+          <label>From Date</label>
+          <div class="input-group input-group-solid">
+            <div class="input-group input-group-solid">
+              <input type="text" name="fromDate" class="form-control form-control-lg form-control-solid" autocomplete="off" (dateSelect)="setFromDate()" [(ngModel)]="fromDate"
+                placeholder="yyyy-mm-dd" ngbDatepicker [minDate]="minDate" [maxDate]="maxDate" #fromd="ngbDatepicker"
+                 readonly="true" />
+              <div class="input-group-append" (click)="fromd.toggle()">
+                <span class="input-group-text">
+                  <i class="text-dark-50 flaticon-calendar"></i>
+                </span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <label>To Date</label>
+          <div class="input-group input-group-solid">
+            <input type="text" name="toDate" class="form-control form-control-lg form-control-solid" autocomplete="off" (dateSelect)="setToDate()" [(ngModel)]="toDate"
+              placeholder="yyyy-mm-dd" ngbDatepicker [minDate]="toMinDate" [maxDate]="toMaxDate" #tod="ngbDatepicker"
+             readonly="true" />
+            <div class="input-group-append" (click)="tod.toggle()">
+              <span class="input-group-text">
+                <i class="text-dark-50 flaticon-calendar"></i>
+              </span>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <div class="grid-item" style="cursor: pointer;">
+        <div class="grid-item" style="cursor: pointer;">
+          &nbsp;&nbsp;
+          <button type="button" id="exportExcel" class="btn btn-primary btn-elevate"  (click)= "exportExcel()">
+            Export to Excel
+          </button>
+        </div>&nbsp;&nbsp;
+        <div id="divSpinnerId" class="spinner spinner-darker-success spinner-left" hidden></div>&nbsp;&nbsp;&nbsp;
+
+    </div>
+  </div>
+  <div class="card-body">
+    <!-- begin: Filtration form -->
+    <div class="form form-label-right">
+      <div class="form-group row" [formGroup]="searchGroup">
+
+
+        <div class="col-lg-2">
+          <ng-container *ngIf="showDepartment">
+          <label>Department</label>
+          <select class="form-control form-control-lg form-control-solid" name="department"  [(ngModel)]="department"
+             formControlName="department" (change)="setDepartment($event.target.value)">
+            <option [ngValue]="0" [selected]=true>Select Department</option>
+            <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
+              {{ department.departmentName }}
+            </option>
+          </select>
+        </ng-container>
+        <ng-container *ngIf="!showDepartment">
+          <label>Department</label><br/>
+          <span>{{departmentName}}</span>
+        </ng-container>
+        </div>
+        <div class="col-lg-2">
+          <ng-container *ngIf="showDivision">
+          <label>Division</label>
+          <select class="form-control form-control-lg form-control-solid" name="division"  [(ngModel)]="division"
+             formControlName="division" (change)="setDivision($event.target.value)">
+             <option [ngValue]="0" [selected]=true>Select Division</option>
+            <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
+              {{ division.divisionName }}
+            </option>
+          </select>
+          </ng-container>
+          <ng-container *ngIf="!showDivision">
+            <label>Division</label><br/>
+            <span>{{divisionName}}</span>
+          </ng-container>
+        </div>
+        <div class="col-lg-3">
+          <label>Project</label>
+          <select class="form-control form-control-lg form-control-solid" name="project"  [(ngModel)]="project"
+             formControlName="project" (change)="setProject($event.target.value)">
+             <option [ngValue]="0" [selected]=true>Select Project</option>
+            <option *ngFor="let project of projectList" [ngValue]="project.projectId">
+              {{ project.projectName }}
+            </option>
+          </select>
+
+        </div>
+        <div  class="col-lg-3">
+          <label>Select Group</label>
+          <select class="form-control form-control-lg form-control-solid " name="groupId" [(ngModel)]="group" (change)="setGroup($event.target.value)">
+            <option [ngValue]="groupTeamDefault" [selected]=true>Select Group</option>
+            <option *ngFor="let group of groupList" [ngValue]="group.teamId">
+              {{ group.teamName }}
+            </option>
+
+          </select>
+        </div>
+        <div class="col-lg-2" >
+
+            <div class="grid-item" style="cursor: pointer;">
+              &nbsp;<br/>&nbsp;
+              <button type="button" id="submit"class="btn btn-primary btn-elevate" (click)="SearchFilter()">Submit</button>&nbsp;&nbsp;
+            <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end: Filtration form -->
+
+
+    <!-- begin:Table -->
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="tablebox" class="table table-head-custom table-vertical-center ">
+        <thead>
+          <tr>
+            <th nowrap >
+              SL #
+
+            </th>
+            <th>Department</th>
+            <th>Division</th>
+            <th>Group</th>
+            <th>Team</th>
+            <th>Project</th>
+          <th nowrap >
+            Input Received Date
+
+          </th>
+          <th nowrap >
+            Work Unit #
+
+          </th>
+          <th nowrap> SubCountry</th>
+
+
+
+
+          <th nowrap >Road Type </th>
+          <th nowrap >WU Miles</th>
+          <th nowrap >Remarks</th>
+
+          <th class="th-blue">Production Done By</th>
+          <th class="th-blue">Allocated Date</th>
+          <th class="th-blue">Completed Date</th>
+          <th class="th-blue">Time taken   (Hours)</th>
+          <th class="th-blue">Estimated Time (Hours)</th>
+          <th class="th-blue">Efficiency %</th>
+          <th class="th-blue">Prod Status</th>
+          <th class="th-blue">Reason for Hold</th>
+          <th class="th-blue">Remarks</th>
+
+          <th class="th-yellow">QC Done By</th>
+          <th class="th-yellow">Allocated Date</th>
+          <th class="th-yellow">Completed Date</th>
+          <th class="th-yellow">Time taken   (Hours)</th>
+          <th class="th-yellow">Estimated Time (Hours)</th>
+          <th class="th-yellow">Efficiency %</th>
+          <th class="th-yellow">QC Status</th>
+          <th class="th-yellow">Reason for Hold</th>
+          <th class="th-yellow">Remarks</th>
+
+
+          <th class="th-orange">QA Done By</th>
+          <th class="th-orange">Batch Number</th>
+          <th class="th-orange">Allocated Date</th>
+          <th class="th-orange">Completed Date</th>
+          <th class="th-orange">QA Status</th>
+          <th class="th-orange">Remarks</th>
+
+          <th class="th-yellowgreen">Status</th>
+          <th class="th-yellowgreen">Deliverd Date</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let deliveryTracker of deliveryTrackerService.items$ | async">
+            <td>{{ deliveryTracker.serialNo}} </td>
+            <td>{{ deliveryTracker.department}} </td>
+            <td>{{ deliveryTracker.division}} </td>
+            <td>{{ deliveryTracker.groupName}} </td>
+            <td>{{ deliveryTracker.teamName}} </td>
+            <td>{{ deliveryTracker.projectCode}} </td>
+            <td>{{ deliveryTracker.receivedDate | date: 'dd-MMM-yyyy'}} </td>
+
+            <td>{{ deliveryTracker.workUnitId}} </td>
+            <td>{{ deliveryTracker.subCountry}} </td>
+            <td>{{ deliveryTracker.roadTypeClassification}} </td>
+            <td>{{ deliveryTracker.miles}} </td>
+            <td>{{ deliveryTracker.remarks}} </td>
+
+            <td class="th-blue">{{ deliveryTracker.pdDoneBy}} </td>
+            <td class="th-blue">{{ deliveryTracker.pdAllottedDate | date: 'dd-MMM-yyyy'}} </td>
+            <td class="th-blue">{{ deliveryTracker.pdCompletedDate | date: 'dd-MMM-yyyy'}} </td>
+            <td class="th-blue">{{ deliveryTracker.pdTimeTaken}} </td>
+            <td class="th-blue">{{ deliveryTracker.pdEstimatedTime}} </td>
+            <td class="th-blue">{{ deliveryTracker.pdEfficiency}} </td>
+            <td class="th-blue">{{ deliveryTracker.pdStatus}} </td>
+            <td class="th-blue">{{ deliveryTracker.pdReason}} </td>
+            <td class="th-blue">{{ deliveryTracker.pdRemarks}} </td>
+
+            <td class="th-yellow">{{ deliveryTracker.qcDoneBy}} </td>
+            <td class="th-yellow">{{ deliveryTracker.qcAllottedDate | date: 'dd-MMM-yyyy'}} </td>
+            <td class="th-yellow">{{ deliveryTracker.qcCompletedDate | date: 'dd-MMM-yyyy'}} </td>
+            <td class="th-yellow">{{ deliveryTracker.qcTimeTaken}} </td>
+            <td class="th-yellow">{{ deliveryTracker.qcEstimatedTime}} </td>
+            <td class="th-yellow">{{ deliveryTracker.qcEfficiency}} </td>
+            <td class="th-yellow">{{ deliveryTracker.qcStatus}} </td>
+            <td class="th-yellow">{{ deliveryTracker.qcReason}} </td>
+            <td class="th-yellow">{{ deliveryTracker.qcRemarks}} </td>
+
+            <td class="th-orange">{{ deliveryTracker.qaDoneBy}} </td>
+            <td class="th-orange">{{ deliveryTracker.qaBatchNumber}} </td>
+            <td class="th-orange">{{ deliveryTracker.qaAllottedDate | date: 'dd-MMM-yyyy'}} </td>
+            <td class="th-orange">{{ deliveryTracker.qaCompletedDate | date: 'dd-MMM-yyyy'}} </td>
+            <td class="th-orange">{{ deliveryTracker.qaStatus}} </td>
+            <td class="th-orange">{{ deliveryTracker.qaRemarks}} </td>
+
+            <td class="th-yellowgreen">{{ deliveryTracker.deliveryStatus}} </td>
+            <td class="th-yellowgreen">{{ deliveryTracker.deliveredDate | date: 'dd-MMM-yyyy'}} </td>
+
+
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end: Table -->
+    <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator"
+      [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+  </div>

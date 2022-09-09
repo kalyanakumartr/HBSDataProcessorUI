@@ -10,6 +10,7 @@ import { StatementsComponent } from './statements/statements.component';
 import { TaxInformationComponent } from './tax-information/tax-information.component';
 import { UserProfileComponent } from './user-profile.component';
 
+
 const routes: Routes = [
   {
     path: '',
@@ -27,14 +28,12 @@ const routes: Routes = [
         path: 'account-information',
         component: AccountInformationComponent
       },
-      {
-        path: 'change-password',
-        component: ChangePasswordComponent
-      },
+
       {
         path: 'email-settings',
         component: EmailSettingsComponent
       },
+
       {
         path: 'saved-credic-cards',
         component: SavedCreditCardsComponent

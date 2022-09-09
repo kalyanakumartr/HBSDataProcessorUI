@@ -1,0 +1,72 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        Web Upload
+    </div>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+
+
+
+<form action="#" class="form form-label-right" [formGroup]="formGroup">
+    <div class="form-group row">
+
+      <div class="col-lg-3">
+        <label>Select Department</label>
+        <select class="form-control form-control-lg form-control-solid" name="department"
+          [class.is-invalid]="isControlInvalid('department')" formControlName="department" (change)="setDepartment($event.target.value)">
+          <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
+            {{ department.departmentName }}
+          </option>
+        </select>
+        <div class="feedback">Please select <b>Department</b></div>
+      </div>
+      <div class="col-lg-3">
+        <label>Select Division</label>
+        <select class="form-control form-control-lg form-control-solid" name="division"
+          [class.is-invalid]="isControlInvalid('division')" formControlName="division" (change)="setDivision($event.target.value)">
+          <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
+            {{ division.divisionName }}
+          </option>
+        </select>
+        <div class="feedback">Please select <b>Division</b></div>
+      </div>
+      <div class="col-lg-4">
+        <label class="form-label">Enter Project Id   </label>
+        <select class="form-control form-control-lg form-control-solid" name="projectId" (change)="getProjectOnChange($event.target.value)">
+        [class.is-invalid]="isControlInvalid('projectId')" formControlName="projectId">
+        <option *ngFor="let project of projectList" [ngValue]="project.projectId" value={{project.projectId}}>
+          {{ project.projectName }}
+        </option>
+      </select>
+      <div class="feedback">Please select <b>Project</b></div>
+
+      </div>
+      </div>
+      <div class="form-group row">
+      <div class="col-lg-4">
+        <label for="file">Select Excel file to Upload work Units</label>
+        <input type="file"
+              id="file"
+              (change)="handleFileInput($event.target.files)">
+      </div>
+    </div>
+</form>
+
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-light btn-elevate mr-2" (click)="clear()">Cancel</button>
+
+
+    <button type="submit" class="btn btn-primary btn-elevate" (click)="upload()"
+      >Upload</button>
+
+</div>
+</div>
+</div>

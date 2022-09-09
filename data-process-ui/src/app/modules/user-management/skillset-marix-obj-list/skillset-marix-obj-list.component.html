@@ -1,0 +1,137 @@
+<div class="example-container mat-elevation-z8">
+  <div class="form form-label-right">
+    <div class="form-group row">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <div class="col-lg-3">
+    <ng-container *ngIf="showDivision">
+      <label>Select Division</label>
+      <select class="form-control form-control-lg form-control-solid" name="division"
+        formControlName="department" (change)="setDivision($event.target.value)">
+        <option [ngValue]="0" selected>Select Division</option>
+        <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
+          {{ division.divisionName }}
+        </option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="!showDivision">
+      <label>Division</label><br/>
+      <span>{{division}}</span>
+    </ng-container>
+  </div>
+  <div class="col-lg-3">
+    <ng-container *ngIf="showGroup">
+    <label>Select Group</label>
+    <select class="form-control form-control-lg form-control-solid" name="group"
+       formControlName="group" (change)="setGroup($event.target.value)">
+       <option [ngValue]="0" selected>Select Group</option>
+      <option *ngFor="let group of groupList" [ngValue]="group.teamId">
+        {{ group.teamName }}
+      </option>
+    </select>
+  </ng-container>
+  <ng-container *ngIf="!showGroup">
+    <label>Group</label><br/>
+    <span>{{groupName}}</span>
+  </ng-container>
+  </div>
+  <div class="col-lg-3">
+    <ng-container *ngIf="showTeam">
+    <label>Select Team</label>
+    <select class="form-control form-control-lg form-control-solid" name="team"
+       formControlName="team" (change)="setTeam($event.target.value)">
+       <option [ngValue]="0" selected>Select Team</option>
+      <option *ngFor="let team of teamList" [ngValue]="team.teamId">
+        {{ team.teamName }}
+      </option>
+    </select>
+  </ng-container>
+  <ng-container *ngIf="!showTeam">
+    <label>Team</label><br/>
+    <span>{{teamName}}</span>
+  </ng-container>
+  </div>
+  <div class="col-lg-2 nowrap" >
+    <label>Search in all fields</label>
+    <div class="grid-container">
+      <div class="grid-item">
+    <input type="search" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
+      formControlName="searchTerm" (keyup)="applyFilter($event.target.value)" (click)="applyFilter('')"/></div>
+      <div class="grid-item" style="cursor: pointer;">
+        &nbsp;&nbsp;
+      <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+      </div>
+      </div>
+  </div>
+</div>
+  </div>
+  <div style=" padding: 0px 10px 10px 20px;">
+  <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
+
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="userId">
+      <mat-header-cell style="justify-content:left" *matHeaderCellDef mat-sort-header> User Id </mat-header-cell>
+      <mat-cell style="justify-content:left" *matCellDef="let element"> {{element.userId}} </mat-cell>
+    </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="userName">
+      <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> User Name </mat-header-cell>
+      <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.userName}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Division">
+      <mat-header-cell  [hidden]="show"  *matHeaderCellDef> Division </mat-header-cell>
+      <mat-cell [hidden]="show" *matCellDef="let element"> {{element.divisionId}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Group">
+      <mat-header-cell  [hidden]="show"  *matHeaderCellDef> Group </mat-header-cell>
+      <mat-cell [hidden]="show" *matCellDef="let element"> {{element.groupId}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Team">
+      <mat-header-cell [hidden]="show"  *matHeaderCellDef> Team </mat-header-cell>
+      <mat-cell  [hidden]="show" *matCellDef="let element"> {{element.teamId}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Production">
+      <mat-header-cell  *matHeaderCellDef> Production </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[0].skillId}}" name="{{element.userId}}{{element.skillMapList[0].skillId}}" value="{{ element.skillMapList[0].isMapped }}" [checked]="element.skillMapList[0].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="QualityAssurance">
+      <mat-header-cell *matHeaderCellDef> QA </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[1].skillId}}" name="{{element.userId}}{{element.skillMapList[1].skillId}}" value="{{ element.skillMapList[1].isMapped }}" [checked]="element.skillMapList[1].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="QualityControl">
+      <mat-header-cell *matHeaderCellDef> QC </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[2].skillId}}" name="{{element.userId}}{{element.skillMapList[2].skillId}}" value="{{ element.skillMapList[2].isMapped }}" [checked]="element.skillMapList[2].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="QualityControlTrainer">
+      <mat-header-cell *matHeaderCellDef> QCTrainer </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[3].skillId}}" name="{{element.userId}}{{element.skillMapList[3].skillId}}" value="{{ element.skillMapList[3].isMapped }}" [checked]="element.skillMapList[3].isMapped"/> </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Apprentice">
+      <mat-header-cell *matHeaderCellDef> Apprentice </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[4].skillId}}" name="{{element.userId}}{{element.skillMapList[4].skillId}}" value="{{ element.skillMapList[4].isMapped }}" [checked]="element.skillMapList[4].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="OnlineTechSupport">
+      <mat-header-cell *matHeaderCellDef> OnlineSupport </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[5].skillId}}" name="{{element.userId}}{{element.skillMapList[5].skillId}}" value="{{ element.skillMapList[5].isMapped }}" [checked]="element.skillMapList[5].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="QualityControlTrainee">
+      <mat-header-cell *matHeaderCellDef> QCTrainee </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <input type="checkbox" id="{{element.id}}{{element.skillMapList[6].skillId}}" name="{{element.userId}}{{element.skillMapList[6].skillId}}" value="{{ element.skillMapList[6].isMapped }}" [checked]="element.skillMapList[6].isMapped"/> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Action">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <button type="submit" class="btn btn-primary btn-elevate" (click)="save(element.userId)" >Save</button> </mat-cell>
+    </ng-container>
+    <!-- Weight Column -->
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator #paginator
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 20]"
+    [showFirstLastButtons]="true">
+  </mat-paginator>
+  </div>
+</div>

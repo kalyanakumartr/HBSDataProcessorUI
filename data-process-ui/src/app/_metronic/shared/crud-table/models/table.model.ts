@@ -7,13 +7,78 @@ export interface ITableState {
   paginator: PaginatorState;
   sorting: SortState;
   searchTerm: string;
+  divisionId:string;
+  departmentId: string;
+  projectId: string;
+  groupId:string;
+  teamId:string;
+  fromDate: string;
+  toDate: string;
+  status: string;
+  workUnitId: string;
+  startWUMiles:string;
+  endWUMiles:string;
+  reasonId:string;
+  roadTypeMapId:string;
+  startAssignedDate:string;
+  startProcessedDate:string;
+  receivedDate:string;
+  endAssignedDate:string;
+  endProcessedDate:string;
+  endReceivedDate:string;
+  teamName:string;
+  subCountryId:string;
+  isAdvanceSearch:boolean;
+  isDirectReport:boolean;
   grouping: GroupingState;
   entityId: number | undefined;
 }
 
+export interface ITaskTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+export interface IAttendanceTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+export interface ILeaveTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+
+export interface IApprovalTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+
 export interface TableResponseModel<T> {
   items: T[];
+  headerList: T[];
   total: number;
+  leaveBalanceCount:number;
+  approvedLeaveCount:number;
+  unApprovedLeaveCount:number;
 }
 
 export interface ICreateAction {

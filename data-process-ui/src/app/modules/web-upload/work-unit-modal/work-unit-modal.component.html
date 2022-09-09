@@ -1,0 +1,225 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        Project Code:   {{task.coreData.roadData.projectName}}
+    </div>
+    <div class="modal-title small h2" id="example-modal-sizes-title-lg">
+
+      Work Unit Status
+  </div>
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+
+      File Allocated Date :   {{ task.allotedDate }}
+    </div>
+  </div>
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        Work Unit #:   {{task.coreData.roadData.workUnitId}}
+    </div>
+
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+
+      File Completed Date :{{task.processedDate }}
+    </div>
+  </div>
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        Process Name :   {{queue}}
+    </div>
+
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+
+      <div class="stop-watch">
+
+      </div>
+    </div>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+
+
+        <!--end::Header-->
+        <!--begin::Content-->
+        <div class="tab-content">
+          <!--begin::Tabpane-->
+
+          <div class="form-group row">
+            <div class="col-lg-2">
+              <label class="form-label"><b>SUB COUNTRY NAME :</b> <br/>{{ task.coreData.roadData.subCountryName}}</label>
+
+            </div>
+            <div class="col-lg-1">
+              <label class="form-label"><b>WUMILES&nbsp;: </b><br/>{{ task.coreData.roadData.wuMiles }}</label>
+            </div>
+            <div class="col-lg-2">
+              <label class="form-label"><b>Estimated Time : </b><br/>{{ estimatedTime }}(Minutes)</label>
+            </div>
+            <div class="col-lg-2">
+              <label class="form-label"><b>Actual Time : </b><br/>{{ actualTime }}(Minutes)</label>
+            </div>
+            <div class="col-lg-2">
+              <label class="form-label"><b>Efficiency % : </b><br/>{{ efficiency }}% </label>
+            </div>
+            <!-- <div class="col-lg-3">
+              <label>Reason for low efficiency(if < 100%)</label>
+             <select class="form-control form-control-lg form-control-solid" name="reason"
+                 id="reason" (change)="getReason($event.target.value)">
+                 <option value ="">Please Select Reason</option>
+                <option *ngFor="let reason of reasonList" [ngValue]="reason.reasonId">
+                  {{ reason.reason }}
+                </option>
+              </select>
+              <input type="text" class="form-control form-control-lg form-control-solid  " name="lowEffReason"
+              placeholder="Low Efficiency Reason" autocomplete="off" formControlName="lowEffReason" />
+
+            </div>-->
+
+          </div>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label"><b>ROAD NAME : </b><br/>{{ task.coreData.roadData.roadTypeMap.roadName }} </label>
+            <ng-container *ngIf="showHoldQueueButtons">
+
+              <b> <br/>Hold Reason :</b> <br/>{{task.reason.reason}}
+
+           </ng-container>
+          </div>
+          <div class="col-lg-4">
+            <label class="form-label"><b>Previous Queue Remarks : </b>
+              <button  (click)="openDialog(task.taskRemarks)" >...</button>
+
+              <br/></label>
+            <textarea class="form-control form-control-lg form-control-solid" name="remarks">{{task.comments}}</textarea>
+
+
+            </div>
+          <div class="col-lg-4">
+            <label><b>Remarks</b></label>
+            <textarea class="form-control form-control-lg form-control-solid" name="remarks" placeholder="remarks" [(ngModel)]="remarks"
+              autocomplete="off"    ></textarea>
+
+          </div>
+
+        </div>
+    <ng-container *ngIf="task.coreData.roadData.roadTypeMap.multiType">
+      <div class="form-group row">
+        <label class="form-label"><b>Multi RoadType Details</b></label>
+        </div>
+      <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="form-label"><b>Primary Non-Div Motorways Miles: </b><br/>{{task.coreData.roadData.roadTypeMap.roadTypeList[0].miles}}</label>
+
+        </div>
+        <div class="col-lg-3">
+          <label class="form-label"><b>Primary Non-Div Trunk Miles : </b><br/>{{ task.coreData.roadData.roadTypeMap.roadTypeList[1].miles }}</label>
+
+        </div>
+        <div class="col-lg-3">
+          <label class="form-label"><b>Primary Non-Div Urban Miles : </b><br/>{{ task.coreData.roadData.roadTypeMap.roadTypeList[2].miles }}</label>
+
+        </div>
+        <div class="col-lg-3">
+          <label class="form-label"><b>Access Ramp: </b><br/>{{task.duration}}</label>
+
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="form-group row">
+
+
+  </div>
+  <div class="form-group row">
+    <div class="col-lg-4">
+
+      <ng-container *ngIf="showQAButtons">
+
+          Move WorkUnit as
+      </ng-container>
+
+
+    </div>
+
+
+  </div>
+  <div class="form-group row">
+    <ng-container *ngIf="showEditable">
+      <ng-container *ngIf="showActionButtons">
+        <div class="col-lg-1 button-row" ></div>
+        <ng-container *ngIf="buttonType == 1">
+        <div class="col-lg-2 button-row" >
+            <button type="button" id="Start" mat-fab color="primary" (click)=start(task.allocationId)>Start</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="buttonType == 2">
+        <div class="col-lg-2 button-row" >
+          <button type="button" id="Pause" mat-fab color="accent" (click)=pause(task.allocationId)>Pause</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="buttonType == 3">
+        <div class="col-lg-2 button-row" >
+          <button type="button" id="Pause" mat-fab color="accent" (click)=resume(task.allocationId)>Resume</button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="buttonType == 2">
+        <div class="col-lg-2">
+          <button type="button" id="Hold" mat-fab color="primary" (click)=preHold(task.allocationId)>Hold</button>
+        </div>
+      </ng-container>
+    </ng-container>
+      <ng-container *ngIf="showHoldQueueButtons">
+
+        <div class="col-lg-1">
+          <button type="button" id="MoveToHold" mat-fab color="primary" title='Move Batch' (click)=hold(task.allocationId)>Hold</button>
+        </div>
+        <div class="col-lg-1">
+          <button type="button" id="WorkUnitRevoke" mat-fab color="accent" title='Move Current Unit' (click)=revoke(task.allocationId)>Revoke</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="showQAButtons">
+
+        <div class="col-lg-1">
+          <button type="button" id="MoveBatch" mat-fab color="primary" title='Move Batch' (click)=batch(task.allocationId)>Batch</button>
+        </div>
+        <div class="col-lg-1">
+          <button type="button" id="MoveWorkUnit" mat-fab color="accent" title='Move Current Unit' (click)=currentUnit(task.allocationId)>Single</button>
+        </div>
+      </ng-container>
+
+
+
+      <div class="col-lg-4" >
+        <div *ngIf="showReasons">
+          <label>Select Reason for on Hold</label>
+          <select class="form-control form-control-lg form-control-solid" name="reason"
+            id="reason" (change)="getReason($event.target.value)">
+            <option value ="">Please Select Reason</option>
+            <!--<option value ="2DLIDARnotloadingvisibleinQGIS">2D LIDAR not loading / visible in QGIS</option>
+            <option value ="3DLIDARissue–Bifurcationlocationshift">3DLIDARissue–Bifurcationlocationshift</option>-->
+            <option *ngFor="let reason of reasonList" [value]="reason.reasonId">
+              {{ reason.reason }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <ng-container *ngIf="showReject">
+        <div class="col-lg-2">
+          <button type="button" id="Reject" mat-fab color="primary" (click)=reject(task.allocationId)>Reject</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="showActionButtons">
+        <ng-container *ngIf="buttonType == 2">
+          <div class="col-lg-1">
+            <button type="button" id="Stop" mat-fab color="warn" (click)=stop(task.allocationId)>Stop</button>
+          </div>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+  <!--end::Tabpane-->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="cancel()">Cancel</button>
+
+
+  </div>
+</div>

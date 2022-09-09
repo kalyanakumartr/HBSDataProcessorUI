@@ -1,0 +1,176 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Work Unit Summary</h3>
+    </div>
+    <div class="card-toolbar">
+      <div class="form-group row">
+
+        <div class="col-lg-6">
+          <label>From Date</label>
+          <div class="input-group input-group-solid">
+            <div class="input-group input-group-solid">
+              <input type="text" name="fromDate" class="form-control form-control-lg form-control-solid" autocomplete="off" (dateSelect)="setFromDate()" [(ngModel)]="fromDate"
+                placeholder="mm/dd/yyyy" ngbDatepicker [minDate]="minDate" [maxDate]="maxDate" #fromd="ngbDatepicker"
+                 readonly="true" />
+              <div class="input-group-append" (click)="fromd.toggle()">
+                <span class="input-group-text">
+                  <i class="text-dark-50 flaticon-calendar"></i>
+                </span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <label>To Date</label>
+          <div class="input-group input-group-solid">
+            <input type="text" name="toDate" class="form-control form-control-lg form-control-solid" autocomplete="off" (dateSelect)="setToDate()" [(ngModel)]="toDate"
+              placeholder="mm/dd/yyyy" ngbDatepicker [minDate]="toMinDate" [maxDate]="toMaxDate" #tod="ngbDatepicker"
+             readonly="true" />
+            <div class="input-group-append" (click)="tod.toggle()">
+              <span class="input-group-text">
+                <i class="text-dark-50 flaticon-calendar"></i>
+              </span>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="grid-item" style="cursor: pointer;">
+              &nbsp;&nbsp;
+              <button type="button" id="exportExcel" class="btn btn-primary btn-elevate"  (click)= "exportExcel()">
+                Export to Excel
+              </button>
+            </div>&nbsp;&nbsp;
+            <div id="divSpinnerId" class="spinner spinner-darker-success spinner-left" hidden></div>&nbsp;&nbsp;&nbsp;
+    </div>
+  </div>
+  <div class="card-body">
+    <!-- begin: Filtration form -->
+    <div class="form form-label-right">
+      <div class="form-group row" [formGroup]="searchGroup">
+
+
+        <div class="col-lg-2">
+          <ng-container *ngIf="showDepartment">
+          <label>Department</label>
+          <select class="form-control form-control-lg form-control-solid" name="department"  [(ngModel)]="department"
+             formControlName="department" (change)="setDepartment($event.target.value)">
+            <option [ngValue]="0" [selected]=true>Select Department</option>
+            <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
+              {{ department.departmentName }}
+            </option>
+          </select>
+        </ng-container>
+        <ng-container *ngIf="!showDepartment">
+          <label>Department</label><br/>
+          <span>{{departmentName}}</span>
+        </ng-container>
+        </div>
+        <div class="col-lg-2">
+          <ng-container *ngIf="showDivision">
+          <label>Division</label>
+          <select class="form-control form-control-lg form-control-solid" name="division"  [(ngModel)]="division"
+             formControlName="division" (change)="setDivision($event.target.value)">
+             <option [ngValue]="0" [selected]=true>Select Division</option>
+            <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
+              {{ division.divisionName }}
+            </option>
+          </select>
+          </ng-container>
+          <ng-container *ngIf="!showDivision">
+            <label>Division</label><br/>
+            <span>{{divisionName}}</span>
+          </ng-container>
+        </div>
+        <div class="col-lg-3">
+          <label>Project</label>
+          <select class="form-control form-control-lg form-control-solid" name="project"  [(ngModel)]="project"
+             formControlName="project" (change)="setProject($event.target.value)">
+             <option [ngValue]="0" [selected]=true>Select Project</option>
+            <option *ngFor="let project of projectList" [ngValue]="project.projectId">
+              {{ project.projectName }}
+            </option>
+          </select>
+
+        </div>
+        <div  class="col-lg-3">
+
+        </div>
+        <div class="col-lg-2" >
+
+            <div class="grid-item" style="cursor: pointer;">
+              &nbsp;<br/>&nbsp;
+              <button type="button" id="submit"class="btn btn-primary btn-elevate" (click)="SearchFilter()">Submit</button>&nbsp;&nbsp;
+            <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end: Filtration form -->
+
+
+    <!-- begin:Table -->
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="tablebox" class="table table-head-custom table-vertical-center ">
+        <thead>
+          <tr>
+            <th nowrap >
+              SL #
+
+            </th>
+
+          <th nowrap >
+            WU Received Date
+
+          </th>
+          <th nowrap >
+            Task Name
+
+          </th>
+          <th nowrap >
+            Work Unit #
+
+          </th>
+          <th nowrap> SubCountry</th>
+
+
+          <th nowrap >WU Miles</th>
+
+          <th nowrap >Road Type </th>
+          <th nowrap >Data collection Status</th>
+          <th nowrap >Reason for On hold</th>
+          <th nowrap >Remarks</th>
+          <th nowrap >Submitted Date</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let deliveryTracker of deliveryTrackerService.items$ | async">
+            <td>{{ deliveryTracker.serialNo}} </td>
+            <td>{{ deliveryTracker.receivedDate | date: 'dd-MMM-yyyy'}} </td>
+            <td>{{ deliveryTracker.projectCode}} </td>
+            <td>{{ deliveryTracker.workUnitId}} </td>
+            <td>{{ deliveryTracker.subCountry}} </td>
+            <td>{{ deliveryTracker.miles}} </td>
+            <td>{{ deliveryTracker.roadTypeClassification}} </td>
+            <td>{{ deliveryTracker.status}} </td>
+            <td>{{ deliveryTracker.reason}} </td>
+            <td>{{ deliveryTracker.remarks}} </td>
+            <td>{{ deliveryTracker.allotedDate}} </td>
+
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end: Table -->
+    <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator"
+      [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+  </div>

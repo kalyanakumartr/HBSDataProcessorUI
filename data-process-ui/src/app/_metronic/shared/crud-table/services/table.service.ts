@@ -1,5 +1,5 @@
 // tslint:disable:variable-name
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 import { PaginatorState } from '../models/paginator.model';
@@ -8,12 +8,39 @@ import { BaseModel } from '../models/base.model';
 import { SortState } from '../models/sort.model';
 import { GroupingState } from '../models/grouping.model';
 import { environment } from '../../../../../environments/environment';
+import { AuthModel } from 'src/app/modules/auth/_models/auth.model';
+import { LeaveModel } from 'src/app/modules/leave-management-system/modal/leave.model';
+import { AttendanceModel } from 'src/app/modules/attendance/modal/attendance.model';
+import { TimeSheetModel } from 'src/app/modules/attendance/modal/timesheet.model';
 
 const DEFAULT_STATE: ITableState = {
   filter: {},
   paginator: new PaginatorState(),
   sorting: new SortState(),
   searchTerm: '',
+  divisionId: '',
+  departmentId: '',
+  projectId: '',
+  groupId:'',
+  teamId:'',
+  status:'',
+  fromDate: '',
+  toDate: '',
+  workUnitId:  '',
+  startWUMiles: '',
+  endWUMiles: '',
+  reasonId: '',
+  roadTypeMapId: '',
+  startAssignedDate: '',
+  startProcessedDate: '',
+  receivedDate: '',
+  endAssignedDate: '',
+  endProcessedDate: '',
+  endReceivedDate: '',
+  teamName: '',
+  subCountryId: '',
+  isAdvanceSearch:false,
+  isDirectReport:true,
   grouping: new GroupingState(),
   entityId: undefined
 };
@@ -21,15 +48,32 @@ const DEFAULT_STATE: ITableState = {
 export abstract class TableService<T> {
   // Private fields
   private _items$ = new BehaviorSubject<T[]>([]);
+  private _headers$ = new BehaviorSubject<T[]>([]);
   private _isLoading$ = new BehaviorSubject<boolean>(false);
   private _isFirstLoading$ = new BehaviorSubject<boolean>(true);
-  private _tableState$ = new BehaviorSubject<ITableState>(DEFAULT_STATE);
+  public _tableState$ = new BehaviorSubject<ITableState>(DEFAULT_STATE);
   private _errorMessage = new BehaviorSubject<string>('');
   private _subscriptions: Subscription[] = [];
+  private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
+  private _leaveBalanceCount$ :number;
+  private _approvedLeaveCount$ :number;
+  private _unApprovedLeaveCount$ :number;
 
+  get approvedLeaveCount$():number {
+    return this._approvedLeaveCount$;
+  }
+  get leaveBalanceCount$() {
+    return this._leaveBalanceCount$;
+  }
+  get unApprovedLeaveCount$() {
+    return this._unApprovedLeaveCount$;
+  }
   // Getters
   get items$() {
     return this._items$.asObservable();
+  }
+  get headers$() {
+    return this._headers$.asObservable();
   }
   get isLoading$() {
     return this._isLoading$.asObservable();
@@ -62,17 +106,24 @@ export abstract class TableService<T> {
 
   protected http: HttpClient;
   // API URL has to be overrided
-  API_URL = `${environment.apiUrl}/endpoint`;
+  API_URL = `${environment.adminApiUrl}`;
+  REPORT_API_URL = `${environment.reportsApi}`;
   constructor(http: HttpClient) {
+    // if(this instanceof LeaveModel || this instanceof AttendanceModel || this instanceof TimeSheetModel){
+    //  this.API_URL = `${environment.taleApi}`;
+    // }
     this.http = http;
   }
 
   // CREATE
   // server should return the object with ID
-  create(item: BaseModel): Observable<BaseModel> {
+  create(item: BaseModel,path: string, formUser:string): Observable<any> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    return this.http.post<BaseModel>(this.API_URL, item).pipe(
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<BaseModel>(this.API_URL+path, {formUser: item},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMessage.next(err);
         console.error('CREATE ITEM', err);
@@ -83,19 +134,28 @@ export abstract class TableService<T> {
   }
 
   // READ (Returning filtered list of entities)
-  find(tableState: ITableState): Observable<TableResponseModel<T>> {
-    const url = this.API_URL + '/find';
+  find(tableState: ITableState ,path: string): Observable<TableResponseModel<T>> {
+    console.log("Inside find >>>");
+    var url ='';
+    if(path.endsWith("Report")){
+      url = this.REPORT_API_URL + path;//'/searchUser';
+    }else{
+       url = this.API_URL + path;//'/searchUser';
+    }
     this._errorMessage.next('');
-    return this.http.post<TableResponseModel<T>>(url, tableState).pipe(
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<TableResponseModel<T>>(url, tableState,{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMessage.next(err);
         console.error('FIND ITEMS', err);
-        return of({ items: [], total: 0 });
+        return of({ items: [],headerList: [], total: 0, leaveBalanceCount: 0, approvedLeaveCount:0, unApprovedLeaveCount:0 });
       })
     );
   }
 
-  getItemById(id: number): Observable<BaseModel> {
+  getItemById(id: string): Observable<BaseModel> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
     const url = `${this.API_URL}/${id}`;
@@ -110,22 +170,25 @@ export abstract class TableService<T> {
   }
 
   // UPDATE
-  update(item: BaseModel): Observable<any> {
+  update(item: BaseModel,path: string, formUser:string): Observable<any> {
     const url = `${this.API_URL}/${item.id}`;
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    return this.http.put(url, item).pipe(
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<BaseModel>(this.API_URL+path, {formUser: item},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMessage.next(err);
-        console.error('UPDATE ITEM', item, err);
-        return of(item);
+        console.error('Update ITEM', err);
+        return of({ id: undefined });
       }),
       finalize(() => this._isLoading$.next(false))
     );
   }
 
   // UPDATE Status
-  updateStatusForItems(ids: number[], status: number): Observable<any> {
+  updateStatusForItems(ids: string[], status: number): Observable<any> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
     const body = { ids, status };
@@ -156,7 +219,7 @@ export abstract class TableService<T> {
   }
 
   // delete list of items
-  deleteItems(ids: number[] = []): Observable<any> {
+  deleteItems(ids: string[] = []): Observable<any> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
     const url = this.API_URL + '/deleteItems';
@@ -171,13 +234,21 @@ export abstract class TableService<T> {
     );
   }
 
-  public fetch() {
+  public fetch(path:string) {
+    console.log("Inside Fetch Path is >>>>" , path);
+    if(path==""){
+      path="/searchUser"
+    }
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    const request = this.find(this._tableState$.value)
+    const request = this.find(this._tableState$.value, path)
       .pipe(
         tap((res: TableResponseModel<T>) => {
           this._items$.next(res.items);
+          this._headers$.next(res.headerList);
+          this._leaveBalanceCount$=res.leaveBalanceCount;
+          this._approvedLeaveCount$=res.approvedLeaveCount;
+          this._unApprovedLeaveCount$=res.unApprovedLeaveCount;
           this.patchStateWithoutFetch({
             paginator: this._tableState$.value.paginator.recalculatePaginator(
               res.total
@@ -205,12 +276,51 @@ export abstract class TableService<T> {
       .subscribe();
     this._subscriptions.push(request);
   }
+  public exportExcel(path:string,serverType:string) {
+    console.log("Inside exportExcel Path is >>>>" , path);
+    if(path==""){
+      path="/exportToExcelOperRecord"
+    }
+   // this._isLoading$.next(true);
+   this._tableState$.value.paginator.pageSize=100;
+    this._errorMessage.next('');
+    var url ='';
+    if(serverType == 'Admin'){
+      url = this.API_URL + path;//'/searchUser';
+    }else if(serverType == 'Report'){
+      url = this.REPORT_API_URL + path;//'/searchUser';
+    }
+
+    this._errorMessage.next('');
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+
+    });
+    return this.http.post(url, this._tableState$.value,{headers: httpHeaders,responseType: 'blob'});
+
+  }
 
   public setDefaults() {
     this.patchStateWithoutFetch({ filter: {} });
     this.patchStateWithoutFetch({ sorting: new SortState() });
     this.patchStateWithoutFetch({ grouping: new GroupingState() });
     this.patchStateWithoutFetch({ searchTerm: '' });
+    this.patchStateWithoutFetch({ divisionId: '' });
+    this.patchStateWithoutFetch({ departmentId: '' });
+    this.patchStateWithoutFetch({ projectId: '' });
+    this.patchStateWithoutFetch({ workUnitId: '' });
+    this.patchStateWithoutFetch({ startWUMiles: '' });
+    this.patchStateWithoutFetch({ endWUMiles: '' });
+    this.patchStateWithoutFetch({ reasonId: '' });
+    this.patchStateWithoutFetch({ roadTypeMapId: '' });
+    this.patchStateWithoutFetch({ startAssignedDate: '' });
+    this.patchStateWithoutFetch({ startProcessedDate: '' });
+    this.patchStateWithoutFetch({ receivedDate: '' });
+    this.patchStateWithoutFetch({ endAssignedDate: '' });
+    this.patchStateWithoutFetch({ endProcessedDate: '' });
+    this.patchStateWithoutFetch({ endReceivedDate: '' });
+    this.patchStateWithoutFetch({ teamName: '' });
+    this.patchStateWithoutFetch({ subCountryId: '' });
     this.patchStateWithoutFetch({
       paginator: new PaginatorState()
     });
@@ -221,13 +331,25 @@ export abstract class TableService<T> {
   }
 
   // Base Methods
-  public patchState(patch: Partial<ITableState>) {
+  public patchState(patch: Partial<ITableState>, path:string) {
+    console.log("PatchState",path);
     this.patchStateWithoutFetch(patch);
-    this.fetch();
+    this.fetch(path);
   }
 
   public patchStateWithoutFetch(patch: Partial<ITableState>) {
     const newState = Object.assign(this._tableState$.value, patch);
     this._tableState$.next(newState);
+  }
+  public getAuthFromLocalStorage(): AuthModel {
+    try {
+      const authData = JSON.parse(
+        localStorage.getItem(this.authLocalStorageToken)
+      );
+      return authData;
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
   }
 }

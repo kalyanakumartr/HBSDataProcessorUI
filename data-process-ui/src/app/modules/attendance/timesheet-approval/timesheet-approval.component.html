@@ -1,0 +1,101 @@
+
+
+
+<div class="card card-custom gutter-b" [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': isLoading}">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="form-group row">
+        <div class="col-md-2" >
+          <h3 class="card-label">Approve TimeSheet </h3>
+      </div>
+          <div class="col-md-3" >
+
+          <select class="form-control form-control-lg " name="monthYear" (change)="setMonth($event.target.value)">
+            <option [ngValue]="0" [selected]=true>Select Week</option>
+            <option *ngFor="let week of monthWeeklyList" [value]="week.value">
+              {{ week.label }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-1">
+          <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "refresh()">
+            <mat-icon >refresh</mat-icon>
+          </button>
+      </div>
+      <div class="col-md-2">
+        <select class="form-control form-control-lg " name="monthYear" (change)="setEmployeeId($event.target.value)">
+          <option [ngValue]="0" [selected]=true>My Team</option>
+          <option *ngFor="let user of userList" [value]="user.employeeId">
+            {{ user.fullName }}
+          </option>
+        </select>
+      </div>
+        <div class="col-md-2" >
+          &nbsp;<br/>
+          <span>
+
+            <input type="checkbox" id="directReporing"  name="directReporing" value="true"  [checked]="true" (change)="setDirectReporting()"/>
+            Direct Report &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span>
+        </div>
+      <div class="col-md-2 form form-label-right">
+        <div class="form-group row" [formGroup]="searchGroup">
+
+            <div class="grid-container">
+
+            <input type="search" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
+              formControlName="searchTerm" /></div>
+              <div class="grid-item" style="cursor: pointer;">
+                &nbsp;&nbsp;
+             <!-- <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>-->
+
+              </div>
+
+            </div>
+          </div>
+      </div>
+</div>
+    <!-- end: Filtration form -->
+
+
+    <!-- begin:Table -->
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="tablebox" class="table table-head-custom table-vertical-center ">
+        <thead>
+          <tr>
+          <th style="text-align: center;" *ngFor="let day of timeSheetService.headers$ | async ">
+            {{day}}
+
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let approvalTimeSheet of timeSheetService.items$ | async">
+
+            <td noWrap style="text-align: center;">{{ approvalTimeSheet.slNo}} </td>
+            <td noWrap style="text-align: center;">{{ approvalTimeSheet.userId}} </td>
+            <td noWrap>{{ approvalTimeSheet.userName}} </td>
+            <td noWrap style="text-align: center;">{{ approvalTimeSheet.employmentStatus}} </td>
+          <td style="text-align: center;" *ngFor="let timeSheet of approvalTimeSheet.timesheets">
+            <span class="label label-lg label-inline" (click)= "showTimeSheet(approvalTimeSheet,timeSheet)"
+            [class.label-light-warning]="timeSheet.status === 'None'" [class.label-light-success]="timeSheet.status === 'Approved'"  [class.label-light-danger]="timeSheet.status === 'Pending'" >
+              <ng-container *ngIf="timeSheet.symbol === 'P8'">P8</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'P12'">P12</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'P4'">P4</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'MeL'">MeL</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'LnL'">LnL</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'Le'">Le</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'Ho'">Ho</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === 'A'">A</ng-container>
+              <ng-container *ngIf="timeSheet.symbol === '-'">N</ng-container>
+            </span>
+          </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end: Table -->
+
+  </div>
+

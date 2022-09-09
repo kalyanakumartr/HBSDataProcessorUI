@@ -43,12 +43,13 @@ export class AuthService implements OnDestroy {
   }
 
   // public methods
-  login(email: string, password: string): Observable<UserModel> {
+  login(loginId: string, password: string): Observable<UserModel> {
     this.isLoadingSubject.next(true);
-    return this.authHttpService.login(email, password).pipe(
+    return this.authHttpService.login(loginId, password).pipe(
       map((auth: AuthModel) => {
         console.log("Auth",auth);
         const result = this.setAuthFromLocalStorage(auth);
+        localStorage.setItem("loginId",loginId);
         console.log(result);
         return result;
       }),
@@ -69,13 +70,15 @@ export class AuthService implements OnDestroy {
   }
 
   getUserByToken(): Observable<UserModel> {
+    const loginId =localStorage.getItem("loginId");
     const auth = this.getAuthFromLocalStorage();
-    if (!auth || !auth.accessToken) {
+    if (!auth || !auth.access_token) {
       return of(undefined);
     }
 
     this.isLoadingSubject.next(true);
-    return this.authHttpService.getUserByToken(auth.accessToken).pipe(
+    console.log("LoginId1",loginId);
+    return this.authHttpService.getUserByToken(auth.access_token, loginId).pipe(
       map((user: UserModel) => {
         if (user) {
           this.currentUserSubject = new BehaviorSubject<UserModel>(user);
@@ -114,7 +117,7 @@ export class AuthService implements OnDestroy {
   // private methods
   private setAuthFromLocalStorage(auth: AuthModel): boolean {
     // store auth accessToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes
-    if (auth && auth.accessToken) {
+    if (auth && auth.access_token) {
       localStorage.setItem(this.authLocalStorageToken, JSON.stringify(auth));
       return true;
     }
@@ -136,4 +139,5 @@ export class AuthService implements OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());
   }
+
 }

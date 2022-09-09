@@ -19,13 +19,13 @@ import {StatementsComponent} from './statements/statements.component';
 import {UserProfileRoutingModule} from './user-profile-routing.module';
 import {ProfileCardComponent} from './_components/profile-card/profile-card.component';
 
+
 @NgModule({
   declarations: [
     UserProfileComponent,
     ProfileOverviewComponent,
     PersonalInformationComponent,
     AccountInformationComponent,
-    ChangePasswordComponent,
     EmailSettingsComponent,
     SavedCreditCardsComponent,
     TaxInformationComponent,

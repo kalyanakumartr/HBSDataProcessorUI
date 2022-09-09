@@ -39,11 +39,11 @@ export class HeaderMobileComponent implements OnInit, AfterViewInit {
     let result = 'logo-light.png';
     if (!this.asideSelfDisplay) {
       if (headerSelfTheme === 'light') {
-        result = 'logo-dark.png';
+        result = 'edrLogo_topnav.jpg';
       }
     } else {
       if (brandSelfTheme === 'light') {
-        result = 'logo-dark.png';
+        result = 'edrLogo_topnav.jpg';
       }
     }
     return `./assets/media/logos/${result}`;

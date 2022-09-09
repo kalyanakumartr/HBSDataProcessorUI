@@ -6,10 +6,21 @@ export interface ISortState {
 }
 
 export class SortState implements ISortState {
-  column = 'id'; // Id by default
+  column = 'createdDate'; // Id by default
+  direction: SortDirection = 'desc'; // asc by default;
+}
+export class SortStateTable implements ISortState {
+  column = 'allotedDate'; // Id by default
+  direction: SortDirection = 'desc'; // asc by default;
+}
+export class SortStateAttendance implements ISortState {
+  column = 'attendance.date'; // Id by default
   direction: SortDirection = 'asc'; // asc by default;
 }
-
+export class SortStateLeave implements ISortState {
+  column = 'createdDate'; // Id by default
+  direction: SortDirection = 'desc'; // asc by default;
+}
 export interface ISortView {
   sorting: SortState;
   ngOnInit(): void;

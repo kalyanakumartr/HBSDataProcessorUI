@@ -1,0 +1,89 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        Project Code:   {{task.coreData.roadData.projectName}}
+    </div>
+    <div class="modal-title small h2" id="example-modal-sizes-title-lg">
+
+      Edit Work Unit Road Type
+  </div>
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+
+      File Allocated Date :   {{ task.coreData.roadData.receivedDate | date: 'dd-MMM-yyyy'}}
+    </div>
+  </div>
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        Work Unit #:   {{task.coreData.roadData.workUnitId}}
+    </div>
+
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+
+      File Completed Date :{{task.processedDate | date: 'dd-MMM-yyyy'}}
+    </div>
+  </div>
+
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+
+
+        <!--end::Header-->
+        <!--begin::Content-->
+        <div class="tab-content">
+          <!--begin::Tabpane-->
+
+          <div class="form-group row">
+            <div class="col-lg-2">
+              <label class="form-label"><b>SUB COUNTRY NAME :</b> <br/>{{ task.coreData.roadData.subCountryName}}</label>
+
+            </div>
+
+            <div class="col-lg-2">
+              <label class="form-label"><b>Prod Estimated Time : </b><br/>{{ prodEstimatedTime }}(Minutes)</label>
+            </div>
+            <div class="col-lg-2">
+              <label class="form-label"><b>QC Estimated Time : </b><br/>{{ qcEstimatedTime }}(Minutes)</label>
+            </div>
+
+          </div>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label"><b>Selected ROAD TYPE : </b><br/>{{ task.coreData.roadData.roadTypeMap.roadName }}</label>
+            <select  class="form-control form-control-lg form-control-solid" name="roadType" [(ngModel)]="newRoadType" (change)="setNewRoadType($event.target.value)">
+            <option [ngValue]="0" [selected]=true>Change Road Type</option>
+            <option *ngFor="let roadType of roadTypeList" [ngValue]="roadType.roadId">
+            {{ roadType.roadName }}
+            </option>
+          </select>
+          </div>
+          <div class="col-lg-1">
+            <label class="form-label"><b>WUMILES&nbsp;: </b><br/>{{ task.coreData.roadData.wuMiles }}</label>
+          </div>
+          <div class="col-lg-4">
+            </div>
+
+        </div>
+    <ng-container *ngIf="isMultiType">
+      <div class="form-group row">
+        <label class="form-label"><b>Multi RoadType Details</b></label>
+        </div>
+      <div class="form-group row" >
+        <div class="col-lg-3" *ngFor="let rt of roadTypeInnerList; let i = index">
+          <label class="form-label"><b>{{rt.roadName}} : </b><br/>{{task.coreData.roadData.roadTypeMap.roadTypeList[i]?task.coreData.roadData.roadTypeMap.roadTypeList[i].miles:''}}</label>
+          <input type="number" class="form-control form-control-lg form-control-solid" id="{{rt.roadId}}" name="{{rt.roadId}}" placeholder="{{rt.roadName}}"
+          autocomplete="off"  />
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="form-group row">
+
+
+  </div>
+
+  <!--end::Tabpane-->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+    <button type="submit" class="btn btn-primary btn-elevate" (click)="save()">Save</button>
+  </div>
+</div>

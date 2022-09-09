@@ -1,0 +1,160 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+
+
+        <b><label class="heading">
+
+          Daily Log for {{attendance.employee.fullName}} </label></b>
+
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+    <div class="form-group row">
+      <div class="col-lg-2">
+        <label>Shift :</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{attendance.symbol}} Hrs</label>
+      </div>
+      <div class="col-lg-3">
+        <label>{{attendance.mode}} </label>
+      </div>
+      <div class="col-lg-2">
+        <label>Date :</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{attendance.date.slice(0, 10).split("-").reverse().join("/")}}</label>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-lg-2">
+        <label>Billable Hours :</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{dailyActivities.totalBillable?dailyActivities.totalBillable:"00:00"}} </label>
+      </div>
+      <div class="col-lg-3">
+
+      </div>
+
+      <div class="col-lg-3">
+        <label>Non Billable Hours :</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{dailyActivities.totalNB?dailyActivities.totalNB:"00:00"}} </label>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-lg-2">
+        <label nowrap>OverTime Hours:</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{dailyActivities.overTimeHours?dailyActivities.overTimeHours:"00:00"}} </label>
+      </div>
+      <div class="col-lg-3">
+
+      </div>
+
+      <div class="col-lg-3">
+        <label nowrap>Discrepancies Hours:</label>
+      </div>
+      <div class="col-lg-2">
+        <label>{{dailyActivities.shortageHours?dailyActivities.shortageHours:"00:00"}} </label>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-lg-2">
+        <label>Select Project</label>
+        <select class="form-control form-control-lg form-control-solid" name="projectId"
+           (change)="setProjectId($event.target.value)">
+          <option [ngValue]="selValue" [selected]=true>Select Project</option>
+          <option *ngFor="let project of projectList" [value]="project.projectId">
+            {{ project.projectName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-lg-2">
+        <label>Select Process</label>
+        <select class="form-control form-control-lg form-control-solid" name="processId"
+           (change)="setProcess($event.target.value)">
+          <option [ngValue]="selValue" [selected]=true>Select Process</option>
+          <option *ngFor="let process of processList" [value]="process.processId">
+            {{ process.processName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-lg-1">
+        <label>Billable</label>
+        <label class="form-control form-control-lg form-control-solid" style ="padding: 0.825rem 0.42rem;">{{billType}}</label>
+      </div>
+      <div class="col-lg-2">
+        <label>Time (HH:MM)</label>
+        <input type="time" class="form-control form-control-lg form-control-solid" name="time" placeholder="time" min="00:00:00" max="12:00:00" autocomplete="off"  [(ngModel)]="logTime" />
+      </div>
+      <div class="col-lg-3">
+        <label>Remarks</label>
+        <input type="textarea" class="form-control form-control-lg form-control-solid" name="remarks" placeholder="remarks" autocomplete="off" [(ngModel)]="remarks"  />
+      </div>
+      <div class="col-lg-2">
+        <label>Action</label>
+        <button type="button" id="add" class="btn btn-primary btn-elevate" (click)= "add()">
+          &nbsp;&nbsp;&nbsp;Add&nbsp;&nbsp;&nbsp;&nbsp;
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="tablebox" class="table table-head-custom table-vertical-center ">
+        <thead>
+          <tr>
+            <th nowrap >Project   </th>
+            <th nowrap >Process   </th>
+            <th nowrap >Billable   </th>
+            <th nowrap >Time (HH:MM)  </th>
+            <th nowrap >Remarks   </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dailyLog of dailyActivities.dailyLogList">
+
+            <td>{{ dailyLog.projectName }}</td>
+            <td>{{dailyLog.processName }}</td>
+            <td>{{dailyLog.billableType }}</td>
+            <td>{{dailyLog.actualTime.replace(".",":") }}</td>
+            <td>{{dailyLog.remarks }}</td>
+            <td>
+              <ng-container *ngIf="dailyLog.entryType == 'Manual'">
+                <button type="button" id="log" mat-mini-fab color="warn" (click)= "deleteDailyLog(dailyLog.autoId, dailyActivities.timesheetId)">
+                  <mat-icon >delete</mat-icon>
+                </button>
+              </ng-container>
+          </td>
+
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <ng-container *ngIf="timeSheet.comments && !(timeSheet.comments =='' || timeSheet.comments ==' ')">
+      <div class="col-lg-3">
+        <label><b>Approver Comments:</b></label>
+        <span>{{timeSheet.comments}}</span>
+      </div>
+    </ng-container>
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+      [disabled]="dailyActivities.shortageHours && dailyActivities.shortageHours!='00:00'">Submit TimeSheet</button>
+  </div>
+</div>

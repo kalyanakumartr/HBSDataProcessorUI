@@ -12,6 +12,7 @@ import { Subheader7Component } from './subheader7/subheader7.component';
 import { SubheaderWrapperComponent } from './subheader-wrapper/subheader-wrapper.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownMenusModule } from '../../content/dropdown-menus/dropdown-menus.module';
+import { AttendanceModule } from 'src/app/modules/attendance/attendance.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { DropdownMenusModule } from '../../content/dropdown-menus/dropdown-menus
     Subheader6Component,
     Subheader7Component,
     SubheaderWrapperComponent,
+
   ],
   imports: [
     CommonModule,
@@ -30,6 +32,7 @@ import { DropdownMenusModule } from '../../content/dropdown-menus/dropdown-menus
     InlineSVGModule,
     NgbDropdownModule,
     DropdownMenusModule,
+    AttendanceModule
   ],
   exports: [SubheaderWrapperComponent],
 })

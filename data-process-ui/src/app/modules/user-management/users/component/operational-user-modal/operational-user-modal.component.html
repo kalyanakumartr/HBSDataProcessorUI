@@ -1,0 +1,117 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <ng-container *ngIf="customer">
+        <b><label class="heading">Operational Records for
+        <ng-container *ngIf="customer.id">'{{customer.userName}} {{ customer.lastName }}'</ng-container>
+        </label></b>
+      </ng-container>
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="customer">
+      <form action="#" class="form form-label-right" [formGroup]="formGroup">
+        <div class="form-group row">
+        <div class="col-lg-4">
+          <label> Department : {{customer.operationalRecord.department.departmentId}}</label>
+
+        </div>
+        <div class="col-lg-4">
+          <label> Role : {{customer.roleId}}</label>
+        </div>
+        <div class="col-lg-4">
+          <label> Division : {{customer.operationalRecord.division.divisionId}}</label>
+        </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label>Select Group</label>
+            <select class="form-control form-control-lg form-control-solid spinner spinner-success spinner-right" name="groupId"
+              [class.is-invalid]="isControlInvalid('groupId')" formControlName="groupId" (change)="setReportingToByGroup($event.target.value)">
+              <option [ngValue]="groupTeamDefault" [selected]=true>Select Group</option>
+              <option *ngFor="let group of groupList" [ngValue]="group.teamId">
+                {{ group.teamName }}
+              </option>
+
+            </select>
+            <div class="feedback">Please select <b>Group</b></div>
+          </div>
+          <div class="col-lg-4">
+            <label>Select Team</label>
+            <select class="form-control form-control-lg form-control-solid spinner spinner-success spinner-right" name="teamId"
+              [class.is-invalid]="isControlInvalid('teamId')" formControlName="teamId" (change)="setReportingToByTeam($event.target.value)">
+              <option [ngValue]="groupTeamDefault" [selected]=true>Select Team</option>
+              <option *ngFor="let team of teamList" [ngValue]="team.teamId">
+                {{ team.teamName }}
+              </option>
+            </select>
+            <div class="feedback">Please select <b>Team</b></div>
+          </div>
+          <div class="col-lg-4">
+            <label class="form-label">Enter Project Id   </label>
+            <select class="form-control form-control-lg form-control-solid" name="projectId"
+            [class.is-invalid]="isControlInvalid('projectId')" formControlName="projectId">
+            <option [ngValue]="projectDefault" [selected]=true>Select Project</option>
+            <option *ngFor="let project of projectList" [ngValue]="project.projectId">
+              {{ project.projectName }}
+            </option>
+          </select>
+          <div class="feedback">Please select <b>Project</b></div>
+
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label">Enter Reporting To   </label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="reporting" readonly [value]="reporting"
+              placeholder="Reporting To" autocomplete="off" [class.is-invalid]="isControlInvalid('reportingTo')"
+              [class.is-valid]="isControlValid('reportingTo')" formControlName="reportingTo" />
+
+          </div>
+          <div class="col-lg-4">
+            <label class="form-label">Enter BPS Login      </label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="loginRFDB_BPS" maxlength=20
+              placeholder="BPS Login" autocomplete="off" [class.is-invalid]="isControlInvalid('loginRFDB_BPS')"
+              [class.is-valid]="isControlValid('loginRFDB_BPS')" formControlName="loginRFDB_BPS" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'loginRFDB_BPS')">Login RFDB BPS Id is required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'loginRFDB_BPS')">Login RFDB BPS Id should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'loginRFDB_BPS')">Login RFDB BPS Id should have
+              maximum 20 symbols</div>
+          </div>
+          <div class="col-lg-4">
+            <label class="form-label">Enter Training Batch   </label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="trainingBatch" maxlength=40
+              placeholder="Training Batch" autocomplete="off" [class.is-invalid]="isControlInvalid('trainingBatch')"
+              [class.is-valid]="isControlValid('trainingBatch')" formControlName="trainingBatch" />
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'trainingBatch')">Training Batch is required</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'trainingBatch')">Training Batch should have at
+                least 3 symbols</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'trainingBatch')">Training Batch should have
+                maximum 10 symbols</div>
+          </div>
+        </div>
+        <div class="form-group row">
+
+
+        </div>
+      </form>
+    </ng-container>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+    <ng-container *ngIf="customer">
+
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+        >Save</button>
+    </ng-container>
+  </div>
+</div>

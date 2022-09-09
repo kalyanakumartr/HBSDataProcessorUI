@@ -1,0 +1,157 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <ng-container *ngIf="userITModel">
+
+        <b><label class="heading">IT Records for {{name}}</label></b>
+        <ng-container *ngIf="userITModel.id"></ng-container>
+      </ng-container>
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="userITModel">
+      <form action="#" class="form form-label-right" [formGroup]="formGroup">
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label>Work From</label>
+            <select class="form-control form-control-lg form-control-solid" name="workMode"
+              [class.is-invalid]="isControlInvalid('workMode')" formControlName="workMode">
+              <option value="0" >Select Work From</option>
+              <option value="WFH">Home</option>
+              <option value="WFO">Office</option>
+            </select>
+            <div class="feedback">Please select <b>Work From</b></div>
+
+        </div>
+
+          <div class="col-lg-4">
+              <label>BroadBand By</label>
+              <select class="form-control form-control-lg form-control-solid" name="broadBandBy"
+                [class.is-invalid]="isControlInvalid('broadBandBy')" formControlName="broadBandBy">
+                <option value="0" >Select BoadBand By</option>
+                <option value="EDR_Active">EDR Active</option>
+                <option value="OWN">OWN</option>
+                <option value="EDR_Disconnected">EDR Disconnected</option>
+
+              </select>
+              <div class="feedback">Please select <b>BroadBand</b></div>
+
+          </div>
+          <div class="col-lg-4">
+            <label class="form-label">ISP Name</label>
+           <select class="form-control form-control-lg form-control-solid" name="ispName"
+                [class.is-invalid]="isControlInvalid('ispName')" formControlName="ispName">
+                <option value="0" >Select ISP</option>
+                <option value="BSNL">BSNL</option>
+                <option value="AirTel">AirTel</option>
+                <option value="JIO">JIO</option>
+                <option value="ACT">ACT</option>
+                <option value="Hathway">Hathway</option>
+                <option value="localBand">Local BroadBand</option>
+                <option value="No Broadband connection">No Broadband connection</option>
+                <option value="Local Broadband-Limras">Local Broadband-Limras</option>
+                <option value="Local Broadband-Cherrinet">Local Broadband-Cherrinet</option>
+                <option value="Local Broadband-TIC">Local Broadband-TIC</option>
+                <option value="Local Broadband-Railwire">Local Broadband-Railwire</option>
+                <option value="Local Broadband - C32">Local Broadband - C32</option>
+                <option value="Local Broand-Ready link">Local Broand-Ready link</option>
+                <option value="Local Broadband-Limras ethernet">Local Broadband-Limras ethernet</option>
+
+              </select>
+              <div class="feedback">Please select <b>ISP</b></div>
+
+          </div>
+        </div>
+        <div class="form-group row">
+
+          <div class="col-lg-4">
+            <label>Static IP Address</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="staticIPAddress" placeholder="staticIPAddress"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('staticIPAddress')" maxlength=20
+              [class.is-valid]="isControlValid('staticIPAddress')" formControlName="staticIPAddress" />
+
+          </div>
+          <div class="col-lg-4">
+          <label>Static White Listed</label>
+          <select class="form-control form-control-lg form-control-solid" name="staticWhiteList"
+            [class.is-invalid]="isControlInvalid('staticWhiteList')" formControlName="staticWhiteList">
+            <option value=true>Yes</option>
+            <option value=false>No</option>
+          </select>
+
+      </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label">Enter internetPlan</label>
+            <input type="number" class="form-control form-control-lg form-control-solid" name="internetPlan" maxlength=10
+              placeholder="Internet Plan" autocomplete="off" [class.is-invalid]="isControlInvalid('internetPlan')"
+              [class.is-valid]="isControlValid('internetPlan')" formControlName="internetPlan" />
+          </div>
+          <div class="col-lg-4">
+            <label class="form-label">Enter BroadBand Account</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="broadBandAccount" maxlength=20
+              placeholder="Broadband Account" autocomplete="off" [class.is-invalid]="isControlInvalid('broadBandAccount')"
+              [class.is-valid]="isControlValid('broadBandAccount')" formControlName="broadBandAccount" />
+
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'broadBandAccount')">BroadBand Account should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'broadBandAccount')">BroadBand Account should have
+              maximum 100 symbols</div>
+          </div>
+        </div>
+          <div class="form-group row">
+          <div class="col-lg-4">
+            <label>Is Broadband downgraded? </label>
+            <select class="form-control form-control-lg form-control-solid" name="isDowngraded"
+              [class.is-invalid]="isControlInvalid('isDowngraded')" formControlName="isDowngraded">
+              <option value=true>Yes</option>
+              <option value=false>No</option>
+            </select>
+
+        </div>
+          <div class="col-lg-4">
+            <label>Downgraded Plan</label>
+            <input type="number" class="form-control form-control-lg form-control-solid" name="downGradedPlan" placeholder="Down Graded Plan"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('downGradedPlan')" maxlength=20
+              [class.is-valid]="isControlValid('downGradedPlan')" formControlName="downGradedPlan" />
+
+          </div>
+
+
+          </div>
+
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label>System Provided to Home</label>
+            <select class="form-control form-control-lg form-control-solid" name="systemToHome"
+              [class.is-invalid]="isControlInvalid('systemToHome')" formControlName="systemToHome">
+              <option value=true>Yes</option>
+              <option value=false>No</option>
+            </select>
+
+        </div>
+
+
+          </div>
+
+
+      </form>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+    <ng-container *ngIf="userITModel">
+
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+        >Save</button>
+    </ng-container>
+  </div>
+</div>

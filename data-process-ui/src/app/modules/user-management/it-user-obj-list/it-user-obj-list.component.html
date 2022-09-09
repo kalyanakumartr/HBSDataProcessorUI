@@ -1,0 +1,234 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">IT Records</h3>
+    </div>
+    <div class="card-toolbar">
+
+      <div class="grid-item" style="cursor: pointer;">
+        &nbsp;&nbsp;
+        <i title="Export Excel" (click)="exportExcel()" class="fas fa-file-excel fa-2x"></i>
+      </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    </div>
+  </div>
+  <div class="card-body">
+    <!-- begin: Filtration form -->
+    <div class="form form-label-right">
+      <div class="form-group row" [formGroup]="searchGroup">
+
+
+        <div class="col-lg-3">
+          <label>Department</label>
+          <select class="form-control form-control-lg form-control-solid" name="department" [(ngModel)]="department"
+             formControlName="department" (change)="setDepartment($event.target.value)">
+            <option [ngValue]="0" [selected]=true>Select Department</option>
+            <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
+              {{ department.departmentName }}
+            </option>
+          </select>
+
+        </div>
+        <div class="col-lg-3">
+          <label>Division</label>
+          <select class="form-control form-control-lg form-control-solid" name="division" [(ngModel)]="division"
+             formControlName="division" (change)="setDivision($event.target.value)">
+             <option [ngValue]="0" [selected]=true>Select Division</option>
+            <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
+              {{ division.divisionName }}
+            </option>
+          </select>
+
+        </div>
+        <div class="col-lg-3">
+          <label>Project</label>
+          <select class="form-control form-control-lg form-control-solid" name="project" [(ngModel)]="project"
+             formControlName="project" (change)="setProject($event.target.value)">
+             <option [ngValue]="0" [selected]=true>Select Project</option>
+            <option *ngFor="let project of projectList" [ngValue]="project.projectId">
+              {{ project.projectName }}
+            </option>
+          </select>
+
+        </div>
+        <div class="col-lg-2 nowrap" >
+          <label>Search in all fields</label>
+          <div class="grid-container">
+            <div class="grid-item">
+          <input type="search" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
+            formControlName="searchTerm" /></div>
+            <div class="grid-item" style="cursor: pointer;">
+              &nbsp;&nbsp;
+            <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+            </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- end: Filtration form -->
+
+
+    <!-- begin:Table -->
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="tablebox" class="table table-head-custom table-vertical-center ">
+        <thead>
+          <tr>
+          <th class="sticky-header">Edit</th>
+          <th nowrap >
+            Emp Id
+            <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              (sort)="sort($event)"></app-sort-icon>
+          </th>
+          <th nowrap >
+            Emp Name
+            <app-sort-icon column="userName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              (sort)="sort($event)"></app-sort-icon>
+          </th>
+          <th nowrap >
+            Joining Date
+            <app-sort-icon column="doj" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              (sort)="sort($event)"></app-sort-icon>
+          </th>
+          <th nowrap >
+            Status
+            <app-sort-icon column="status" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              (sort)="sort($event)"></app-sort-icon>
+          </th>
+          <th nowrap >
+            Work From
+
+          </th>
+          <th nowrap >System To Home</th>
+          <th nowrap >System Serial No</th>
+          <th nowrap >Broadband By</th>
+          <th nowrap >ispName</th>
+          <th nowrap >broadBandAccount</th>
+          <th nowrap >internetPlan</th>
+          <th nowrap >isDowngraded</th>
+          <th nowrap >staticIPAddress</th>
+          <th nowrap >Static White List</th>
+
+          <th nowrap >Designation</th>
+          <th nowrap >Current Address</th>
+          <th nowrap >Permanant Address</th>
+          <th nowrap >Contact Number</th>
+          <th nowrap >Alternate Number</th>
+          <th nowrap >Department Name</th>
+
+          <th nowrap >
+            Team
+
+          </th>
+          <th nowrap >
+            Group
+
+          </th>
+
+
+          <th nowrap >Reporting To</th>
+          <th nowrap >BPS Login
+            <app-sort-icon column="loginRFDB_BPS" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+              (sort)="sort($event)"></app-sort-icon>
+          </th>
+
+          <th nowrap >Project</th>
+
+          <th nowrap >Training Batch</th>
+
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customer of userService.items$ | async">
+            <td nowrap>
+              <a title="Edit IT Employee Details" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              (click)="addIT(customer.id, customer.userName)">
+              <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                class="svg-icon svg-icon-md svg-icon-primary">
+              </span>
+            </a>
+            <a title="Change Password" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+            (click)="changePassword(customer.userId, customer.userName)">
+            <span [inlineSVG]="'./assets/media/svg/icons/Code/Lock-circle.svg'" cacheSVG="true"
+              class="svg-icon svg-icon-md svg-icon-primary">
+            </span>
+          </a>
+          <a title="IT Assets" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+          (click)="itAsset(customer.id, customer.userName,customer.userId)">
+          <span [inlineSVG]="'./assets/media/svg/icons/Files/User-folder.svg'" cacheSVG="true"
+            class="svg-icon svg-icon-md svg-icon-primary">
+          </span>
+         </a>
+            </td>
+            <td>{{ customer.userId }}</td>
+            <td>
+
+              {{ customer.userName }} {{ customer.lastName }}</td>
+            <td>{{ customer.hrRecord.employmentInfo.dateOfJoin | date: 'dd-MMM-yyyy'}} </td>
+            <td>
+              <span class="label label-lg label-inline" [class.label-light-danger]="customer.hrRecord.employmentInfo.employmentStatus === 'Suspended'"
+                [class.label-light-success]="customer.hrRecord.employmentInfo.employmentStatus === 'Active'" [class.label-light-primary]="customer.employmentStatus === 'Pending'">
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Abscond'">Abscond</ng-container>
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Under_Notice_Period'">Notice Period</ng-container>
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Active'">Active</ng-container>
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Active_But_Long_Leave'">Active Long Leave</ng-container>
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Resigned'">Resigned</ng-container>
+              </span>
+            </td>
+            <td>
+              <span class="label label-dot label-primary mr-2" [class.label-success]="customer.itRecord.workMode === 'WFO'"
+                [class.label-primary]="customer.itRecord.workMode === 'WFH'"></span>&nbsp;<span class="font-bold font-primary">
+                <ng-container *ngIf="customer.itRecord.workMode === 'WFO'">WFO</ng-container>
+                <ng-container *ngIf="customer.itRecord.workMode === 'WFH'">WFH</ng-container>
+              </span>
+            </td>
+            <td>
+              {{ customer.itRecord.systemToHome }}
+            </td>
+            <td>
+              {{ customer.itRecord.systemSerialNo }}
+            </td>
+
+            <td>
+              {{ customer.itRecord.broadBandBy }}
+            </td>
+            <td>
+              {{ customer.itRecord.ispName }}
+            </td>
+            <td>
+              {{ customer.itRecord.broadBandAccount }}
+            </td>
+            <td>
+              {{ customer.itRecord.internetPlan }}
+            </td>
+            <td>
+              {{ customer.itRecord.isDowngraded }}
+            </td>
+            <td>
+              {{ customer.itRecord.staticIPAddress }}
+            </td>
+            <td>
+              {{ customer.itRecord.staticWhiteList }}
+            </td>
+            <td>
+              {{ customer.roleName }}
+            </td>
+            <td>{{ customer.mediaList[0].communicationAddress }}</td>
+            <td>{{ customer.mediaList[0].permanentAddress }}</td>
+            <td>{{ customer.mediaList[0].mobileNo }}</td>
+            <td>{{ customer.mediaList[0].alternateMobile }}</td>
+            <td>{{ customer.operationalRecord.department.departmentName }}</td>
+            <td>{{ customer.operationalRecord.team.teamName }}</td>
+            <td>{{ customer.operationalRecord.group.teamName }}</td>
+            <td>{{ customer.operationalRecord.reportingTo }} </td>
+            <td>{{ customer.operationalRecord.loginRFDB_BPS }}</td>
+            <td>{{ customer.operationalRecord.project != null ? customer.operationalRecord.project.projectName :"" }}</td>
+            <td>{{ customer.trainingBatch }} </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end: Table -->
+    <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator"
+      [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+  </div>
+</div>

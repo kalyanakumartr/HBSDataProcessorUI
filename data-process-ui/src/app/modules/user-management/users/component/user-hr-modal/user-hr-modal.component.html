@@ -1,0 +1,523 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <ng-container *ngIf="userHRModel">
+
+        <b><label class="heading">HR Records for {{name}}</label></b>
+        <ng-container *ngIf="userHRModel.id"></ng-container>
+      </ng-container>
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+  </div>
+  <mat-divider ></mat-divider>
+  <mat-divider ></mat-divider>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="userHRModel">
+      <form action="#" class="form form-label-right" [formGroup]="formGroup">
+        <b><label class="subHeading">Personal Details</label></b>
+
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label">Blood Group</label>
+            <select class="form-control form-control-lg form-control-solid" name="bloodGroup"
+            [class.is-invalid]="isControlInvalid('bloodGroup')" formControlName="bloodGroup">
+            <option value="B +ve">B+</option>
+            <option value="B -ve">B-</option>
+            <option value="A +ve">A+</option>
+            <option value="A -ve">A-</option>
+            <option value="AB +ve">AB+</option>
+            <option value="AB -ve">AB-</option>
+            <option value="O +ve">O+</option>
+            <option value="O -ve">O-</option>
+            <option value="A2B +ve">A2B+</option>
+            <option value="A1B +ve">A1B+</option>
+            <option value="A1 +ve">A1+</option>
+            <option value="A1 -ve">A1-</option>
+
+          </select>
+          </div>
+          <div class="col-lg-3">
+            <label>Maritial Status</label>
+            <select class="form-control form-control-lg form-control-solid" name="maritialStatus"
+              [class.is-invalid]="isControlInvalid('maritialStatus')" formControlName="maritialStatus">
+              <option value="Married">Married</option>
+              <option value="UnMarried">UnMarried</option>
+            </select>
+
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Enter Spouse name</label>
+            <input type="text" class="form-control form-control-lg form-control-solid  is-invalid" name="spouseName"
+              placeholder="Spouse Name" autocomplete="off" [class.is-invalid]="isControlInvalid('spouseName')"
+              [class.is-valid]="isControlValid('spouseName')" formControlName="spouseName" />
+            <div class="valid-feedback" *ngIf="isControlValid('spouseName')">Spouse name was entered correct</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'spouseName')">Spouse name should have at
+              least 1 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'spouseName')">Spouse name should have maximum
+              100 symbols</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">COVID19 Vaccinated? </label>
+            <select class="form-control form-control-lg form-control-solid" name="vaccinateInfo"
+            [class.is-invalid]="isControlInvalid('vaccinateInfo')" formControlName="vaccinateInfo" >
+            <option value="Novaccinated">Not Vaccinated</option>
+            <option value="Covaxin1stDose">Covaxin 1st Dose</option>
+            <option value="Covaxin2ndDose">Covaxin 2nd Dose</option>
+            <option value="CoviShield1stDose">CoviShield 1st Dose</option>
+            <option value="CoviShield2ndDose">CoviShield 2nd Dose</option>
+            <option value="Sputnik1stDose">Sputnik 1st Dose</option>
+            <option value="Sputnik2ndDose">Sputnik 2nd Dose</option>
+
+          </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label">Enter Aadhar Number</label>
+            <input type="number" class="form-control form-control-lg form-control-solid" name="highestGraduate"
+              placeholder="Aadhar" autocomplete="off" [class.is-invalid]="isControlInvalid('aadhar')" maxlength=12
+              [class.is-valid]="isControlValid('aadhar')" formControlName="aadhar" />
+          </div>
+
+          <div class="col-lg-3">
+            <label class="form-label">Enter Provident Fund</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="providentFund"
+              placeholder="Provident Fund" autocomplete="off" [class.is-invalid]="isControlInvalid('providentFund')"
+              [class.is-valid]="isControlValid('providentFund')" formControlName="providentFund" />
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Enter Pancard Number</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="pan"
+              placeholder="Pan" autocomplete="off" [class.is-invalid]="isControlInvalid('pan')"
+              [class.is-valid]="isControlValid('pan')" formControlName="pan" />
+          </div>
+          <div class="col-lg-3">
+            <label for="file">Upload Covid Vaccinated Certificate</label>
+            <input type="file"
+                  id="file"
+                  (change)="handleFileInput($event.target.files)">
+           </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label">Enter Uan</label>
+            <input type="number" class="form-control form-control-lg form-control-solid" name="uan"
+              placeholder="Uan" autocomplete="off" [class.is-invalid]="isControlInvalid('uan')"
+              [class.is-valid]="isControlValid('uan')" formControlName="uan" />
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Under Probation Period</label>
+              <select class="form-control form-control-lg form-control-solid" name="infoAPL"
+              [class.is-invalid]="isControlInvalid('infoAPL')" formControlName="infoAPL">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label>Is Eligible for ESI Scheme</label>
+            <select class="form-control form-control-lg form-control-solid" name="esiEligible"
+              [class.is-invalid]="isControlInvalid('esiEligible')" formControlName="esiEligible">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Enter Esic Number</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="esic"
+              placeholder="Esic" autocomplete="off" [class.is-invalid]="isControlInvalid('esic')"
+              [class.is-valid]="isControlValid('esic')" formControlName="esic" />
+          </div>
+
+        </div>
+        <mat-divider ></mat-divider><br/>
+        <b><label class="subHeading">Educational Details</label></b>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label">Enter Highest Graduate</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="highestGraduate"
+              placeholder="Highest Graduate" autocomplete="off" [class.is-invalid]="isControlInvalid('highestGraduate')"
+              [class.is-valid]="isControlValid('highestGraduate')" formControlName="highestGraduate" />
+
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'highestGraduate')">BroadBand Account should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'highestGraduate')">BroadBand Account should have
+              maximum 100 symbols</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Enter Institution</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="institution"
+              placeholder="Institution" autocomplete="off" [class.is-invalid]="isControlInvalid('institution')"
+              [class.is-valid]="isControlValid('institution')" formControlName="institution" />
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Enter Mark Grade</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="markGrade"
+              placeholder="Mark Grade" autocomplete="off" [class.is-invalid]="isControlInvalid('markGrade')"
+              [class.is-valid]="isControlValid('markGrade')" formControlName="markGrade" />
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Enter Year of Passing</label>
+            <input type="number" class="form-control form-control-lg form-control-solid" name="year"
+              placeholder="Year" autocomplete="off" [class.is-invalid]="isControlInvalid('year')"
+              [class.is-valid]="isControlValid('year')" formControlName="year" />
+          </div>
+        </div>
+        <mat-divider ></mat-divider><br/>
+
+        <b><label class="subHeading">Contact Details</label></b>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label">Enter Staying Address</label>
+            <input type="text" class="form-control form-control-lg form-control-solid  is-invalid" name="currentAddress"
+              placeholder="Address" autocomplete="off" [class.is-invalid]="isControlInvalid('currentAddress')"
+              [class.is-valid]="isControlValid('currentAddress')" formControlName="currentAddress" />
+            <div class="valid-feedback" *ngIf="isControlValid('currentAddress')">Address was entered correct</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'currentAddress')">Address should have at
+              least 1 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'currentAddress')">Address should have maximum
+              200 symbols</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Enter Permanent Address</label>
+            <input type="text" class="form-control form-control-lg form-control-solid  is-invalid" name="permanentAddress"
+              placeholder="Address" autocomplete="off" [class.is-invalid]="isControlInvalid('permanentAddress')"
+              [class.is-valid]="isControlValid('permanentAddress')" formControlName="permanentAddress" />
+            <div class="valid-feedback" *ngIf="isControlValid('permanentAddress')">Address was entered correct</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'permanentAddress')">Address should have at
+              least 1 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'permanentAddress')">Address should have maximum
+              200 symbols</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Residing Based on</label>
+            <select class="form-control form-control-lg form-control-solid" name="district"
+            [class.is-invalid]="isControlInvalid('district')" formControlName="district" >
+            <option value="Chennai">Chennai</option>
+            <option value="Thiruvallur">Thiruvallur</option>
+            <option value="Kancheepuram">Kancheepuram</option>
+            <option value="Chengalpattu">Chengalpattu</option>
+            <option value="OtherDistrict">Other Districts</option>
+          </select>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Official Email</label>
+              <input type="email" class="form-control form-control-lg form-control-solid" name="officialEmailId" placeholder="Email"
+                  autocomplete="off" [class.is-invalid]="isControlInvalid('officialEmailId')"
+                  [class.is-valid]="isControlValid('officialEmailId')" formControlName="officialEmailId" />
+                <div class="valid-feedback" *ngIf="isControlValid('officialEmailId')">Email was entered correct</div>
+                <div class="invalid-feedback" *ngIf="controlHasError('email', 'officialEmailId')">Email format is incorrect</div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label">Enter PhoneNumber</label>
+            <input type="number" class="form-control form-control-lg form-control-solid" name="phoneno" placeholder="phoneno"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('phoneno')"
+              [class.is-valid]="isControlValid('phoneno')" formControlName="phoneno" />
+              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'phoneno')">Phone Number should have at
+                least 10 symbols</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'phoneno')">Phone Number should not be morethan 13 symbols</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Enter Alternate PhoneNumber</label>
+            <input type="number" class="form-control form-control-lg form-control-solid" name="alternateNumber" placeholder="alternateNumber"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('alternateNumber')"
+              [class.is-valid]="isControlValid('alternateNumber')" formControlName="alternateNumber" />
+              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'alternateNumber')">Phone Number should have at
+                least 10 symbols</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'alternateNumber')">Phone Number should not be morethan 13 symbols</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Enter Emergency PhoneNumber</label>
+            <input type="number" class="form-control form-control-lg form-control-solid" name="emergencyNumber" placeholder="Emergency Number"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('emergencyNumber')"
+              [class.is-valid]="isControlValid('emergencyNumber')" formControlName="emergencyNumber" />
+              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'emergencyNumber')">Phone Number should have at
+                least 10 symbols</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'emergencyNumber')">Phone Number should not be morethan 13 symbols</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Personal Email</label>
+              <input type="email" class="form-control form-control-lg form-control-solid" name="personalEmailId" placeholder="Email"
+                  autocomplete="off" [class.is-invalid]="isControlInvalid('personalEmailId')"
+                  [class.is-valid]="isControlValid('personalEmailId')" formControlName="personalEmailId" />
+                <div class="valid-feedback" *ngIf="isControlValid('personalEmailId')">Email was entered correct</div>
+                <div class="invalid-feedback" *ngIf="controlHasError('email', 'personalEmailId')">Email format is incorrect</div>
+          </div>
+        </div>
+        <mat-divider ></mat-divider><br/>
+        <b><label class="subHeading">Salary Account Details</label></b>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label">Enter Bank Account</label>
+            <input type="number" class="form-control form-control-lg form-control-solid" name="accountNo"
+              placeholder="Bank Account Number" autocomplete="off" [class.is-invalid]="isControlInvalid('accountNo')"
+              [class.is-valid]="isControlValid('accountNo')" formControlName="accountNo" />
+
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'accountNo')">BroadBand Account should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'accountNo')">BroadBand Account should have
+              maximum 100 symbols</div>
+          </div>
+          <mat-divider ></mat-divider>
+          <div class="col-lg-3">
+            <label class="form-label">Enter Bank Name</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="bankName"
+              placeholder="Bank Name" autocomplete="off" [class.is-invalid]="isControlInvalid('bankName')"
+              [class.is-valid]="isControlValid('bankName')" formControlName="bankName" />
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Enter Bank Branch</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="bankBranch"
+              placeholder="Bank Branch" autocomplete="off" [class.is-invalid]="isControlInvalid('bankBranch')"
+              [class.is-valid]="isControlValid('bankBranch')" formControlName="bankBranch" />
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Enter IFSCCode</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="ifscCode"
+              placeholder="IFSCCode" autocomplete="off" [class.is-invalid]="isControlInvalid('ifscCode')"
+              [class.is-valid]="isControlValid('ifscCode')" formControlName="ifscCode" />
+          </div>
+        </div>
+        <mat-divider ></mat-divider><br/>
+        <b><label class="subHeading">Employment Details in EDR</label></b>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label">Employment Status</label>
+            <select class="form-control form-control-lg form-control-solid" name="employmentStatus"
+              [class.is-invalid]="isControlInvalid('employmentStatus')" formControlName="employmentStatus" (change)="checkEmpStatus($event.target.value)">
+              <option value="Active">Active</option>
+              <option value="Active_But_Long_Leave">Active - But Long Leave</option>
+              <option value="Resigned">Resigned</option>
+              <option value="Under_Notice_Period">Under Notice Period </option>
+              <option value="Abscond">Abscond</option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Date of Joining</label>
+            <div class="input-group input-group-solid">
+              <input type="text" name="dob" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                placeholder="mm/dd/yyyy" ngbDatepicker #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('dateOfJoin')"
+                [class.is-valid]="isControlValid('dateOfJoin')" formControlName="dateOfJoin" readonly="true" />
+                {{formGroup.value.dateOfJoin | date: 'dd-MMM-yyyy'}}
+              <div class="input-group-append" (click)="d.toggle()">
+                <span class="input-group-text">
+                  <i class="text-dark-50 flaticon-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <div class="valid-feedback" *ngIf="isControlValid('dateOfJoin')">Date of Joining was entered correct</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'dateOfJoin')">Please enter <b>Date of Joining</b>
+              in 'mm/dd/yyyy' format</div>
+          </div>
+
+          <div class="col-lg-3">
+            <label class="form-label">Experience In EDR</label>
+            <input type="number" class="form-control form-control-lg form-control-solid" name="experienceInEDR"
+              placeholder="Eperience In EDR Status" autocomplete="off" [class.is-invalid]="isControlInvalid('experienceInEDR')"
+              [class.is-valid]="isControlValid('experienceInEDR')" formControlName="experienceInEDR" />
+          </div>
+
+        <div class="col-lg-3">
+          <label class="form-label">Experience Out EDR</label>
+          <input type="number" class="form-control form-control-lg form-control-solid" name="experienceOutEDR"
+            placeholder="Eperience Out EDR Status" autocomplete="off" [class.is-invalid]="isControlInvalid('experienceOutEDR')"
+            [class.is-valid]="isControlValid('experienceOutEDR')" formControlName="experienceOutEDR" />
+        </div>
+
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label">Last Work Day</label>
+
+              <div class="input-group input-group-solid">
+                <input type="text" name="lastWorkDay" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #x="ngbDatepicker" [class.is-invalid]="isControlInvalid('lastWorkDay')"
+                  [class.is-valid]="isControlValid('lastWorkDay')" formControlName="lastWorkDay" readonly="true" />
+                  {{formGroup.value.lastWorkDay | date: 'dd-MMM-yyyy'}}
+                <div class="input-group-append" (click)="x.toggle()">
+                  <span class="input-group-text">
+                    <i class="text-dark-50 flaticon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="valid-feedback" *ngIf="isControlValid('lastWorkDay')">Last Work Day was entered correct</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'lastWorkDay')">Please enter <b>Last Work Day</b>
+                in 'mm/dd/yyyy' format</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">From Notice Period</label>
+
+              <div class="input-group input-group-solid">
+                <input type="text" name="fromNoticePeriod" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #z="ngbDatepicker" [class.is-invalid]="isControlInvalid('fromNoticePeriod')"
+                  [class.is-valid]="isControlValid('fromNoticePeriod')" formControlName="fromNoticePeriod" readonly="true" />
+                  {{formGroup.value.fromNoticePeriod | date: 'dd-MMM-yyyy'}}
+                <div class="input-group-append" (click)="z.toggle()">
+                  <span class="input-group-text">
+                    <i class="text-dark-50 flaticon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="valid-feedback" *ngIf="isControlValid('fromNoticePeriod')">From Notice Period was entered correct</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'fromNoticePeriod')">Please enter <b>From Notice Period</b>
+                in 'mm/dd/yyyy' format</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">To Notice Period</label>
+
+              <div class="input-group input-group-solid">
+                <input type="text" name="toNoticePeriod" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #y="ngbDatepicker" [class.is-invalid]="isControlInvalid('toNoticePeriod')"
+                  [class.is-valid]="isControlValid('toNoticePeriod')" formControlName="toNoticePeriod" readonly="true" />
+                  {{formGroup.value.toNoticePeriod | date: 'dd-MMM-yyyy'}}
+                <div class="input-group-append" (click)="y.toggle()">
+                  <span class="input-group-text">
+                    <i class="text-dark-50 flaticon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="valid-feedback" *ngIf="isControlValid('toNoticePeriod')">From Notice Period was entered correct</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'toNoticePeriod')">Please enter <b>From Notice Period</b>
+                in 'mm/dd/yyyy' format</div>
+          </div>
+          <div class="col-lg-3">
+            <label>IF Resigned F & F Completed</label>
+            <select class="form-control form-control-lg form-control-solid" name="fnf"
+              [class.is-invalid]="isControlInvalid('fnf')" formControlName="fnf">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label">Reason for Long Leave </label>
+            <select class="form-control form-control-lg form-control-solid" name="longLeaveReason"
+            [class.is-invalid]="isControlInvalid('longLeaveReason')" formControlName="longLeaveReason" >
+            <option value="Maternity_Leave">Maternity Leave</option>
+            <option value="Medical_Leave">Medical Leave</option>
+            <option value="Marriage_Leave">Marriage Leave</option>
+            <option value="Long_Leave_Possible_To_Return_Back">Long Leave but Possible to return back</option>
+          </select>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Long Leave From</label>
+
+              <div class="input-group input-group-solid">
+                <input type="text" name="longLeaveFromDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #llfd="ngbDatepicker" [class.is-invalid]="isControlInvalid('longLeaveFromDate')"
+                  [class.is-valid]="isControlValid('longLeaveFromDate')" formControlName="longLeaveFromDate" readonly="true" />
+                  {{formGroup.value.longLeaveFromDate | date: 'dd-MMM-yyyy'}}
+                <div class="input-group-append" (click)="llfd.toggle()">
+                  <span class="input-group-text">
+                    <i class="text-dark-50 flaticon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="valid-feedback" *ngIf="isControlValid('longLeaveFromDate')">Long Leave From was entered correct</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'longLeaveFromDate')">Please enter <b>Long Leave From</b>
+                in 'dd/mm/yyyy' format</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Leave To Date</label>
+
+              <div class="input-group input-group-solid">
+                <input type="text" name="longLeaveToDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                  placeholder="mm/dd/yyyy" ngbDatepicker #lltd="ngbDatepicker" [class.is-invalid]="isControlInvalid('longLeaveToDate')"
+                  [class.is-valid]="isControlValid('longLeaveToDate')" formControlName="longLeaveToDate" readonly="true" />
+                  {{formGroup.value.longLeaveToDate | date: 'dd-MMM-yyyy'}}
+                <div class="input-group-append" (click)="lltd.toggle()">
+                  <span class="input-group-text">
+                    <i class="text-dark-50 flaticon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="valid-feedback" *ngIf="isControlValid('longLeaveToDate')">Leave To Date  was entered correct</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'longLeaveToDate')">Please enter <b>Leave To Date</b>
+                in 'dd/mm/yyyy' format</div>
+          </div>
+
+      </div>
+      <mat-divider ></mat-divider><br/>
+      <b><label class="subHeading">Previous Employment Details</label></b>
+      <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="form-label">Last Employer</label>
+          <input type="text" class="form-control form-control-lg form-control-solid" name="lastEmployer"
+            placeholder="Last Employer" autocomplete="off" [class.is-invalid]="isControlInvalid('lastEmployer')"
+            [class.is-valid]="isControlValid('lastEmployer')" formControlName="lastEmployer" />
+        </div>
+        <div class="col-lg-3">
+          <label class="form-label">Last Designation</label>
+          <input type="text" class="form-control form-control-lg form-control-solid" name="lastDesignation"
+            placeholder="Last Designation" autocomplete="off" [class.is-invalid]="isControlInvalid('lastDesignation')"
+            [class.is-valid]="isControlValid('lastDesignation')" formControlName="lastDesignation" />
+        </div>
+        <div class="col-lg-3">
+          <label class="form-label">Last Salary Drawn</label>
+          <input type="number" class="form-control form-control-lg form-control-solid" name="lastSalaryDrawn"
+            placeholder="Last Salary Drawn" autocomplete="off" [class.is-invalid]="isControlInvalid('lastSalaryDrawn')"
+            [class.is-valid]="isControlValid('lastSalaryDrawn')" formControlName="lastSalaryDrawn" />
+        </div>
+
+    </div>
+    <mat-divider ></mat-divider><br/>
+    <b><label class="subHeading">For Office Use Only</label></b>
+
+    <div class="form-group row">
+      <div class="col-lg-3">
+        <label>Offer Issued</label>
+        <select class="form-control form-control-lg form-control-solid" name="isOfferIssued"
+          [class.is-invalid]="isControlInvalid('isOfferIssued')" formControlName="isOfferIssued">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+
+      </div>
+      <div class="col-lg-3">
+        <label>Apprentice</label>
+        <select class="form-control form-control-lg form-control-solid" name="isApprentice"
+          [class.is-invalid]="isControlInvalid('isApprentice')" formControlName="isApprentice">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+
+      </div>
+      <div class="col-lg-3">
+        <label>File Created</label>
+        <select class="form-control form-control-lg form-control-solid" name="isFileCreated"
+          [class.is-invalid]="isControlInvalid('isFileCreated')" formControlName="isFileCreated">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+
+      </div>
+      <div class="col-lg-3">
+        <label class="form-label">ID Card Number</label>
+        <input type="text" class="form-control form-control-lg form-control-solid" name="idCardEDR"
+          placeholder="ID Card Number" autocomplete="off" [class.is-invalid]="isControlInvalid('idCardEDR')"
+          [class.is-valid]="isControlValid('idCardEDR')" formControlName="idCardEDR" />
+      </div>
+    </div>
+
+      </form>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+    <ng-container *ngIf="userHRModel">
+
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+        >Save</button>
+    </ng-container>
+  </div>
+</div>

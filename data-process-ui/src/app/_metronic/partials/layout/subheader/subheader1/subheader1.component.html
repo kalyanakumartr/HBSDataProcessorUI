@@ -23,6 +23,7 @@
 
       <!--begin::Page Heading-->
       <div class="d-flex align-items-baseline flex-wrap mr-5">
+
         <!--begin::Page Title-->
         <ng-container *ngIf="title$ | async as _title">
           <h5 class="text-dark font-weight-bold my-1 mr-5">
@@ -52,14 +53,17 @@
         </ul>
         <!--end::Breadcrumb-->
       </div>
+      <marquee style="z-index:2;position:absolute;left:18px;top:24px;font-size:14pt;color:#FF0000;height:50px;" width = "50%" >EDR Welcomes You, Please Mark Your Attendance On Daily Basis</marquee>
       <!--end::Page Heading-->
     </div>
     <!--end::Info-->
 
     <!--begin::Toolbar-->
     <div class="d-flex align-items-center">
+      <app-mark-attendance></app-mark-attendance>
       <ng-container *ngIf="subheaderDisplayDaterangepicker">
         <!--begin::Daterange-->
+
         <a
           class="btn btn-light-primary btn-sm font-weight-bold mr-2 cursor-pointer"
           id="kt_dashboard_daterangepicker"
@@ -73,7 +77,7 @@
             >Today</span
           >
           <span class="font-weight-bold" id="kt_dashboard_daterangepicker_date"
-            >{{todayDate  | date :'dd-MMM-yy h:mm:ss a'}}</span
+            >{{todayDate  | date :'dd-MMM-yy'}}</span
           >
         </a>
         <!--end::Daterange-->
@@ -88,35 +92,7 @@
         <!--end::Actions-->
       </ng-container>
 
-      <!--begin::Dropdown-->
-      <div
-        class="dropdown dropdown-inline"
-        data-toggle="tooltip"
-        title="Quick actions"
-        placement="bottom-right"
-        ngbDropdown
-      >
-        <a
-          class="btn btn-icon cursor-pointer"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-          ngbDropdownToggle
-        >
-          <span
-            [inlineSVG]="'./assets/media/svg/icons/Files/File-plus.svg'"
-            cacheSVG="true"
-            class="svg-icon svg-icon-success svg-icon-2x"
-          ></span>
-        </a>
-        <div
-          class="dropdown-menu dropdown-menu-md dropdown-menu-right p-0 m-0"
-          ngbDropdownMenu
-        >
-          <app-dropdown-menu1></app-dropdown-menu1>
-        </div>
-      </div>
-      <!--end::Dropdown-->
+
     </div>
     <!--end::Toolbar-->
   </div>

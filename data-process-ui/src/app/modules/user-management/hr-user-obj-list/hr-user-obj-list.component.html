@@ -1,0 +1,364 @@
+
+
+
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="card-label">HR Records</h3>
+      </div>
+      <div class="card-toolbar">
+
+        <div class="grid-item" style="cursor: pointer;">
+          &nbsp;&nbsp;
+          <i title="Export Excel" (click)="exportExcel()" class="fas fa-file-excel fa-2x"></i>
+        </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-primary" (click)="create()">Add Employee</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- begin: Filtration form -->
+      <div class="form form-label-right">
+        <div class="form-group row" [formGroup]="searchGroup">
+
+
+          <div class="col-lg-3">
+            <label>Department</label>
+            <select class="form-control form-control-lg form-control-solid" name="department" [(ngModel)]="department"
+               formControlName="department" (change)="setDepartment($event.target.value)">
+              <option [ngValue]="0" [selected]=true>Select Department</option>
+              <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
+                {{ department.departmentName }}
+              </option>
+            </select>
+
+          </div>
+          <div class="col-lg-3">
+            <label>Division</label>
+            <select class="form-control form-control-lg form-control-solid" name="division" [(ngModel)]="division"
+               formControlName="division" (change)="setDivision($event.target.value)">
+               <option [ngValue]="0" [selected]=true>Select Division</option>
+              <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
+                {{ division.divisionName }}
+              </option>
+            </select>
+
+          </div>
+          <div class="col-lg-3">
+            <label>Project</label>
+            <select class="form-control form-control-lg form-control-solid" name="project" [(ngModel)]="project"
+               formControlName="project" (change)="setProject($event.target.value)">
+               <option [ngValue]="0" [selected]=true>Select Project</option>
+              <option *ngFor="let project of projectList" [ngValue]="project.projectId">
+                {{ project.projectName }}
+              </option>
+            </select>
+
+          </div>
+          <div class="col-lg-2 nowrap" >
+            <label>Search in all fields</label>
+            <div class="grid-container">
+              <div class="grid-item">
+            <input type="search" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
+              formControlName="searchTerm" /></div>
+              <div class="grid-item" style="cursor: pointer;">
+                &nbsp;&nbsp;
+              <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+              </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <!-- end: Filtration form -->
+
+
+      <!-- begin:Table -->
+      <div class="table-responsive angular-bootstrap-table">
+        <table id="tablebox" class="table table-head-custom table-vertical-center ">
+          <thead>
+            <tr>
+            <th class="sticky-header">Edit</th>
+            <th class="sticky-header" nowrap >
+              Emp ID
+              <app-sort-icon column="userId" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                (sort)="sort($event)"></app-sort-icon>
+            </th>
+            <th class="sticky-header" nowrap >
+              Emp Name
+              <app-sort-icon column="userName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                (sort)="sort($event)"></app-sort-icon>
+            </th>
+
+            <th nowrap >
+              Date of Joining
+
+            </th>
+            <th nowrap >
+              Status
+              <app-sort-icon column="status" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                (sort)="sort($event)"></app-sort-icon>
+            </th>
+            <th nowrap >
+              Team
+
+            </th>
+            <th nowrap >
+              Group
+
+            </th>
+
+            <th nowrap >
+              Work From
+
+            </th>
+            <th nowrap >Reporting To</th>
+            <th nowrap >Designation</th>
+            <th nowrap >Training Batch</th>
+            <th nowrap >Project</th>
+            <th nowrap >BPS Login
+              <app-sort-icon column="loginRFDB_BPS" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                (sort)="sort($event)"></app-sort-icon>
+            </th>
+
+            <th nowrap >broadBandAccount</th>
+            <th nowrap >Broadband By</th>
+            <th nowrap >internetPlan</th>
+            <th nowrap >isDowngraded</th>
+            <th nowrap >staticIPAddress</th>
+            <th nowrap >ispName</th>
+            <th nowrap >System To Home</th>
+            <th nowrap >System Serial No</th>
+            <th nowrap >Static White List</th>
+
+            <th nowrap >Last Work Day</th>
+            <th nowrap >From Notice Period</th>
+            <th nowrap >To Notice Period</th>
+            <th nowrap >Official Email Id</th>
+            <th nowrap >Personal Email ID</th>
+            <th nowrap >Contact Number</th>
+            <th nowrap >Alternate Number</th>
+            <th nowrap >Emergency Contact Number</th>
+            <th nowrap >Current Address</th>
+            <th nowrap >Permanent Address</th>
+            <th nowrap >Highest Educational Qualification</th>
+            <th nowrap >Institution</th>
+            <th nowrap >Year of Passout</th>
+            <th nowrap >% of Mark Scored</th>
+            <th nowrap >Experience Year in EDR</th>
+            <th nowrap >Experience Year Outside EDR</th>
+            <th nowrap >Last Employer</th>
+            <th nowrap >Last Designation</th>
+            <th nowrap >Bank Account</th>
+            <th nowrap >Bank Name</th>
+            <th nowrap >Bank Branch</th>
+            <th nowrap >IFS Code</th>
+            <th nowrap >PAN Number</th>
+            <th nowrap >Adhar Number</th>
+            <th nowrap >Father Name</th>
+            <th nowrap >Spouse Name</th>
+            <th nowrap >Gender</th>
+            <th nowrap >Martial Status</th>
+            <th nowrap >Date of Birth</th>
+            <th nowrap >Blood Group</th>
+            <th nowrap >PF No</th>
+            <th nowrap >ESIC</th>
+            <th nowrap >UAN Details</th>
+            <th nowrap >EDR Id Card #</th>
+            <th nowrap >Apprentice</th>
+            <th nowrap >APL</th>
+            <th nowrap >Offer Letter issue Status</th>
+            <th nowrap >Employee File create status</th>
+
+          </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let customer of userService.items$ | async">
+              <td>
+               <!-- <a title="Edit Employee" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                (click)="edit(customer.userId)">
+                <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary">
+                </span>
+              </a>-->
+                <a title="Edit HR Employee" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                (click)="addHR(customer.id, customer.userName)">
+                <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary">
+                </span>
+              </a>
+              </td>
+              <td>
+                <span id="link" title="Edit Employee"  (click)="edit(customer.userId)">{{ customer.userId }}</span>
+              </td>
+              <td>{{ customer.userName }} {{ customer.lastName }}</td>
+              <td>{{ customer.hrRecord.employmentInfo.dateOfJoin | date: 'dd-MMM-yyyy'}} </td>
+            <td>
+              <span class="label label-lg label-inline" [class.label-light-danger]="customer.hrRecord.employmentInfo.employmentStatus === 'Suspended'"
+                [class.label-light-success]="customer.hrRecord.employmentInfo.employmentStatus === 'Active'" [class.label-light-primary]="customer.employmentStatus === 'Pending'">
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Abscond'">Abscond</ng-container>
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Under_Notice_Period'">Notice Period</ng-container>
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Active'">Active</ng-container>
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Active_But_Long_Leave'">Active Long Leave</ng-container>
+                <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Resigned'">Resigned</ng-container>
+              </span>
+            </td>
+              <td>{{ customer.operationalRecord.team.teamName }}</td>
+              <td>{{ customer.operationalRecord.group.teamName }}</td>
+
+              <td>
+                <span class="label label-dot label-primary mr-2" [class.label-success]="customer.itRecord.workMode === 'WFO'"
+                  [class.label-primary]="customer.itRecord.workMode === 'WFH'"></span>&nbsp;<span class="font-bold font-primary">
+                  <ng-container *ngIf="customer.itRecord.workMode === 'WFO'">WFO</ng-container>
+                  <ng-container *ngIf="customer.itRecord.workMode === 'WFH'">WFH</ng-container>
+                </span>
+              </td>
+              <td>
+                {{ customer.operationalRecord.reportingTo }}
+              </td>
+              <td>
+                {{ customer.roleName }}
+              </td>
+              <td>
+                {{ customer.trainingBatch }}
+              </td>
+              <td>{{ customer.operationalRecord.project != null ? customer.operationalRecord.project.projectName :"" }}</td>
+              <td>
+                {{ customer.loginRFDB_BPS }}
+              </td>
+              <td>
+                {{ customer.itRecord.broadBandAccount }}
+              </td>
+              <td>
+                {{ customer.itRecord.broadBandBy }}
+              </td>
+              <td>
+                {{ customer.itRecord.internetPlan }}
+              </td>
+              <td>
+                {{ customer.itRecord.isDowngraded }}
+              </td>
+              <td>
+                {{ customer.itRecord.staticIPAddress }}
+              </td>
+              <td>
+                {{ customer.itRecord.ispName }}
+              </td>
+              <td>
+                {{ customer.itRecord.systemToHome }}
+              </td>
+              <td>
+                {{ customer.itRecord.systemSerialNo }}
+              </td>
+              <td>
+                {{ customer.itRecord.staticWhiteList }}
+              </td>
+
+              <td>
+                {{ customer.hrRecord.employmentInfo.lastWorkDay | date: 'dd-MMM-yyyy'}}
+              </td>
+              <td>
+                {{ customer.hrRecord.employmentInfo.fromNoticePeriod | date: 'dd-MMM-yyyy'}}
+              </td>
+              <td>
+                {{ customer.hrRecord.employmentInfo.toNoticePeriod | date: 'dd-MMM-yyyy'}}
+              </td>
+
+              <td>{{ customer.mediaList[0].emailId }}</td>
+              <td>{{ customer.mediaList[0].personalEmailId }}</td>
+              <td>{{ customer.mediaList[0].mobileNo }}</td>
+              <td>{{ customer.mediaList[0].alternateMobile }}</td>
+              <td>{{ customer.mediaList[0].emergencyContactNo}}</td>
+              <td>{{ customer.mediaList[0].communicationAddress }}</td>
+              <td>{{ customer.mediaList[0].permanentAddress }}</td>
+              <td>
+                {{ customer.hrRecord.educationalInfo.highestGraduate }}
+              </td>
+              <td>
+                {{ customer.hrRecord.educationalInfo.institution }}
+              </td>
+              <td>
+                {{ customer.hrRecord.educationalInfo.markGrade }}
+              </td>
+              <td>
+                {{ customer.hrRecord.educationalInfo.year }}
+              </td>
+              <td>
+                {{ customer.hrRecord.employmentInfo.experienceInEDR }}
+              </td>
+              <td>
+                {{ customer.hrRecord.employmentInfo.experienceOutEDR }}
+              </td>
+              <td>
+                {{ customer.hrRecord.employmentInfo.lastEmployer }}
+              </td>
+              <td>
+                {{ customer.hrRecord.employmentInfo.lastDesignation }}
+              </td>
+              <td>
+                {{ customer.hrRecord.bankAccounts.accountNo }}
+              </td>
+              <td>
+                {{ customer.hrRecord.bankAccounts.bankName }}
+              </td>
+              <td>
+                {{ customer.hrRecord.bankAccounts.bankBranch }}
+              </td>
+              <td>
+                {{ customer.hrRecord.bankAccounts.ifscCode }}
+              </td>
+              <td>
+                {{ customer.hrRecord.taxInfo.pan }}
+              </td>
+              <td>
+                {{ customer.hrRecord.taxInfo.aadhar }}
+              </td>
+              <td>
+                {{ customer.fatherName }}
+              </td>
+              <td>
+                {{ customer.spouseName }}
+              </td>
+              <td>
+                {{ customer.sex }}
+              </td>
+              <td>
+                {{ customer.maritalStatus }}
+              </td>
+              <td>
+                {{ customer.dob | date: 'dd-MMM-yyyy'}}
+              </td>
+              <td>
+                {{ customer.bloodGroup }}
+              </td>
+              <td>
+                {{ customer.hrRecord.taxInfo.providentFund }}
+              </td>
+              <td>
+                {{ customer.hrRecord.taxInfo.esic }}
+              </td>
+              <td>
+                {{ customer.hrRecord.taxInfo.uan }}
+              </td>
+              <td>
+                {{ customer.hrRecord.employmentInfo.idCardEDR }}
+              </td>
+              <td>
+                {{ customer.hrRecord.employmentInfo.isApprentice }}
+              </td>
+              <td>
+                {{ customer.hrRecord.employmentInfo.infoAPL }}
+              </td>
+              <td>
+                {{ customer.hrRecord.employmentInfo.isOfferIssued }}
+              </td>
+              <td>
+                {{ customer.hrRecord.employmentInfo.isFileCreated }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- end: Table -->
+      <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator"
+        [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+    </div>
+  </div>
