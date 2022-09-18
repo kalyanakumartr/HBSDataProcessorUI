@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AddSubcountryComponent } from './add-subcountry/add-subcountry.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
+import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectManagementComponent } from './project-management.component';
+import { ProjectRoadtypeComponent } from './project-roadtype/project-roadtype.component';
+import { ProjectSubcountryListComponent } from './project-subcountry-list/project-subcountry-list.component';
+import { RoadtypeCreateComponent } from './roadtype-create/roadtype-create.component';
 
 
 const routes: Routes = [
@@ -10,12 +15,31 @@ const routes: Routes = [
     component: ProjectManagementComponent,
     children: [
       {
-        path: 'projectCreate',
+        path: 'project-list',
+        component: ProjectListComponent,
+      },
+      {
+        path: 'project-create',
         component: ProjectCreateComponent,
       },
-
-      { path: '', redirectTo: 'projectCreate', pathMatch: 'full' },
-      { path: '**', redirectTo: 'projectCreate', pathMatch: 'full' },
+      {
+        path: 'project-road-type-list',
+        component: ProjectRoadtypeComponent,
+      },
+      {
+        path: 'road-type',
+        component: RoadtypeCreateComponent,
+      },
+      {
+        path: 'project-subcountry-List',
+        component: ProjectSubcountryListComponent,
+      },
+      {
+        path: 'subcountry-reate',
+        component: AddSubcountryComponent,
+      },
+      { path: '', redirectTo: 'project-list', pathMatch: 'full' },
+      { path: '**', redirectTo: 'project-list', pathMatch: 'full' },
     ],
   },
 ];

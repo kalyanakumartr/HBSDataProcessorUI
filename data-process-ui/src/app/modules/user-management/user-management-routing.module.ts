@@ -39,10 +39,7 @@ const routes: Routes = [
         path:'it-employee-list',
         component:ITUserObjListComponent
       },
-      {
-        path: 'change-password',
-        component: ChangePasswordComponent
-      },
+
       { path: '', redirectTo: 'users', pathMatch: 'full' },
       { path: '**', redirectTo: 'users', pathMatch: 'full' },
     ],

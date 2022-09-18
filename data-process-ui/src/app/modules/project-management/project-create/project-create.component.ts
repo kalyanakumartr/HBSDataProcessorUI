@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-project-create',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProjectCreateComponent implements OnInit {
 
-  constructor() { }
+  constructor(private fb: FormBuilder, public modal: NgbActiveModal) { }
 
   ngOnInit(): void {
   }

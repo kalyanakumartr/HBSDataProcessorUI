@@ -13,9 +13,12 @@ import { ProjectManagementComponent } from './project-management.component';
 import { RoadtypeCreateComponent } from './roadtype-create/roadtype-create.component';
 import { AddSubcountryComponent } from './add-subcountry/add-subcountry.component';
 import { ProjectTemplateComponent } from './project-template/project-template.component';
+import { ProjectListComponent } from './project-list/project-list.component';
+import { ProjectRoadtypeComponent } from './project-roadtype/project-roadtype.component';
+import { ProjectSubcountryListComponent } from './project-subcountry-list/project-subcountry-list.component';
 
 @NgModule({
-  declarations: [ProjectCreateComponent, ProjectManagementComponent, RoadtypeCreateComponent, AddSubcountryComponent, ProjectTemplateComponent],
+  declarations: [ProjectCreateComponent, ProjectManagementComponent, RoadtypeCreateComponent, AddSubcountryComponent, ProjectTemplateComponent, ProjectListComponent, ProjectRoadtypeComponent, ProjectSubcountryListComponent],
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,ProjectManagementRoutingModule,NgbModalModule, MatSnackBarModule, MatButtonModule,MatIconModule,GeneralModule, NgbDatepickerModule
   ]
