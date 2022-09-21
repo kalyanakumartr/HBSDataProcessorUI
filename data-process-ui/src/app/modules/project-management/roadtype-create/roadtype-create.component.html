@@ -1,1 +1,101 @@
-<p>roadtype-create works!</p>
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <b><label class="heading">
+      <ng-container >
+        <ng-container >Create Add PO Limit  </ng-container>
+     </ng-container>
+    </label></b>
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="customer">
+      <form action="#" class="form form-label-right" [formGroup]="formGroup">
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label"> PO Number ID</label>
+
+            <input type="text" class="form-control form-control-lg form-control-solid" name="poNumberId"
+              placeholder="PO Number ID" autocomplete="off" [class.is-invalid]="isControlInvalid('poNumberId')" maxlength=20
+              [class.is-valid]="isControlValid('poNumberId')" formControlName="poNumberId" />
+
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Client Name</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="clientName"
+              placeholder="Client Name" autocomplete="off" [class.is-invalid]="isControlInvalid('clientName')" maxlength=50
+              [class.is-valid]="isControlValid('clientName')" formControlName="clientName" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'clientName')">Client Name is required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'clientName')">Client Name should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'clientName')">Client Name should have
+              maximum 50 characters</div>
+          </div>
+
+
+          <div class="col-lg-3">
+            <label class="form-label">PO Number</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="poNumber"
+              placeholder="PO Number" autocomplete="off" [class.is-invalid]="isControlInvalid('poNumber')" maxlength=50
+              [class.is-valid]="isControlValid('poNumber')" formControlName="poNumber" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'poNumber')">PO Number is required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'poNumber')">PO Number should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'poNumber')">PO Number should have
+              maximum 50 characters</div>
+          </div>
+
+          <div class="col-lg-3">
+            <label>PO Dated</label>
+            <div class="input-group input-group-solid">
+              <input type="text" name="poDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                placeholder="mm/dd/yyyy" ngbDatepicker [maxDate]="maxDate" #d2="ngbDatepicker" [class.is-invalid]="isControlInvalid('poDate')"
+                [class.is-valid]="isControlValid('poDate')" formControlName="poDate" readonly="true" /> {{formGroup.value.poDate | date: 'dd-MMM-yyyy'}}
+               <div class="input-group-append" (click)="d2.toggle()">
+                <span class="input-group-text">
+                  <i class="text-dark-50 flaticon-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <div class="valid-feedback" *ngIf="isControlValid('poDate')">Pls Enter PO Date</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'poDate')">Please enter <b>PO Date </b>
+              in 'mm/dd/yyyy' format</div>
+          </div>
+          </div>
+          <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label">PO Approved Limit</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="paLimit"
+              placeholder="PO Approved Limit" autocomplete="off" [class.is-invalid]="isControlInvalid('paLimit')" maxlength=50
+              [class.is-valid]="isControlValid('paLimit')" formControlName="paLimit" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'paLimit')">PO Number is required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'paLimit')">PO Number should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'paLimit')">PO Number should have
+              maximum 50 characters</div>
+          </div>
+
+
+        </div>
+
+      </form>
+    </ng-container>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+    <ng-container *ngIf="customer">
+
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()">Save</button>
+    </ng-container>
+  </div>
+</div>
+
+
