@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit ,Input} from '@angular/core';
 import { FormGroup,FormsModule,FormBuilder,FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProjectSubcountryListComponent } from '../project-subcountry-list/project-subcountry-list.component';
+import { ProjectTaskListComponent } from '../project-task-list/project-task-list.component';
+
 import { AuthService, UserModel } from '../../auth';
 import {
   NgbActiveModal,
@@ -10,12 +11,13 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectService } from '../../auth/_services/project.services';
 
+
 @Component({
-  selector: 'app-add-subcountry',
-  templateUrl: './add-subcountry.component.html',
-  styleUrls: ['./add-subcountry.component.scss']
+  selector: 'app-project-task-create',
+  templateUrl: './project-task-create.component.html',
+  styleUrls: ['./project-task-create.component.scss']
 })
-export class AddSubcountryComponent implements OnInit {
+export class ProjectTaskCreateComponent implements OnInit {
   @Input() id: string;
   isLoading$;
   isAdminRole: boolean;
@@ -24,16 +26,13 @@ export class AddSubcountryComponent implements OnInit {
   minDate: NgbDateStruct;
   maxDate: NgbDateStruct;
 
-
-  constructor(
-    private projectService: ProjectService,
+  constructor( private projectService: ProjectService,
     private authService: AuthService,
     private config: NgbDatepickerConfig,
     private fb: FormBuilder,
     public modal: NgbActiveModal)
-
     {
-      this.customer = new UserModel();
+    this.customer = new UserModel();
 
     const current = new Date();
     console.log(current.getFullYear(), current.getMonth(), current.getDate());
@@ -51,20 +50,11 @@ export class AddSubcountryComponent implements OnInit {
 
 
     this.formGroup = new FormGroup({
-      subCountryId: new FormControl(),
-      department: new FormControl(),
-      projectId: new FormControl(),
-      division: new FormControl(),
-      clientName: new FormControl(),
-      projectName: new FormControl(),
-      SubCountryname: new FormControl(),
-      Priority: new FormControl(),
-      dStatus: new FormControl(),
-        });
+    });
+   }
 
-
-    }
-  ngOnInit(): void {  }
+  ngOnInit(): void {
+  }
   findInvalidControls() {}
   save() {
     var invalid = this.findInvalidControls();

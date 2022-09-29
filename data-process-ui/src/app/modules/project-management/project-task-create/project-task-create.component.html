@@ -4,7 +4,7 @@
       <b><label class="heading">
       <ng-container >
 
-        <ng-container >Create  SubCountry List</ng-container>
+        <ng-container >Create Task Create </ng-container>
       </ng-container>
     </label></b>
     </div>
@@ -23,39 +23,39 @@
         <form action="#" class="form form-label-right" [formGroup]="formGroup">
           <div class="form-group row">
             <div class="col-lg-3">
-              <label class="form-label"> SubCountry ID</label>
+              <label class="form-label"> Task ID</label>
               <ng-container *ngIf="customer.userId">
-                <input type="text" class="form-control form-control-lg form-control-solid" name="projectId" readonly
-                placeholder="Sub Country ID" autocomplete="off" [class.is-invalid]="isControlInvalid('projectId')" maxlength=20
-                [class.is-valid]="isControlValid('projectId')" formControlName="projectId" />
+                <input type="text" class="form-control form-control-lg form-control-solid" name="taskId" readonly
+                placeholder="Task ID" autocomplete="off" [class.is-invalid]="isControlInvalid('taskId')" maxlength=20
+                [class.is-valid]="isControlValid('taskId')" formControlName="taskId" />
                  </ng-container>
                  <ng-container *ngIf="!customer.id">
-                  <input type="text" class="form-control form-control-lg form-control-solid" name="subCountryId"
-                    placeholder="Sub Country ID" autocomplete="off" [class.is-invalid]="isControlInvalid('subCountryId')" maxlength=20
-                    [class.is-valid]="isControlValid('subCountryId')" formControlName="subCountryId" />
-                  <div class="invalid-feedback" *ngIf="controlHasError('required', 'subCountryId')">Project Id is required</div>
+                  <input type="text" class="form-control form-control-lg form-control-solid" name="taskId"
+                    placeholder="Task ID" autocomplete="off" [class.is-invalid]="isControlInvalid('taskId')" maxlength=20
+                    [class.is-valid]="isControlValid('taskId')" formControlName="taskId" />
+                  <div class="invalid-feedback" *ngIf="controlHasError('required', 'taskId')">Project Id is required</div>
                 </ng-container>
             </div>
             <div class="col-lg-3">
             <label class="form-label">DEPARTMENT</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="department"
-              placeholder="DEPARTMENT" autocomplete="off" [class.is-invalid]="isControlInvalid('department')" maxlength=50
-              [class.is-valid]="isControlValid('department')" formControlName="department" />
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'department')">DEPARTMENT Name is required</div>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="departMent"
+              placeholder="DEPARTMENT" autocomplete="off" [class.is-invalid]="isControlInvalid('departMent')" maxlength=50
+              [class.is-valid]="isControlValid('departMent')" formControlName="departMent" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'departMent')">DEPARTMENT Name is required</div>
             <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'department')">DEPARTMENT  Name should have at
               least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'department')">DEPARTMENT Name should have
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'departMent')">DEPARTMENT Name should have
               maximum 50 characters</div>
           </div>
           <div class="col-lg-3">
             <label class="form-label">Division</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="division"
-              placeholder="Division" autocomplete="off" [class.is-invalid]="isControlInvalid('division')" maxlength=50
-              [class.is-valid]="isControlValid('division')" formControlName="division" />
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'division')">Division Name is required</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'division')">Division Name should have at
+            <input type="text" class="form-control form-control-lg form-control-solid" name="Division"
+              placeholder="Division" autocomplete="off" [class.is-invalid]="isControlInvalid('Division')" maxlength=50
+              [class.is-valid]="isControlValid('Division')" formControlName="Division" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Division')">Division Name is required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'Division')">Division Name should have at
               least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'division')">Division Name should have
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'Division')">Division Name should have
               maximum 50 characters</div>
           </div>
 
@@ -86,24 +86,24 @@
           </div>
 
             <div class="col-lg-3">
-              <label class="form-label">SubCountry Name</label>
-              <input type="text" class="form-control form-control-lg form-control-solid" name="SubCountryname"
-                placeholder="SubCountry Name" autocomplete="off" [class.is-invalid]="isControlInvalid('SubCountryname')" maxlength=50
-                [class.is-valid]="isControlValid('SubCountryname')" formControlName="SubCountryname" />
-              <div class="invalid-feedback" *ngIf="controlHasError('required', 'SubCountryname')">SubCountry Name is required</div>
-              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'SubCountryname')">SubCountry Name should have at
+              <label class="form-label">Task Name</label>
+              <input type="text" class="form-control form-control-lg form-control-solid" name="taskName"
+                placeholder="Task Name" autocomplete="off" [class.is-invalid]="isControlInvalid('taskName')" maxlength=50
+                [class.is-valid]="isControlValid('taskName')" formControlName="taskName" />
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'taskName')">Task Name is required</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'taskName')">Task Name should have at
                 least 3 symbols</div>
-              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'SubCountryname')">SubCountry Name should have
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'taskName')">Task Name should have
                 maximum 50 characters</div>
             </div>
 
             <div class="col-lg-3">
-              <label class="form-label">Priority</label>
-              <select class="form-control form-control-lg form-control-solid" name="Priority"
-                [class.is-invalid]="isControlInvalid('Priority')" formControlName="Priority">
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
+              <label class="form-label">Billable Type</label>
+              <select class="form-control form-control-lg form-control-solid" name="billType"
+                [class.is-invalid]="isControlInvalid('billType')" formControlName="billType">
+                <option value="b">B</option>
+                <option value="nbp">NBP</option>
+
               </select>
               </div>
 

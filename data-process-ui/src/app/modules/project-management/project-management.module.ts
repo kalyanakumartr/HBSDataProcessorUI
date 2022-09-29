@@ -16,9 +16,11 @@ import { ProjectTemplateComponent } from './project-template/project-template.co
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectRoadtypeComponent } from './project-roadtype/project-roadtype.component';
 import { ProjectSubcountryListComponent } from './project-subcountry-list/project-subcountry-list.component';
+import { ProjectTaskListComponent } from './project-task-list/project-task-list.component';
+import { ProjectTaskCreateComponent } from './project-task-create/project-task-create.component';
 
 @NgModule({
-  declarations: [ProjectCreateComponent, ProjectManagementComponent, RoadtypeCreateComponent, AddSubcountryComponent, ProjectTemplateComponent, ProjectListComponent, ProjectRoadtypeComponent, ProjectSubcountryListComponent],
+  declarations: [ProjectCreateComponent, ProjectManagementComponent, RoadtypeCreateComponent, AddSubcountryComponent, ProjectTemplateComponent, ProjectListComponent, ProjectRoadtypeComponent, ProjectSubcountryListComponent, ProjectTaskListComponent, ProjectTaskCreateComponent],
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,ProjectManagementRoutingModule,NgbModalModule, MatSnackBarModule, MatButtonModule,MatIconModule,GeneralModule, NgbDatepickerModule
   ]
