@@ -6,6 +6,8 @@ import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectManagementComponent } from './project-management.component';
 import { ProjectRoadtypeComponent } from './project-roadtype/project-roadtype.component';
 import { ProjectSubcountryListComponent } from './project-subcountry-list/project-subcountry-list.component';
+import { ProjectTaskListComponent } from './project-task-list/project-task-list.component';
+import { ProjectTemplateComponent } from './project-template/project-template.component';
 import { RoadtypeCreateComponent } from './roadtype-create/roadtype-create.component';
 
 
@@ -35,8 +37,16 @@ const routes: Routes = [
         component: ProjectSubcountryListComponent,
       },
       {
-        path: 'subcountry-reate',
+        path: 'subcountry-create',
         component: AddSubcountryComponent,
+      },
+      {
+        path: 'project-task-List',
+        component: ProjectTaskListComponent,
+      },
+      {
+        path: 'project-template',
+        component: ProjectTemplateComponent,
       },
       { path: '', redirectTo: 'project-list', pathMatch: 'full' },
       { path: '**', redirectTo: 'project-list', pathMatch: 'full' },

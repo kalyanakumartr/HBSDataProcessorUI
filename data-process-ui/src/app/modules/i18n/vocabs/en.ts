@@ -45,6 +45,9 @@ export const locale = {
       PROJECTROADTYPELIST:'Project Road Type List',
       PROJECTSUBCOUNTRYLIST:'Project SubCountry List',
       CHANGEPASSWORD:'Change Password',
+      PASSWORDUPDATE:'Password Update',
+      TASKLIST:'Task Creation List',
+      PROJECTTEMPLATE:'Project Template',
       ROLES:'Roles',
       'SKILLSET MATRIX':'SkillSet Matrix'
 
