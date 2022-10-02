@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, Subscription } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { ConfirmPasswordValidator, UserModel } from '../../auth';
+import { catchError, first, tap } from 'rxjs/operators';
+import { AuthService, ConfirmPasswordValidator, UserModel } from '../../auth';
 import { UsersService } from '../../auth/_services/user.service';
 
 @Component({
@@ -16,18 +16,19 @@ export class UpdatePasswordComponent implements OnInit {
   name:string;
   formGroup: FormGroup;
   password:string;
+  user$: Observable<UserModel>;
   firstUserState: UserModel;
   subscriptions: Subscription[] = [];
   isLoading$: Observable<boolean>;
 
-  constructor( private snackBar: MatSnackBar, private usersService: UsersService, private fb: FormBuilder) {
+  constructor( private snackBar: MatSnackBar, private usersService: UsersService, private auth: AuthService,private fb: FormBuilder) {
     //this.isLoading$ = this.userService.isLoadingSubject.asObservable();
   }
 
   ngOnInit(): void {
-    this.id='';
-    this.name='SSS';
-    this.loadForm();
+    this.user$ = this.auth.currentUserSubject.asObservable();
+    this.user$.pipe(first()).subscribe(value => { this.id=value.userId; this.name =value.userName;});
+     this.loadForm();
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -59,16 +60,12 @@ export class UpdatePasswordComponent implements OnInit {
 
     const sbUpdate = this.usersService.changePassword(this.id, this.password).pipe(
       tap(() => {
-
-       // this.modal.close();
-
       }),
       catchError((errorMessage) => {
-        //this.modal.dismiss(errorMessage);
         this.openSnackBar(errorMessage,"X");
         return of(this.password);
       }),
-    ).subscribe(res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
+    ).subscribe(res =>this.openSnackBar(res.messageCode?"Password Update Successful":res,"!!"));
   }
 
   cancel() {
