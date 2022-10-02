@@ -38,24 +38,24 @@
             </div>
             <div class="col-lg-3">
             <label class="form-label">DEPARTMENT</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="departMent"
-              placeholder="DEPARTMENT" autocomplete="off" [class.is-invalid]="isControlInvalid('departMent')" maxlength=50
-              [class.is-valid]="isControlValid('departMent')" formControlName="departMent" />
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'departMent')">DEPARTMENT Name is required</div>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="department"
+              placeholder="DEPARTMENT" autocomplete="off" [class.is-invalid]="isControlInvalid('department')" maxlength=50
+              [class.is-valid]="isControlValid('department')" formControlName="department" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'department')">DEPARTMENT Name is required</div>
             <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'department')">DEPARTMENT  Name should have at
               least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'departMent')">DEPARTMENT Name should have
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'department')">DEPARTMENT Name should have
               maximum 50 characters</div>
           </div>
           <div class="col-lg-3">
             <label class="form-label">Division</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="Division"
-              placeholder="Division" autocomplete="off" [class.is-invalid]="isControlInvalid('Division')" maxlength=50
-              [class.is-valid]="isControlValid('Division')" formControlName="Division" />
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'Division')">Division Name is required</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'Division')">Division Name should have at
+            <input type="text" class="form-control form-control-lg form-control-solid" name="division"
+              placeholder="Division" autocomplete="off" [class.is-invalid]="isControlInvalid('division')" maxlength=50
+              [class.is-valid]="isControlValid('division')" formControlName="division" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'division')">Division Name is required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'division')">Division Name should have at
               least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'Division')">Division Name should have
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'division')">Division Name should have
               maximum 50 characters</div>
           </div>
 
@@ -110,7 +110,7 @@
               <div class="col-lg-3">
                 <label>Display Status </label>
                 <select class="form-control form-control-lg form-control-solid" name="displayStatus"
-                  [class.is-invalid]="isControlInvalid('dStatus')" formControlName="dStatus">
+                  [class.is-invalid]="isControlInvalid('displayStatus')" formControlName="displayStatus">
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
 

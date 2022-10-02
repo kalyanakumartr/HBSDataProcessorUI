@@ -50,6 +50,14 @@ export class ProjectTaskCreateComponent implements OnInit {
 
 
     this.formGroup = new FormGroup({
+      taskId:new FormControl(),
+      department:new FormControl(),
+      division:new FormControl(),
+      clientName:new FormControl(),
+      projectName:new FormControl(),
+      taskName:new FormControl(),
+      billType:new FormControl(),
+      displayStatus:new FormControl()
     });
    }
 
