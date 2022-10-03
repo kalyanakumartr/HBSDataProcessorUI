@@ -1,6 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { of, Subscription } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  tap,
+} from 'rxjs/operators';
+import {
+  GroupingState,
+  ICreateAction,
+  IDeleteAction,
+  IDeleteSelectedAction,
+  IEditAction,
+  IFetchSelectedAction,
+  IFilterView,
+  IGroupingView,
+  ISearchView,
+  ISortView,
+  IUpdateStatusForSelectedAction,
+  PaginatorState,
+  SortState,
+} from 'src/app/_metronic/shared/crud-table';
+import { AuthModel } from '../../auth/_models/auth.model';
 import { ProjectService } from '../../auth/_services/project.services';
 import { UsersService } from '../../auth/_services/user.service';
 import { UserHRModalComponent } from '../../user-management/users/component/user-hr-modal/user-hr-modal.component';
@@ -9,21 +32,113 @@ import { ProjectCreateComponent } from '../project-create/project-create.compone
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.scss']
+  styleUrls: ['./project-list.component.scss'],
 })
-export class ProjectListComponent implements OnInit {
-  projectList:any[];
-  constructor(private fb: FormBuilder,
-    private modalService: NgbModal, public userService: UsersService, public projectService: ProjectService) {
-      this.userService.listen().subscribe((m:any)=>{
-        console.log("m -- -- --",m);
-        this.filter();
-      });
-      this.projectList=[];
+export class ProjectListComponent
+  implements
+    OnInit,
+    OnDestroy,
+    ICreateAction,
+    IEditAction,
+    IDeleteAction,
+    IDeleteSelectedAction,
+    IFetchSelectedAction,
+    IUpdateStatusForSelectedAction,
+    ISortView,
+    IFilterView,
+    IGroupingView,
+    ISearchView,
+    IFilterView
+{
+  paginator: PaginatorState;
+  sorting: SortState;
+  grouping: GroupingState;
+  isLoading: boolean;
+  filterGroup: FormGroup;
+  searchGroup: FormGroup;
+  userList: any;
+  sel: string;
+  departmentList: any[];
+  department: any;
+  divisionList: any[];
+  division: any;
+  projectList: any[];
+  project: any;
+  isClearFilter: boolean;
 
-    }
-  ngOnInit(): void {
+  private subscriptions: Subscription[] = [];
+  authModel: AuthModel;
+  constructor(
+    private fb: FormBuilder,
+    private modalService: NgbModal,
+    public userService: UsersService,
+    public projectService: ProjectService
+  ) {
+    this.userService.listen().subscribe((m: any) => {
+      console.log('m -- -- --', m);
+      this.filter();
+    });
+    this.projectList = [];
+    this.divisionList = [];
+    this.sel = '0';
+    this.isClearFilter = false;
   }
+  create(): void {
+    throw new Error('Method not implemented.');
+  }
+  edit(id: number): void {
+    throw new Error('Method not implemented.');
+  }
+
+  ngOnInit(): void {
+    //this.filterForm();
+    this.searchForm();
+
+    this.userService.fetch('/searchUser');
+    console.log('UserList :', this.subscriptions);
+    this.grouping = this.userService.grouping;
+    this.paginator = this.userService.paginator;
+    this.sorting = this.userService.sorting;
+
+    const sb = this.userService.isLoading$.subscribe(
+      (res) => (this.isLoading = res)
+    );
+    this.subscriptions.push(sb);
+    this.getDepartment();
+    /* setTimeout(() => {
+      this.division="0";
+      this.department="0: 0";
+      this.project="0";
+    }, 5000);*/
+  }
+  ngAfterViewInit() {}
+  public getUsers() {
+    console.log('Inside get Users');
+    //this.subscriptions= this.userService.getUserList();
+    this.userService.getUserList().subscribe((users) => {
+      this.subscriptions = users;
+    });
+    console.log(this.subscriptions);
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach((sb) => sb.unsubscribe());
+  }
+
+  // filtration
+  filterForm() {
+    this.filterGroup = this.fb.group({
+      searchTerm: [''],
+    });
+    this.subscriptions.push(
+      this.filterGroup.controls.status.valueChanges.subscribe(() =>
+        this.filter()
+      )
+    );
+    this.subscriptions.push(
+      this.filterGroup.controls.type.valueChanges.subscribe(() => this.filter())
+    );
+  }
+
   filter() {
     const filter = {};
     /*const status = this.filterGroup.get('status').value;
@@ -35,28 +150,229 @@ export class ProjectListComponent implements OnInit {
     if (type) {
       filter['type'] = type;
     }*/
-    this.userService.patchState({ filter },"/searchUser");
+    this.userService.patchState({ filter }, '/searchUser');
   }
+
+  // search
+  searchForm() {
+    this.searchGroup = this.fb.group({
+      searchTerm: [''],
+      department: ['0'],
+      division: ['0'],
+      project: ['0'],
+    });
+    const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
+      .pipe(
+        /*
+      The user can type quite quickly in the input box, and that could trigger a lot of server requests. With this operator,
+      we are limiting the amount of server requests emitted to a maximum of one every 150ms
+      */
+        debounceTime(150),
+        distinctUntilChanged()
+      )
+      .subscribe((val) => this.search(val));
+    this.subscriptions.push(searchEvent);
+  }
+
+  search(searchTerm: string) {
+    this.userService.patchState({ searchTerm }, '/searchUser');
+  }
+
+  // sorting
+  sort(column: string) {
+    const sorting = this.sorting;
+    const isActiveColumn = sorting.column === column;
+    if (!isActiveColumn) {
+      sorting.column = column;
+      sorting.direction = 'asc';
+    } else {
+      sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
+    }
+    this.userService.patchState({ sorting }, '/searchUser');
+  }
+
+  // pagination
+  paginate(paginator: PaginatorState) {
+    this.userService.patchState({ paginator }, '/searchUser');
+  }
+  // form actions
+
   addProject() {
-    const modalRef = this.modalService.open(ProjectCreateComponent, { size: 'xl' });
+    const modalRef = this.modalService.open(ProjectCreateComponent, {
+      size: 'xl',
+    });
+  }
 
- }
- exportExcel(){
-  this.userService.exportExcel("/exportToExcelHRRecord","Admin").subscribe(
-    responseObj => {
-      console.log("report success", responseObj);
-      var downloadURL = window.URL.createObjectURL(responseObj);
-      var link = document.createElement('a');
-      link.href = downloadURL;
-      link.download = "HRRecords.xlsx";
-      link.click();
+  addHR(id: string, name: string) {
+    const modalRef = this.modalService.open(UserHRModalComponent, {
+      size: 'xl',
+    });
+    modalRef.componentInstance.id = id;
+    modalRef.componentInstance.name = name;
+    modalRef.result.then(
+      () => this.userService.fetchHR(id),
+      () => {}
+    );
+  }
 
-    },
-    error => {
-      console.log("report error", error);
+  delete(id: number) {
+    // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
+    // modalRef.componentInstance.id = id;
+    // modalRef.result.then(() => this.userService.fetch(), () => { });
+  }
 
+  deleteSelected() {
+    // const modalRef = this.modalService.open(DeleteCustomersModalComponent);
+    // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
+    // modalRef.result.then(() => this.userService.fetch(), () => { });
+  }
 
+  updateStatusForSelected() {
+    // const modalRef = this.modalService.open(UpdateCustomersStatusModalComponent);
+    // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
+    // modalRef.result.then(() => this.userService.fetch(), () => { });
+  }
+
+  fetchSelected() {
+    // const modalRef = this.modalService.open(FetchCustomersModalComponent);
+    // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
+    // modalRef.result.then(() => this.userService.fetch(), () => { });
+  }
+  getDepartment() {
+    this.projectService
+      .getDepartmentList()
+      .pipe(
+        tap((res: any) => {
+          this.departmentList = res;
+          console.log('departmentList', this.departmentList);
+          this.department = '0: 0';
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: [],
+          });
+        })
+      )
+      .subscribe();
+  }
+  setDepartment(value) {
+    var position = value.split(':');
+    if (position.length > 1) {
+      this.department = position[1].toString().trim();
+      if (this.department != '0') {
+        this.isClearFilter = true;
+        this.getDivisionForDepartment();
+        this.userService.patchState(
+          { departmentId: this.department },
+          '/searchUser'
+        );
+      }
     }
-  )
+  }
+  setDivision(value) {
+    var position = value.split(':');
+    if (position.length > 1) {
+      this.division = position[1].toString().trim();
+      if (this.division != '0') {
+        this.getProjectForDivision();
+        this.userService.patchState(
+          { divisionId: this.division },
+          '/searchUser'
+        );
+      }
     }
+  }
+  getDivisionForDepartment() {
+    this.divisionList = [];
+    this.projectService
+      .getDivisionList(this.department)
+      .pipe(
+        tap((res: any) => {
+          this.divisionList = res;
+          console.log('divisionList', this.divisionList);
+          setTimeout(() => {
+            this.division = '0: 0';
+          }, 2000);
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: [],
+          });
+        })
+      )
+      .subscribe();
+  }
+  setProject(value) {
+    var position = value.split(':');
+    if (position.length > 1) {
+      this.project = position[1].toString().trim();
+      if (this.project != '0') {
+        this.userService.patchState({ projectId: this.project }, '/searchUser');
+      }
+    }
+  }
+  getProjectForDivision() {
+    this.projectList = [];
+    this.projectService
+      .getProjectList(this.division)
+      .pipe(
+        tap((res: any) => {
+          this.projectList = res;
+          console.log('projectList', this.projectList);
+          setTimeout(() => {
+            this.project = '0: 0';
+          }, 2000);
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: [],
+          });
+        })
+      )
+      .subscribe();
+  }
+  clearFilter() {
+    if (this.isClearFilter) {
+      this.division = '0';
+
+      this.project = '0';
+      if (this.projectList.length > 0) {
+        this.projectList.splice(0, this.projectList.length);
+      }
+      if (this.divisionList.length > 0) {
+        this.divisionList.splice(0, this.divisionList.length);
+      }
+      if (this.departmentList.length > 0) {
+        this.departmentList.splice(0, this.departmentList.length);
+      }
+      this.getDepartment();
+      (<HTMLInputElement>document.getElementById('searchText')).value = '';
+      this.userService.setDefaults();
+      this.userService.patchState({}, '/searchUser');
+      this.grouping = this.userService.grouping;
+      this.paginator = this.userService.paginator;
+      this.sorting = this.userService.sorting;
+      this.department = '0';
+    } else {
+      (<HTMLInputElement>document.getElementById('searchText')).value = '';
+    }
+  }
+  exportExcel() {
+    this.userService.exportExcel('/exportToExcelHRRecord', 'Admin').subscribe(
+      (responseObj) => {
+        console.log('report success', responseObj);
+        var downloadURL = window.URL.createObjectURL(responseObj);
+        var link = document.createElement('a');
+        link.href = downloadURL;
+        link.download = 'HRRecords.xlsx';
+        link.click();
+      },
+      (error) => {
+        console.log('report error', error);
+      }
+    );
+  }
 }

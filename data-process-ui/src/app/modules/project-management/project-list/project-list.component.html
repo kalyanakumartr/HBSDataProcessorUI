@@ -18,7 +18,7 @@
   <div class="card-body">
     <!-- begin: Filtration form -->
     <div class="form form-label-right">
-      <!--<div class="form-group row" [formGroup]="searchGroup">
+      <div class="form-group row" [formGroup]="searchGroup">
 
 
         <div class="col-lg-3">
@@ -66,10 +66,157 @@
             </div>
             </div>
         </div>
-      </div>-->
+      </div>
     </div>
     <!-- end: Filtration form -->
 
 
+    <!-- begin:Table -->
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="tablebox" class="table table-head-custom table-vertical-center ">
+        <thead>
+          <tr>
+          <th class="sticky-header">Edit</th>
+          <th class="sticky-header" nowrap >
+            Project ID
+
+          </th>
+          <th class="sticky-header" nowrap >
+            Client Name
+
+          </th>
+
+          <th nowrap >
+            Project Name
+
+          </th>
+          <th nowrap >
+            Project Type
+
+          </th>
+          <th  >
+            Project Manager Name
+
+          </th>
+          <th  >
+            Project Created Date
+
+          </th>
+
+          <th  >
+            PO Number (if Available)
+
+          </th>
+          <th nowrap >PO Dated</th>
+          <th nowrap >Billing Cycle</th>
+          <th nowrap >Project Status</th>
+          <th nowrap >Deliverables</th>
+          <th nowrap >Mode of Delivery </th>
+
+          <th nowrap >Input Receiving Mode</th>
+          <th nowrap >Input Type</th>
+          <th nowrap >Display in Other UI Project List </th>
+          <th nowrap >Total Projected work volume</th>
+          <th nowrap >Units of Measurement (UOM)</th>
+          <th nowrap >Received Work Volume</th>
+          <th nowrap >Estimated Total Hours</th>
+          <th nowrap >Planned No. of Resources</th>
+          <th nowrap >No. of Days Requried to complete</th>
+
+          <th nowrap >BPS Start Date</th>
+          <th nowrap >BPS Planned Completion Date</th>
+          <th nowrap >Client Expected Completion Date</th>
+          <th nowrap >Project - Actual Completed Date</th>
+
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customer of userService.items$ | async">
+            <td>
+
+            </td>
+            <td>
+              {{ customer.userId }}
+            </td>
+            <td>{{ customer.userName }} {{ customer.lastName }}</td>
+            <td>{{ customer.hrRecord.employmentInfo.dateOfJoin | date: 'dd-MMM-yyyy'}} </td>
+          <td>
+            <span class="label label-lg label-inline" [class.label-light-danger]="customer.hrRecord.employmentInfo.employmentStatus === 'Suspended'"
+              [class.label-light-success]="customer.hrRecord.employmentInfo.employmentStatus === 'Active'" [class.label-light-primary]="customer.employmentStatus === 'Pending'">
+              <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Abscond'">Abscond</ng-container>
+              <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Under_Notice_Period'">Notice Period</ng-container>
+              <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Active'">Active</ng-container>
+              <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Active_But_Long_Leave'">Active Long Leave</ng-container>
+              <ng-container *ngIf="customer.hrRecord.employmentInfo.employmentStatus === 'Resigned'">Resigned</ng-container>
+            </span>
+          </td>
+            <td>{{ customer.operationalRecord.team.teamName }}</td>
+            <td>{{ customer.operationalRecord.group.teamName }}</td>
+
+            <td>
+              <span class="label label-dot label-primary mr-2" [class.label-success]="customer.itRecord.workMode === 'WFO'"
+                [class.label-primary]="customer.itRecord.workMode === 'WFH'"></span>&nbsp;<span class="font-bold font-primary">
+                <ng-container *ngIf="customer.itRecord.workMode === 'WFO'">WFO</ng-container>
+                <ng-container *ngIf="customer.itRecord.workMode === 'WFH'">WFH</ng-container>
+              </span>
+            </td>
+            <td>
+              {{ customer.operationalRecord.reportingTo }}
+            </td>
+            <td>
+              {{ customer.roleName }}
+            </td>
+            <td>
+              {{ customer.trainingBatch }}
+            </td>
+            <td>{{ customer.operationalRecord.project != null ? customer.operationalRecord.project.projectName :"" }}</td>
+            <td>
+              {{ customer.loginRFDB_BPS }}
+            </td>
+            <td>
+              {{ customer.itRecord.broadBandAccount }}
+            </td>
+            <td>
+              {{ customer.itRecord.broadBandBy }}
+            </td>
+            <td>
+              {{ customer.itRecord.internetPlan }}
+            </td>
+            <td>
+              {{ customer.itRecord.isDowngraded }}
+            </td>
+            <td>
+              {{ customer.itRecord.staticIPAddress }}
+            </td>
+            <td>
+              {{ customer.itRecord.ispName }}
+            </td>
+            <td>
+              {{ customer.itRecord.systemToHome }}
+            </td>
+            <td>
+              {{ customer.itRecord.systemSerialNo }}
+            </td>
+            <td>
+              {{ customer.itRecord.staticWhiteList }}
+            </td>
+
+            <td>
+              {{ customer.hrRecord.employmentInfo.lastWorkDay | date: 'dd-MMM-yyyy'}}
+            </td>
+            <td>
+              {{ customer.hrRecord.employmentInfo.fromNoticePeriod | date: 'dd-MMM-yyyy'}}
+            </td>
+            <td>
+              {{ customer.hrRecord.employmentInfo.toNoticePeriod | date: 'dd-MMM-yyyy'}}
+            </td>
+
+            <td>{{ customer.mediaList[0].emailId }}</td>
+                      </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end: Table -->
+    <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator" [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
   </div>
 </div>
