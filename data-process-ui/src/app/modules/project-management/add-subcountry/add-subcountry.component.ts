@@ -52,11 +52,11 @@ export class AddSubcountryComponent implements OnInit {
 
     this.formGroup = new FormGroup({
       subCountryId: new FormControl(),
-      department: new FormControl(),
+      /*department: new FormControl(),
       projectId: new FormControl(),
       division: new FormControl(),
       clientName: new FormControl(),
-      projectName: new FormControl(),
+      projectName: new FormControl(),*/
       SubCountryname: new FormControl(),
       Priority: new FormControl(),
       dStatus: new FormControl(),
@@ -95,4 +95,6 @@ export class AddSubcountryComponent implements OnInit {
     const control = this.formGroup.controls[controlName];
     return control.hasError(validation) && (control.dirty || control.touched);
   }
+
+
 }

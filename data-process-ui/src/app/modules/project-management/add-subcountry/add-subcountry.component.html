@@ -21,6 +21,9 @@
 
       <ng-container *ngIf="customer">
         <form action="#" class="form form-label-right" [formGroup]="formGroup">
+
+
+
           <div class="form-group row">
             <div class="col-lg-3">
               <label class="form-label"> SubCountry ID</label>
@@ -36,54 +39,13 @@
                   <div class="invalid-feedback" *ngIf="controlHasError('required', 'subCountryId')">Project Id is required</div>
                 </ng-container>
             </div>
-            <div class="col-lg-3">
-            <label class="form-label">DEPARTMENT</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="department"
-              placeholder="DEPARTMENT" autocomplete="off" [class.is-invalid]="isControlInvalid('department')" maxlength=50
-              [class.is-valid]="isControlValid('department')" formControlName="department" />
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'department')">DEPARTMENT Name is required</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'department')">DEPARTMENT  Name should have at
-              least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'department')">DEPARTMENT Name should have
-              maximum 50 characters</div>
-          </div>
-          <div class="col-lg-3">
-            <label class="form-label">Division</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="division"
-              placeholder="Division" autocomplete="off" [class.is-invalid]="isControlInvalid('division')" maxlength=50
-              [class.is-valid]="isControlValid('division')" formControlName="division" />
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'division')">Division Name is required</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'division')">Division Name should have at
-              least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'division')">Division Name should have
-              maximum 50 characters</div>
-          </div>
 
-          <div class="col-lg-3">
-            <label class="form-label">Client Name</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="clientName"
-              placeholder="Client Name" autocomplete="off" [class.is-invalid]="isControlInvalid('clientName')" maxlength=50
-              [class.is-valid]="isControlValid('clientName')" formControlName="clientName" />
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'clientName')">Client Name is required</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'clientName')">Client Name should have at
-              least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'clientName')">Client Name should have
-              maximum 50 characters</div>
-          </div>
 
-            </div>
-           <div class="form-group row">
-            <div class="col-lg-3">
-            <label class="form-label">Project Name</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="projectName"
-              placeholder="Project Name" autocomplete="off" [class.is-invalid]="isControlInvalid('projectName')" maxlength=50
-              [class.is-valid]="isControlValid('projectName')" formControlName="projectName" />
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'projectName')">Project Name is required</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'projectName')">Project Name should have at
-              least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'projectName')">Project Name should have
-              maximum 50 characters</div>
-          </div>
+
+
+
+
+
 
             <div class="col-lg-3">
               <label class="form-label">SubCountry Name</label>
