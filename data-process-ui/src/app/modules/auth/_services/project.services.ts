@@ -2,7 +2,7 @@ import { Injectable, Inject, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TableService } from '../../../_metronic/shared/crud-table';
 import { environment } from '../../../../environments/environment';
-import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject, of, Subscription, Subject } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { AuthModel } from '../_models/auth.model';
 import { AuthHTTPService } from './auth-http';
@@ -15,14 +15,17 @@ import { Team } from '../_models/team.model';
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectService  {
-  private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
+export class ProjectService extends TableService<Project> implements OnDestroy {
+ // private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
     // public fields
     isLoadingSubject: BehaviorSubject<boolean>;
     protected http: HttpClient;
   API_URL = `${environment.adminApiUrl}`;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
-    this.http=http;
+    super(http);
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sb => sb.unsubscribe());
   }
 
   getDepartmentList(){
@@ -98,16 +101,15 @@ export class ProjectService  {
     );
   }
 
-  public getAuthFromLocalStorage(): AuthModel {
-    try {
-      const authData = JSON.parse(
-        localStorage.getItem(this.authLocalStorageToken)
-      );
-      return authData;
-    } catch (error) {
-      console.error(error);
-      return undefined;
-    }
-  }
 
+  private _listners = new Subject<any>();
+  listen(): Observable<any>{
+    return this._listners.asObservable();
+  }
+  filterData(filterBy:string){
+    this._listners.next(filterBy)
+  }
+  filterAssetData(filterBy:string){
+    this._listners.next(filterBy)
+  }
 }

@@ -74,7 +74,7 @@ export class ProjectListComponent
     public userService: UsersService,
     public projectService: ProjectService
   ) {
-    this.userService.listen().subscribe((m: any) => {
+    this.projectService.listen().subscribe((m: any) => {
       console.log('m -- -- --', m);
       this.filter();
     });
@@ -94,13 +94,13 @@ export class ProjectListComponent
     //this.filterForm();
     this.searchForm();
 
-    this.userService.fetch('/searchUser');
+    this.projectService.fetch('/searchUser');
     console.log('UserList :', this.subscriptions);
-    this.grouping = this.userService.grouping;
-    this.paginator = this.userService.paginator;
-    this.sorting = this.userService.sorting;
+    this.grouping = this.projectService.grouping;
+    this.paginator = this.projectService.paginator;
+    this.sorting = this.projectService.sorting;
 
-    const sb = this.userService.isLoading$.subscribe(
+    const sb = this.projectService.isLoading$.subscribe(
       (res) => (this.isLoading = res)
     );
     this.subscriptions.push(sb);
@@ -112,14 +112,7 @@ export class ProjectListComponent
     }, 5000);*/
   }
   ngAfterViewInit() {}
-  public getUsers() {
-    console.log('Inside get Users');
-    //this.subscriptions= this.userService.getUserList();
-    this.userService.getUserList().subscribe((users) => {
-      this.subscriptions = users;
-    });
-    console.log(this.subscriptions);
-  }
+
   ngOnDestroy() {
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
@@ -150,7 +143,7 @@ export class ProjectListComponent
     if (type) {
       filter['type'] = type;
     }*/
-    this.userService.patchState({ filter }, '/searchUser');
+    this.projectService.patchState({ filter }, '/searchUser');
   }
 
   // search
@@ -175,7 +168,7 @@ export class ProjectListComponent
   }
 
   search(searchTerm: string) {
-    this.userService.patchState({ searchTerm }, '/searchUser');
+    this.projectService.patchState({ searchTerm }, '/searchUser');
   }
 
   // sorting
@@ -188,12 +181,12 @@ export class ProjectListComponent
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.userService.patchState({ sorting }, '/searchUser');
+    this.projectService.patchState({ sorting }, '/searchUser');
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.userService.patchState({ paginator }, '/searchUser');
+    this.projectService.patchState({ paginator }, '/searchUser');
   }
   // form actions
 
@@ -201,18 +194,6 @@ export class ProjectListComponent
     const modalRef = this.modalService.open(ProjectCreateComponent, {
       size: 'xl',
     });
-  }
-
-  addHR(id: string, name: string) {
-    const modalRef = this.modalService.open(UserHRModalComponent, {
-      size: 'xl',
-    });
-    modalRef.componentInstance.id = id;
-    modalRef.componentInstance.name = name;
-    modalRef.result.then(
-      () => this.userService.fetchHR(id),
-      () => {}
-    );
   }
 
   delete(id: number) {
@@ -350,18 +331,18 @@ export class ProjectListComponent
       }
       this.getDepartment();
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
-      this.userService.setDefaults();
-      this.userService.patchState({}, '/searchUser');
-      this.grouping = this.userService.grouping;
-      this.paginator = this.userService.paginator;
-      this.sorting = this.userService.sorting;
+      this.projectService.setDefaults();
+      this.projectService.patchState({}, '/searchUser');
+      this.grouping = this.projectService.grouping;
+      this.paginator = this.projectService.paginator;
+      this.sorting = this.projectService.sorting;
       this.department = '0';
     } else {
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
     }
   }
   exportExcel() {
-    this.userService.exportExcel('/exportToExcelHRRecord', 'Admin').subscribe(
+    this.projectService.exportExcel('/exportToExcelHRRecord', 'Admin').subscribe(
       (responseObj) => {
         console.log('report success', responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);
