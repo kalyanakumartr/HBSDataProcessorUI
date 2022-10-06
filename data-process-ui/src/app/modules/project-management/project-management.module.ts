@@ -27,10 +27,12 @@ import { ProjectTaskListComponent } from './project-task-list/project-task-list.
 import { ProjectTaskCreateComponent } from './project-task-create/project-task-create.component';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { NgModule } from '@angular/core';
+import { ProjectAssignSubcountryComponent } from './project-assign-subcountry/project-assign-subcountry.component';
+import { AngularDualListBoxModule } from 'angular-dual-listbox';
 @NgModule({
-  declarations: [ProjectCreateComponent, ProjectManagementComponent, RoadtypeCreateComponent, AddSubcountryComponent, ProjectTemplateComponent, ProjectListComponent, ProjectRoadtypeComponent, ProjectSubcountryListComponent, ProjectTaskListComponent, ProjectTaskCreateComponent],
+  declarations: [ProjectCreateComponent, ProjectManagementComponent, RoadtypeCreateComponent, AddSubcountryComponent, ProjectTemplateComponent, ProjectListComponent, ProjectRoadtypeComponent, ProjectSubcountryListComponent, ProjectTaskListComponent, ProjectTaskCreateComponent, ProjectAssignSubcountryComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule,ProjectManagementRoutingModule,NgbModalModule, CommonModule,   HttpClientModule,
-    CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatPaginatorModule, MatTableModule,MatSortModule, MatDividerModule, MatExpansionModule,MatDatepickerModule,MatNativeDateModule, MatFormFieldModule,MatInputModule],
+    CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatPaginatorModule, MatTableModule,MatSortModule, MatDividerModule, MatExpansionModule,MatDatepickerModule,MatNativeDateModule, MatFormFieldModule,MatInputModule,AngularDualListBoxModule],
   providers: [MatDatepickerModule, MatNativeDateModule],
 
 })

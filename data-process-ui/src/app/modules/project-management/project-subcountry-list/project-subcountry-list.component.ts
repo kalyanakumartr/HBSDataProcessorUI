@@ -1,6 +1,7 @@
 import { Component,  OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddSubcountryComponent } from '../add-subcountry/add-subcountry.component';
+import { ProjectAssignSubcountryComponent } from '../project-assign-subcountry/project-assign-subcountry.component';
 
 
 @Component({
@@ -14,5 +15,8 @@ export class ProjectSubcountryListComponent implements OnInit {
   subCountry()
   {
     const modalRef = this.modalService.open(AddSubcountryComponent, { size: 'xl' });
+  }
+  projectAssignSubcountry(){
+    const modalRef = this.modalService.open(ProjectAssignSubcountryComponent, { size: 'xl' });
   }
 }
