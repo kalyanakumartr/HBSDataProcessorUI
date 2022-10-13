@@ -1,2 +1,9 @@
-<p>project-assign-subcountry works!</p>
-<dual-list [source]="source" [(destination)]="confirmed"></dual-list>
+
+<div class="container-fluid">
+	<p></p>
+	<dual-list [sort]="keepSorted"
+     [source]="source" [key]="key"
+      [display]="display"
+      [filter]="filter"		></dual-list>
+</div>
+

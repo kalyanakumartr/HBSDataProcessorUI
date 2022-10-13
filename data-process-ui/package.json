@@ -27,7 +27,7 @@
     "@fortawesome/fontawesome-free": "^5.15.1",
     "@ng-bootstrap/ng-bootstrap": "^8.0.0",
     "@ngx-translate/core": "^13.0.0",
-    "angular-dual-listbox": "^7.0.0",
+    "angular-dual-listbox": "^4.7.0",
     "angular-in-memory-web-api": "^0.11.0",
     "apexcharts": "^3.20.0",
     "bootstrap": "^4.6.0",
