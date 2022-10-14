@@ -136,82 +136,71 @@
 
             </td>
             <td>
-              {{ project.userId }}
+              {{ project.projectId }}
             </td>
-            <td>{{ project.userName }} {{ project.lastName }}</td>
-            <td>{{ project.hrRecord.employmentInfo.dateOfJoin | date: 'dd-MMM-yyyy'}} </td>
+            <td>{{ project.projectDetail.clientName }} </td>
+            <td>{{ project.projectName}} </td>
           <td>
-            <span class="label label-lg label-inline" [class.label-light-danger]="project.hrRecord.employmentInfo.employmentStatus === 'Suspended'"
-              [class.label-light-success]="project.hrRecord.employmentInfo.employmentStatus === 'Active'" [class.label-light-primary]="project.employmentStatus === 'Pending'">
-              <ng-container *ngIf="project.hrRecord.employmentInfo.employmentStatus === 'Abscond'">Abscond</ng-container>
-              <ng-container *ngIf="project.hrRecord.employmentInfo.employmentStatus === 'Under_Notice_Period'">Notice Period</ng-container>
-              <ng-container *ngIf="project.hrRecord.employmentInfo.employmentStatus === 'Active'">Active</ng-container>
-              <ng-container *ngIf="project.hrRecord.employmentInfo.employmentStatus === 'Active_But_Long_Leave'">Active Long Leave</ng-container>
-              <ng-container *ngIf="project.hrRecord.employmentInfo.employmentStatus === 'Resigned'">Resigned</ng-container>
-            </span>
+            {{project.projectDetail.projectType}}
           </td>
-            <td>{{ project.operationalRecord.team.teamName }}</td>
-            <td>{{ project.operationalRecord.group.teamName }}</td>
+            <td>{{ project.projectDetail.projectmanagerName }}</td>
+            <td>{{ project.projectDetail.actualCompletedDate }}</td>
 
             <td>
-              <span class="label label-dot label-primary mr-2" [class.label-success]="project.itRecord.workMode === 'WFO'"
-                [class.label-primary]="project.itRecord.workMode === 'WFH'"></span>&nbsp;<span class="font-bold font-primary">
-                <ng-container *ngIf="project.itRecord.workMode === 'WFO'">WFO</ng-container>
-                <ng-container *ngIf="project.itRecord.workMode === 'WFH'">WFH</ng-container>
-              </span>
+              {{ project.projectDetail.poNumber }}
             </td>
             <td>
-              {{ project.operationalRecord.reportingTo }}
+              {{ project.projectDetail.poDated }}
             </td>
             <td>
-              {{ project.roleName }}
+              {{ project.projectDetail.billingCycle }}
             </td>
             <td>
-              {{ project.trainingBatch }}
+              {{ project.projectDetail.projectStatus }}
             </td>
-            <td>{{ project.operationalRecord.project != null ? project.operationalRecord.project.projectName :"" }}</td>
+            <td>{{ project.projectDetail.deliverables }}</td>
             <td>
-              {{ project.loginRFDB_BPS }}
-            </td>
-            <td>
-              {{ project.itRecord.broadBandAccount }}
+              {{ project.projectDetail.modeOfDelivery }}
             </td>
             <td>
-              {{ project.itRecord.broadBandBy }}
+              {{ project.projectDetail.inputReceivingMode }}
             </td>
             <td>
-              {{ project.itRecord.internetPlan }}
+              {{ project.projectDetail.inputType }}
             </td>
             <td>
-              {{ project.itRecord.isDowngraded }}
+              {{ project.projectDetail.displayInOtherUIProjectList }}
             </td>
             <td>
-              {{ project.itRecord.staticIPAddress }}
+              {{ project.projectDetail.totalProjectedWorkVolume }}
             </td>
             <td>
-              {{ project.itRecord.ispName }}
+              {{ project.projectDetail.unitsOfMeasurement }}
             </td>
             <td>
-              {{ project.itRecord.systemToHome }}
+              {{ project.projectDetail.receivedWorkVolume }}
             </td>
             <td>
-              {{ project.itRecord.systemSerialNo }}
+              {{ project.projectDetail.estimatedTotalHours }}
             </td>
             <td>
-              {{ project.itRecord.staticWhiteList }}
+              {{ project.projectDetail.plannedNoOfResources }}
+            </td>
+            <td>
+              {{ project.projectDetail.noOfDaysRequiredToComplete }}
             </td>
 
             <td>
-              {{ project.hrRecord.employmentInfo.lastWorkDay | date: 'dd-MMM-yyyy'}}
+              {{ project.projectDetail.bpsStartDate | date: 'dd-MMM-yyyy'}}
             </td>
             <td>
-              {{ project.hrRecord.employmentInfo.fromNoticePeriod | date: 'dd-MMM-yyyy'}}
+              {{ project.projectDetail.bpsPlannedCompletionDate | date: 'dd-MMM-yyyy'}}
             </td>
             <td>
-              {{ project.hrRecord.employmentInfo.toNoticePeriod | date: 'dd-MMM-yyyy'}}
+              {{ project.projectDetail.clientExpectedCompletionDate | date: 'dd-MMM-yyyy'}}
             </td>
 
-            <td>{{ project.mediaList[0].emailId }}</td>
+            <td>{{ project.projectDetail.actualCompletedDate | date: 'dd-MMM-yyyy'}}</td>
                       </tr>
         </tbody>
       </table>

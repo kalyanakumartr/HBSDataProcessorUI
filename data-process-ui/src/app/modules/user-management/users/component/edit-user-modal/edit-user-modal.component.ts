@@ -183,8 +183,32 @@ const EMPTY_CUSTOMER: UserModel = {
       departmentName: ''
     },
     project:{
-      projectId: 'CSAV1CM',
-      projectName: ''
+      projectId: '',
+      projectName: '',
+      projectDetail:{
+        actualCompletedDate:'',
+        billingCycle:'',
+        bpsPlannedCompletionDate:'',
+        bpsStartDate:'',
+        clientExpectedCompletionDate:'',
+        clientName:'',
+        deliverables:'',
+        displayInOtherUIProjectList:'',
+        estimatedTotalHours:'',
+        inputReceivingMode:'',
+        inputType:'',
+        modeOfDelivery:'',
+        noOfDaysRequiredToComplete:'',
+        plannedNoOfResources:'',
+        poDated:'',
+        poNumber:'',
+        projectStatus:'',
+        projectType:'',
+        receivedWorkVolume:'',
+        totalProjectedWorkVolume:'',
+        unitsOfMeasurement:'',
+        projectmanagerName:''
+      }
     },
     trainingBatch:'',
     reportingTo:'',
