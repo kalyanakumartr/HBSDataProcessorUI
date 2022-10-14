@@ -10,6 +10,7 @@ import { RoleModel } from '../_models/role.model';
 import { Department } from '../_models/department.model';
 import { Project } from '../_models/project.model';
 import { Team } from '../_models/team.model';
+import { SubCountry } from '../_models/sub-country.model';
 
 
 @Injectable({
@@ -21,6 +22,7 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
     isLoadingSubject: BehaviorSubject<boolean>;
     protected http: HttpClient;
   API_URL = `${environment.adminApiUrl}`;
+  VIEW_API_URL = `${environment.viewApiUrl}`;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
   }
@@ -93,6 +95,34 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
     return this.http.post<Team[]>(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+
+  getSubCountryList(projectId){
+    const url = this.VIEW_API_URL + "/getSubCountryList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<Array<SubCountry>>(url, {"projectId":projectId},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+
+  getProjectSubCountryList(projectId){
+    const url = this.VIEW_API_URL + "/getProjectSubCountryList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<Array<SubCountry>>(url, {"projectId":projectId},{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);

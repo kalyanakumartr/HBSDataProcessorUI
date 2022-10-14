@@ -15,8 +15,10 @@ export class ProjectSubcountryListComponent implements OnInit {
   subCountry()
   {
     const modalRef = this.modalService.open(AddSubcountryComponent, { size: 'xl' });
+
   }
   projectAssignSubcountry(){
     const modalRef = this.modalService.open(ProjectAssignSubcountryComponent, { size: 'xl' });
+    modalRef.componentInstance.projectId = "RFDB_CSAV2_S2S";
   }
 }
