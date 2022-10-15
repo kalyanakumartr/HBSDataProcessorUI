@@ -1,30 +1,64 @@
 import { Injectable, Inject, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TableService } from '../../../_metronic/shared/crud-table';
+import { GroupingState, IProjectTableState, PaginatorState, SortStateProject, TableService } from '../../../_metronic/shared/crud-table';
 import { environment } from '../../../../environments/environment';
 import { Observable, BehaviorSubject, of, Subscription, Subject } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
-import { AuthModel } from '../_models/auth.model';
 import { AuthHTTPService } from './auth-http';
-import { RoleModel } from '../_models/role.model';
 import { Department } from '../_models/department.model';
 import { Project } from '../_models/project.model';
 import { Team } from '../_models/team.model';
 import { SubCountry } from '../_models/sub-country.model';
 
+const DEFAULT_STATE: IProjectTableState = {
+  filter: {},
+  paginator: new PaginatorState(),
+  sorting: new SortStateProject(),
+  searchTerm: '',
+  divisionId: '',
+  departmentId: '',
+  projectId: '',
+  groupId:'',
+  teamId:'',
+  grouping: new GroupingState(),
+  entityId: undefined,
+  employeeId: '',
+  fromDate: '',
+  toDate: '',
+  status: '',
+  workUnitId:  '',
+  startWUMiles: '',
+  endWUMiles: '',
+  reasonId: '',
+  roadTypeMapId: '',
+  startAssignedDate: '',
+  startProcessedDate: '',
+  receivedDate: '',
+  endAssignedDate: '',
+  endProcessedDate: '',
+  endReceivedDate: '',
+  teamName: '',
+  subCountryId: '',
+  isAdvanceSearch:false,
+  isDirectReport:true,
+  queueList:[],
+  taskStatusList:[]
+
+};
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ProjectService extends TableService<Project> implements OnDestroy {
- // private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
-    // public fields
+    _taskTableState$ = new BehaviorSubject<IProjectTableState>(DEFAULT_STATE);
     isLoadingSubject: BehaviorSubject<boolean>;
     protected http: HttpClient;
   API_URL = `${environment.adminApiUrl}`;
   VIEW_API_URL = `${environment.viewApiUrl}`;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
+    this._tableState$ = this._taskTableState$;
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());

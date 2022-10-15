@@ -49,8 +49,8 @@ export class ProjectAssignSubcountryComponent implements OnInit {
   }
 
   private useSubCountry() {
-    this.key = 'value';
-    this.display = 'label';
+    this.key = 'country';
+    this.display = 'countryName';
     this.keepSorted = true;
     this.source = this.sourceSubCountry;
     this.confirmed = this.confirmedSubCountry==undefined?[]:this.confirmedSubCountry;
@@ -59,7 +59,7 @@ export class ProjectAssignSubcountryComponent implements OnInit {
     //this.confirmed = this.confirmedSubCountry;
   }
   doReset() {
-    this.projectService.getSubCountryList(this.projectId).pipe(
+    this.projectService.getProjectSubCountryList("").pipe(
       tap((res: Array<SubCountry>) => {
         this.sourceSubCountry = res;
         this.useSubCountry();

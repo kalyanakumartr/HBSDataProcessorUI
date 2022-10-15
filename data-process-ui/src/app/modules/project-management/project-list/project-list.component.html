@@ -12,7 +12,7 @@
         &nbsp;&nbsp;
         <i title="Export Excel" (click)="exportExcel()" class="fas fa-file-excel fa-2x"></i>
       </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <button type="button" class="btn btn-primary" (click)="addProject()">Add Project</button>
+      <button type="button" class="btn btn-primary" (click)="create()">Add Project</button>
     </div>
   </div>
   <div class="card-body">
@@ -133,7 +133,12 @@
         <tbody>
           <tr *ngFor="let project of projectService.items$ | async">
             <td>
-
+              <a title="Edit HR Employee" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              (click)="editProject(project.projectId, project.projectName)">
+              <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                class="svg-icon svg-icon-md svg-icon-primary">
+              </span>
+            </a>
             </td>
             <td>
               {{ project.projectId }}

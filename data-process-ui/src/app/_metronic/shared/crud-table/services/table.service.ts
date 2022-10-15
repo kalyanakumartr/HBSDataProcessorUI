@@ -108,6 +108,7 @@ export abstract class TableService<T> {
   // API URL has to be overrided
   API_URL = `${environment.adminApiUrl}`;
   REPORT_API_URL = `${environment.reportsApi}`;
+  VIEW_API_URL = `${environment.viewApiUrl}`;
   constructor(http: HttpClient) {
     // if(this instanceof LeaveModel || this instanceof AttendanceModel || this instanceof TimeSheetModel){
     //  this.API_URL = `${environment.taleApi}`;
@@ -139,7 +140,9 @@ export abstract class TableService<T> {
     var url ='';
     if(path.endsWith("Report")){
       url = this.REPORT_API_URL + path;//'/searchUser';
-    }else{
+    }else if(path.endsWith("Project")){
+      url = this.VIEW_API_URL + path;//'/searchProject';
+    }    else{
        url = this.API_URL + path;//'/searchUser';
     }
     this._errorMessage.next('');

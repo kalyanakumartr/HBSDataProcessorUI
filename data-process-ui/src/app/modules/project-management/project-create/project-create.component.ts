@@ -5,20 +5,52 @@ import {
   NgbDatepickerConfig,
   NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap';
-import { tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError, first, tap } from 'rxjs/operators';
 import { AuthService, UserModel } from '../../auth';
+import { Project } from '../../auth/_models/project.model';
 import { ProjectService } from '../../auth/_services/project.services';
+const EMPTY_PROJECT: Project = {
+  projectId: undefined,
+  projectName: '',
+  projectDetail: {
+    actualCompletedDate:'',
+    billingCycle:'',
+    bpsPlannedCompletionDate:'',
+    bpsStartDate:'',
+    clientExpectedCompletionDate:'',
+    clientName:'',
+    deliverables:'',
+    displayInOtherUIProjectList:'',
+    estimatedTotalHours:'',
+    inputReceivingMode:'',
+    inputType:'',
+    modeOfDelivery:'',
+    noOfDaysRequiredToComplete:'',
+    plannedNoOfResources:'',
+    poDated:'',
+    poNumber:'',
+    projectStatus:'',
+    projectType:'',
+    receivedWorkVolume:'',
+    totalProjectedWorkVolume:'',
+    unitsOfMeasurement:'',
+    projectmanagerName:''
+  }
 
+}
 @Component({
   selector: 'app-project-create',
   templateUrl: './project-create.component.html',
   styleUrls: ['./project-create.component.scss'],
 })
 export class ProjectCreateComponent implements OnInit {
-  @Input() id: string;
+  @Input() projectId: string;
+  @Input() projectName: string;
   isLoading$;
   isAdminRole: boolean;
   customer: UserModel;
+  project: Project;
   formGroup: FormGroup;
   minDate: NgbDateStruct;
   maxDate: NgbDateStruct;
@@ -92,6 +124,38 @@ export class ProjectCreateComponent implements OnInit {
     }
   }
 
+  loadProjectId() {
+    if (!this.projectId) {
+      this.project = EMPTY_PROJECT;
+      //this.loadForm();
+    } else {
+      console.log("this.id", this.projectId);
+
+      const sb = this.projectService.getItemById(this.projectId).pipe(
+        first(),
+        catchError((errorMessage) => {
+          console.log("errorMessage", errorMessage);
+          this.modal.dismiss(errorMessage);
+          return of(EMPTY_PROJECT);
+        })
+      ).subscribe((project: Project) => {
+        this.project = project;
+        console.log(this.project);
+       /* this.loadEditForm();
+        this.loadForm();
+
+        this.department=this.customer.operationalRecord.department.departmentId;
+        this.division=this.customer.operationalRecord.division.divisionId;
+        console.log("role",this.customer.roleId);
+        this.role.roleId=this.customer.roleId;
+        this.getDivisionForDepartment();
+        this.getRolesForDivision();*/
+
+        console.log("Check");
+      });
+
+    }
+  }
   /*edit() {
   const sbUpdate = this.usersService.update(this.customer,"/updateUser","formUser").pipe(
     tap(() => {

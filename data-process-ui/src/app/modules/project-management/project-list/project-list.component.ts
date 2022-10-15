@@ -23,10 +23,7 @@ import {
   PaginatorState,
   SortState,
 } from 'src/app/_metronic/shared/crud-table';
-import { AuthModel } from '../../auth/_models/auth.model';
 import { ProjectService } from '../../auth/_services/project.services';
-import { UsersService } from '../../auth/_services/user.service';
-import { UserHRModalComponent } from '../../user-management/users/component/user-hr-modal/user-hr-modal.component';
 import { ProjectCreateComponent } from '../project-create/project-create.component';
 
 @Component({
@@ -67,11 +64,10 @@ export class ProjectListComponent
   isClearFilter: boolean;
 
   private subscriptions: Subscription[] = [];
-  authModel: AuthModel;
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
-    public userService: UsersService,
+
     public projectService: ProjectService
   ) {
     this.projectService.listen().subscribe((m: any) => {
@@ -83,18 +79,13 @@ export class ProjectListComponent
     this.sel = '0';
     this.isClearFilter = false;
   }
-  create(): void {
-    throw new Error('Method not implemented.');
-  }
-  edit(id: number): void {
-    throw new Error('Method not implemented.');
-  }
+
 
   ngOnInit(): void {
     //this.filterForm();
     this.searchForm();
 
-    this.projectService.fetch('/searchUser');
+    this.projectService.fetch('/searchProject');
     console.log('UserList :', this.subscriptions);
     this.grouping = this.projectService.grouping;
     this.paginator = this.projectService.paginator;
@@ -143,7 +134,7 @@ export class ProjectListComponent
     if (type) {
       filter['type'] = type;
     }*/
-    this.projectService.patchState({ filter }, '/searchUser');
+    this.projectService.patchState({ filter }, '/searchProject');
   }
 
   // search
@@ -168,7 +159,7 @@ export class ProjectListComponent
   }
 
   search(searchTerm: string) {
-    this.projectService.patchState({ searchTerm }, '/searchUser');
+    this.projectService.patchState({ searchTerm }, '/searchProject');
   }
 
   // sorting
@@ -181,43 +172,57 @@ export class ProjectListComponent
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.projectService.patchState({ sorting }, '/searchUser');
+    this.projectService.patchState({ sorting }, '/searchProject');
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.projectService.patchState({ paginator }, '/searchUser');
+    this.projectService.patchState({ paginator }, '/searchProject');
   }
-  // form actions
+  // form actions  create(): void {
 
-  addProject() {
+  edit(id: number): void {
+    throw new Error('Method not implemented.');
+  }
+  create() {
+    this.addProject(undefined,undefined);
+  }
+
+  editProject(projectId: string, projectName:string): void {
+    this.addProject(projectId,projectName);
+
+  }
+
+  addProject(projectId: string, projectName:string) {
     const modalRef = this.modalService.open(ProjectCreateComponent, {
       size: 'xl',
     });
+    modalRef.componentInstance.projectId = projectId;
+    modalRef.componentInstance.projectName = projectName;
   }
 
   delete(id: number) {
     // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
     // modalRef.componentInstance.id = id;
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
+    // modalRef.result.then(() => this.projectService.fetch(), () => { });
   }
 
   deleteSelected() {
     // const modalRef = this.modalService.open(DeleteCustomersModalComponent);
     // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
+    // modalRef.result.then(() => this.projectService.fetch(), () => { });
   }
 
   updateStatusForSelected() {
     // const modalRef = this.modalService.open(UpdateCustomersStatusModalComponent);
     // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
+    // modalRef.result.then(() => this.projectService.fetch(), () => { });
   }
 
   fetchSelected() {
     // const modalRef = this.modalService.open(FetchCustomersModalComponent);
     // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-    // modalRef.result.then(() => this.userService.fetch(), () => { });
+    // modalRef.result.then(() => this.projectService.fetch(), () => { });
   }
   getDepartment() {
     this.projectService
@@ -244,9 +249,9 @@ export class ProjectListComponent
       if (this.department != '0') {
         this.isClearFilter = true;
         this.getDivisionForDepartment();
-        this.userService.patchState(
+        this.projectService.patchState(
           { departmentId: this.department },
-          '/searchUser'
+          '/searchProject'
         );
       }
     }
@@ -257,9 +262,9 @@ export class ProjectListComponent
       this.division = position[1].toString().trim();
       if (this.division != '0') {
         this.getProjectForDivision();
-        this.userService.patchState(
+        this.projectService.patchState(
           { divisionId: this.division },
-          '/searchUser'
+          '/searchProject'
         );
       }
     }
@@ -290,7 +295,7 @@ export class ProjectListComponent
     if (position.length > 1) {
       this.project = position[1].toString().trim();
       if (this.project != '0') {
-        this.userService.patchState({ projectId: this.project }, '/searchUser');
+        this.projectService.patchState({ projectId: this.project }, '/searchProject');
       }
     }
   }
@@ -332,7 +337,7 @@ export class ProjectListComponent
       this.getDepartment();
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
       this.projectService.setDefaults();
-      this.projectService.patchState({}, '/searchUser');
+      this.projectService.patchState({}, '/searchProject');
       this.grouping = this.projectService.grouping;
       this.paginator = this.projectService.paginator;
       this.sorting = this.projectService.sorting;
