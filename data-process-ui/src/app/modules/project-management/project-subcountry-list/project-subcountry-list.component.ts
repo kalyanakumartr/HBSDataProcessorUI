@@ -34,7 +34,7 @@ export class ProjectSubcountryListComponent implements OnInit {
   showDepartment:boolean;
   isClearFilter:boolean;
   private subCountryList: Array<SubCountry> =[];
-  displayedColumns = [ 'country','countryName','priority','status'];
+  displayedColumns = [ 'countryName','priority','status'];
   dataSource = new MatTableDataSource<SubCountry>();
   constructor(private modalService:NgbModal,public projectService: ProjectService){
     this.projectList=[];
@@ -45,7 +45,13 @@ export class ProjectSubcountryListComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this.getDepartment();
+    if(this.showDivision){
+      this.getDepartment();
+      this.division="0: 0";
+      this.department="0: 0";
+    }
+    this.project="0: 0";
+
   }
   subCountry()
   {
@@ -125,10 +131,10 @@ export class ProjectSubcountryListComponent implements OnInit {
   getSubCountryList(){
     this.projectService.getProjectSubCountryList(this.project).pipe(
       tap((res: Array<SubCountry>) => {
-        this.subCountryList = res;
+        //this.subCountryList = res;
         this.dataSource = new MatTableDataSource(res);
         //this.useSubCountry();
-        console.log("subCountryList", this.subCountryList)
+        console.log("subCountryList", this.dataSource)
       }),
       catchError((err) => {
         console.log(err);

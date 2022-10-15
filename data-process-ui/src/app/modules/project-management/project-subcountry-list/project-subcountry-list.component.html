@@ -9,7 +9,7 @@
         &nbsp;&nbsp;
 
       </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <button type="button" class="btn btn-primary" (click)="projectAssignSubcountry()">Assign Subcountry to Project</button>&nbsp;&nbsp;&nbsp;&nbsp;
+
       <button type="button" class="btn btn-primary" (click)="subCountry()">Add SUBCOUNTRY LIST</button>
     </div>
   </div>
@@ -63,7 +63,8 @@
 
       </div>
       <div  class="col-lg-3">
-
+        <label>&nbsp;</label><br/>
+        <button type="button" class="btn btn-primary" (click)="projectAssignSubcountry()">Assign Subcountry to Project</button>
       </div>
       <div class="col-lg-2" >
 
@@ -82,10 +83,7 @@
 
 
       <!-- Position Column -->
-      <ng-container matColumnDef="country">
-        <mat-header-cell style="justify-content:left" *matHeaderCellDef mat-sort-header> Country Id </mat-header-cell>
-        <mat-cell style="justify-content:left" *matCellDef="let element"> {{element.country}} </mat-cell>
-      </ng-container>
+
       <!-- Name Column -->
       <ng-container matColumnDef="countryName">
         <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Country Name </mat-header-cell>
