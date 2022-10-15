@@ -20,7 +20,7 @@ export class ProjectAssignSubcountryComponent implements OnInit {
   keepSorted = true;
   key: string;
   display: string;
-  filter = true;
+  filter = false;
   source: Array<SubCountry>=[];
   confirmed: Array<SubCountry>=[];
   userAdd = '';

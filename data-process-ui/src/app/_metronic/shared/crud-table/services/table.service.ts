@@ -324,6 +324,8 @@ export abstract class TableService<T> {
       url = this.API_URL + path;//'/searchUser';
     }else if(serverType == 'Report'){
       url = this.REPORT_API_URL + path;//'/searchUser';
+    }else if(serverType == 'Project'){
+      url = this.VIEW_API_URL + path;//'/searchUser';
     }
 
     this._errorMessage.next('');

@@ -94,7 +94,7 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
   }
   getProjectList(division){
 
-    const url = this.API_URL + "/getProjectList"+"/"+division;
+    const url = this.VIEW_API_URL + "/getProjectList"+"/"+division;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
