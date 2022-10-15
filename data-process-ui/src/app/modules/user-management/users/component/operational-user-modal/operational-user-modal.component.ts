@@ -182,7 +182,32 @@ const EMPTY_CUSTOMER: UserModel = {
     },
     project:{
       projectId: '',
-      projectName: ''
+      projectName: '',
+      projectDetail:{
+        actualCompletedDate:'',
+        billingCycle:'',
+        bpsPlannedCompletionDate:'',
+        bpsStartDate:'',
+        clientExpectedCompletionDate:'',
+        clientName:'',
+        deliverables:'',
+        displayInOtherUIProjectList:'',
+        estimatedTotalHours:'',
+        inputReceivingMode:'',
+        inputType:'',
+        modeOfDelivery:'',
+        noOfDaysRequiredToComplete:'',
+        plannedNoOfResources:'',
+        poDated:'',
+        poNumber:'',
+        projectStatus:'',
+        projectType:'',
+        receivedWorkVolume:'',
+        totalProjectedWorkVolume:'',
+        unitsOfMeasurement:'',
+        projectmanagerName:''
+      }
+
     },
     trainingBatch:'',
     reportingTo:'',

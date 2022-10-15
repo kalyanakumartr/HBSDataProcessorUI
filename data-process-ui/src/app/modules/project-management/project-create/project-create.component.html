@@ -1,0 +1,404 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <b><label class="heading">
+      <ng-container >
+        <ng-container *ngIf="projectId">Edit Project : {{projectId}} </ng-container>
+        <ng-container *ngIf="!projectId">Create  Project  </ng-container>
+     </ng-container>
+    </label></b>
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="customer">
+      <form action="#" class="form form-label-right" [formGroup]="formGroup">
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label"> Project ID</label>
+            <ng-container *ngIf="customer.userId">
+              <input type="text" class="form-control form-control-lg form-control-solid" name="projectId" readonly
+              placeholder="Project ID" autocomplete="off" [class.is-invalid]="isControlInvalid('projectId')" maxlength=20
+              [class.is-valid]="isControlValid('projectId')" formControlName="projectId" />
+               </ng-container>
+               <ng-container *ngIf="!customer.id">
+            <input type="text" class="form-control form-control-lg form-control-solid" name="projectId"
+              placeholder="Project ID" autocomplete="off" [class.is-invalid]="isControlInvalid('projectId')" maxlength=20
+              [class.is-valid]="isControlValid('projectId')" formControlName="projectId" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'projectId')">Project Id is required</div>
+          </ng-container>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Client Name</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="clientName"
+              placeholder="Client Name" autocomplete="off" [class.is-invalid]="isControlInvalid('clientName')" maxlength=50
+              [class.is-valid]="isControlValid('clientName')" formControlName="clientName" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'clientName')">Client Name is required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'clientName')">Client Name should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'clientName')">Client Name should have
+              maximum 50 characters</div>
+          </div>
+
+          <div class="col-lg-3">
+            <label class="form-label">Project Name</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="projectName"
+              placeholder="Project Name" autocomplete="off" [class.is-invalid]="isControlInvalid('projectName')" maxlength=50
+              [class.is-valid]="isControlValid('projectName')" formControlName="projectName" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'projectName')">Project Name is required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'projectName')">Project Name should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'projectName')">Project Name should have
+              maximum 50 characters</div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label">Project Type</label>
+            <select class="form-control form-control-lg form-control-solid" name="projectType"
+              [class.is-invalid]="isControlInvalid('projectType')" formControlName="projectType">
+              <option value="Radha">Radha</option>
+              <option value="Tamil">Tamil</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="form-group row">
+
+          <div class="col-lg-3">
+            <label class="form-label">Project Manager Name</label>
+            <select class="form-control form-control-lg form-control-solid" name="projectmanagerName"
+              [class.is-invalid]="isControlInvalid('projectmanagerName')" formControlName="projectmanagerName">
+              <option value="Radha">Radha</option>
+              <option value="Tamil">Tamil</option>
+            </select>
+            </div>
+
+          <div class="col-lg-3">
+            <label>Project Created Date</label>
+            <div class="input-group input-group-solid">
+              <input type="text" name="projectcdate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                placeholder="mm/dd/yyyy" ngbDatepicker [maxDate]="maxDate" #d1="ngbDatepicker" [class.is-invalid]="isControlInvalid('projectcdate')"
+                [class.is-valid]="isControlValid('projectcdate')" formControlName="projectcdate" readonly="true" /> {{formGroup.value.projectcdate | date: 'dd-MMM-yyyy'}}
+              <div class="input-group-append" (click)="d1.toggle()">
+                <span class="input-group-text">
+                  <i class="text-dark-50 flaticon-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <div class="valid-feedback" *ngIf="isControlValid('projectcdate')">Pls Enter Correct Date</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'projectcdate')">Please enter <b>Project Create Date </b>
+              in 'mm/dd/yyyy' format</div>
+          </div>
+          <div class="col-lg-3">
+
+            <label class="form-label">PO Number</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="poNumber"
+              placeholder="PO Number" autocomplete="off" [class.is-invalid]="isControlInvalid('poNumber')" maxlength=50
+              [class.is-valid]="isControlValid('poNumber')" formControlName="poNumber" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'poNumber')">PO Number is required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'poNumber')">PO Number should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'poNumber')">PO Number should have
+              maximum 50 characters</div>
+          </div>
+
+          <div class="col-lg-3">
+            <label>PO Dated</label>
+            <div class="input-group input-group-solid">
+              <input type="text" name="podate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                placeholder="mm/dd/yyyy" ngbDatepicker [maxDate]="maxDate" #d2="ngbDatepicker" [class.is-invalid]="isControlInvalid('podate')"
+                [class.is-valid]="isControlValid('podate')" formControlName="podate" readonly="true" /> {{formGroup.value.podate | date: 'dd-MMM-yyyy'}}
+               <div class="input-group-append" (click)="d2.toggle()">
+                <span class="input-group-text">
+                  <i class="text-dark-50 flaticon-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <div class="valid-feedback" *ngIf="isControlValid('podate')">Pls Enter PO Date</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'podate')">Please enter <b>PO Date </b>
+              in 'mm/dd/yyyy' format</div>
+          </div>
+
+          </div>
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label>Billing Cycle</label>
+            <div class="input-group input-group-solid">
+              <input type="text" name="bcycle" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                placeholder="mm/dd/yyyy" ngbDatepicker [maxDate]="maxDate" #d3="ngbDatepicker" [class.is-invalid]="isControlInvalid('projectcdate')"
+                [class.is-valid]="isControlValid('bcycle')" formControlName="bcycle" readonly="true" /> {{formGroup.value.dob | date: 'dd-MMM-yyyy'}}
+              <div class="input-group-append" (click)="d3.toggle()">
+                <span class="input-group-text">
+                  <i class="text-dark-50 flaticon-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <div class="valid-feedback" *ngIf="isControlValid('bcycle')">Pls Enter Correct Date</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'bcycle')">Please enter <b>Billing Cycle Date </b>
+              in 'mm/dd/yyyy' format</div>
+          </div>
+
+
+          <div class="col-lg-3">
+            <label class="form-label">Project Status</label>
+            <select class="form-control form-control-lg form-control-solid" name="projectStatus"
+              [class.is-invalid]="isControlInvalid('projectStatus')" formControlName="projectStatus" placeholder="Project Status">
+              <option value="Yet to Start">Yet to Start</option>
+              <option value="in-progress">in-progress</option>
+              <option value="On Hold">On Hold</option>
+              <option value="Completed">Completed</option>
+
+            </select>
+            <div class="feedback">Project  <b>Status</b></div>
+            </div>
+
+            <div class="col-lg-3">
+              <label class="form-label">Deliverables</label>
+
+            <select class="form-control form-control-lg form-control-solid" name="deliverables"
+            [class.is-invalid]="isControlInvalid('deliverables')" formControlName="deliverables" placeholder="Deliverables">
+            <option value="Workunits-in-DB">Workunits in DB</option>
+            <option value="shapefiles">Shapefiles</option>
+            <option value="Excels">Excels</option>
+
+
+          </select>
+          <div class="feedback"><b>Deliverables</b></div>
+
+              </div>
+
+            <div class="col-lg-3">
+              <label class="form-label">Mode of Delivery</label>
+
+              <select class="form-control form-control-lg form-control-solid" name="moDelivery"
+              [class.is-invalid]="isControlInvalid('moDelivery')" formControlName="moDelivery" placeholder="Mode of Delivery">
+              <option value="ftp">FTP</option>
+              <option value="email">Email</option>
+              <option value="Hard-disk">Hard disk</option>
+              <option value="direct-client-server">Direct Client Server</option>
+
+
+            </select>
+            <div class="feedback">Mode of<b> Delivery</b></div>
+              </div>
+
+        </div>
+        <div class="form-group row">
+
+          <div class="col-lg-3">
+            <label class="form-label">Input Receiving Mode</label>
+
+            <select class="form-control form-control-lg form-control-solid" name="irMode"
+            [class.is-invalid]="isControlInvalid('irMode')" formControlName="moDelivery" placeholder="Input Receiving Mode">
+            <option value="ftp">FTP</option>
+            <option value="email">Email</option>
+            <option value="Hard-disk">Hard disk</option>
+            <option value="direct-client-server">Direct Client Server</option>
+
+
+          </select>
+          <div class="feedback">Input Receiving<b> Mode</b></div>
+        </div>
+
+          <div class="col-lg-3">
+            <label class="form-label">Input Type</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="inputType"
+              placeholder="Input Type" autocomplete="off" [class.is-invalid]="isControlInvalid('inputType')" maxlength=50
+              [class.is-valid]="isControlValid('inputType')" formControlName="inputType" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'inputType')">Input Type required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'inputType')">Input Type should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'inputType')">Input Type should have
+              maximum 50 characters</div>
+          </div>
+
+          <div class="col-lg-3">
+            <label>Display in Other UI Project List </label>
+            <select class="form-control form-control-lg form-control-solid" name="displayInOP"
+              [class.is-invalid]="isControlInvalid('displayInOP')" formControlName="displayInOP">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+
+            </select>
+            <div class="feedback">Display in Other UI <b>Project List</b></div>
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label"> Total Projected work volume</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="tpwvol" maxlength=15
+              placeholder="TPW VOLUME" autocomplete="off" [class.is-invalid]="isControlInvalid('tpwvol')"
+              [class.is-valid]="isControlValid('tpwvol')" formControlName="tpwvol" />
+            <!-- <div class="valid-feedback" *ngIf="isControlValid('tpwvol')">Cost To Company was entered correct</div>-->
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'tpwvol')">TPW Volume is required</div>
+          </div>
+
+        </div>
+
+        <div class="form-group row">
+
+          <div class="col-lg-3">
+            <label class="form-label">Units of Measurement (UOM)</label>
+            <select class="form-control form-control-lg form-control-solid" name="uom"
+              [class.is-invalid]="isControlInvalid('uom')" formControlName="uom" placeholder="Units of Measurement">
+              <option value="Miles">Miles</option>
+              <option value="Km">Km</option>
+              <option value="Sq.Mile">Sq.Mile</option>
+              <option value="Sq.Km">Sq.Km</option>
+              <option value="Locations">Locations</option>
+              <option value="Signs">Signs</option>
+
+            </select>
+            <div class="feedback">Units of <b>Measurement</b></div>
+            </div>
+
+
+          <div class="col-lg-3">
+            <label class="form-label">Received Work Volume</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="rwVol"
+              placeholder="R W Volume" autocomplete="off" [class.is-invalid]="isControlInvalid('rwVol')" maxlength=50
+              [class.is-valid]="isControlValid('rwVol')" formControlName="rwVol" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'rwVol')">R W Volume required</div>
+            <!-- <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'rwVol')">R W Volume should have at
+              least 3 symbols</div>-->
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'rwVol')">R W Volume should have
+              maximum 50 characters</div>
+          </div>
+
+          <div class="col-lg-3">
+
+            <label class="form-label">Estimated Total Hours</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="etHours" placeholder="Estimated Total Hours"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('etHours')" maxlength=15
+              [class.is-valid]="isControlValid('etHours')" formControlName="etHours" />
+              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'etHours')">Estimated Total Hours should have at
+                least 10 symbols</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'etHours')">Estimated Total Hours should not be morethan 13 symbols</div>
+
+
+          </div>
+
+
+          <div class="col-lg-3">
+
+            <label class="form-label">Planned No. of Resources</label>
+            <input type="text" class="form-control form-control-lg form-control-solid" name="etHours" placeholder="Planned No. of Resources"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('resoueces')" maxlength=15
+              [class.is-valid]="isControlValid('etHours')" formControlName="resoueces" />
+              <!--<div class="invalid-feedback" *ngIf="controlHasError('minlength', 'resoueces')">Planned No. of Resources should have at
+                least 10 symbols</div>-->
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'resoueces')">Planned No. of Resources should not be morethan 13 symbols</div>
+
+
+          </div>
+
+
+        </div>
+          <div class="form-group row">
+
+            <div class="col-lg-3">
+
+              <label class="form-label">No of Days Requried to complete</label>
+              <input type="text" class="form-control form-control-lg form-control-solid" name="noDays" placeholder="No of Days Requried to complete"
+                autocomplete="off" [class.is-invalid]="isControlInvalid('noDays')" maxlength=15
+                [class.is-valid]="isControlValid('noDays')" formControlName="noDays" />
+                <!--<div class="invalid-feedback" *ngIf="controlHasError('minlength', 'resoueces')">Planned No. of Resources should have at
+                  least 10 symbols</div>-->
+                <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'noDays')">Planned No. of Resources should not be morethan 13 symbols</div>
+
+
+            </div>
+
+
+            <div class="col-lg-3">
+              <label>BPS Start Date</label>
+              <div class="input-group input-group-solid">
+                <input type="text" name="bpsDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                  placeholder="mm/dd/yyyy" ngbDatepicker [maxDate]="maxDate" #d4="ngbDatepicker" [class.is-invalid]="isControlInvalid('bpsDate')"
+                  [class.is-valid]="isControlValid('bpsDate')" formControlName="bpsDate" readonly="true" /> {{formGroup.value.dob | date: 'dd-MMM-yyyy'}}
+                <div class="input-group-append" (click)="d4.toggle()">
+                  <span class="input-group-text">
+                    <i class="text-dark-50 flaticon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+              <!-- <div class="valid-feedback" *ngIf="isControlValid('bcycle')">Pls Enter Correct Date</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'bcycle')">Please enter <b>Billing Cycle Date </b>
+                in 'mm/dd/yyyy' format</div>-->
+            </div>
+
+
+          <div class="col-lg-3">
+            <label>BPS Planned Completion Date</label>
+            <div class="input-group input-group-solid">
+              <input type="text" name="bpscDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                placeholder="mm/dd/yyyy" ngbDatepicker [maxDate]="maxDate" #d5="ngbDatepicker" [class.is-invalid]="isControlInvalid('bpscDate')"
+                [class.is-valid]="isControlValid('bpscDate')" formControlName="bpscDate" readonly="true" /> {{formGroup.value.bpscDate | date: 'dd-MMM-yyyy'}}
+              <div class="input-group-append" (click)="d5.toggle()">
+                <span class="input-group-text">
+                  <i class="text-dark-50 flaticon-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <div class="valid-feedback" *ngIf="isControlValid('bpscDate')">BPS Planned Completion Date</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'bpscDate')">BPS Planned  <b>Completion Date </b>
+              in 'mm/dd/yyyy' format</div>
+          </div>
+
+
+          <div class="col-lg-3">
+            <label>Client Expected Completion Date</label>
+            <div class="input-group input-group-solid">
+              <input type="text" name="cecDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                placeholder="mm/dd/yyyy" ngbDatepicker [maxDate]="maxDate" #d6="ngbDatepicker" [class.is-invalid]="isControlInvalid('cecDate')"
+                [class.is-valid]="isControlValid('cecDate')" formControlName="cecDate" readonly="true" /> {{formGroup.value.dob | date: 'dd-MMM-yyyy'}}
+              <div class="input-group-append" (click)="d6.toggle()">
+                <span class="input-group-text">
+                  <i class="text-dark-50 flaticon-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <div class="valid-feedback" *ngIf="isControlValid('cecDate')">Pls Enter Client Expected Completion Date</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'cecDate')">Please enter <b>Client Expected Completion Date </b>
+              in 'mm/dd/yyyy' format</div>
+          </div>
+          </div>
+          <div class="form-group row">
+          <div class="col-lg-3">
+            <label>Project - Actual Completed Date</label>
+            <div class="input-group input-group-solid">
+              <input type="text" name="pacDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
+                placeholder="mm/dd/yyyy" ngbDatepicker [maxDate]="maxDate" #d7="ngbDatepicker" [class.is-invalid]="isControlInvalid('pacDate')"
+                [class.is-valid]="isControlValid('bcycle')" formControlName="bcycle" readonly="true" /> {{formGroup.value.pacDate | date: 'dd-MMM-yyyy'}}
+              <div class="input-group-append" (click)="d7.toggle()">
+                <span class="input-group-text">
+                  <i class="text-dark-50 flaticon-calendar"></i>
+                </span>
+              </div>
+            </div>
+            <div class="valid-feedback" *ngIf="isControlValid('pacDate')">Pls Enter Correct Date</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('pacDate', 'bcycle')">Please enter <b>Billing Cycle Date </b>
+              in 'mm/dd/yyyy' format</div>
+          </div>
+
+
+
+        </div>
+      </form>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+    <ng-container *ngIf="customer">
+
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+        >Save</button>
+    </ng-container>
+  </div>
+</div>
+
+

@@ -21,6 +21,10 @@ export class SortStateLeave implements ISortState {
   column = 'createdDate'; // Id by default
   direction: SortDirection = 'desc'; // asc by default;
 }
+export class SortStateProject implements ISortState {
+  column = 'projectDetail.modifiedDate'; // Id by default
+  direction: SortDirection = 'desc'; // asc by default;
+}
 export interface ISortView {
   sorting: SortState;
   ngOnInit(): void;

@@ -40,6 +40,14 @@ export const locale = {
       HROPERATIONS:'HR Operations',
       OPERATIONALOPERATIONS:'Operational Employees',
       ITOPERATIONS:'IT Operations',
+      PROJECTMANAGEMENT:'Project Management',
+      PROJECTLIST:'Project List',
+      PROJECTROADTYPELIST:'Project Road Type List',
+      PROJECTSUBCOUNTRYLIST:'Project SubCountry List',
+      CHANGEPASSWORD:'Change Password',
+      PASSWORDUPDATE:'Password Update',
+      TASKLIST:'Task Creation List',
+      PROJECTTEMPLATE:'Project Template',
       ROLES:'Roles',
       'SKILLSET MATRIX':'SkillSet Matrix'
 
