@@ -12,6 +12,7 @@ import { AuthModel } from 'src/app/modules/auth/_models/auth.model';
 import { LeaveModel } from 'src/app/modules/leave-management-system/modal/leave.model';
 import { AttendanceModel } from 'src/app/modules/attendance/modal/attendance.model';
 import { TimeSheetModel } from 'src/app/modules/attendance/modal/timesheet.model';
+import { Project } from 'src/app/modules/auth/_models/project.model';
 
 const DEFAULT_STATE: ITableState = {
   filter: {},
@@ -119,19 +120,32 @@ export abstract class TableService<T> {
   // CREATE
   // server should return the object with ID
   create(item: BaseModel,path: string, formUser:string): Observable<any> {
+
     this._isLoading$.next(true);
     this._errorMessage.next('');
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post<BaseModel>(this.API_URL+path, {formUser: item},{headers: httpHeaders}).pipe(
-      catchError(err => {
-        this._errorMessage.next(err);
-        console.error('CREATE ITEM', err);
-        return of({ id: undefined });
-      }),
-      finalize(() => this._isLoading$.next(false))
-    );
+    if(path.endsWith("Project")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formProject: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('CREATE ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }else{
+      return this.http.post<BaseModel>(this.API_URL+path, {formUser: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('CREATE ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }
+
   }
 
   // READ (Returning filtered list of entities)
@@ -158,10 +172,13 @@ export abstract class TableService<T> {
     );
   }
 
-  getItemById(id: string): Observable<BaseModel> {
+  getItemById(id: string, c?: string): Observable<BaseModel> {
     this._isLoading$.next(true);
-    this._errorMessage.next('');
-    const url = `${this.API_URL}/${id}`;
+
+    var url = `${this.API_URL}/${id}`;
+    if (typeof c !== 'undefined') {
+      url = `${this.VIEW_API_URL}/getProject/${id}`;
+    }
     return this.http.get<BaseModel>(url).pipe(
       catchError(err => {
         this._errorMessage.next(err);
@@ -174,20 +191,35 @@ export abstract class TableService<T> {
 
   // UPDATE
   update(item: BaseModel,path: string, formUser:string): Observable<any> {
-    const url = `${this.API_URL}/${item.id}`;
+    var url = `${this.API_URL}`;
+    if(path.endsWith("Project")){
+      url = `${this.VIEW_API_URL}`;
+    }
     this._isLoading$.next(true);
     this._errorMessage.next('');
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post<BaseModel>(this.API_URL+path, {formUser: item},{headers: httpHeaders}).pipe(
-      catchError(err => {
-        this._errorMessage.next(err);
-        console.error('Update ITEM', err);
-        return of({ id: undefined });
-      }),
-      finalize(() => this._isLoading$.next(false))
-    );
+    if(path.endsWith("Project")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formProject: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('Update ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }else{
+      return this.http.post<BaseModel>(this.API_URL+path, {formUser: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('Update ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }
+
   }
 
   // UPDATE Status

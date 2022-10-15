@@ -17,22 +17,21 @@
       </div>
     </ng-container>
 
-    <ng-container *ngIf="customer">
+    <ng-container >
       <form action="#" class="form form-label-right" [formGroup]="formGroup">
         <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label"> Project ID</label>
-            <ng-container *ngIf="customer.userId">
+            <ng-container *ngIf="projectId">
               <input type="text" class="form-control form-control-lg form-control-solid" name="projectId" readonly
               placeholder="Project ID" autocomplete="off" [class.is-invalid]="isControlInvalid('projectId')" maxlength=20
               [class.is-valid]="isControlValid('projectId')" formControlName="projectId" />
-               </ng-container>
-               <ng-container *ngIf="!customer.id">
-            <input type="text" class="form-control form-control-lg form-control-solid" name="projectId"
-              placeholder="Project ID" autocomplete="off" [class.is-invalid]="isControlInvalid('projectId')" maxlength=20
-              [class.is-valid]="isControlValid('projectId')" formControlName="projectId" />
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'projectId')">Project Id is required</div>
-          </ng-container>
+            </ng-container>
+              <ng-container *ngIf="!projectId">
+                <input type="text" class="form-control form-control-lg form-control-solid" name="projectId"
+                placeholder="Project ID" autocomplete="off" [class.is-invalid]="isControlInvalid('projectId')" maxlength=20
+                [class.is-valid]="isControlValid('projectId')" formControlName="projectId" />
+              </ng-container>
           </div>
           <div class="col-lg-3">
             <label class="form-label">Client Name</label>
@@ -393,11 +392,11 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
-    <ng-container *ngIf="customer">
+
 
       <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
         >Save</button>
-    </ng-container>
+
   </div>
 </div>
 

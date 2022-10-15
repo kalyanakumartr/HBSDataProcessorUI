@@ -21,4 +21,5 @@ export class ProjectDetails{
       totalProjectedWorkVolume!:string;
       unitsOfMeasurement!:string;
       projectmanagerName!:string;
+      createdDate!:string;
   }

@@ -183,6 +183,7 @@ const EMPTY_CUSTOMER: UserModel = {
       departmentName: ''
     },
     project:{
+      id: '',
       projectId: '',
       projectName: '',
       projectDetail:{
@@ -207,7 +208,8 @@ const EMPTY_CUSTOMER: UserModel = {
         receivedWorkVolume:'',
         totalProjectedWorkVolume:'',
         unitsOfMeasurement:'',
-        projectmanagerName:''
+        projectmanagerName:'',
+        createdDate:''
       }
     },
     trainingBatch:'',

@@ -106,6 +106,14 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
       })
     );
   }
+  getProjectById(id: string): Observable<Project> {
+
+    const url =`${this.VIEW_API_URL}/getProject/${id}`;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<Project>(url, {  },{ headers: httpHeaders, });
+  }
 
   getGroupList(division){
 
