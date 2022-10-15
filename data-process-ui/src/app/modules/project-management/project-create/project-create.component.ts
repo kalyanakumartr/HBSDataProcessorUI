@@ -79,7 +79,7 @@ export class ProjectCreateComponent implements OnInit {
       projectmanagerName: new FormControl(),
       projectcdate: new FormControl(),
       poNumber: new FormControl(),
-      podate: new FormControl(),
+      poDate: new FormControl(),
       bcycle: new FormControl(),
       projectStatus: new FormControl(),
       deliverables: new FormControl(),
@@ -117,9 +117,9 @@ export class ProjectCreateComponent implements OnInit {
   }
 
   save() {
-    var invalid = this.findInvalidControls();
+    /*var invalid = this.findInvalidControls();
     var isValid = invalid.length>0?false:true;
-    if(isValid){
+    if(isValid){*/
       if (this.projectId) {
         this.prepareProject("Edit");
         this.edit();
@@ -127,9 +127,9 @@ export class ProjectCreateComponent implements OnInit {
         this.prepareProject("Create");
         this.create();
       }
-    }else{
+    /*}else{
       alert("Please add valid values for "+invalid);
-    }
+    }*/
   }
 
   edit() {
@@ -178,7 +178,7 @@ export class ProjectCreateComponent implements OnInit {
     this.project.projectDetail.createdDate= formData.projectcdate; //projectCreatedDates
 
     this.project.projectDetail.poNumber = formData.poNumber;
-    this.project.projectDetail.poDated = formData.podate;
+    this.project.projectDetail.poDated = formData.poDate;
     this.project.projectDetail.billingCycle = formData.bcycle;
     this.project.projectDetail.projectStatus = formData.projectStatus;
     this.project.projectDetail.deliverables = formData.deliverables;
@@ -202,8 +202,6 @@ export class ProjectCreateComponent implements OnInit {
 
     if(createEdit == "Edit"){
       this.project.projectId=this.projectId;
-    }else{
-    this.project.projectDetail=null;
     }
 
 
@@ -216,9 +214,9 @@ export class ProjectCreateComponent implements OnInit {
       projectType: [this.project.projectDetail.projectType, Validators.compose([])],
 
       projectmanagerName: [this.project.projectDetail.projectmanagerName, Validators.compose([Validators.nullValidator])],
-      projectcdate: [this.project.projectDetail.createdDate, Validators.compose([])],
+      projectcdate: [this.project.projectDetail.createdDate,Validators.compose([Validators.nullValidator])],
       poNumber: [this.project.projectDetail.poNumber, Validators.compose([])],
-      poDated: [this.project.projectDetail.poDated, Validators.compose([])],
+      poDate: [this.project.projectDetail.poDated, Validators.compose([Validators.nullValidator])],
 
       bcycle: [this.project.projectDetail.billingCycle, Validators.compose([])],
       projectStatus: [this.project.projectDetail.projectStatus, Validators.compose([])],
@@ -233,10 +231,10 @@ export class ProjectCreateComponent implements OnInit {
       etHours: [this.project.projectDetail.estimatedTotalHours, Validators.compose([])],
       resoueces: [this.project.projectDetail.plannedNoOfResources, Validators.compose([])],
       noDays: [this.project.projectDetail.noOfDaysRequiredToComplete, Validators.compose([])],
-      bpsDate: [this.project.projectDetail.bpsStartDate, Validators.compose([])],
-      bpscDate: [this.project.projectDetail.bpsPlannedCompletionDate, Validators.compose([])],
-      cecDate: [this.project.projectDetail.clientExpectedCompletionDate, Validators.compose([])],
-      pacDate: [this.project.projectDetail.actualCompletedDate, Validators.compose([])],
+      bpsDate: [this.project.projectDetail.bpsStartDate, Validators.compose([Validators.nullValidator])],
+      bpscDate: [this.project.projectDetail.bpsPlannedCompletionDate, Validators.compose([Validators.nullValidator])],
+      cecDate: [this.project.projectDetail.clientExpectedCompletionDate, Validators.compose([Validators.nullValidator])],
+      pacDate: [this.project.projectDetail.actualCompletedDate, Validators.compose([Validators.nullValidator])],
 
 
 
