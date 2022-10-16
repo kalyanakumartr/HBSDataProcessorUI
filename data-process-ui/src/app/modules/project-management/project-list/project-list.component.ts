@@ -53,16 +53,20 @@ export class ProjectListComponent
   isLoading: boolean;
   filterGroup: FormGroup;
   searchGroup: FormGroup;
+  departmentList:any[];
+  department:any;
+  divisionList:any[];
+  division:any;
+  projectList:any[];
+  project:any;
+  departmentName:string;
+  divisionName:string;
+  showDivision:boolean;
+  showDepartment:boolean;
+  isClearFilter:boolean;
+
   userList: any;
   sel: string;
-  departmentList: any[];
-  department: any;
-  divisionList: any[];
-  division: any;
-  projectList: any[];
-  project: any;
-  isClearFilter: boolean;
-
   private subscriptions: Subscription[] = [];
   constructor(
     private fb: FormBuilder,
@@ -74,17 +78,24 @@ export class ProjectListComponent
       console.log('m -- -- --', m);
       this.filter();
     });
-    this.projectList = [];
-    this.divisionList = [];
     this.sel = '0';
-    this.isClearFilter = false;
+    this.projectList=[];
+    this.divisionList=[];
+    this.isClearFilter=false;
+    this.showDivision=true;
+    this.showDepartment=true;
   }
 
 
   ngOnInit(): void {
     //this.filterForm();
     this.searchForm();
-
+    if(this.showDivision){
+      this.getDepartment();
+      this.division="0: 0";
+      this.department="0: 0";
+    }
+    this.project="0: 0";
     this.projectService.fetch('/searchProject');
     console.log('UserList :', this.subscriptions);
     this.grouping = this.projectService.grouping;
@@ -96,11 +107,9 @@ export class ProjectListComponent
     );
     this.subscriptions.push(sb);
     this.getDepartment();
-    /* setTimeout(() => {
-      this.division="0";
+     setTimeout(() => {
       this.department="0: 0";
-      this.project="0";
-    }, 5000);*/
+    }, 5000);
   }
   ngAfterViewInit() {}
 
@@ -185,20 +194,25 @@ export class ProjectListComponent
     throw new Error('Method not implemented.');
   }
   create() {
-    this.addProject(undefined,undefined);
+    if(this.division){
+      this.addProject(undefined,undefined,this.division);
+    }else{
+      alert("Please Select Divison");
+    }
   }
 
   editProject(projectId: string, projectName:string): void {
-    this.addProject(projectId,projectName);
+    this.addProject(projectId,projectName,this.division);
 
   }
 
-  addProject(projectId: string, projectName:string) {
+  addProject(projectId: string, projectName:string,divisionId:string) {
     const modalRef = this.modalService.open(ProjectCreateComponent, {
       size: 'xl',
     });
     modalRef.componentInstance.projectId = projectId;
     modalRef.componentInstance.projectName = projectName;
+    modalRef.componentInstance.divisionId = divisionId;
   }
 
   delete(id: number) {
@@ -277,9 +291,7 @@ export class ProjectListComponent
         tap((res: any) => {
           this.divisionList = res;
           console.log('divisionList', this.divisionList);
-          setTimeout(() => {
-            this.division = '0: 0';
-          }, 2000);
+
         }),
         catchError((err) => {
           console.log(err);

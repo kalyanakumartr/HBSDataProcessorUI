@@ -3,11 +3,14 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   NgbActiveModal,
+  NgbDateAdapter,
+  NgbDateParserFormatter,
   NgbDatepickerConfig,
   NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, first, tap } from 'rxjs/operators';
+import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
 import { AuthService, UserModel } from '../../auth';
 import { Project } from '../../auth/_models/project.model';
 import { ProjectService } from '../../auth/_services/project.services';
@@ -15,6 +18,7 @@ const EMPTY_PROJECT: Project = {
   id: '',
   projectId: undefined,
   projectName: '',
+  divisionId: '',
   projectDetail: {
     actualCompletedDate:'',
     billingCycle:'',
@@ -46,10 +50,15 @@ const EMPTY_PROJECT: Project = {
   selector: 'app-project-create',
   templateUrl: './project-create.component.html',
   styleUrls: ['./project-create.component.scss'],
+  providers: [
+    {provide: NgbDateAdapter, useClass: CustomAdapter},
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
+  ]
 })
 export class ProjectCreateComponent implements OnInit {
   @Input() projectId: string;
   @Input() projectName: string;
+  @Input() divisionId: string;
   isLoading$;
   isAdminRole: boolean;
   customer: UserModel;
@@ -120,6 +129,9 @@ export class ProjectCreateComponent implements OnInit {
     /*var invalid = this.findInvalidControls();
     var isValid = invalid.length>0?false:true;
     if(isValid){*/
+    if(!this.project.divisionId){
+      this.project.divisionId=this.divisionId;
+    }
       if (this.projectId) {
         this.prepareProject("Edit");
         this.edit();
@@ -175,7 +187,7 @@ export class ProjectCreateComponent implements OnInit {
     this.project.projectDetail.clientName = formData.clientName;
     this.project.projectDetail.projectType = formData.projectType;
     this.project.projectDetail.projectmanagerName = formData.projectmanagerName;
-    this.project.projectDetail.createdDate= formData.projectcdate; //projectCreatedDates
+    //this.project.projectDetail.createdDate= formData.projectcdate; //projectCreatedDates
 
     this.project.projectDetail.poNumber = formData.poNumber;
     this.project.projectDetail.poDated = formData.poDate;

@@ -82,13 +82,9 @@
             <label>Project Created Date</label>
             <div class="input-group input-group-solid">
               <input type="text" name="projectcdate" class="form-control form-control-lg form-control-solid" autocomplete="off"
-                placeholder="mm/dd/yyyy" ngbDatepicker [maxDate]="maxDate" #d="ngbDatepicker" [class.is-invalid]="isControlInvalid('projectcdate')"
+                placeholder="mm/dd/yyyy" ngbDatepicker [maxDate]="maxDate"  [class.is-invalid]="isControlInvalid('projectcdate')"
                 [class.is-valid]="isControlValid('projectcdate')" formControlName="projectcdate" readonly="true" /> {{formGroup.value.projectcdate | date: 'dd-MMM-yyyy'}}
-              <div class="input-group-append" (click)="d.toggle()">
-                <span class="input-group-text">
-                  <i class="text-dark-50 flaticon-calendar"></i>
-                </span>
-              </div>
+
             </div>
             <div class="valid-feedback" *ngIf="isControlValid('projectcdate')">Date of Birth was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('required', 'projectcdate')">Please enter <b>Date of Birth</b>
