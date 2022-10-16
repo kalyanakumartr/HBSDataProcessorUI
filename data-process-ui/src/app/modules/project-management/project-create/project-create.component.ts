@@ -220,8 +220,8 @@ export class ProjectCreateComponent implements OnInit {
   }
   loadForm() {
     this.formGroup = this.fb.group({
-      projectId: [this.project.projectId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(50)])],
-      projectName: [this.project.projectName, Validators.compose([ Validators.minLength(1), Validators.maxLength(50)])],
+     // projectId: [this.project.projectId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(50)])],
+      projectName: [this.project.projectName, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)])],
       clientName: [this.project.projectDetail.clientName, Validators.compose([ ])],
       projectType: [this.project.projectDetail.projectType, Validators.compose([])],
 

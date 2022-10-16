@@ -201,18 +201,22 @@ export class ProjectListComponent
     }
   }
 
-  editProject(projectId: string, projectName:string): void {
-    this.addProject(projectId,projectName,this.division);
+  editProject(projectId: string, projectName:string, divisionId:string): void {
+    this.addProject(projectId,projectName,divisionId);
 
   }
 
   addProject(projectId: string, projectName:string,divisionId:string) {
-    const modalRef = this.modalService.open(ProjectCreateComponent, {
-      size: 'xl',
-    });
-    modalRef.componentInstance.projectId = projectId;
-    modalRef.componentInstance.projectName = projectName;
-    modalRef.componentInstance.divisionId = divisionId;
+    if(divisionId !="0: 0"){
+      const modalRef = this.modalService.open(ProjectCreateComponent, {
+        size: 'xl',
+      });
+      modalRef.componentInstance.projectId = projectId;
+      modalRef.componentInstance.projectName = projectName;
+      modalRef.componentInstance.divisionId = divisionId;
+  }else{
+    alert("please Select division")
+  }
   }
 
   delete(id: number) {

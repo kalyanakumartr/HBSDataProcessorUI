@@ -21,17 +21,11 @@
       <form action="#" class="form form-label-right" [formGroup]="formGroup">
         <div class="form-group row">
           <div class="col-lg-3">
-            <label class="form-label"> Project ID</label>
-            <ng-container *ngIf="projectId">
-              <input type="text" class="form-control form-control-lg form-control-solid" name="projectId" readonly
-              placeholder="Project ID" autocomplete="off" [class.is-invalid]="isControlInvalid('projectId')" maxlength=20
-              [class.is-valid]="isControlValid('projectId')" formControlName="projectId" />
-            </ng-container>
-              <ng-container *ngIf="!projectId">
-                <input type="text" class="form-control form-control-lg form-control-solid" name="projectId"
-                placeholder="Project ID" autocomplete="off" [class.is-invalid]="isControlInvalid('projectId')" maxlength=20
-                [class.is-valid]="isControlValid('projectId')" formControlName="projectId" />
-              </ng-container>
+            <label class="form-label"> Division</label>
+
+                <input type="text" class="form-control form-control-lg form-control-solid" name="division" value="{{divisionId}}"
+                 readonly/>
+
           </div>
           <div class="col-lg-3">
             <label class="form-label">Client Name</label>
@@ -143,9 +137,9 @@
             <label class="form-label">Project Status</label>
             <select class="form-control form-control-lg form-control-solid" name="projectStatus"
               [class.is-invalid]="isControlInvalid('projectStatus')" formControlName="projectStatus" placeholder="Project Status">
-              <option value="Yet to Start">Yet to Start</option>
-              <option value="in-progress">in-progress</option>
-              <option value="On Hold">On Hold</option>
+              <option selected value="YetToStart">Yet to Start</option>
+              <option value="InProgress">in-progress</option>
+              <option value="Hold">On Hold</option>
               <option value="Completed">Completed</option>
 
             </select>
