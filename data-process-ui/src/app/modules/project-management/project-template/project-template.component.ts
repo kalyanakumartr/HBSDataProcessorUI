@@ -31,7 +31,7 @@ export class ProjectTemplateComponent implements OnInit {
   showDivision:boolean;
   showDepartment:boolean;
   isClearFilter:boolean;
-  displayedColumns = [ 'countryName','priority','status'];
+  displayedColumns = [ 'projectName','projectId','templateUploadDate','Action'];
   dataSource = new MatTableDataSource<Project>();
   constructor(private modalService:NgbModal,public projectService: ProjectService){
     this.projectList=[];
@@ -50,13 +50,31 @@ export class ProjectTemplateComponent implements OnInit {
     this.project="0: 0";
 
   }
-  downloadTemplate()
+  downloadTemplate(projectId)
   {
-   // const modalRef = this.modalService.open(AddSubcountryComponent, { size: 'xl' });
+    alert(projectId);
+    this.projectService.exportExcel("/getProjectTemplate/"+projectId,"Project").subscribe(
+      responseObj => {
+        console.log("Project template download success", responseObj);
+        var downloadURL = window.URL.createObjectURL(responseObj);
+        var link = document.createElement('a');
+        link.href = downloadURL;
+        link.download = projectId +".xlsx";
+        link.click();
+      },
+      error => {
+        console.log("Project template download  error", error);
+
+
+      }
+    );
 
   }
 
-
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
   getDepartment(){
     this.projectService.getDepartmentList().pipe(
@@ -110,15 +128,9 @@ export class ProjectTemplateComponent implements OnInit {
         });
       })).subscribe();
   }
-  setProject(value){
-    var position =value.split(":")
-    if(position.length>1){
-      this.project= position[1].toString().trim();
-      this.getSubCountryList();
-    }
-  }
 
-  getSubCountryList(){
+
+  getProjectList(){
     /*this.projectService.getProjectSubCountryList(this.project).pipe(
       tap((res: Array<Project>) => {
         //this.subCountryList = res;
@@ -137,9 +149,13 @@ export class ProjectTemplateComponent implements OnInit {
     this.projectList=[];
     this.projectService.getProjectList(this.division).pipe(
       tap((res: any) => {
-        this.projectList = res;
+        this.dataSource = res;
         console.log("projectList", this.projectList);
         this.project="0: 0";
+        setTimeout(() => {
+          this.ngAfterViewInit();
+        }, 2000);
+
       }),
       catchError((err) => {
         console.log(err);
@@ -163,13 +179,9 @@ export class ProjectTemplateComponent implements OnInit {
         }
         this.getDepartment();
 
-        this.project="0: 0";
-        if(this.projectList.length>0){
-          this.projectList.splice(0, this.projectList.length);
-        }
 
       }else{
-        this.project="0: 0";
+
       }
 
       (<HTMLInputElement>document.getElementById("searchText")).value="";

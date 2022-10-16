@@ -8,9 +8,7 @@
       <div class="grid-item" style="cursor: pointer;">
         &nbsp;&nbsp;
 
-      </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-      <button type="button" class="btn btn-primary" (click)="downloadTemplate()">Download Template</button>
+      </div>&nbsp;
     </div>
   </div>
   <div class="card-body">
@@ -51,17 +49,6 @@
           <span>{{divisionName}}</span>
         </ng-container>
       </div>
-      <div class="col-lg-3">
-        <label>Project</label>
-        <select class="form-control form-control-lg form-control-solid" name="project"  [(ngModel)]="project"
-           formControlName="project" (change)="setProject($event.target.value)">
-           <option [ngValue]="0" [selected]=true>Select Project</option>
-          <option *ngFor="let project of projectList" [ngValue]="project.projectId">
-            {{ project.projectName }}
-          </option>
-        </select>
-
-      </div>
 
       <div class="col-lg-2" >
 
@@ -82,20 +69,27 @@
       <!-- Position Column -->
 
       <!-- Name Column -->
-      <ng-container matColumnDef="countryName">
-        <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Country Name </mat-header-cell>
-        <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.countryName}} </mat-cell>
+      <ng-container matColumnDef="projectName">
+        <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Project Name </mat-header-cell>
+        <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.projectName}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="priority">
-        <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Priority </mat-header-cell>
-        <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.priority}} </mat-cell>
+      <ng-container matColumnDef="projectId">
+        <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Client Name </mat-header-cell>
+        <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.projectId}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="status">
-        <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Display Status </mat-header-cell>
-        <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.status}} </mat-cell>
+      <ng-container matColumnDef="templateUploadDate">
+        <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Template Upload Date </mat-header-cell>
+        <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.templateUploadDate}} </mat-cell>
       </ng-container>
+      <ng-container matColumnDef="Action">
+        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell *matCellDef="let element"> <button type="button" class="btn btn-primary btn-elevate" (click)="downloadTemplate(element.projectId)" >Download</button> </mat-cell>
+      </ng-container>
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       </mat-table>
+      <mat-paginator #paginator     [pageSize]="5"     [pageSizeOptions]="[5, 10, 20]"    [showFirstLastButtons]="true">
+  </mat-paginator>
       </div>
 </div>
