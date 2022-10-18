@@ -133,7 +133,7 @@
         <tbody>
           <tr *ngFor="let project of projectService.items$ | async">
             <td>
-              <a title="Edit HR Employee" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              <a title="Edit Project" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
               (click)="editProject(project.projectId, project.projectName, project.divisionId )">
               <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
                 class="svg-icon svg-icon-md svg-icon-primary">
