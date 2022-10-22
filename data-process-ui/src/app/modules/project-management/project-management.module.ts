@@ -29,8 +29,9 @@ import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { NgModule } from '@angular/core';
 import { ProjectAssignSubcountryComponent } from './project-assign-subcountry/project-assign-subcountry.component';
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
+import { ProjectAssignRoadtypeComponent } from './project-assign-roadtype/project-assign-roadtype.component';
 @NgModule({
-  declarations: [ProjectCreateComponent, ProjectManagementComponent, RoadtypeCreateComponent, AddSubcountryComponent, ProjectTemplateComponent, ProjectListComponent, ProjectRoadtypeComponent, ProjectSubcountryListComponent, ProjectTaskListComponent, ProjectTaskCreateComponent, ProjectAssignSubcountryComponent],
+  declarations: [ProjectCreateComponent, ProjectManagementComponent, RoadtypeCreateComponent, AddSubcountryComponent, ProjectTemplateComponent, ProjectListComponent, ProjectRoadtypeComponent, ProjectSubcountryListComponent, ProjectTaskListComponent, ProjectTaskCreateComponent, ProjectAssignSubcountryComponent, ProjectAssignRoadtypeComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule,ProjectManagementRoutingModule,NgbModalModule, CommonModule,   HttpClientModule,
     CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatPaginatorModule, MatTableModule,MatSortModule, MatDividerModule, MatExpansionModule,MatDatepickerModule,MatNativeDateModule, MatFormFieldModule,MatInputModule,AngularDualListBoxModule],
   providers: [MatDatepickerModule, MatNativeDateModule],

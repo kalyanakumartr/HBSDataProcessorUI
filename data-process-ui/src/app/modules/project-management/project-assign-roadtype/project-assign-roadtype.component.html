@@ -1,0 +1,274 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <b><label class="heading">
+<!--         <ng-container >
+        <ng-container *ngIf="projectId">Edit Project : {{projectId}} </ng-container>-->
+        <ng-container >Create  Road Type  </ng-container>
+<!--     *ngIf="!projectId"   </ng-container>-->
+    </label></b>
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+
+  <ng-container >
+      <form action="#" class="form form-label-right" [formGroup]="formGroup">
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label"> Division</label>
+
+                 <input type="text" class="form-control form-control-lg form-control-solid" name="division" readonly/>
+                 <!-- value="{{divisionId}}"-->
+
+
+          </div>
+          <div class="col-lg-3">
+              <label class="form-label">Client Name</label>
+              <input type="text" class="form-control form-control-lg form-control-solid" name="clientName"
+                placeholder="Client Name" autocomplete="off" [class.is-invalid]="isControlInvalid('clientName')" maxlength=50
+                [class.is-valid]="isControlValid('clientName')" formControlName="clientName" />
+
+              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'clientName')">Client Name should have at
+                least 3 symbols</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'clientName')">Client Name should have
+                maximum 50 characters</div>
+            </div>
+
+            <div class="col-lg-3">
+              <label class="form-label">Project Name</label>
+              <input type="text" class="form-control form-control-lg form-control-solid" name="projectName"
+                placeholder="Project Name" autocomplete="off" [class.is-invalid]="isControlInvalid('projectName')" maxlength=50
+                [class.is-valid]="isControlValid('projectName')" formControlName="projectName" />
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'projectName')">Project Name is required</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'projectName')">Project Name should have at
+                least 3 symbols</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'projectName')">Project Name should have
+                maximum 50 characters</div>
+            </div>
+
+            <div class="col-lg-3">
+              <label class="form-label">Work Area ((Alias Road Type)</label>
+              <input type="text" class="form-control form-control-lg form-control-solid" name="workArea"
+                placeholder="Work Area" autocomplete="off" [class.is-invalid]="isControlInvalid('workArea')" maxlength=50
+                [class.is-valid]="isControlValid('workArea')" formControlName="workArea" />
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'workArea')">Work Area is required</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'workArea')">Work Area should have at
+                least 3 symbols</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'workArea')">Work Area should have
+                maximum 50 characters</div>
+            </div>
+
+
+
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-3">
+          <label class="form-label">Benchmark Time (Minutes)</label>
+          <input type="text" class="form-control form-control-lg form-control-solid" name="benchmarkTime"
+            placeholder="Benchmark Time" autocomplete="off" [class.is-invalid]="isControlInvalid('benchmarkTime')" maxlength=50
+            [class.is-valid]="isControlValid('benchmarkTime')" formControlName="benchmarkTime" />
+          <div class="invalid-feedback" *ngIf="controlHasError('required', 'benchmarkTime')">BenchmarkTime is required</div>
+          <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'benchmarkTime')">BenchmarkTime should have at
+            least 3 symbols</div>
+          <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'benchmarkTime')">BenchmarkTime should have
+            maximum 50 characters</div>
+        </div>
+
+
+        <div class="col-lg-3">
+          <label class="form-label">Tick for Multy Road Type</label>
+          <input type="text" class="form-control form-control-lg form-control-solid" name="tickMultyRoadType"
+            placeholder="TickMultyRoadType" autocomplete="off" [class.is-invalid]="isControlInvalid('tickMultyRoadType')" maxlength=50
+            [class.is-valid]="isControlValid('tickMultyRoadType')" formControlName="tickMultyRoadType" />
+          <div class="invalid-feedback" *ngIf="controlHasError('required', 'tickMultyRoadType')">Tick for Multy Road Type is required</div>
+          <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'tickMultyRoadType')">Tick for Multy Road Type  should have at
+            least 3 symbols</div>
+          <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'tickMultyRoadType')">Tick for Multy Road Type  should have
+            maximum 50 characters</div>
+            <!-- <mat-slide-toggle>Tick me!</mat-slide-toggle>    -->
+        </div>
+
+
+        <div class="col-lg-3">
+          <label class="form-label">Units</label>
+          <select class="form-control form-control-lg form-control-solid" name="units"
+            [class.is-invalid]="isControlInvalid('units')" formControlName="units" placeholder="units">
+            <option value="Mins">Mins</option>
+            <option value="Mile">Mile</option>
+
+          </select>
+          <div class="feedback">Units</div>
+          </div>
+
+          <div class="col-lg-3">
+            <label>Display Status </label>
+            <select class="form-control form-control-lg form-control-solid" name="dStatus"
+              [class.is-invalid]="isControlInvalid('dStatus')" formControlName="dStatus">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+
+            </select>
+            <div class="feedback">Display <b>Status</b></div>
+          </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-3">
+              <label class="form-label">
+          Production Benchmark (Auto)
+        </label>
+
+              <input type="text" class="form-control form-control-lg form-control-solid"
+        name="productionBenchmark" placeholder="Production Benchmark" autocomplete="off"
+        [class.is-invalid]="isControlInvalid('productionBenchmark')" maxlength=50
+            [class.is-valid]="isControlValid('productionBenchmark')" formControlName="productionBenchmark" />
+
+        <div class="invalid-feedback" *ngIf="controlHasError('required', 'productionBenchmark')">
+          Production Benchmark is required
+        </div>
+
+        <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'productionBenchmark')">
+          Production Benchmark should have at least 3 symbols
+        </div>
+
+        <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'productionBenchmark')">
+                     Production Benchmark should have maximum 50 characters
+        </div>
+      </div>
+
+
+      <div class="col-lg-3">
+              <label class="form-label">
+          QC Benchmark (Auto)
+        </label>
+
+              <input type="text" class="form-control form-control-lg form-control-solid"
+        name="qcBenchmark" placeholder="QC Benchmark" autocomplete="off"
+        [class.is-invalid]="isControlInvalid('qcBenchmark')" maxlength=50
+            [class.is-valid]="isControlValid('qcBenchmark')" formControlName="qcBenchmark" />
+
+        <div claxxss="invalid-feedback" *ngIf="controlHasError('required', 'qcBenchmark')">
+          QC Benchmark is required
+        </div>
+
+        <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'qcBenchmark')">
+          QC Benchmark should have at least 3 symbols
+        </div>
+
+        <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'qcBenchmark')">
+                     QC Benchmark should have maximum 50 characters
+        </div>
+      </div>
+
+
+
+      <div class="col-lg-3">
+              <label class="form-label">
+          Benchmark Updated Date
+        </label>
+
+              <input type="text" class="form-control form-control-lg form-control-solid"
+        name="benchmarkUpdatedDate" placeholder="Benchmark Updated Date" autocomplete="off"
+        [class.is-invalid]="isControlInvalid('benchmarkUpdatedDate')" maxlength=50
+            [class.is-valid]="isControlValid('benchmarkUpdatedDate')" formControlName="benchmarkUpdatedDate" />
+      </div>
+
+      <div class="col-lg-3">
+              <label class="form-label">
+          PO Approved Limit
+
+        </label>
+       <input type="text" class="form-control form-control-lg form-control-solid"
+        name="poApprovedLimit" placeholder="PO Approved Limit" autocomplete="off"
+        [class.is-invalid]="isControlInvalid('poApprovedLimit')" maxlength=50
+            [class.is-valid]="isControlValid('poApprovedLimit')" formControlName="poApprovedLimit" />
+      </div>
+
+
+            </div>
+
+    <div class="form-group row">
+      <div class="col-lg-3">
+              <label class="form-label">
+                     Received Input (Auto update)
+                   </label>
+      <input type="text" class="form-control form-control-lg form-control-solid"
+        name="receivedInput" placeholder="Received Input" autocomplete="off"
+        [class.is-invalid]="isControlInvalid('receivedInput')" maxlength=50
+            [class.is-valid]="isControlValid('receivedInput')" formControlName="receivedInput" />
+      </div>
+      <div class="col-lg-3">
+              <label class="form-label">
+
+
+          PO Difference (Auto Update)
+
+        </label>
+      <input type="text" class="form-control form-control-lg form-control-solid"
+        name="poDifference" placeholder="PO Difference" autocomplete="off"
+        [class.is-invalid]="isControlInvalid('poDifference')" maxlength=50
+            [class.is-valid]="isControlValid('poDifference')" formControlName="poDifference" />
+      </div>
+      <div class="col-lg-3">
+              <label class="form-label">
+
+
+          Delievered Work	(Auto update)
+
+        </label>
+      <input type="text" class="form-control form-control-lg form-control-solid"
+        name="delieveredWork" placeholder="Delievered Work" autocomplete="off"
+        [class.is-invalid]="isControlInvalid('delieveredWork')" maxlength=50
+            [class.is-valid]="isControlValid('delieveredWork')" formControlName="delieveredWork" />
+      </div>
+      <div class="col-lg-3">
+              <label class="form-label">
+
+
+          On Hold Work (Auto update)
+
+        </label>
+      <input type="text" class="form-control form-control-lg form-control-solid"
+        name="onHoldWork" placeholder="On Hold Work" autocomplete="off"
+        [class.is-invalid]="isControlInvalid('onHoldWork')" maxlength=50
+            [class.is-valid]="isControlValid('onHoldWork')" formControlName="onHoldWork" />
+
+      </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-lg-3">
+      <label class="form-label">
+
+
+  Pending Work (Auto update)
+
+</label>
+<input type="text" class="form-control form-control-lg form-control-solid"
+name="pendingWork" placeholder="Pending Work" autocomplete="off"
+[class.is-invalid]="isControlInvalid('qcBenchmark')" maxlength=50
+    [class.is-valid]="isControlValid('pendingWork')" formControlName="pendingWork" />
+</div>
+
+  </div>
+      </form>
+      </ng-container>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+
+          <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+            >{{actionBtn}}</button>
+
+
+  </div>
+
+
