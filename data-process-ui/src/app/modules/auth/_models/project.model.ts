@@ -7,4 +7,5 @@ export class Project implements BaseModel{
       projectName!:string;
       projectDetail!:ProjectDetails;
       divisionId:string;
+      clientName:string;
     }

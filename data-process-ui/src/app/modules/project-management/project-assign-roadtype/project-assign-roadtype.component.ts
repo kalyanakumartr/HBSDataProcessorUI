@@ -44,6 +44,7 @@ const EMPTY_ROADTYPE: RoadType = {
     projectId: undefined,
     projectName: '',
     divisionId: '',
+    clientName: '',
     projectDetail: {
       actualCompletedDate:'',
       billingCycle:'',
