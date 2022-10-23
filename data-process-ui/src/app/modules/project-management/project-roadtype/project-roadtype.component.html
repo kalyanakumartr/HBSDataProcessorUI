@@ -4,121 +4,207 @@
       <h3 class="card-label">Project Road Type List</h3>
     </div>
     <div class="card-toolbar">
-
-      <div class="grid-item" style="cursor: pointer;">
+      <div class="grid-item" style="cursor: pointer">
         &nbsp;&nbsp;
-        <i title="Export Excel" (click)="exportExcel()" class="fas fa-file-excel fa-2x"></i>
-      </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <button type="button" class="btn btn-primary" (click)="create()">Add Road Type</button>
+        <i
+          title="Export Excel"
+          (click)="exportExcel()"
+          class="fas fa-file-excel fa-2x"
+        ></i>
+      </div>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary" (click)="create()">
+        Add Road Type
+      </button>
     </div>
   </div>
   <div class="card-body">
     <!-- begin: Filtration form -->
     <div class="form form-label-right">
       <div class="form-group row" [formGroup]="searchGroup">
-
-
         <div class="col-lg-2">
           <label>Department</label>
-          <select class="form-control form-control-lg form-control-solid" name="department" [(ngModel)]="department"
-             formControlName="department" (change)="setDepartment($event.target.value)">
-            <option [ngValue]="0" [selected]=true>Select Department</option>
-            <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="department"
+            [(ngModel)]="department"
+            formControlName="department"
+            (change)="setDepartment($event.target.value)"
+          >
+            <option [ngValue]="0" [selected]="true">Select Department</option>
+            <option
+              *ngFor="let department of departmentList"
+              [ngValue]="department.departmentId"
+            >
               {{ department.departmentName }}
             </option>
           </select>
-
         </div>
         <div class="col-lg-2">
           <label>Division</label>
-          <select class="form-control form-control-lg form-control-solid" name="division" [(ngModel)]="division"
-             formControlName="division" (change)="setDivision($event.target.value)">
-             <option [ngValue]="0" [selected]=true>Select Division</option>
-            <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="division"
+            [(ngModel)]="division"
+            formControlName="division"
+            (change)="setDivision($event.target.value)"
+          >
+            <option [ngValue]="0" [selected]="true">Select Division</option>
+            <option
+              *ngFor="let division of divisionList"
+              [ngValue]="division.divisionId"
+            >
               {{ division.divisionName }}
             </option>
           </select>
-
         </div>
         <div class="col-lg-3">
           <label>Project</label>
-          <select class="form-control form-control-lg form-control-solid" name="project" [(ngModel)]="project"
-             formControlName="project" (change)="setProject($event.target.value)">
-             <option [ngValue]="0" [selected]=true>Select Project</option>
-            <option *ngFor="let project of projectList" [ngValue]="project.projectId">
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="project"
+            [(ngModel)]="project"
+            formControlName="project"
+            (change)="setProject($event.target.value)"
+          >
+            <option [ngValue]="0" [selected]="true">Select Project</option>
+            <option
+              *ngFor="let project of projectList"
+              [ngValue]="project.projectId"
+            >
               {{ project.projectName }}
             </option>
           </select>
-
         </div>
-        <div  class="col-lg-3">
-          <label>&nbsp;</label><br/>
-          <button type="button" class="btn btn-primary" (click)="roadType()">Add POO</button>
-        </div>
-        <div class="col-lg-2" >
 
-          <div class="grid-item" style="cursor: pointer;">
-            &nbsp;<br/>&nbsp;
+        <div class="col-lg-2">
+          <div class="grid-item" style="cursor: pointer">
+            &nbsp;<br />&nbsp;
 
-          <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+            <i
+              title="Clear Filter"
+              (click)="clearFilter()"
+              class="fas fa-filter fa-2x"
+            ></i>
           </div>
         </div>
-
-
-      <!--   <div class="col-lg-2 nowrap" >
-          <label>Search in all fields</label>
-          <div class="grid-container">
-            <div class="grid-item">
-          <input type="search" class="form-control" name="searchText" id ="searchText" placeholder="Search" value=""
-            formControlName="searchTerm" /></div>
-            <div class="grid-item" style="cursor: pointer;">
-              &nbsp;&nbsp;
-            <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
-            </div>
-            </div>
-        </div>
-      </div>-->
-    </div>
-    <!-- end: Filtration form -->
-
-    <div class="table-responsive angular-bootstrap-table">
-      <table id="tablebox" class="table table-head-custom table-vertical-center ">
-        <thead>
-          <tr>
-          <th class="sticky-header">Edit</th>
-          <th class="sticky-header" nowrap >
-            Project ID
-
-          </th>
-          <th class="sticky-header" nowrap >
-            Client Name
-
-          </th>
-
-          <th nowrap >
-            Project Name
-
-          </th>
-          <th  >             Work Area           (Alias Road Type)          </th>
-          <th  >             Benchmark Time            (Mainutes)          </th>
-          <th  >             Tick for Multy Road Type         </th>
-          <th  >Units          </th>
-          <th nowrap >Display Status</th>
-          <th nowrap >Production Benchmark</th>
-          <th nowrap >QC Benchmark</th>
-          <th nowrap >Benchmark Updated Date</th>
-          <th nowrap >PO Approved Limit </th>
-          <th  >Received Input (Auto update)</th>
-          <th nowrap >PO Difference</th>
-          <th nowrap >Delievered Work </th>
-          <th nowrap >On Hold Work</th>
-          <th nowrap >Pending Work</th>
-
-        </tr>
-        </thead>
-        <tbody>
-    </tbody></table>
+      </div>
+      <!-- end: Filtration form -->
   </div>
+      <div class="table-responsive angular-bootstrap-table">
+        <table
+          id="tablebox"
+          class="table table-head-custom table-vertical-center"
+        >
+          <thead>
+            <tr>
+              <th class="sticky-header">Edit</th>
+              <th class="sticky-header" nowrap>Project ID</th>
+              <th class="sticky-header" nowrap>Client Name</th>
 
+              <th nowrap>Project Name</th>
+              <th>Work Area (Alias Road Type)</th>
+              <th>Benchmark Time (Mainutes)</th>
+              <th>Tick for Multy Road Type</th>
+              <th>Units</th>
+              <th nowrap>Display Status</th>
+              <th nowrap>Production Benchmark</th>
+              <th nowrap>QC Benchmark</th>
+              <th nowrap>Benchmark Updated Date</th>
+              <th nowrap>PO Approved Limit</th>
+              <th>Received Input (Auto update)</th>
+              <th nowrap>PO Difference</th>
+              <th nowrap>Delievered Work</th>
+              <th nowrap>On Hold Work</th>
+              <th nowrap>Pending Work</th>
+              <th nowrap>Add PO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let roadType of roadTypeService.items$ | async">
+              <td>
+                <a
+                title="Edit RoadType"
+                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                (click)="
+                  editRoadType(
+                    roadType.project.projectId,
+                    roadType.project.projectName,
+                    roadType.project.divisionId
+                  )
+                "
+              >
+                <span
+                  [inlineSVG]="
+                    './assets/media/svg/icons/Communication/Write.svg'
+                  "
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                >
+                </span>
+              </a>
+              </td>
+              <td>
+                {{ roadType.project.projectId }}
+              </td>
+              <td>{{ roadType.project.projectName }}</td>
+              <td>{{ roadType.project.projectName }}</td>
+              <td>
+                {{ roadType.roadName }}
+              </td>
+              <td>{{ roadType.roadName }}</td>
+              <td>{{ roadType.milesPercentSet[0].benchMark }}</td>
 
-</div>
+              <td>
+                {{ roadType.multiType }}
+              </td>
+              <td>
+                {{ roadType.milesPercentSet[0].units }}
+              </td>
+              <td>
+                {{ roadType.milesPercentSet[0].status }}
+              </td>
+              <td>
+                {{ roadType.milesPercentSet[0].production }}
+              </td>
+              <td>{{ roadType.milesPercentSet[0].qualityControl }}</td>
+              <td>
+                {{
+                  roadType.milesPercentSet[0].modifiedDate | date: "dd-MMM-yyyy"
+                }}
+              </td>
+              <td>
+                {{ roadType.poDetail != null? roadType.poDetail.approvedLimit : 0 }}
+              </td>
+              <td>
+                {{ roadType.poDetail != null? roadType.poDetail.receivedInput : 0 }}
+              </td>
+              <td>
+                {{roadType.poDetail != null? roadType.poDetail.poDifference : 0 }}
+              </td>
+              <td>
+                {{ roadType.poDetail != null? roadType.poDetail.deliveredWork : 0 }}
+              </td>
+              <td>
+                {{ roadType.poDetail != null? roadType.poDetail.onHoldWork : 0}}
+              </td>
+              <td>
+                {{ roadType.poDetail != null? roadType.poDetail.pendingWork : 0}}
+              </td>
+              <td>
+                <button type="button" class="btn btn-primary" (click)="addPO(roadType.project.projectId,roadType.roadId,roadType.project.divisionId)">
+                  Add PO
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-paginator
+        class="d-flex justify-content-between align-items-center flex-wrap"
+        [paginator]="paginator"
+        [isLoading]="isLoading"
+        (paginate)="paginate($event)"
+      ></app-paginator>
+    </div>
+  </div>

@@ -1,20 +1,16 @@
 import { Injectable, Inject, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { GroupingState, IProjectTableState, IRoadTypeTableState, PaginatorState, SortStateProject, TableService } from '../../../_metronic/shared/crud-table';
+import { GroupingState, IProjectTableState, IRoadTypeTableState, PaginatorState, SortStateRoadType, TableService } from '../../../_metronic/shared/crud-table';
 import { environment } from '../../../../environments/environment';
 import { Observable, BehaviorSubject, of, Subscription, Subject } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { AuthHTTPService } from './auth-http';
-import { Department } from '../_models/department.model';
-import { Project } from '../_models/project.model';
-import { Team } from '../_models/team.model';
-import { SubCountry } from '../_models/sub-country.model';
 import { RoadType } from '../_models/road-type.model';
 
 const DEFAULT_STATE: IRoadTypeTableState = {
   filter: {},
   paginator: new PaginatorState(),
-  sorting: new SortStateProject(),
+  sorting: new SortStateRoadType(),
   searchTerm: '',
   divisionId: '',
   departmentId: '',
@@ -52,7 +48,7 @@ const DEFAULT_STATE: IRoadTypeTableState = {
 })
 
 export class RoadtypeService extends TableService<RoadType> implements OnDestroy {
-    _taskTableState$ = new BehaviorSubject<IProjectTableState>(DEFAULT_STATE);
+    _taskTableState$ = new BehaviorSubject<IRoadTypeTableState>(DEFAULT_STATE);
     isLoadingSubject: BehaviorSubject<boolean>;
     protected http: HttpClient;
   API_URL = `${environment.adminApiUrl}`;

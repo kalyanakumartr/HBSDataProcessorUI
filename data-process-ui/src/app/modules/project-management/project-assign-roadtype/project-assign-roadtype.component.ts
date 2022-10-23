@@ -33,7 +33,7 @@ const EMPTY_ROADTYPE: RoadType = {
     approvedLimit: 0,
     deliveredWork: 0,
     limitSet : {},
-    onHoldWor: 0,
+    onHoldWork: 0,
     pendingWork : 0,
     poDetailId: '',
     receivedInput: '',

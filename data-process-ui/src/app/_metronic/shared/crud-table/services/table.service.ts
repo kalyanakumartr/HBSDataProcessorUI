@@ -156,7 +156,9 @@ export abstract class TableService<T> {
       url = this.REPORT_API_URL + path;//'/searchUser';
     }else if(path.endsWith("Project")){
       url = this.VIEW_API_URL + path;//'/searchProject';
-    }    else{
+    }else if(path.endsWith("RoadType")){
+      url = this.VIEW_API_URL + path;//'/searchRoadType';
+    }     else{
        url = this.API_URL + path;//'/searchUser';
     }
     this._errorMessage.next('');
