@@ -81,8 +81,9 @@ const EMPTY_ROADTYPE: RoadType = {
 })
 export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, OnInit {
   @Input() projectId: string;
-  @Input() divisionId: string;
   @Input() projectName: string;
+  @Input() divisionId: string;
+  @Input() clientName: string;
   isLoading$;
 
   roadType: RoadType;
@@ -104,21 +105,17 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
         division: new FormControl(),
         projectId: new FormControl(),
         clientName: new FormControl(),
-        projectName: new FormControl(),
-        workArea: new FormControl(),
-        benchmarkTime: new FormControl(),
-        tickMultyRoadType: new FormControl(),
+        multiRoadNames: new FormControl(),
+        roadId: new FormControl(),
+        roadName: new FormControl(),
+        benchMark: new FormControl(),
+        multiType: new FormControl(),
         units: new FormControl(),
         dStatus: new FormControl(),
-        productionBenchmark:new FormControl(),
-        qcBenchmark:new FormControl(),
-        benchmarkUpdatedDate:new FormControl(),
-        poApprovedLimit:new FormControl(),
-        receivedInput:new FormControl(),
-        poDifference:new FormControl(),
-        delieveredWork:new FormControl(),
-        onHoldWork:new FormControl(),
-        pendingWork:new FormControl()
+        production:new FormControl(),
+        qualityControl:new FormControl(),
+        modifiedDate:new FormControl()
+
 
 
 
@@ -141,8 +138,37 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
 
   loadForm() {
     this.formGroup = this.fb.group({
-      projectName: [this.roadType.project.projectName, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)])]
+      projectName: [this.roadType.project.projectName, Validators.compose([])],
+      roadName: [this.roadType.roadName, Validators.compose([])],
+      roadId: [this.roadType.roadId, Validators.compose([])],
+      clientName: [this.roadType.project.clientName, Validators.compose([])],
+      benchMark: [this.roadType.milesPercentSet[0].benchMark, Validators.compose([])],
+      dStatus: [this.roadType.milesPercentSet[0].status, Validators.compose([])],
+      units: [this.roadType.milesPercentSet[0].units, Validators.compose([])],
+      production: [this.roadType.milesPercentSet[0].production, Validators.compose([])],
+      qualityControl: [this.roadType.milesPercentSet[0].qualityControl, Validators.compose([])],
     });
+  }
+
+  private prepareProject(createEdit) {
+    const formData = this.formGroup.value;
+
+    this.roadType.project.projectName = formData.projectName;
+    roadName: this.roadType.roadName;
+    roadId: this.roadType.roadId;
+    clientName: this.roadType.project.clientName;
+    benchMark: this.roadType.milesPercentSet[0].benchMark;
+    dStatus: this.roadType.milesPercentSet[0].status;
+    units: this.roadType.milesPercentSet[0].units;
+    production: this.roadType.milesPercentSet[0].production;
+    qualityControl: this.roadType.milesPercentSet[0].qualityControl;
+
+
+    if(createEdit == "Edit"){
+      this.roadType.project.projectId=this.projectId;
+    }
+
+
   }
 
 
@@ -155,7 +181,7 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
 
   create() {
     console.log("Add Road Type");
-    const sbCreate = this.roadtypeService.create(this.roadType,"/addroadtype","formProject").pipe(
+    const sbCreate = this.roadtypeService.create(this.roadType,"/addroadtype","formRoadType").pipe(
       tap(() => {
         this.modal.close();
         this.projectService.filterData("");

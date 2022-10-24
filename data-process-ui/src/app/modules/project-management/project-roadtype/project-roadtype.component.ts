@@ -145,7 +145,7 @@ export class ProjectRoadtypeComponent
   ngAfterViewInit() {}
   create() {
     if (this.division) {
-      this.addRoadType(undefined, undefined, this.division);
+      this.addRoadType(undefined, undefined, this.division, undefined);
       this.projectroadtype();
     } else {
       alert('Please Select Divison');
@@ -179,9 +179,10 @@ export class ProjectRoadtypeComponent
   editRoadType(
     projectId: string,
     projectName: string,
-    divisionId: string
+    divisionId: string,
+    clientName: string
   ): void {
-    this.addRoadType(projectId, projectName, divisionId);
+    this.addRoadType(projectId, projectName, divisionId ,clientName);
   }
 
   projectroadtype() {
@@ -189,14 +190,15 @@ export class ProjectRoadtypeComponent
       size: 'xl',
     });
   }
-  addRoadType(projectId: string, projectName: string, divisionId: string) {
+  addRoadType(projectId: string, projectName: string, divisionId: string,clientName:string) {
     if (divisionId != '0: 0') {
-      const modalRef = this.modalService.open(RoadtypeCreateComponent, {
+      const modalRef = this.modalService.open(ProjectAssignRoadtypeComponent, {
         size: 'xl',
       });
       modalRef.componentInstance.projectId = projectId;
       modalRef.componentInstance.projectName = projectName;
       modalRef.componentInstance.divisionId = divisionId;
+      modalRef.componentInstance.clientName = clientName;
     } else {
       alert('please Select division');
     }
