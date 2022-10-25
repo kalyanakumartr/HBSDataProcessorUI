@@ -15,7 +15,9 @@ import { ProjectService } from '../../auth/_services/project.services';
   styleUrls: ['./roadtype-create.component.scss'],
 })
 export class RoadtypeCreateComponent implements OnInit {
-  @Input() id: string;
+  @Input() projectId: string;
+  @Input() roadId: string;
+  @Input() clientName: string;
   isLoading$;
   isAdminRole: boolean;
   customer: UserModel;

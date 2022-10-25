@@ -29,6 +29,7 @@ import { ProjectService } from '../../auth/_services/project.services';
 import { RoadtypeService } from '../../auth/_services/roadtype.services';
 import { ProjectAssignRoadtypeComponent } from '../project-assign-roadtype/project-assign-roadtype.component';
 import { RoadtypeCreateComponent } from '../roadtype-create/roadtype-create.component';
+import { RoadtypePoListComponent } from '../roadtype-po-list/roadtype-po-list.component';
 
 @Component({
   selector: 'app-project-roadtype',
@@ -218,7 +219,7 @@ export class ProjectRoadtypeComponent
     }
   }
   addPO(projectId: string, roadId: string, divisionId: string){
-    const modalRef = this.modalService.open(RoadtypeCreateComponent, {
+    const modalRef = this.modalService.open(RoadtypePoListComponent, {
       size: 'xl',
     });
     modalRef.componentInstance.projectId = projectId;

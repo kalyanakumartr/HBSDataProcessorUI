@@ -1,1 +1,64 @@
-<p>roadtype-po-list works!</p>
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">PO dual-list</h3>
+
+    </div>
+    <div class="card-toolbar">
+      <button type="button" class="btn btn-primary" (click)="createPO()">Add PO</button>
+      <button type="button" #closebutton class="close" data-dismiss="modal" (click)="close()">&times;</button>
+    </div>
+
+  </div>
+
+  </div>
+  <div style=" padding: 10px 25px 25px 30px;">
+  <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
+
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="slno">
+      <mat-header-cell *matHeaderCellDef > Sl No </mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </mat-cell>
+    </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="assetName">
+      <mat-header-cell *matHeaderCellDef> Asset Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.asset.assetName}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="serialNo">
+      <mat-header-cell *matHeaderCellDef> Serial Number </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.serialNo }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="brand">
+      <mat-header-cell *matHeaderCellDef> Brand </mat-header-cell>
+      <mat-cell *matCellDef="let element">  {{element.brand.brandName }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="givenDate">
+      <mat-header-cell *matHeaderCellDef> Given Date </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.givenDate}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="receivedDate">
+      <mat-header-cell *matHeaderCellDef> Return Date </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.receivedDate}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="remarks">
+      <mat-header-cell *matHeaderCellDef> Remarks </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.remarks}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Action">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+
+      <mat-cell *matCellDef="let el"> <button type="submit" class="btn btn-primary btn-elevate" (click)="delete(el.autoId)" >Delete</button> </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+
+</div>
