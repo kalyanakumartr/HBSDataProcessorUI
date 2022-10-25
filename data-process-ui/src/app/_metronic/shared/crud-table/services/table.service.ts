@@ -135,6 +135,15 @@ export abstract class TableService<T> {
         }),
         finalize(() => this._isLoading$.next(false))
       );
+    }else if(path.endsWith("RoadType")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formRoadType: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('CREATE ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
     }else{
       return this.http.post<BaseModel>(this.API_URL+path, {formUser: item},{headers: httpHeaders}).pipe(
         catchError(err => {
@@ -204,6 +213,15 @@ export abstract class TableService<T> {
     });
     if(path.endsWith("Project")){
       return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formProject: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('Update ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }else  if(path.endsWith("RoadType")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formRoadType: item},{headers: httpHeaders}).pipe(
         catchError(err => {
           this._errorMessage.next(err);
           console.error('Update ITEM', err);

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   NgbActiveModal,
   NgbDatepickerConfig,
@@ -10,6 +10,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { of ,Subscription} from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
 import { RoadType } from '../../auth/_models/road-type.model';
 import { ProjectService } from '../../auth/_services/project.services';
 import { RoadtypeService } from '../../auth/_services/roadtype.services';
@@ -77,15 +78,19 @@ const EMPTY_ROADTYPE: RoadType = {
 @Component({
   selector: 'app-project-assign-roadstype',
   templateUrl: './project-assign-roadtype.component.html',
-  styleUrls: ['./project-assign-roadtype.component.scss']
+  styleUrls: ['./project-assign-roadtype.component.scss'],
+  providers: [
+    {provide: NgbDateAdapter, useClass: CustomAdapter},
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
+  ]
 })
 export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, OnInit {
   @Input() projectId: string;
-  @Input() projectName: string;
+  @Input() roadTypeObj: any;
   @Input() divisionId: string;
   @Input() clientName: string;
   isLoading$;
-
+  projectName:string;
   roadType: RoadType;
   formGroup: FormGroup;
   actionBtn:string="save";
@@ -115,25 +120,37 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
         production:new FormControl(),
         qualityControl:new FormControl(),
         modifiedDate:new FormControl()
-
-
-
-
       });
 
     }
   ngOnInit(): void {
+    if(this.roadTypeObj){
+      this.roadType = this.roadTypeObj;
+      this.projectName = this.roadType.project.projectName;
+    }
+    this.loadRoadTypeId();
+  }
+  ngAfterViewInit() {
+
+
   }
   save(){
- if(!this.roadType.project.divisionId){
+    if(!this.roadType.project.divisionId){
       this.roadType.project.divisionId=this.divisionId;
     }
-  }
-  loadProjectId() {
-    if (!this.projectId) {
-      this.roadType = EMPTY_ROADTYPE;
-      this.loadForm();
+    if (this.roadType) {
+      this.prepareRoadTye("Edit");
+      this.edit();
+    } else {
+      this.prepareRoadTye("Create");
+      this.create();
     }
+  }
+  loadRoadTypeId() {
+    if (!this.roadType) {
+      this.roadType = EMPTY_ROADTYPE;
+    }
+    this.loadForm();
   }
 
   loadForm() {
@@ -141,6 +158,8 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
       projectName: [this.roadType.project.projectName, Validators.compose([])],
       roadName: [this.roadType.roadName, Validators.compose([])],
       roadId: [this.roadType.roadId, Validators.compose([])],
+      multiType:[this.roadType.multiType, Validators.compose([])],
+      modifiedDate:[this.roadType.milesPercentSet[0].modifiedDate, Validators.compose([])],
       clientName: [this.roadType.project.clientName, Validators.compose([])],
       benchMark: [this.roadType.milesPercentSet[0].benchMark, Validators.compose([])],
       dStatus: [this.roadType.milesPercentSet[0].status, Validators.compose([])],
@@ -150,7 +169,7 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
     });
   }
 
-  private prepareProject(createEdit) {
+  private prepareRoadTye(createEdit) {
     const formData = this.formGroup.value;
 
     this.roadType.project.projectName = formData.projectName;
@@ -167,8 +186,6 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
     if(createEdit == "Edit"){
       this.roadType.project.projectId=this.projectId;
     }
-
-
   }
 
 
@@ -178,7 +195,19 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
       verticalPosition:"top"
     });
   }
-
+  edit() {
+    const sbUpdate = this.roadtypeService.update(this.roadType,"/updateRoadType","formRoadType").pipe(
+      tap(() => {
+        this.modal.close();
+        this.roadtypeService.filterData("");
+      }),
+      catchError((errorMessage) => {
+        this.modal.dismiss(errorMessage);
+        return of(this.roadType);
+      }),
+      ).subscribe(res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
+    //this.subscriptions.push(sbUpdate);
+  }
   create() {
     console.log("Add Road Type");
     const sbCreate = this.roadtypeService.create(this.roadType,"/addroadtype","formRoadType").pipe(

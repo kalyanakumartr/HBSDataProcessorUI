@@ -20,7 +20,7 @@ export class ProjectAssignSubcountryComponent implements OnInit {
   keepSorted = true;
   key: string;
   display: string;
-  filter = false;
+  filter = true;
   source: Array<SubCountry>=[];
   confirmed: Array<SubCountry>=[];
   userAdd = '';
@@ -41,7 +41,7 @@ export class ProjectAssignSubcountryComponent implements OnInit {
   }
 
   save(){
-    console.log("Save confirmedSubCountry", this.confirmedSubCountry);
+    console.log("Save confirmedSubCountry", this.confirmed);
   }
 
   ngOnInit(): void {

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import {
   catchError,
@@ -8,6 +8,7 @@ import {
   distinctUntilChanged,
   tap,
 } from 'rxjs/operators';
+import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
 import {
   GroupingState,
   ICreateAction,
@@ -33,6 +34,10 @@ import { RoadtypeCreateComponent } from '../roadtype-create/roadtype-create.comp
   selector: 'app-project-roadtype',
   templateUrl: './project-roadtype.component.html',
   styleUrls: ['./project-roadtype.component.scss'],
+  providers: [
+    {provide: NgbDateAdapter, useClass: CustomAdapter},
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
+  ]
 })
 export class ProjectRoadtypeComponent
   implements
@@ -144,11 +149,20 @@ export class ProjectRoadtypeComponent
   }
   ngAfterViewInit() {}
   create() {
-    if (this.division) {
-      this.addRoadType(undefined, undefined, this.division, undefined);
-      this.projectroadtype();
+    if (this.project != "0: 0") {
+      var projectObj;
+      this.projectList.forEach((el) => {
+        if(this.project == el.projectId){
+          projectObj =el;
+        }
+
+      });
+      if(projectObj){
+        this.addRoadType(projectObj.projectId, projectObj.projectName, this.division, projectObj.clientName);
+      }
+     // this.projectroadtype();
     } else {
-      alert('Please Select Divison');
+      alert('Please Select Project');
     }
   }
   edit(id: number): void {
@@ -178,11 +192,11 @@ export class ProjectRoadtypeComponent
   }
   editRoadType(
     projectId: string,
-    projectName: string,
+    roadType: any,
     divisionId: string,
     clientName: string
   ): void {
-    this.addRoadType(projectId, projectName, divisionId ,clientName);
+    this.addRoadType(projectId, roadType, divisionId ,clientName);
   }
 
   projectroadtype() {
@@ -190,13 +204,13 @@ export class ProjectRoadtypeComponent
       size: 'xl',
     });
   }
-  addRoadType(projectId: string, projectName: string, divisionId: string,clientName:string) {
+  addRoadType(projectId: string, roadType: any, divisionId: string,clientName:string) {
     if (divisionId != '0: 0') {
       const modalRef = this.modalService.open(ProjectAssignRoadtypeComponent, {
         size: 'xl',
       });
       modalRef.componentInstance.projectId = projectId;
-      modalRef.componentInstance.projectName = projectName;
+      modalRef.componentInstance.roadTypeObj = roadType;
       modalRef.componentInstance.divisionId = divisionId;
       modalRef.componentInstance.clientName = clientName;
     } else {
