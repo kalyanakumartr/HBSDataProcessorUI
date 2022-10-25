@@ -15,7 +15,7 @@ import { ProjectService } from '../../auth/_services/project.services';
   styleUrls: ['./roadtype-create.component.scss'],
 })
 export class RoadtypeCreateComponent implements OnInit {
-  @Input() projectId: string;
+  @Input() poDetailId: string;
   @Input() roadId: string;
   @Input() clientName: string;
   isLoading$;
@@ -49,7 +49,7 @@ export class RoadtypeCreateComponent implements OnInit {
       poNumberId: new FormControl(),
       clientName: new FormControl(),
       poDate: new FormControl(),
-      paLimit: new FormControl(),
+      poLimit: new FormControl(),
       poNumber: new FormControl(),
     });
   }

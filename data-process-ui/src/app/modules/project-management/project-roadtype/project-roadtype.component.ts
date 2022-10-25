@@ -218,11 +218,11 @@ export class ProjectRoadtypeComponent
       alert('please Select division');
     }
   }
-  addPO(projectId: string, roadId: string, divisionId: string){
+  addPO(poDetailId: string, roadId: string, divisionId: string){
     const modalRef = this.modalService.open(RoadtypePoListComponent, {
       size: 'xl',
     });
-    modalRef.componentInstance.projectId = projectId;
+    modalRef.componentInstance.poDetailId = poDetailId;
     modalRef.componentInstance.roadId = roadId;
     modalRef.componentInstance.divisionId = divisionId;
   }

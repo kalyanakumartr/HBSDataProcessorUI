@@ -128,7 +128,7 @@
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                 (click)="
                   editRoadType(
-                    roadType.project.projectId,
+                    roadType.poDetail.poDetailId,
                     roadType,
                     roadType.project.divisionId,
                     roadType.project.clientName
@@ -153,7 +153,6 @@
               <td>
                 {{ roadType.roadName }}
               </td>
-              <td>{{ roadType.roadName }}</td>
               <td>{{ roadType.milesPercentSet[0].benchMark }}</td>
 
               <td>
@@ -193,8 +192,8 @@
                 {{ roadType.poDetail != null? roadType.poDetail.pendingWork : 0}}
               </td>
               <td>
-                <button type="button" class="btn btn-primary" (click)="addPO(roadType.project.projectId,roadType.roadId,roadType.project.divisionId)">
-                  Add PO
+                <button type="button" class="btn btn-primary" (click)="addPO(roadType.poDetail?roadType.poDetail.poDetailId:'PO1000',roadType.roadId,roadType.project.divisionId)">
+                  View PO List
                 </button>
               </td>
             </tr>

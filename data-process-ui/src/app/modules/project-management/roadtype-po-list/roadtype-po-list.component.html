@@ -16,20 +16,10 @@
   <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
 
 
-    <!-- Position Column -->
-    <ng-container matColumnDef="clientName">
-      <mat-header-cell *matHeaderCellDef > Client Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.asset.clientName} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="projectName">
-      <mat-header-cell *matHeaderCellDef > Project Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.asset.projectName} </mat-cell>
-    </ng-container>
     <!-- Name Column -->
     <ng-container matColumnDef="poNumber">
       <mat-header-cell *matHeaderCellDef> PO Number </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.asset.poNumber}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.poNumber}} </mat-cell>
     </ng-container>
 
 
@@ -40,18 +30,18 @@
     </ng-container>
 
 
-    <ng-container matColumnDef="poApprovedLimit">
+    <ng-container matColumnDef="poLimit">
       <mat-header-cell *matHeaderCellDef> PO Approved Limit</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.poApprovedLimit}}
+      <mat-cell *matCellDef="let element"> {{element.poLimit}}
       </mat-cell>
     </ng-container>
 
-   <!-- <ng-container matColumnDef="Action">
+    <ng-container matColumnDef="Action">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
 
       <mat-cell *matCellDef="let el"> <button type="submit" class="btn btn-primary btn-elevate" (click)="delete(el.autoId)" >Delete</button> </mat-cell>
     </ng-container>
-  -->
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
