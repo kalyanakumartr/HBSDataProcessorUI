@@ -19,7 +19,7 @@
     <ng-container *ngIf="customer">
       <form action="#" class="form form-label-right" [formGroup]="formGroup">
         <div class="form-group row">
-          <div class="col-lg-3">
+      <!--     <div class="col-lg-3">
             <label class="form-label"> PO Number ID</label>
 
             <input type="text" class="form-control form-control-lg form-control-solid" name="poNumberId"
@@ -38,7 +38,7 @@
             <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'clientName')">Client Name should have
               maximum 50 characters</div>
           </div>
-
+-->
 
           <div class="col-lg-3">
             <label class="form-label">PO Number</label>
@@ -68,8 +68,6 @@
             <div class="invalid-feedback" *ngIf="controlHasError('required', 'poDate')">Please enter <b>PO Date </b>
               in 'mm/dd/yyyy' format</div>
           </div>
-          </div>
-          <div class="form-group row">
           <div class="col-lg-3">
             <label class="form-label">PO Approved Limit</label>
             <input type="text" class="form-control form-control-lg form-control-solid" name="paLimit"

@@ -1,4 +1,4 @@
-<div class="card card-custom gutter-b">
++<div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
       <h3 class="card-label">PO dual-list</h3>
@@ -17,45 +17,41 @@
 
 
     <!-- Position Column -->
-    <ng-container matColumnDef="slno">
-      <mat-header-cell *matHeaderCellDef > Sl No </mat-header-cell>
-      <mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </mat-cell>
-    </ng-container>
-    <!-- Name Column -->
-    <ng-container matColumnDef="assetName">
-      <mat-header-cell *matHeaderCellDef> Asset Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.asset.assetName}} </mat-cell>
+    <ng-container matColumnDef="clientName">
+      <mat-header-cell *matHeaderCellDef > Client Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.asset.clientName} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="serialNo">
-      <mat-header-cell *matHeaderCellDef> Serial Number </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{ element.serialNo }} </mat-cell>
+    <ng-container matColumnDef="projectName">
+      <mat-header-cell *matHeaderCellDef > Project Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.asset.projectName} </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="brand">
-      <mat-header-cell *matHeaderCellDef> Brand </mat-header-cell>
-      <mat-cell *matCellDef="let element">  {{element.brand.brandName }} </mat-cell>
+    <!-- Name Column -->
+    <ng-container matColumnDef="poNumber">
+      <mat-header-cell *matHeaderCellDef> PO Number </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.asset.poNumber}} </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="givenDate">
-      <mat-header-cell *matHeaderCellDef> Given Date </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.givenDate}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="receivedDate">
-      <mat-header-cell *matHeaderCellDef> Return Date </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.receivedDate}}
+
+
+    <ng-container matColumnDef="poDate">
+      <mat-header-cell *matHeaderCellDef> PO Date </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.poDate}}
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="remarks">
-      <mat-header-cell *matHeaderCellDef> Remarks </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.remarks}}</mat-cell>
+
+    <ng-container matColumnDef="poApprovedLimit">
+      <mat-header-cell *matHeaderCellDef> PO Approved Limit</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.poApprovedLimit}}
+      </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="Action">
+   <!-- <ng-container matColumnDef="Action">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
 
       <mat-cell *matCellDef="let el"> <button type="submit" class="btn btn-primary btn-elevate" (click)="delete(el.autoId)" >Delete</button> </mat-cell>
     </ng-container>
-
+  -->
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
