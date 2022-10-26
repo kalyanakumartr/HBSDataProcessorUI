@@ -224,24 +224,24 @@
             </td>
 
             <td>
-              {{ project.projectDetail.bpsStartDate | date: "dd-MMM-yyyy" }}
+              {{ project.projectDetail.bpsStartDate | date: 'dd-MMM-yyyy' }}
             </td>
             <td>
               {{
                 project.projectDetail.bpsPlannedCompletionDate
-                  | date: "dd-MMM-yyyy"
+                | date: 'dd-MMM-yyyy'
               }}
             </td>
             <td>
               {{
                 project.projectDetail.clientExpectedCompletionDate
-                  | date: "dd-MMM-yyyy"
+                | date: 'dd-MMM-yyyy'
               }}
             </td>
 
             <td>
               {{
-                project.projectDetail.actualCompletedDate | date: "dd-MMM-yyyy"
+                project.projectDetail.actualCompletedDate | date: 'dd-MMM-yyyy'
               }}
             </td>
           </tr>

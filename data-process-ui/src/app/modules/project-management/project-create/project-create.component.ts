@@ -64,6 +64,7 @@ export class ProjectCreateComponent implements OnInit {
   isAdminRole: boolean;
   customer: UserModel;
   project: Project;
+  userList:any[];
   formGroup: FormGroup;
   minDate: NgbDateStruct;
   maxDate: NgbDateStruct;
@@ -113,6 +114,7 @@ export class ProjectCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProjectId();
+    this.getUserListByRoles();
   }
   public findInvalidControls() {
     const invalid = [];
@@ -163,6 +165,25 @@ export class ProjectCreateComponent implements OnInit {
       duration: 4000,
       verticalPosition:"top"
     });
+  }
+  getUserListByRoles(){
+    var roleShortNames = ["PM", "PL"];
+    this.projectService
+      .getUserListByRoles(this.divisionId,roleShortNames,'')
+      .pipe(
+        tap((res: any) => {
+          this.userList = res;
+          console.log('userList', this.userList);
+
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: [],
+          });
+        })
+      )
+      .subscribe();
   }
   create() {
     console.log("Add Project");

@@ -85,12 +85,13 @@ const EMPTY_ROADTYPE: RoadType = {
   ]
 })
 export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, OnInit {
+  @Input() poDetailId: string;
   @Input() projectId: string;
-  @Input() roadTypeObj: any;
+  @Input() projectName: string;
   @Input() divisionId: string;
   @Input() clientName: string;
+  @Input() roadTypeObj: any;
   isLoading$;
-  projectName:string;
   roadType: RoadType;
   formGroup: FormGroup;
   actionBtn:string="save";
@@ -155,17 +156,17 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
 
   loadForm() {
     this.formGroup = this.fb.group({
-      projectName: [this.roadType.project.projectName, Validators.compose([])],
-      roadName: [this.roadType.roadName, Validators.compose([])],
-      roadId: [this.roadType.roadId, Validators.compose([])],
-      multiType:[this.roadType.multiType, Validators.compose([])],
-      modifiedDate:[this.roadType.milesPercentSet[0].modifiedDate, Validators.compose([])],
-      clientName: [this.roadType.project.clientName, Validators.compose([])],
-      benchMark: [this.roadType.milesPercentSet[0].benchMark, Validators.compose([])],
-      dStatus: [this.roadType.milesPercentSet[0].status, Validators.compose([])],
-      units: [this.roadType.milesPercentSet[0].units, Validators.compose([])],
-      production: [this.roadType.milesPercentSet[0].production, Validators.compose([])],
-      qualityControl: [this.roadType.milesPercentSet[0].qualityControl, Validators.compose([])],
+      projectName: [this.roadType?this.roadType.project.projectName:'', Validators.compose([])],
+      roadName: [this.roadType?this.roadType.roadName:'', Validators.compose([])],
+      roadId: [this.roadType?this.roadType.roadId:'', Validators.compose([])],
+      multiType:[this.roadType?this.roadType.multiType:'', Validators.compose([])],
+      modifiedDate:[this.roadType?this.roadType.milesPercentSet[0].modifiedDate:'', Validators.compose([])],
+      clientName: [this.roadType?this.roadType.project.clientName:'', Validators.compose([])],
+      benchMark: [this.roadType?this.roadType.milesPercentSet[0].benchMark:'', Validators.compose([])],
+      dStatus: [this.roadType?this.roadType.milesPercentSet[0].status:'', Validators.compose([])],
+      units: [this.roadType?this.roadType.milesPercentSet[0].units:'', Validators.compose([])],
+      production: [this.roadType?this.roadType.milesPercentSet[0].production:'', Validators.compose([])],
+      qualityControl: [this.roadType?this.roadType.milesPercentSet[0].qualityControl:'', Validators.compose([])],
     });
   }
 

@@ -173,7 +173,24 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
     );
   }
 
+  getUserListByRoles(divisionId, roleShortNames,search){
 
+    const url = this.API_URL + "/getUserListByRoles";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {
+      "roleShortNames": roleShortNames,
+      "divisionId":divisionId,
+      "searchParam":search
+  },{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
   private _listners = new Subject<any>();
   listen(): Observable<any>{
     return this._listners.asObservable();

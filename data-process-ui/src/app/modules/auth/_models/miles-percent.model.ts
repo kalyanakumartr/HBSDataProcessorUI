@@ -4,7 +4,7 @@ export class MilesPercent  {
   benchMark: number;
   status: string;
   units: string;
-  modifiedDate: string;
+  modifiedDate: any;
   production: number;
   qualityAssurance: number;
   qualityControl: number;

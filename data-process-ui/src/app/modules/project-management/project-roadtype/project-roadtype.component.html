@@ -129,6 +129,8 @@
                 (click)="
                   editRoadType(
                     roadType.poDetail.poDetailId,
+                    roadType.project.projectId,
+                    roadType.project.projectName,
                     roadType,
                     roadType.project.divisionId,
                     roadType.project.clientName
@@ -170,7 +172,7 @@
               <td>{{ roadType.milesPercentSet[0].qualityControl }}</td>
               <td>
                 {{
-                  roadType.milesPercentSet[0].modifiedDate | date: "dd-MMM-yyyy"
+                  roadType.milesPercentSet[0].modifiedDate
                 }}
               </td>
               <td>

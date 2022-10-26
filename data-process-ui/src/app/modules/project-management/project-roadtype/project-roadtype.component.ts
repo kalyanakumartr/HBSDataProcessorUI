@@ -159,7 +159,7 @@ export class ProjectRoadtypeComponent
 
       });
       if(projectObj){
-        this.addRoadType(projectObj.projectId, projectObj.projectName, this.division, projectObj.clientName);
+        this.addRoadType(undefined, projectObj.projectId, projectObj.projectName, this.division, projectObj.clientName,undefined);
       }
      // this.projectroadtype();
     } else {
@@ -192,12 +192,14 @@ export class ProjectRoadtypeComponent
     this.subscriptions.push(searchEvent);
   }
   editRoadType(
+    poDetailId: string,
     projectId: string,
+    projectName: string,
     roadType: any,
     divisionId: string,
     clientName: string
   ): void {
-    this.addRoadType(projectId, roadType, divisionId ,clientName);
+    this.addRoadType(poDetailId,projectId, projectName,  divisionId ,clientName, roadType);
   }
 
   projectroadtype() {
@@ -205,15 +207,17 @@ export class ProjectRoadtypeComponent
       size: 'xl',
     });
   }
-  addRoadType(projectId: string, roadType: any, divisionId: string,clientName:string) {
+  addRoadType(poDetailId:string, projectId: string, projectName: string, divisionId: string,clientName:string, roadType: any) {
     if (divisionId != '0: 0') {
       const modalRef = this.modalService.open(ProjectAssignRoadtypeComponent, {
         size: 'xl',
       });
+      modalRef.componentInstance.poDetailId = poDetailId;
       modalRef.componentInstance.projectId = projectId;
-      modalRef.componentInstance.roadTypeObj = roadType;
+      modalRef.componentInstance.projectName = projectName;
       modalRef.componentInstance.divisionId = divisionId;
       modalRef.componentInstance.clientName = clientName;
+      modalRef.componentInstance.roadTypeObj = roadType;
     } else {
       alert('please Select division');
     }
