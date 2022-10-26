@@ -1,7 +1,7 @@
 +<div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">ADD PO List And Create</h3>
+      <h3 class="card-label">PO List</h3>
       </div>
       <div>
         <label>Client Name : {{clientName}}</label> <br>
@@ -43,7 +43,7 @@
     <ng-container matColumnDef="Action">
       <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
 
-      <mat-cell *matCellDef="let el"> <button type="submit" class="btn btn-primary btn-elevate" (click)="delete(el.autoId)" >Delete</button> </mat-cell>
+      <mat-cell *matCellDef="let el"> <button type="submit" class="btn btn-primary btn-elevate" (click)="delete(el)" >Delete</button> </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

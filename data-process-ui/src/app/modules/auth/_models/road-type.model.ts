@@ -14,5 +14,6 @@ export class RoadType implements BaseModel  {
   milesPercentSet: MilesPercent[];
   multiRoadNames: string;
   poDetail: PoDetail;
+  displayOrder:number;
 
 }

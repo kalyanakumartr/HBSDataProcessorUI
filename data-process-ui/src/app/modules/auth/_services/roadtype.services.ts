@@ -82,7 +82,32 @@ export class RoadtypeService extends TableService<RoadType> implements OnDestroy
       })
     );
   }
-
+  addPOLimit(poLimit: POLimit, path:string){
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url,{"poLimit": poLimit},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  deletePOLimit(poLimit: POLimit, path:string){
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url,{"poLimit": poLimit},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
 
   private _listners = new Subject<any>();
   listen(): Observable<any>{

@@ -1,18 +1,31 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   NgbActiveModal,
+  NgbDateAdapter,
+  NgbDateParserFormatter,
   NgbDatepickerConfig,
   NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap';
+import { of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
 
 import { AuthService, UserModel } from '../../auth';
+import { PoDetail } from '../../auth/_models/po-detail.model';
+import { POLimit } from '../../auth/_models/po-limit.model';
 import { ProjectService } from '../../auth/_services/project.services';
+import { RoadtypeService } from '../../auth/_services/roadtype.services';
 
 @Component({
   selector: 'app-roadtype-create',
   templateUrl: './roadtype-create.component.html',
   styleUrls: ['./roadtype-create.component.scss'],
+  providers: [
+    {provide: NgbDateAdapter, useClass: CustomAdapter},
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
+  ]
 })
 export class RoadtypeCreateComponent implements OnInit {
   @Input() poDetailId: string;
@@ -20,7 +33,7 @@ export class RoadtypeCreateComponent implements OnInit {
   @Input() clientName: string;
   isLoading$;
   isAdminRole: boolean;
-  customer: UserModel;
+  poLimit:POLimit;
   formGroup: FormGroup;
   minDate: NgbDateStruct;
   maxDate: NgbDateStruct;
@@ -28,22 +41,11 @@ export class RoadtypeCreateComponent implements OnInit {
   constructor(
     public modal: NgbActiveModal,
     private config: NgbDatepickerConfig,
-    private projectService: ProjectService,
-    private authService: AuthService
+    public roadTypeService: RoadtypeService,
+    private snackBar: MatSnackBar,
   ) {
-    this.customer = new UserModel();
-    const current = new Date();
-    console.log(current.getFullYear(), current.getMonth(), current.getDate());
-    this.minDate = {
-      year: 2000,
-      month: 1,
-      day: 1,
-    };
-    this.maxDate = {
-      year: current.getFullYear() - 18,
-      month: current.getMonth() + 1,
-      day: current.getDate(),
-    };
+    this.poLimit = new POLimit();
+    this.poLimit.poDetail = new PoDetail();
 
     this.formGroup = new FormGroup({
       poNumberId: new FormControl(),
@@ -57,7 +59,29 @@ export class RoadtypeCreateComponent implements OnInit {
   ngOnInit(): void {}
 
   save() {
+    const formData = this.formGroup.value;
 
+    this.poLimit.poNumber = formData.poNumber;
+    //this.poLimit.poDate = formData.poDate;
+    this.poLimit.poLimit = formData.poLimit;
+    this.poLimit.poDetail.poDetailId=this.poDetailId;
+
+    const sbCreate = this.roadTypeService.addPOLimit(this.poLimit, "/addPOLimit").pipe(
+      tap(() => {
+         this.modal.close();
+       }),
+       catchError((errorMessage) => {
+         this.modal.dismiss(errorMessage);
+         return of(errorMessage);
+       }),
+     ).subscribe(res =>this.openSnackBar(res.messageCode?"PO Limitadded Successfully":res,"!!"));
+
+  }
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition:"top"
+    });
   }
   findInvalidControls() {
     throw new Error('Method not implemented.');

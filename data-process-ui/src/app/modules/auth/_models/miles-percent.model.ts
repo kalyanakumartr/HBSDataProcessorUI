@@ -2,7 +2,7 @@ export class MilesPercent  {
 
   autoId: number;
   benchMark: number;
-  status: string;
+  status: boolean;
   units: string;
   modifiedDate: any;
   production: number;

@@ -67,8 +67,22 @@ export class RoadtypePoListComponent implements OnInit, OnDestroy, AfterViewInit
     //this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  delete(id:any){
-    alert(id);
+  delete(poLimit:any){
+      const sbCreate = this.roadTypeService.deletePOLimit(poLimit, "/deletePOLimit").pipe(
+        tap(() => {
+           this.modalService.dismissAll();
+         }),
+         catchError((errorMessage) => {
+           this.modalService.dismissAll(errorMessage);
+           return of(errorMessage);
+         }),
+       ).subscribe(res =>this.openSnackBar(res.messageCode?"PO Limit deleted Successfully":res,"!!"));
+  }
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition:"top"
+    });
   }
   reloadCurrentRoute() {
     let currentUrl = this._router.url;
@@ -81,7 +95,6 @@ export class RoadtypePoListComponent implements OnInit, OnDestroy, AfterViewInit
     this.modalService.dismissAll();
   }
   createPO(){
-    alert(this.projectService.getProjectList.name);
     const modalRef = this.modalService.open(RoadtypeCreateComponent, {
       size: 'lg',
     });

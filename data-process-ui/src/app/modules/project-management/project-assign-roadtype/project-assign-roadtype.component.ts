@@ -11,6 +11,8 @@ import {
 import { of ,Subscription} from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
+import { MilesPercent } from '../../auth/_models/miles-percent.model';
+import { Project } from '../../auth/_models/project.model';
 import { RoadType } from '../../auth/_models/road-type.model';
 import { ProjectService } from '../../auth/_services/project.services';
 import { RoadtypeService } from '../../auth/_services/roadtype.services';
@@ -30,6 +32,7 @@ const EMPTY_ROADTYPE: RoadType = {
   multiType: true,
   milesPercentSet: [],
   multiRoadNames: '',
+  displayOrder:0,
   poDetail:{
     approvedLimit: 0,
     deliveredWork: 0,
@@ -139,7 +142,7 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
     if(!this.roadType.project.divisionId){
       this.roadType.project.divisionId=this.divisionId;
     }
-    if (this.roadType) {
+    if (this.roadType.roadId) {
       this.prepareRoadTye("Edit");
       this.edit();
     } else {
@@ -172,21 +175,24 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
 
   private prepareRoadTye(createEdit) {
     const formData = this.formGroup.value;
-
-    this.roadType.project.projectName = formData.projectName;
-    roadName: this.roadType.roadName;
-    roadId: this.roadType.roadId;
-    clientName: this.roadType.project.clientName;
-    benchMark: this.roadType.milesPercentSet[0].benchMark;
-    dStatus: this.roadType.milesPercentSet[0].status;
-    units: this.roadType.milesPercentSet[0].units;
-    production: this.roadType.milesPercentSet[0].production;
-    qualityControl: this.roadType.milesPercentSet[0].qualityControl;
-
-
-    if(createEdit == "Edit"){
-      this.roadType.project.projectId=this.projectId;
+    if(createEdit == "Create"){
+      this.roadType = new RoadType;
+      this.roadType.project = new Project;
+      this.roadType.milesPercentSet =[];
     }
+    var milesPercent = new MilesPercent;
+    this.roadType.roadName = formData.roadName;
+    this.roadType.displayOrder=1;
+    milesPercent.benchMark =formData.benchMark;
+    milesPercent.status =formData.dStatus=='Active'?true:false;
+    milesPercent.units =formData.units;
+    milesPercent.production =formData.production;
+    milesPercent.qualityControl =formData.qualityControl;
+    milesPercent.qualityAssurance =0;
+    milesPercent.benchMark =formData.benchMark;
+    this.roadType.milesPercentSet.push(milesPercent);
+    this.roadType.project.projectId=this.projectId;
+
   }
 
 
@@ -211,7 +217,7 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
   }
   create() {
     console.log("Add Road Type");
-    const sbCreate = this.roadtypeService.create(this.roadType,"/addroadtype","formRoadType").pipe(
+    const sbCreate = this.roadtypeService.create(this.roadType,"/addRoadType","formRoadType").pipe(
       tap(() => {
         this.modal.close();
         this.projectService.filterData("");

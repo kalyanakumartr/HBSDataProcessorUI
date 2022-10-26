@@ -3,7 +3,7 @@
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
       <b><label class="heading">
       <ng-container >
-        <ng-container >Create Add PO Limit  </ng-container>
+        <ng-container >Add PO Limit  </ng-container>
      </ng-container>
     </label></b>
     </div>
@@ -16,29 +16,9 @@
       </div>
     </ng-container>
 
-    <ng-container *ngIf="customer">
+    <ng-container *ngIf="poLimit">
       <form action="#" class="form form-label-right" [formGroup]="formGroup">
         <div class="form-group row">
-      <!--     <div class="col-lg-3">
-            <label class="form-label"> PO Number ID</label>
-
-            <input type="text" class="form-control form-control-lg form-control-solid" name="poNumberId"
-              placeholder="PO Number ID" autocomplete="off" [class.is-invalid]="isControlInvalid('poNumberId')" maxlength=20
-              [class.is-valid]="isControlValid('poNumberId')" formControlName="poNumberId" />
-
-          </div>
-          <div class="col-lg-3">
-            <label class="form-label">Client Name</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="clientName"
-              placeholder="Client Name" autocomplete="off" [class.is-invalid]="isControlInvalid('clientName')" maxlength=50
-              [class.is-valid]="isControlValid('clientName')" formControlName="clientName" />
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'clientName')">Client Name is required</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'clientName')">Client Name should have at
-              least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'clientName')">Client Name should have
-              maximum 50 characters</div>
-          </div>
--->
 
           <div class="col-lg-3">
             <label class="form-label">PO Number</label>
@@ -52,7 +32,7 @@
               maximum 50 characters</div>
           </div>
 
-          <div class="col-lg-3">
+          <div class="col-lg-6">
             <label>PO Dated</label>
             <div class="input-group input-group-solid">
               <input type="text" name="poDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
@@ -89,7 +69,7 @@
 
   <div class="modal-footer">
     <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
-    <ng-container *ngIf="customer">
+    <ng-container *ngIf="poLimit">
 
       <button type="submit" class="btn btn-primary btn-elevate" (click)="save()">Save</button>
     </ng-container>
