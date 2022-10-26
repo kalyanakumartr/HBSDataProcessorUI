@@ -70,13 +70,13 @@
           </div>
           <div class="col-lg-3">
             <label class="form-label">PO Approved Limit</label>
-            <input type="text" class="form-control form-control-lg form-control-solid" name="paLimit"
-              placeholder="PO Approved Limit" autocomplete="off" [class.is-invalid]="isControlInvalid('paLimit')" maxlength=50
-              [class.is-valid]="isControlValid('paLimit')" formControlName="paLimit" />
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'paLimit')">PO Number is required</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'paLimit')">PO Number should have at
+            <input type="text" class="form-control form-control-lg form-control-solid" name="poLimit"
+              placeholder="PO Approved Limit" autocomplete="off" [class.is-invalid]="isControlInvalid('poLimit')" maxlength=50
+              [class.is-valid]="isControlValid('poLimit')" formControlName="poLimit" />
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'poLimit')">PO Number is required</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'poLimit')">PO Number should have at
               least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'paLimit')">PO Number should have
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'poLimit')">PO Number should have
               maximum 50 characters</div>
           </div>
 

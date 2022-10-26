@@ -1,9 +1,13 @@
 +<div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">PO dual-list</h3>
+      <h3 class="card-label">ADD PO List And Create</h3>
+      </div>
+      <div>
+        <label>Client Name : {{clientName}}</label> <br>
+      <label>Project Name  : {{projectName}}</label>
 
-    </div>
+      </div>
     <div class="card-toolbar">
       <button type="button" class="btn btn-primary" (click)="createPO()">Add PO</button>
       <button type="button" #closebutton class="close" data-dismiss="modal" (click)="close()">&times;</button>

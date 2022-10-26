@@ -16,7 +16,7 @@ import { ProjectService } from '../../auth/_services/project.services';
 })
 export class RoadtypeCreateComponent implements OnInit {
   @Input() poDetailId: string;
-  @Input() roadId: string;
+  @Input() projectId: string;
   @Input() clientName: string;
   isLoading$;
   isAdminRole: boolean;
@@ -57,19 +57,7 @@ export class RoadtypeCreateComponent implements OnInit {
   ngOnInit(): void {}
 
   save() {
-    var invalid = this.findInvalidControls();
-    var isValid = false; //invalid.length>0?false:true;
-    if (isValid) {
-      if (this.customer.id) {
-        /*  this.prepareCustomer("Edit");
-        this.edit();*/
-      } else {
-        /*this.prepareCustomer("Create");
-        this.create();*/
-      }
-    } else {
-      alert('Please add valid values for ' + invalid);
-    }
+
   }
   findInvalidControls() {
     throw new Error('Method not implemented.');

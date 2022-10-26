@@ -194,7 +194,7 @@
                 {{ roadType.poDetail != null? roadType.poDetail.pendingWork : 0}}
               </td>
               <td>
-                <button type="button" class="btn btn-primary" (click)="addPO(roadType.poDetail?roadType.poDetail.poDetailId:'PO1000',roadType.roadId,roadType.project.divisionId)">
+                <button type="button" class="btn btn-primary" (click)="addPO(roadType.poDetail?roadType.poDetail.poDetailId:'00',roadType.project.projectId,roadType.project.divisionId, roadType.project.ProjectName,roadType.project.clientName, roadType)">
                   View PO List
                 </button>
               </td>

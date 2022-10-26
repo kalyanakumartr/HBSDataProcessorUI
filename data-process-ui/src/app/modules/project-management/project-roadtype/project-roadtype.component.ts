@@ -222,13 +222,17 @@ export class ProjectRoadtypeComponent
       alert('please Select division');
     }
   }
-  addPO(poDetailId: string, roadId: string, divisionId: string){
+  addPO(poDetailId: string, projectId: string, divisionId: string,projectName:string,clientName:string,roadType:any){
     const modalRef = this.modalService.open(RoadtypePoListComponent, {
       size: 'xl',
     });
     modalRef.componentInstance.poDetailId = poDetailId;
-    modalRef.componentInstance.roadId = roadId;
+    modalRef.componentInstance.projectId = projectId;
+    modalRef.componentInstance.projectName = projectName;
     modalRef.componentInstance.divisionId = divisionId;
+    modalRef.componentInstance.clientName = clientName;
+    modalRef.componentInstance.roadTypeObj = roadType;
+
   }
   getDepartment() {
     this.projectService

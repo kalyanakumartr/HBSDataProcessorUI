@@ -56,6 +56,7 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
     protected http: HttpClient;
   API_URL = `${environment.adminApiUrl}`;
   VIEW_API_URL = `${environment.viewApiUrl}`;
+  private _errorMsg: any;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
     this._tableState$ = this._taskTableState$;
@@ -186,6 +187,32 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
   },{headers: httpHeaders}).pipe(
       catchError(err => {
 
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  createSubCountry(subCountry, path, ){
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, subCountry,{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  assignSubCountryToProject(subCountryArray, projectId, path, ){
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"countryList":subCountryArray,"projectId":projectId},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
         console.error('FIND ITEMS', err);
         return of({ items: [], total: 0 });
       })

@@ -55,11 +55,10 @@ export class ProjectSubcountryListComponent implements OnInit {
   }
   subCountry()
   {
-    const modalRef = this.modalService.open(AddSubcountryComponent, { size: 'xl' });
-
+      const modalRef = this.modalService.open(AddSubcountryComponent, { size: 'xl' });
   }
   projectAssignSubcountry(){
-    if(this.project){
+    if(this.project != "0: 0"){
       const modalRef = this.modalService.open(ProjectAssignSubcountryComponent, { size: 'xl' });
       modalRef.componentInstance.projectId = this.project;
     }else{

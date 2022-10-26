@@ -1,4 +1,5 @@
 import { Component, Input, IterableDiffers, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DualListComponent } from 'angular-dual-listbox';
 import { of } from 'rxjs';
@@ -35,6 +36,7 @@ export class ProjectAssignSubcountryComponent implements OnInit {
 
   constructor(
     private projectService: ProjectService,
+    private snackBar: MatSnackBar,
     public modal: NgbActiveModal
   ) {
 
@@ -42,8 +44,27 @@ export class ProjectAssignSubcountryComponent implements OnInit {
 
   save(){
     console.log("Save confirmedSubCountry", this.confirmed);
-  }
+    var selectedSubCountry = [];
+    this.confirmed.forEach(el=>{
+      selectedSubCountry.push(el.country);
+    })
+    const sbCreate = this.projectService.assignSubCountryToProject(selectedSubCountry,this.projectId, "/mapSubCountry").pipe(
+      tap(() => {
+         this.modal.close();
+       }),
+       catchError((errorMessage) => {
+         this.modal.dismiss(errorMessage);
+         return of(errorMessage);
+       }),
+     ).subscribe(res =>this.openSnackBar(res.messageCode?"SubCountry mapped Successfully":res,"!!"));
 
+  }
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition:"top"
+    });
+  }
   ngOnInit(): void {
     this.doReset();
   }

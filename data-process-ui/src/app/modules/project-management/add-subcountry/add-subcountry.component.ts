@@ -9,7 +9,19 @@ import {
   NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectService } from '../../auth/_services/project.services';
-
+import { SubCountry } from '../../auth/_models/sub-country.model';
+import { catchError, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+const EMPTY_SUBCOUNTRY: SubCountry = {
+  country: '',
+  countryName: '',
+  displayOrder: 0,
+  priority: '',
+  status:'',
+  value:'',
+  label:''
+}
 @Component({
   selector: 'app-add-subcountry',
   templateUrl: './add-subcountry.component.html',
@@ -18,70 +30,53 @@ import { ProjectService } from '../../auth/_services/project.services';
 export class AddSubcountryComponent implements OnInit {
   @Input() id: string;
   isLoading$;
-  isAdminRole: boolean;
-  customer: UserModel;
   formGroup: FormGroup;
-  minDate: NgbDateStruct;
-  maxDate: NgbDateStruct;
+  subCountry: SubCountry;
 
 
   constructor(
     private projectService: ProjectService,
-    private authService: AuthService,
-    private config: NgbDatepickerConfig,
-    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
     public modal: NgbActiveModal)
-
     {
-      this.customer = new UserModel();
-
-    const current = new Date();
-    console.log(current.getFullYear(), current.getMonth(), current.getDate());
-    this.minDate = {
-      year: 2000,
-      month: 1,
-      day: 1,
-    };
-    this.maxDate = {
-      year: current.getFullYear() - 18,
-      month: current.getMonth() + 1,
-      day: current.getDate(),
-    };
-
-
-
-    this.formGroup = new FormGroup({
-      subCountryId: new FormControl(),
-      /*department: new FormControl(),
-      projectId: new FormControl(),
-      division: new FormControl(),
-      clientName: new FormControl(),
-      projectName: new FormControl(),*/
-      SubCountryname: new FormControl(),
-      Priority: new FormControl(),
-      dStatus: new FormControl(),
-        });
+      this.formGroup = new FormGroup({
+        countryName: new FormControl(),
+        priority: new FormControl(),
+        dStatus: new FormControl(),
+        displayOrder: new FormControl()
+          });
 
 
     }
-  ngOnInit(): void {  }
+  ngOnInit(): void {
+    this.subCountry = EMPTY_SUBCOUNTRY;
+   }
   findInvalidControls() {}
   save() {
-    var invalid = this.findInvalidControls();
-    var isValid = false; //invalid.length>0?false:true;
-    if (isValid) {
-      if (this.customer.id) {
-        /*  this.prepareCustomer("Edit");
-        this.edit();*/
-      } else {
-        /*this.prepareCustomer("Create");
-        this.create();*/
-      }
-    } else {
-      alert('Please add valid values for ' + invalid);
-    }
-  }
+    const formData = this.formGroup.value;
 
+    this.subCountry.countryName = formData.countryName;
+    this.subCountry.priority = formData.priority;
+    this.subCountry.status = formData.dStatus;
+    this.subCountry.displayOrder = formData.displayOrder?formData.displayOrder:101;
+
+    const sbCreate = this.projectService.createSubCountry(this.subCountry,"/addSubCountry").pipe(
+     tap(() => {
+        this.modal.close();
+      }),
+      catchError((errorMessage) => {
+        this.modal.dismiss(errorMessage);
+        return of(errorMessage);
+      }),
+    ).subscribe(res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
+
+   }
+   openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition:"top"
+    });
+  }
   isControlValid(controlName: string): boolean {
     const control = this.formGroup.controls[controlName];
     return control.valid && (control.dirty || control.touched);

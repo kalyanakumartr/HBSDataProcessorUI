@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { POLimit } from '../../auth/_models/po-limit.model';
+//import{addProject}
 
 @Component({
   selector: 'app-roadtype-po-list',
@@ -19,6 +20,12 @@ import { POLimit } from '../../auth/_models/po-limit.model';
   styleUrls: ['./roadtype-po-list.component.scss']
 })
 export class RoadtypePoListComponent implements OnInit, OnDestroy, AfterViewInit{
+  @Input() poDetailId: string;
+  @Input() projectId: string;
+  @Input() projectName: string;
+  @Input() divisionId: string;
+  @Input() clientName: string;
+  @Input() roadTypeObj: any;
   paginator: PaginatorState;
   isLoading: boolean;
   sort: any;
@@ -29,13 +36,11 @@ export class RoadtypePoListComponent implements OnInit, OnDestroy, AfterViewInit
     private snackBar: MatSnackBar,
     private _router: Router,
     public roadTypeService: RoadtypeService,
+
     public projectService: ProjectService
     ) { }
-  @Input() poDetailId: string;
-  @Input() roadId: string;
-  @Input() clientName: string;
   displayedColumns = [ 'poNumber','poDate','poLimit','Action'];
-  dataSource = new MatTableDataSource<POLimit>();
+    dataSource = new MatTableDataSource<POLimit>();
 
 
 
@@ -76,11 +81,12 @@ export class RoadtypePoListComponent implements OnInit, OnDestroy, AfterViewInit
     this.modalService.dismissAll();
   }
   createPO(){
+    alert(this.projectService.getProjectList.name);
     const modalRef = this.modalService.open(RoadtypeCreateComponent, {
-      size: 'xl',
+      size: 'lg',
     });
     modalRef.componentInstance.poDetailId = this.poDetailId;
-    modalRef.componentInstance.roadId = this.roadId;
+    modalRef.componentInstance.projectId = this.projectId;
     modalRef.componentInstance.clientName = this.clientName;
   }
 
