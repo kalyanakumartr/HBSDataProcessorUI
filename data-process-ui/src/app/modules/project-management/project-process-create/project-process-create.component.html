@@ -19,7 +19,7 @@
       </ng-container>
 
 
-      <ng-container *ngIf="subProcess">
+      <ng-container *ngIf="process">
         <form action="#" class="form form-label-right" [formGroup]="formGroup">
           <div class="form-group row">
             <div class="col-lg-3">
@@ -63,7 +63,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
-          <ng-container *ngIf="subProcess">
+          <ng-container *ngIf="process">
 
             <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
               >Save</button>
