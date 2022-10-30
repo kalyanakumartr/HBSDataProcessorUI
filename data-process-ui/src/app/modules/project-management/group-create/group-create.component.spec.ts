@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RoadtypeCreateComponent } from './roadtype-create.component';
+import { GroupCreateComponent } from './group-create.component';
 
-describe('RoadtypeCreateComponent', () => {
-  let component: RoadtypeCreateComponent;
-  let fixture: ComponentFixture<RoadtypeCreateComponent>;
+describe('GroupCreateComponent', () => {
+  let component: GroupCreateComponent;
+  let fixture: ComponentFixture<GroupCreateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RoadtypeCreateComponent ]
+      declarations: [ GroupCreateComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RoadtypeCreateComponent);
+    fixture = TestBed.createComponent(GroupCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

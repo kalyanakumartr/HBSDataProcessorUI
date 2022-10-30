@@ -9,6 +9,7 @@ import { Department } from '../_models/department.model';
 import { Project } from '../_models/project.model';
 import { Team } from '../_models/team.model';
 import { SubCountry } from '../_models/sub-country.model';
+import { Process } from '../../time-tracker/modal/process.model';
 
 const DEFAULT_STATE: IProjectTableState = {
   filter: {},
@@ -211,6 +212,45 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
     return this.http.post(url, {"countryList":subCountryArray,"projectId":projectId},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  getProcessList(projectId){
+    const url = this.VIEW_API_URL + "/getProcessList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<Array<Process>>(url, {"projectId":projectId},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  createProcess(process, path, ){
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url,{"formProcess": process},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  assignProcessToProject(processArray, projectId, path, ){
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"ProcessList":processArray,"projectId":projectId},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMsg.next(err);
         console.error('FIND ITEMS', err);

@@ -166,7 +166,7 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
       modifiedDate:[this.roadType?this.roadType.milesPercentSet[0].modifiedDate:'', Validators.compose([])],
       clientName: [this.roadType?this.roadType.project.clientName:'', Validators.compose([])],
       benchMark: [this.roadType?this.roadType.milesPercentSet[0].benchMark:'', Validators.compose([])],
-      dStatus: [this.roadType?this.roadType.milesPercentSet[0].status:'', Validators.compose([])],
+      dStatus: [this.roadType?(this.roadType.milesPercentSet[0].status==true?"Active":"Inactive"):'', Validators.compose([])],
       units: [this.roadType?this.roadType.milesPercentSet[0].units:'', Validators.compose([])],
       production: [this.roadType?this.roadType.milesPercentSet[0].production:'', Validators.compose([])],
       qualityControl: [this.roadType?this.roadType.milesPercentSet[0].qualityControl:'', Validators.compose([])],

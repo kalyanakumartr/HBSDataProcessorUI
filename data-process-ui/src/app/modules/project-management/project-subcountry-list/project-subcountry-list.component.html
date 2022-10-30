@@ -23,7 +23,7 @@
         <ng-container *ngIf="showDepartment">
         <label>Department</label>
         <select class="form-control form-control-lg form-control-solid" name="department"  [(ngModel)]="department"
-           formControlName="department" (change)="setDepartment($event.target.value)">
+            (change)="setDepartment($event.target.value)">
           <option [ngValue]="0" [selected]=true>Select Department</option>
           <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
             {{ department.departmentName }}
@@ -39,7 +39,7 @@
         <ng-container *ngIf="showDivision">
         <label>Division</label>
         <select class="form-control form-control-lg form-control-solid" name="division"  [(ngModel)]="division"
-           formControlName="division" (change)="setDivision($event.target.value)">
+            (change)="setDivision($event.target.value)">
            <option [ngValue]="0" [selected]=true>Select Division</option>
           <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
             {{ division.divisionName }}
@@ -54,7 +54,7 @@
       <div class="col-lg-3">
         <label>Project</label>
         <select class="form-control form-control-lg form-control-solid" name="project"  [(ngModel)]="project"
-           formControlName="project" (change)="setProject($event.target.value)">
+            (change)="setProject($event.target.value)">
            <option [ngValue]="0" [selected]=true>Select Project</option>
           <option *ngFor="let project of projectList" [ngValue]="project.projectId">
             {{ project.projectName }}

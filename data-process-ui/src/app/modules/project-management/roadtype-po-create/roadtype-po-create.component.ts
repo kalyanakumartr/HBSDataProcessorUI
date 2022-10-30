@@ -18,16 +18,17 @@ import { POLimit } from '../../auth/_models/po-limit.model';
 import { ProjectService } from '../../auth/_services/project.services';
 import { RoadtypeService } from '../../auth/_services/roadtype.services';
 
+
 @Component({
-  selector: 'app-roadtype-create',
-  templateUrl: './roadtype-create.component.html',
-  styleUrls: ['./roadtype-create.component.scss'],
+  selector: 'app-roadtype-po-create',
+  templateUrl: './roadtype-po-create.component.html',
+  styleUrls: ['./roadtype-po-create.component.scss'],
   providers: [
     {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
   ]
 })
-export class RoadtypeCreateComponent implements OnInit {
+export class RoadtypePoCreateComponent implements OnInit {
   @Input() poDetailId: string;
   @Input() projectId: string;
   @Input() clientName: string;
@@ -74,7 +75,7 @@ export class RoadtypeCreateComponent implements OnInit {
          this.modal.dismiss(errorMessage);
          return of(errorMessage);
        }),
-     ).subscribe(res =>this.openSnackBar(res.messageCode?"PO Limitadded Successfully":res,"!!"));
+     ).subscribe(res =>this.openSnackBar(res.messageCode?"PO Limit added Successfully":res,"!!"));
 
   }
   openSnackBar(message: string, action: string) {

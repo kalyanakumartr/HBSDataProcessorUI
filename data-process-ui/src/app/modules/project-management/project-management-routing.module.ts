@@ -4,11 +4,10 @@ import { AddSubcountryComponent } from './add-subcountry/add-subcountry.componen
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectManagementComponent } from './project-management.component';
-import { ProjectRoadtypeComponent } from './project-roadtype/project-roadtype.component';
+import { ProjectProcessListComponent } from './project-process-list/project-process-list.component';
 import { ProjectSubcountryListComponent } from './project-subcountry-list/project-subcountry-list.component';
-import { ProjectTaskListComponent } from './project-task-list/project-task-list.component';
 import { ProjectTemplateComponent } from './project-template/project-template.component';
-import { RoadtypeCreateComponent } from './roadtype-create/roadtype-create.component';
+import { RoadtypeListComponent } from './roadtype-list/roadtype-list.component';
 
 
 const routes: Routes = [
@@ -26,12 +25,9 @@ const routes: Routes = [
       },
       {
         path: 'project-road-type-list',
-        component: ProjectRoadtypeComponent,
+        component: RoadtypeListComponent,
       },
-      {
-        path: 'road-type',
-        component: RoadtypeCreateComponent,
-      },
+
       {
         path: 'project-subcountry-List',
         component: ProjectSubcountryListComponent,
@@ -42,7 +38,7 @@ const routes: Routes = [
       },
       {
         path: 'project-task-List',
-        component: ProjectTaskListComponent,
+        component: ProjectProcessListComponent,
       },
       {
         path: 'project-template',

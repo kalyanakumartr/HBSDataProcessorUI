@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProjectRoadtypeComponent } from './project-roadtype.component';
+import { TeamCreateComponent } from './team-create.component';
 
-describe('ProjectRoadtypeComponent', () => {
-  let component: ProjectRoadtypeComponent;
-  let fixture: ComponentFixture<ProjectRoadtypeComponent>;
+describe('TeamCreateComponent', () => {
+  let component: TeamCreateComponent;
+  let fixture: ComponentFixture<TeamCreateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProjectRoadtypeComponent ]
+      declarations: [ TeamCreateComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProjectRoadtypeComponent);
+    fixture = TestBed.createComponent(TeamCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,115 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Project Process Create</h3>
+    </div>
+    <div class="card-toolbar">
+     <div class="grid-item" style="cursor: pointer;">
+        &nbsp;&nbsp;
+     </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary" (click)="taskCreate()">Add Process Create List</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="form form-label-right">
+      <div class="form-group row" [formGroup]="searchGroup">
+       <div class="col-lg-2">
+        <label>Department</label>
+             <select class="form-control form-control-lg"
+                  name="department"
+                  [(ngModel)]="department"
+                  formControlName="department"
+                  (change)="setDepartment($event.target.value)" >
+                    <option [ngValue]="0" [selected]="true">Select Department				</option>
+                      <option *ngFor="let department of departmentList" [ngValue]="department.departmentId" >
+                        {{ department.departmentName }}
+                      </option>
+                  </select>
+              </div>
+
+      <!-- Division St-->
+      <div class="col-lg-2">
+              <label>Division</label>
+              <select
+                class="form-control form-control-lg"
+                name="division"
+                [(ngModel)]="division"
+                formControlName="division"
+                (change)="setDivision($event.target.value)"
+              >
+                <option [ngValue]="0" [selected]="true">Select Division</option>
+                <option
+                  *ngFor="let division of divisionList"
+                  [ngValue]="division.divisionId"
+                >
+                  {{ division.divisionName }}
+                </option>
+              </select>
+            </div>
+            <!-- Division End-->
+    <!-- Project St-->
+
+            <div class="col-lg-3">
+              <label>Project</label>
+              <select
+                class="form-control form-control-lg form-control-solid"
+                name="project"
+                [(ngModel)]="project"
+                formControlName="project"
+                (change)="setProject($event.target.value)"
+              >
+                <option [ngValue]="0" [selected]="true">Select Project</option>
+                <option
+                  *ngFor="let project of projectList"
+                  [ngValue]="project.projectId"
+                >
+                  {{ project.projectName }}
+                </option>
+
+              </select>
+            </div>
+    <!-- Project End-->
+    <div  class="col-lg-3">
+      <label>&nbsp;</label><br/>
+      <button type="button" class="btn btn-primary" (click)="projectAssignTask()">Assign Process to Project</button>
+    </div>
+    <!-- Filter St-->
+    <div class="col-lg-2">
+              <div class="grid-item" style="cursor: pointer">
+                &nbsp;<br />&nbsp;
+
+                <i
+                  class="fas fa-filter fa-2x"
+                ></i>
+              </div>
+            </div>
+    </div><!-- Filter End -->
+    <!-- End: Filtration form -->
+    </div>
+
+    </div>
+<div style=" padding: 0px 10px 10px 20px;">
+  <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
+
+
+    <!-- Position Column -->
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="processName">
+      <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Process Name </mat-header-cell>
+      <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.processName}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="billType">
+      <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> BillType </mat-header-cell>
+      <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.billType}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Display Status </mat-header-cell>
+      <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.status}} </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    </div>
+
+</div>

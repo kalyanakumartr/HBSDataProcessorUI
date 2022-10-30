@@ -1,0 +1,74 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <b><label class="heading">
+      <ng-container >
+
+        <ng-container >Create Task Create </ng-container>
+      </ng-container>
+    </label></b>
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+    </div>
+
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+      <ng-container *ngIf="isLoading$ | async">
+        <div class="overlay-layer bg-transparent">
+          <div class="spinner spinner-lg spinner-success"></div>
+        </div>
+      </ng-container>
+
+
+      <ng-container *ngIf="subProcess">
+        <form action="#" class="form form-label-right" [formGroup]="formGroup">
+          <div class="form-group row">
+            <div class="col-lg-3">
+              <label class="form-label">Process Name</label>
+              <input type="text" class="form-control form-control-lg" name="taskName"
+                placeholder="Process Name" autocomplete="off" [class.is-invalid]="isControlInvalid('processName')" maxlength=50
+                [class.is-valid]="isControlValid('processName')" formControlName="processName" />
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'processName')">Task Name is required</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'processName')">Task Name should have at
+                least 3 symbols</div>
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'processName')">Task Name should have
+                maximum 50 characters</div>
+            </div>
+
+            <div class="col-lg-3">
+              <label class="form-label">Billable Type</label>
+              <select class="form-control form-control-lg" name="billType"
+                [class.is-invalid]="isControlInvalid('billType')" formControlName="billType">
+                <option value="B">B</option>
+                <option value="NBP">NBP</option>
+                <option value="NBNP">NBNP</option>
+
+              </select>
+              </div>
+
+              <div class="col-lg-3">
+                <label>Display Status </label>
+                <select class="form-control form-control-lg" name="displayStatus"
+                  [class.is-invalid]="isControlInvalid('displayStatus')" formControlName="displayStatus">
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+
+                </select>
+                <div class="feedback">Display <b>Status</b></div>
+              </div>
+
+
+            </div>
+          </form>
+        </ng-container>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+          <ng-container *ngIf="subProcess">
+
+            <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+              >Save</button>
+          </ng-container>
+        </div>
+
+
+    </div>

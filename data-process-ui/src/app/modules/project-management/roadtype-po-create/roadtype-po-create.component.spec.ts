@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProjectTaskListComponent } from './project-task-list.component';
+import { RoadtypePoCreateComponent } from './roadtype-po-create.component';
 
-describe('ProjectTaskListComponent', () => {
-  let component: ProjectTaskListComponent;
-  let fixture: ComponentFixture<ProjectTaskListComponent>;
+describe('RoadtypePoCreateComponent', () => {
+  let component: RoadtypePoCreateComponent;
+  let fixture: ComponentFixture<RoadtypePoCreateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProjectTaskListComponent ]
+      declarations: [ RoadtypePoCreateComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProjectTaskListComponent);
+    fixture = TestBed.createComponent(RoadtypePoCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

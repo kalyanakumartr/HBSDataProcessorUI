@@ -4,14 +4,13 @@ import { FormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaginatorState } from 'src/app/_metronic/shared/crud-table';
-import { ItItemsModel } from '../../auth/_models/it-items.model';
 import { RoadtypeService } from '../../auth/_services/roadtype.services';
-import { RoadtypeCreateComponent } from '../roadtype-create/roadtype-create.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { POLimit } from '../../auth/_models/po-limit.model';
+import { RoadtypePoCreateComponent } from '../roadtype-po-create/roadtype-po-create.component';
 //import{addProject}
 
 @Component({
@@ -95,7 +94,7 @@ export class RoadtypePoListComponent implements OnInit, OnDestroy, AfterViewInit
     this.modalService.dismissAll();
   }
   createPO(){
-    const modalRef = this.modalService.open(RoadtypeCreateComponent, {
+    const modalRef = this.modalService.open(RoadtypePoCreateComponent, {
       size: 'lg',
     });
     modalRef.componentInstance.poDetailId = this.poDetailId;
