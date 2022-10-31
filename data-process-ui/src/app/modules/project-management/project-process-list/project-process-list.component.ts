@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { ProjectService } from '../../auth/_services/project.services';
 import { Process } from '../../time-tracker/modal/process.model';
 import { ProjectAssignProcessComponent } from '../project-assign-process/project-assign-process.component';
@@ -28,9 +28,10 @@ export class ProjectProcessListComponent implements OnInit {
   showDepartment:boolean;
   private subProcessList: Array<Process> =[];
   displayedColumns = [ 'processName','billType','status'];
+  subscriptions: any;
 
 
-  constructor(
+  constructor( private fb: FormBuilder,
     private modalService:NgbModal,public projectService: ProjectService){
       this.projectList=[];
       this.divisionList=[];
@@ -154,6 +155,28 @@ export class ProjectProcessListComponent implements OnInit {
     }else{
       alert("Please Select the Project");
     }
+  }
+  searchForm() {
+    this.searchGroup = this.fb.group({
+      searchTerm: [''],
+      department:['0'],
+      division:['0'],
+      project:['0']
+    });
+    const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
+      .pipe(
+        /*
+      The user can type quite quickly in the input box, and that could trigger a lot of server requests. With this operator,
+      we are limiting the amount of server requests emitted to a maximum of one every 150ms
+      */
+        debounceTime(150),
+        distinctUntilChanged()
+      )
+      .subscribe((val) => this.search(val));
+    this.subscriptions.push(searchEvent);
+  }
+  search(searchTerm: string) {
+//    this.userService.patchState({ searchTerm },"/searchUser");
   }
   clearFilter(){
 

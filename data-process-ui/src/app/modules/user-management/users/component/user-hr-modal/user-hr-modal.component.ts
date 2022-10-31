@@ -157,6 +157,11 @@ const EMPTY_CUSTOMER: UserModel = {
       employeeId:'',
       divisionId:'',
       divisionName:'',
+      status:true,
+      type:'',
+      reportingName:'',
+      fullName:'',
+      reportingTo:''
     },
     group:{
       teamId: 'GRP9999',
@@ -166,6 +171,11 @@ const EMPTY_CUSTOMER: UserModel = {
       employeeId:'',
       divisionId:'',
       divisionName:'',
+      status:true,
+      type:'',
+      reportingName:'',
+      fullName:'',
+      reportingTo:''
     },
     deploy:{
       deploymentId: 'DLP0001',

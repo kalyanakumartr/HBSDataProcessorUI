@@ -158,6 +158,11 @@ const EMPTY_CUSTOMER: UserModel = {
       employeeId:'',
       divisionId:'',
       divisionName:'',
+      status:true,
+      type:'',
+      reportingName:'',
+      fullName:'',
+      reportingTo:''
     },
     group:{
       teamId: '',
@@ -167,6 +172,11 @@ const EMPTY_CUSTOMER: UserModel = {
       employeeId:'',
       divisionId:'',
       divisionName:'',
+      status:true,
+      type:'',
+      reportingName:'',
+      fullName:'',
+      reportingTo:''
     },
     deploy:{
       deploymentId: '',

@@ -25,6 +25,10 @@ export class SortStateProject implements ISortState {
   column = 'projectDetail.modifiedDate'; // Id by default
   direction: SortDirection = 'desc'; // asc by default;
 }
+export class SortGroupTeam implements ISortState {
+  column = 'groupName'; // Id by default
+  direction: SortDirection = 'asc'; // asc by default;
+}
 export class SortStateRoadType implements ISortState {
   column = 'roadName'; // Id by default
   direction: SortDirection = 'desc'; // asc by default;

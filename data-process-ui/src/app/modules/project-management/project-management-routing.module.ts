@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AddSubcountryComponent } from './add-subcountry/add-subcountry.component';
+import { GroupListComponent } from './group-list/group-list.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectManagementComponent } from './project-management.component';
@@ -8,6 +9,7 @@ import { ProjectProcessListComponent } from './project-process-list/project-proc
 import { ProjectSubcountryListComponent } from './project-subcountry-list/project-subcountry-list.component';
 import { ProjectTemplateComponent } from './project-template/project-template.component';
 import { RoadtypeListComponent } from './roadtype-list/roadtype-list.component';
+import { TeamListComponent } from './team-list/team-list.component';
 
 
 const routes: Routes = [
@@ -43,6 +45,14 @@ const routes: Routes = [
       {
         path: 'project-template',
         component: ProjectTemplateComponent,
+      },
+      {
+        path: 'project-group',
+        component: GroupListComponent,
+      },
+      {
+        path: 'project-team',
+        component: TeamListComponent,
       },
       { path: '', redirectTo: 'project-list', pathMatch: 'full' },
       { path: '**', redirectTo: 'project-list', pathMatch: 'full' },
