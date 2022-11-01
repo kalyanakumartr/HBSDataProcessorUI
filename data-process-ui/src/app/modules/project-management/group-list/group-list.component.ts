@@ -76,7 +76,7 @@ export class GroupListComponent implements
       this.division="0: 0";
       this.department="0: 0";
     }
-    this.project="0: 0";
+
     this.groupTeamService.fetch('/searchGroupTeam');
     console.log('UserList :', this.subscriptions);
     this.grouping = this.groupTeamService.grouping;
