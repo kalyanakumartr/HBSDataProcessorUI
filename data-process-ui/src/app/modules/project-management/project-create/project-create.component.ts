@@ -210,6 +210,7 @@ export class ProjectCreateComponent implements OnInit {
     this.project.projectDetail.projectType = formData.projectType;
     this.project.projectDetail.projectmanagerName = formData.projectmanagerName;
     //this.project.projectDetail.createdDate= formData.projectcdate; //projectCreatedDates
+    //this.project.projectDetail.mo= formData.projectcdate; //projectCreatedDates
 
     this.project.projectDetail.poNumber = formData.poNumber;
     this.project.projectDetail.poDated = formData.poDate;

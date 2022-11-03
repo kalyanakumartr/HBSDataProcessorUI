@@ -16,6 +16,8 @@ export class UpdatePasswordComponent implements OnInit {
   name:string;
   formGroup: FormGroup;
   password:string;
+  inputType:string;
+  inputType1:string;
   user$: Observable<UserModel>;
   firstUserState: UserModel;
   subscriptions: Subscription[] = [];
@@ -29,6 +31,8 @@ export class UpdatePasswordComponent implements OnInit {
     this.user$ = this.auth.currentUserSubject.asObservable();
     this.user$.pipe(first()).subscribe(value => { this.id=value.userId; this.name =value.userName;});
      this.loadForm();
+     this.inputType="password";
+     this.inputType1="password";
   }
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
@@ -72,7 +76,29 @@ export class UpdatePasswordComponent implements OnInit {
     this.password ='';
     this.loadForm();
   }
+  public showPassword(event:any):void
+  {
+    if(event.target.checked){
+      //alert('Checked');
+      this.inputType="text";
+    }
+    else
+    {
+      this.inputType="password";
+    }
+  }
 
+  public newpassword(event:any):void
+  {
+    if(event.target.checked){
+      //alert('Checked');
+      this.inputType1="text";
+    }
+    else
+    {
+      this.inputType1="password";
+    }
+  }
   // helpers for View
   isControlValid(controlName: string): boolean {
     const control = this.formGroup.controls[controlName];

@@ -12,6 +12,7 @@ export interface ITableState {
   projectId: string;
   groupId:string;
   teamId:string;
+  type:string;//Group or Team
   fromDate: string;
   toDate: string;
   status: string;

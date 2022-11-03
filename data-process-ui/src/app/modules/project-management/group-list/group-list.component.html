@@ -7,8 +7,8 @@
       <div class="grid-item" style="cursor: pointer">&nbsp;&nbsp;</div>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-      <button type="button" class="btn btn-primary" (click)="addgroup()">
-        Add Group List
+      <button type="button" class="btn btn-primary" (click)="create()">
+        Create Group
       </button>
     </div>
   </div>
@@ -87,7 +87,7 @@
         <tr>
           <th class="sticky-header">Edit</th>
 
-          <th nowrap>S NO</th>
+
           <th nowrap>Group Name</th>
           <th>Project Leader's Name</th>
           <th>Project Manager Name</th>
@@ -119,11 +119,23 @@
               </span>
             </a>
           </td>
-          <td>
+              <td>
             {{ group.groupName }}
           </td>
           <td>
-            {{ group.groupName }}
+            {{ group.fullName}}
+          </td>
+          <td>
+            {{ group.teamId }}
+          </td>
+          <td>
+            {{ group.teamName}}
+          </td>
+          <td>
+            {{ group.groupId}}
+          </td>
+          <td>
+            {{ group.status}}
           </td>
         </tr>
       </tbody>

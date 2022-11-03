@@ -6,6 +6,7 @@ import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operat
 import { GroupingState, ICreateAction, IDeleteAction, IDeleteSelectedAction, IEditAction, IFetchSelectedAction, IFilterView, IGroupingView, ISearchView, ISortView, IUpdateStatusForSelectedAction, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
 import { GroupTeamService } from '../../auth/_services/groupteam.services';
 import { ProjectService } from '../../auth/_services/project.services';
+import { GroupCreateComponent } from '../group-create/group-create.component';
 import { ProjectCreateComponent } from '../project-create/project-create.component';
 
 @Component({
@@ -76,7 +77,7 @@ export class GroupListComponent implements
       this.division="0: 0";
       this.department="0: 0";
     }
-
+    this.groupTeamService.patchStateWithoutFetch({ type: 'group' });
     this.groupTeamService.fetch('/searchGroupTeam');
     console.log('UserList :', this.subscriptions);
     this.grouping = this.groupTeamService.grouping;
@@ -189,7 +190,7 @@ export class GroupListComponent implements
 
   addProject(projectId: string, projectName:string,divisionId:string) {
     if(divisionId !="0: 0"){
-      const modalRef = this.modalService.open(ProjectCreateComponent, {
+      const modalRef = this.modalService.open(GroupCreateComponent, {
         size: 'xl',
       });
       modalRef.componentInstance.projectId = projectId;

@@ -24,6 +24,7 @@ const DEFAULT_STATE: ITableState = {
   projectId: '',
   groupId:'',
   teamId:'',
+  type:'',
   status:'',
   fromDate: '',
   toDate: '',

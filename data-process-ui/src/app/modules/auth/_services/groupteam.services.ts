@@ -18,6 +18,7 @@ const DEFAULT_STATE: IGroupTeamTableState = {
   searchTerm: '',
   divisionId: '',
   departmentId: '',
+  type:'',
   projectId: '',
   groupId:'',
   teamId:'',

@@ -21,6 +21,7 @@ const DEFAULT_STATE: IProjectTableState = {
   projectId: '',
   groupId:'',
   teamId:'',
+  type:'',
   grouping: new GroupingState(),
   entityId: undefined,
   employeeId: '',
