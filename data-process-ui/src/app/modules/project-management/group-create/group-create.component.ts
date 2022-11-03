@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
@@ -41,6 +41,7 @@ export class GroupCreateComponent implements OnInit {
   isLoading$;
   searchGroup: FormGroup;
   formGroup: FormGroup;
+  group:Team;
   userList:any[];
   private subscriptions: Subscription[] = [];
   constructor(
@@ -54,7 +55,7 @@ export class GroupCreateComponent implements OnInit {
       reportingManager: new FormControl(),
       groupName :new FormControl(),
       projectLeaderName:new FormControl(),
-      dstatus:new FormControl()
+      dStatus:new FormControl()
 
 
      } );
@@ -72,7 +73,7 @@ export class GroupCreateComponent implements OnInit {
 
   loadGorupId() {
     if (!this.groupId) {
-      //this.groupId = EMPTY_PROJECT;
+      this.group = EMPTY_PROJECT;
       this.loadForm();
     } else {
       console.log("this.id", this.groupId);
@@ -95,6 +96,13 @@ export class GroupCreateComponent implements OnInit {
     }
     }
 loadForm(){
+  this.formGroup = this.fb.group({
+    reportingManager: [this.group.reportingName, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(50)])],
+    groupName: [this.group.teamName, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)])],
+    projectLeaderName: [this.group.employeeId, Validators.compose([ ])],
+    dStatus: [this.group.status, Validators.compose([])],
+
+  });
 
 }
 
