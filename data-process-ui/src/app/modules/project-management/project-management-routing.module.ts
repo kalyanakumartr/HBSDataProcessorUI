@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AddSubcountryComponent } from './add-subcountry/add-subcountry.component';
+import { AssignTeamGroupComponent } from './assign-team-group/assign-team-group.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { ProjectListComponent } from './project-list/project-list.component';
@@ -27,9 +28,14 @@ const routes: Routes = [
       },
       {
         path: 'project-road-type-list',
+
         component: RoadtypeListComponent,
       },
 
+      {
+        path: 'project-assign-team-group',
+        component: AssignTeamGroupComponent
+      },
       {
         path: 'project-subcountry-List',
         component: ProjectSubcountryListComponent,
