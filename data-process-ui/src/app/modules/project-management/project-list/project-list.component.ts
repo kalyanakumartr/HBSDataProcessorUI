@@ -315,6 +315,10 @@ export class ProjectListComponent
       }
     }
   }
+
+
+
+
   getProjectForDivision() {
     this.projectList = [];
     this.projectService

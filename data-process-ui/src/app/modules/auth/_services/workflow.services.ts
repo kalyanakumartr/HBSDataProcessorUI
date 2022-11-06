@@ -7,9 +7,11 @@ import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { AuthHTTPService } from './auth-http';
 import { Department } from '../_models/department.model';
 import { Project } from '../_models/project.model';
-import { Team } from '../_models/team.model';
+//import { Team } from '../_models/team.model';
+import { Workflow } from '../_models/workflow.model';
 import { SubCountry } from '../_models/sub-country.model';
 import { Process } from '../../time-tracker/modal/process.model';
+import { Team } from '../_models/team.model';
 
 const DEFAULT_STATE: IProjectTableState = {
   filter: {},
@@ -17,6 +19,7 @@ const DEFAULT_STATE: IProjectTableState = {
   sorting: new SortStateProject(),
   searchTerm: '',
   divisionId: '',
+
   departmentId: '',
   projectId: '',
   groupId:'',
@@ -52,7 +55,7 @@ const DEFAULT_STATE: IProjectTableState = {
   providedIn: 'root'
 })
 
-export class ProjectService extends TableService<Project> implements OnDestroy {
+export class WorkflowService extends TableService<Workflow> implements OnDestroy{
     _taskTableState$ = new BehaviorSubject<IProjectTableState>(DEFAULT_STATE);
     isLoadingSubject: BehaviorSubject<boolean>;
     protected http: HttpClient;
@@ -81,63 +84,6 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
       })
     );
   }
-
-
-  getDeliveryModeList(){
-
-    const url = this.VIEW_API_URL + "/getDeliveryModeList";
-    const httpHeaders = new HttpHeaders({
-      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
-    });
-    //withmodel
-    //return this.http.post<UomDetail[]>(url, {},{headers: httpHeaders}).pipe(
-      //without Model
-      return this.http.post(url, {},{headers: httpHeaders}).pipe(
-      catchError(err => {
-
-        console.error('FIND ITEMS', err);
-        return of({ items: [], total: 0 });
-      })
-    );
-  }
-
-  getUomList(){
-
-    const url = this.VIEW_API_URL + "/getUnitMeasurementList";
-    const httpHeaders = new HttpHeaders({
-      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
-    });
-    //withmodel
-    //return this.http.post<UomDetail[]>(url, {},{headers: httpHeaders}).pipe(
-      //without Model
-      return this.http.post(url, {},{headers: httpHeaders}).pipe(
-      catchError(err => {
-
-        console.error('FIND ITEMS', err);
-        return of({ items: [], total: 0 });
-      })
-    );
-  }
-
-  getDeliveryTypeList(){
-
-    const url = this.VIEW_API_URL + "/getDeliveryTypeList";
-    const httpHeaders = new HttpHeaders({
-      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
-    });
-    //withmodel
-    //return this.http.post<UomDetail[]>(url, {},{headers: httpHeaders}).pipe(
-      //without Model
-      return this.http.post(url, {},{headers: httpHeaders}).pipe(
-      catchError(err => {
-
-        console.error('FIND ITEMS', err);
-        return of({ items: [], total: 0 });
-      })
-    );
-  }
-
-
   getDivisionList(department){
 
     const url = this.API_URL + "/getDivisionList"+"/"+department;
@@ -175,13 +121,23 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
     return this.http.post<Project>(url, {  },{ headers: httpHeaders, });
   }
 
+  getWorkflowId(id: string): Observable<Workflow> {
+
+    const url =`${this.VIEW_API_URL}/getAllocationGroup/${id}`;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<Workflow>(url, {  },{ headers: httpHeaders, });
+  }
+
+
   getGroupList(division){
 
     const url = this.API_URL + "/getGroupList/"+division;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post<Team[]>(url, {},{headers: httpHeaders}).pipe(
+    return this.http.post<Workflow[]>(url, {},{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);

@@ -44,9 +44,12 @@ const EMPTY_PROJECT: Project = {
     unitsOfMeasurement:'',
     projectmanagerName:'',
     createdDate:''
+  },
+//  uomDetail:  {
+  //  unitId:''
   }
 
-}
+
 @Component({
   selector: 'app-project-create',
   templateUrl: './project-create.component.html',
@@ -65,6 +68,9 @@ export class ProjectCreateComponent implements OnInit {
   customer: UserModel;
   project: Project;
   userList:any[];
+  uomList:any[];
+  deliveryModeList:any[];
+  deliveryTypeList:any[];
   formGroup: FormGroup;
   minDate: NgbDateStruct;
   maxDate: NgbDateStruct;
@@ -115,6 +121,9 @@ export class ProjectCreateComponent implements OnInit {
   ngOnInit(): void {
     this.loadProjectId();
     this.getUserListByRoles();
+    this.getUomList();
+    this.getdeliveryModeList();
+    this.getdeliveryModeType();
   }
   public findInvalidControls() {
     const invalid = [];
@@ -185,6 +194,66 @@ export class ProjectCreateComponent implements OnInit {
       )
       .subscribe();
   }
+  getUomList(){
+   // var roleShortNames = ["PM", "PL"];
+    this.projectService
+      .getUomList()
+      .pipe(
+        tap((res: any) => {
+          this.uomList = res;
+          console.log('uomList', this.uomList);
+
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: [],
+          });
+        })
+      )
+      .subscribe();
+  }
+  getdeliveryModeList(){
+    // var roleShortNames = ["PM", "PL"];
+     this.projectService
+       .getDeliveryModeList()
+       .pipe(
+         tap((res: any) => {
+           this.deliveryModeList = res;
+           console.log('deliveryModeList', this.deliveryModeList);
+
+         }),
+         catchError((err) => {
+           console.log(err);
+           return of({
+             items: [],
+           });
+         })
+       )
+       .subscribe();
+   }
+   getdeliveryModeType(){
+    // var roleShortNames = ["PM", "PL"];
+     this.projectService
+       .getDeliveryTypeList()
+       .pipe(
+         tap((res: any) => {
+           this.getdeliveryModeType = res;
+           console.log('deliveryModeType', this.getdeliveryModeType);
+
+         }),
+         catchError((err) => {
+           console.log(err);
+           return of({
+             items: [],
+           });
+         })
+       )
+       .subscribe();
+   }
+
+
+
   create() {
     console.log("Add Project");
     const sbCreate = this.projectService.create(this.project,"/addProject","formProject").pipe(
@@ -224,6 +293,7 @@ export class ProjectCreateComponent implements OnInit {
     this.project.projectDetail.displayInOtherUIProjectList = formData.displayInOP;
     this.project.projectDetail.totalProjectedWorkVolume = formData.tpwvol;
     this.project.projectDetail.unitsOfMeasurement = formData.uom;
+    //this.project.uomDetail.unitName=formData.uom;
     this.project.projectDetail.receivedWorkVolume = formData.rwVol;
     this.project.projectDetail.estimatedTotalHours = formData.etHours;
     this.project.projectDetail.plannedNoOfResources = formData.resoueces;
