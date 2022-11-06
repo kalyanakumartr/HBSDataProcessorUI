@@ -1,7 +1,7 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Project Group List</h3>
+      <h3 class="card-label">Group List</h3>
     </div>
     <div class="card-toolbar">
       <div class="grid-item" style="cursor: pointer">&nbsp;&nbsp;</div>
@@ -120,22 +120,22 @@
             </a>
           </td>
               <td>
-            {{ group.groupName }}
+            {{ group.teamName }}
           </td>
           <td>
-            {{ group.fullName}}
+            {{ group.reportingName}}
           </td>
           <td>
-            {{ group.teamId }}
+            {{ group.reportingTo }}
           </td>
           <td>
-            {{ group.teamName}}
+            {{ group.groupName}}
           </td>
           <td>
             {{ group.groupId}}
           </td>
           <td>
-            {{ group.status}}
+            {{ group.status?'Active':'Inactive'}}
           </td>
         </tr>
       </tbody>

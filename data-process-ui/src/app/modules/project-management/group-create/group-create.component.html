@@ -61,8 +61,8 @@
              name="reportingManager"
               [class.is-invalid]="isControlInvalid('reportingManager')" formControlName="reportingManager">
               <option value="0" [selected]="true">ReportingManager</option>
-              <option  *ngFor="let group of groupTeamService.items$ | async">
-                {{group.reportingManager}}
+              <option  *ngFor="let group of groupList"   [ngValue]="group.reportingTo">
+                {{group.reportingName}}
 
             </option>
             </select>

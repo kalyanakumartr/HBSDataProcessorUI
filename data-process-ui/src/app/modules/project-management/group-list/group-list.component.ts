@@ -24,7 +24,7 @@ export class GroupListComponent implements
     IFetchSelectedAction,
     IUpdateStatusForSelectedAction,
     ISortView,
-    IFilterView,
+
     IGroupingView,
     ISearchView,
     IFilterView
@@ -77,7 +77,7 @@ export class GroupListComponent implements
       this.division="0: 0";
       this.department="0: 0";
     }
-    this.groupTeamService.patchStateWithoutFetch({ type: 'group' });
+    this.groupTeamService.patchStateWithoutFetch({ type: 'Group' });
     this.groupTeamService.fetch('/searchGroupTeam');
     console.log('UserList :', this.subscriptions);
     this.grouping = this.groupTeamService.grouping;
@@ -249,9 +249,9 @@ export class GroupListComponent implements
       if (this.department != '0') {
         this.isClearFilter = true;
         this.getDivisionForDepartment();
-        this.projectService.patchState(
+        this.groupTeamService.patchState(
           { departmentId: this.department },
-          '/searchProject'
+          '/searchGroupTeam'
         );
       }
     }
@@ -262,9 +262,9 @@ export class GroupListComponent implements
       this.division = position[1].toString().trim();
       if (this.division != '0') {
         this.getProjectForDivision();
-        this.projectService.patchState(
+        this.groupTeamService.patchState(
           { divisionId: this.division },
-          '/searchProject'
+          '/searchGroupTeam'
         );
       }
     }
@@ -293,7 +293,7 @@ export class GroupListComponent implements
     if (position.length > 1) {
       this.project = position[1].toString().trim();
       if (this.project != '0') {
-        this.projectService.patchState({ projectId: this.project }, '/searchProject');
+        this.groupTeamService.patchState({ projectId: this.project }, '/searchGroupTeam');
       }
     }
   }

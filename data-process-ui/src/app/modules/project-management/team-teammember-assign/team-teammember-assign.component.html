@@ -1,1 +1,30 @@
-<p>team-teammember-assign works!</p>
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <b><label class="heading">
+      <ng-container >
+
+        <ng-container >Assign Subcountry to Project : {{projectId}} </ng-container>
+     </ng-container>
+    </label></b>
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+  </div>
+<div class="container-fluid">
+	<p></p>
+	<dual-list [sort]="keepSorted"
+     [source]="source" [key]="key"
+      [display]="display" [destination]="confirmed"
+      [filter]="filter"		>
+    </dual-list>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+
+    <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+      >Save</button>
+
+</div>
+</div>

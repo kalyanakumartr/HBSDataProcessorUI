@@ -43,6 +43,7 @@ export class GroupCreateComponent implements OnInit {
   formGroup: FormGroup;
   group:Team;
   userList:any[];
+  groupList:any[];
   private subscriptions: Subscription[] = [];
   constructor(
     public modal: NgbActiveModal,
@@ -67,7 +68,8 @@ export class GroupCreateComponent implements OnInit {
     this.grouping = this.groupTeamService.grouping;
     this.paginator = this.groupTeamService.paginator;
     this.sorting = this.groupTeamService.sorting;
-
+    this.getUserListByRoles();
+    this.getGroupList();
 
   }
 
@@ -105,8 +107,19 @@ loadForm(){
   });
 
 }
-
-
+getGroupList(){
+this.projectService.getGroupList("NODIVISION").pipe(
+  tap((res: any) => {
+    this.groupList = res;
+    console.log("groupList", this.groupList)
+  }),
+  catchError((err) => {
+    console.log(err);
+    return of({
+      items: []
+    });
+  })).subscribe();
+}
   getUserListByRoles(){
     var roleShortNames = ["PL"];
     this.projectService
@@ -115,7 +128,6 @@ loadForm(){
         tap((res: any) => {
           this.userList = res;
           console.log('userList', this.userList);
-
         }),
         catchError((err) => {
           console.log(err);

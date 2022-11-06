@@ -63,6 +63,22 @@ export class GroupTeamService extends TableService<Team> implements OnDestroy {
     super(http);
     this._tableState$ = this._taskTableState$;
   }
+
+  getTeamList(){
+
+    const url = this.VIEW_API_URL + "/getTeamList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, { },{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+
+  }
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
