@@ -1,6 +1,6 @@
 import { Injectable, Inject, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { GroupingState, IProjectTableState, PaginatorState, SortStateProject, TableService } from '../../../_metronic/shared/crud-table';
+import { GroupingState, IProjectTableState, IWorkflowTableState, PaginatorState, SortStateProject, SortWorkflow, TableService } from '../../../_metronic/shared/crud-table';
 import { environment } from '../../../../environments/environment';
 import { Observable, BehaviorSubject, of, Subscription, Subject } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
@@ -13,10 +13,10 @@ import { SubCountry } from '../_models/sub-country.model';
 import { Process } from '../../time-tracker/modal/process.model';
 import { Team } from '../_models/team.model';
 
-const DEFAULT_STATE: IProjectTableState = {
+const DEFAULT_STATE: IWorkflowTableState = {
   filter: {},
   paginator: new PaginatorState(),
-  sorting: new SortStateProject(),
+  sorting: new SortWorkflow(),
   searchTerm: '',
   divisionId: '',
 
@@ -56,7 +56,7 @@ const DEFAULT_STATE: IProjectTableState = {
 })
 
 export class WorkflowService extends TableService<Workflow> implements OnDestroy{
-    _taskTableState$ = new BehaviorSubject<IProjectTableState>(DEFAULT_STATE);
+    _taskTableState$ = new BehaviorSubject<IWorkflowTableState>(DEFAULT_STATE);
     isLoadingSubject: BehaviorSubject<boolean>;
     protected http: HttpClient;
   API_URL = `${environment.adminApiUrl}`;
@@ -146,6 +146,22 @@ export class WorkflowService extends TableService<Workflow> implements OnDestroy
     );
   }
 
+
+
+  getGroupNameList(division){
+
+    const url = this.API_URL + "/getAllocationGroup/"+division;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
   getTeamList(groupId){
 
     const url = this.API_URL + "/getTeamList/"+groupId;

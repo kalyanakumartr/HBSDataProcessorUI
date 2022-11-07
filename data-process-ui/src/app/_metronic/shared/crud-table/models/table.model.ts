@@ -82,6 +82,15 @@ export interface IProjectTableState extends ITableState{
   taskStatusList:any
 }
 
+export interface IWorkflowTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
 export interface IGroupTeamTableState extends ITableState{
   employeeId: any,
   queueList:any,

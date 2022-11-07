@@ -33,6 +33,10 @@ export class SortStateRoadType implements ISortState {
   column = 'roadName'; // Id by default
   direction: SortDirection = 'desc'; // asc by default;
 }
+export class SortWorkflow implements ISortState {
+  column = 'group.groupName'; // Id by default
+  direction: SortDirection = 'desc'; // asc by default;
+}
 export interface ISortView {
   sorting: SortState;
   ngOnInit(): void;

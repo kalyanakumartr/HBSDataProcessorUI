@@ -60,20 +60,20 @@
           </select>
         </div>
         <div class="col-lg-3">
-          <label>Group</label>
+          <label>Group Name</label>
           <select
             class="form-control form-control-lg"
             name="project"
-            [(ngModel)]="project"
+            [(ngModel)]="group"
             formControlName="group"
             (change)="setGroup($event.target.value)"
           >
             <option [ngValue]="0" [selected]="true">Select Group</option>
             <option
-              *ngFor="let group of groupList"
-              [ngValue]="project.projectId"
+            *ngFor="let group of groupList"
+            [ngValue]="group.teamId"
             >
-              {{ project.projectName }}
+              {{group.teamName}}
             </option>
           </select>
         </div>
@@ -133,7 +133,7 @@
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                 (click)="
                   editworkflow(
-                    workflow.groupId
+                    workflow.allotmentId
                     )
                 "
               >
@@ -148,16 +148,20 @@
               </a>
             </td>
             <td>
+              {{workflow.groupName}}
+
+            </td>
+
+            <td>
               {{workflow.production}}
 
             </td>
-            <td>{{ workflow.qualityControl}}
-            }}</td>
+            <td>{{ workflow.qualityControl}}</td>
 
             <td>
               {{workflow.qualityAssurance}}
             </td>
-            <td>{{workflow.deliveryToClient}}</td>
+      <td>{{workflow.readyForDelivery}}</td>
 
 
 

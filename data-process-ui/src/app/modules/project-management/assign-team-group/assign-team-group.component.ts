@@ -8,7 +8,7 @@ import { Workflow } from '../../auth/_models/workflow.model';
 import { ProjectService } from '../../auth/_services/project.services';
 import { WorkflowService } from '../../auth/_services/workflow.services';
 import { CreateWorkflowComponent } from '../create-workflow/create-workflow.component';
-
+import { GroupTeamService } from '../../auth/_services/groupteam.services';
 
 
 @Component({
@@ -61,6 +61,7 @@ IFilterView*/
 
     public projectService: ProjectService,
     public workflowService: WorkflowService,
+    public groupTeamService: GroupTeamService,
   //public getGroupList :getGroupList
   )  {
 
@@ -83,6 +84,7 @@ IFilterView*/
   ngOnInit(): void {
     //this.filterForm();
     this.searchForm();
+
     if(this.showDivision){
       this.getDepartment();
       this.division="0: 0";
@@ -132,7 +134,7 @@ IFilterView*/
   }
 
   search(searchTerm: string) {
-    this.projectService.patchState({ searchTerm }, '/searchAllocationGroup');
+    this.workflowService.patchState({ searchTerm }, '/searchAllocationGroup');
   }
   paginate(paginator: PaginatorState) {
     this.workflowService.patchState({ paginator }, '/searchAllocationGroup');
@@ -143,9 +145,9 @@ IFilterView*/
       this.division = position[1].toString().trim();
       if (this.division != '0') {
         this.getGroupForDivision();
-        this.projectService.patchState(
+        this.workflowService.patchState(
           { divisionId: this.division },
-          '/searchProject'
+          '/searchAllocationGroup'
         );
       }
     }
@@ -240,7 +242,7 @@ IFilterView*/
     if (position.length > 1) {
       this.group = position[1].toString().trim();
       if (this.group!= '0') {
-        this.projectService.patchState({ groupId: this.group }, '/getGroupList');
+        this.workflowService.patchState({ groupId: this.group }, '/searchAllocationGroup');
       }
     }
   }
@@ -292,9 +294,9 @@ IFilterView*/
       if (this.department != '0') {
         this.isClearFilter = true;
         this.getDivisionForDepartment();
-        this.projectService.patchState(
+        this.workflowService.patchState(
           { departmentId: this.department },
-          '/searchProject'
+          '/searchAllocationGroup'
         );
       }
     }
