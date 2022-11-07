@@ -33,10 +33,6 @@ const routes: Routes = [
       },
 
       {
-        path: 'project-assign-team-group',
-        component: AssignTeamGroupComponent
-      },
-      {
         path: 'project-subcountry-List',
         component: ProjectSubcountryListComponent,
       },
@@ -59,6 +55,9 @@ const routes: Routes = [
       {
         path: 'project-team',
         component: TeamListComponent,
+      },{
+        path: 'worklow-queue',
+        component: AssignTeamGroupComponent,
       },
       { path: '', redirectTo: 'project-list', pathMatch: 'full' },
       { path: '**', redirectTo: 'project-list', pathMatch: 'full' },
