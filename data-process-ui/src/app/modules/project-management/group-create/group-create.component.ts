@@ -33,11 +33,13 @@ const EMPTY_GROUP: Team = {
   styleUrls: ['./group-create.component.scss']
 })
 export class GroupCreateComponent implements OnInit {
-  @Input() divisionId:string;
   @Input() groupId: string;
+  @Input() divisionId:string;
+
   isLoading$;
   formGroup: FormGroup;
   group:Team;
+  repotingGroup:string;
   userList:any[];
   groupList:any[];
   private subscriptions: Subscription[] = [];
@@ -55,6 +57,7 @@ export class GroupCreateComponent implements OnInit {
       projectLeaderName:new FormControl(),
       dStatus:new FormControl()
      } );
+
     }
   ngOnInit(): void {
     this.loadGorupId();
@@ -90,7 +93,7 @@ loadForm(){
   this.formGroup = this.fb.group({
     reportingManager: [this.group.reportingName, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(50)])],
     groupName: [this.group.teamName, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)])],
-    projectLeaderName: [this.group.employeeId, Validators.compose([ ])],
+    projectLeaderName: [this.group.reportingTo, Validators.compose([ ])],
     dStatus: [this.group.status?"Active":"Inactive", Validators.compose([])],
 
   });
@@ -111,7 +114,6 @@ this.projectService.getGroupList("NODIVISION").pipe(
 }
   getUserListByRoles(){
     var roleShortNames = ["PL"];
-    alert(this.divisionId)
     this.projectService
       .getUserListByRoles(this.divisionId,roleShortNames,'')
       .pipe(
@@ -128,24 +130,37 @@ this.projectService.getGroupList("NODIVISION").pipe(
       )
       .subscribe();
   }
+  setReportingManager(value) {
+    var position = value.split(':');
+    if (position.length > 1) {
+      this.repotingGroup = position[1].toString().trim();
+
+    }
+  }
   save(){
+    var groupObj : any={teamId:'',teamName:'',type:'',status:'',displayOrder:10};
     const formData = this.formGroup.value;
-
-    this.group.teamName = formData.groupName;
-    this.group.type = formData.priority;
-    this.group.status = formData.dStatus;
-
-
-    const sbCreate = this.groupTeamService.createGroupTeam(this.group,this.divisionId,formData.projectLeaderName, formData.reportingManager, "/addGroupTeam").pipe(
-     tap(() => {
-        this.modal.close();
-      }),
-      catchError((errorMessage) => {
-        this.modal.dismiss(errorMessage);
-        return of(errorMessage);
-      }),
-    ).subscribe(res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
-
+    groupObj.teamId = this.group.teamId!=""?this.group.teamId:null;
+    groupObj.teamName = formData.groupName;
+    groupObj.type = 'Group';
+    groupObj.status = formData.dStatus=="Active"?true:false;
+console.log("teamId",this.group.teamId);
+var path ='';
+  if(this.group.teamId!=""){
+    path ="/updateGroupTeam";
+  }else{
+    path ="/addGroupTeam";
+  }
+    const sbCreate = this.groupTeamService.updateGroupTeam(groupObj,this.divisionId,formData.projectLeaderName, this.repotingGroup, path).pipe(
+      tap(() => {
+          this.modal.close();
+          this.groupTeamService.filterData("");
+        }),
+        catchError((errorMessage) => {
+          this.modal.dismiss(errorMessage);
+          return of(errorMessage);
+        }),
+      ).subscribe(res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
    }
    openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {

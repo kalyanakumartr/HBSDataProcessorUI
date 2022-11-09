@@ -176,28 +176,28 @@ export class GroupListComponent implements
     throw new Error('Method not implemented.');
   }
   create() {
-    if(this.division){
-      this.addGroup(undefined);
+    if(this.division !="0: 0"){
+      this.addGroup(undefined, this.division);
     }else{
-      alert("Please Select Divison");
+      alert("Please Select Department & Divison");
     }
   }
 
-  editGroup(groupId: string): void {
-    this.addGroup(groupId);
+  editGroup(groupId: string, division: string): void {
+    this.addGroup(groupId, division);
 
   }
 
-  addGroup(groupId: string) {
-    if(this.division !="0: 0"){
+  addGroup(groupId: string, division: string) {
+    if(groupId !="0: 0"){
       const modalRef = this.modalService.open(GroupCreateComponent, {
         size: 'xl',
       });
       modalRef.componentInstance.groupId = groupId;
-      modalRef.componentInstance.division = this.division;
+      modalRef.componentInstance.divisionId = division;
 
   }else{
-    alert("please Select division")
+    alert("Please Select Department & Division")
   }
   }
 

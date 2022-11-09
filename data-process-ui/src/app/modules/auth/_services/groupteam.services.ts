@@ -117,6 +117,19 @@ export class GroupTeamService extends TableService<Team> implements OnDestroy {
       })
     );
   }
+  updateGroupTeam(groupTeam, divisionId, employeeId, parentGroupId, path ){
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {formGroup :groupTeam,parentGroupId:parentGroupId,divisionId:divisionId,employeeId:employeeId},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }

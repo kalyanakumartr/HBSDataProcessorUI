@@ -11,7 +11,7 @@
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
       <b><label class="heading">
       <ng-container >
-        <ng-container *ngIf="groupId">Edit Project : {{groupId}} </ng-container>
+        <ng-container *ngIf="groupId">Edit Group : {{group.groupName}} </ng-container>
         <ng-container *ngIf="!groupId">Create Group  </ng-container>
      </ng-container>
     </label></b>
@@ -44,7 +44,7 @@
             <label class="form-label">Project Leader Name</label>
             <select class="form-control form-control-lg"
             name="projectLeaderName"
-             [class.is-invalid]="isControlInvalid('projectLeaderName')" formControlName="projectLeaderName">
+             [class.is-invalid]="isControlInvalid('projectLeaderName')" formControlName="projectLeaderName" >
              <option value="0" [selected]="true">Select Leader</option>
              <option
              *ngFor="let user of userList"
@@ -59,9 +59,10 @@
             <label class="form-label">ReportingManager</label>
             <select class="form-control form-control-lg"
              name="reportingManager"
-              [class.is-invalid]="isControlInvalid('reportingManager')" formControlName="reportingManager">
+              [class.is-invalid]="isControlInvalid('reportingManager')" formControlName="reportingManager" [(ngModel)]="repotingGroup"
+              (change)="setReportingManager($event.target.value)">
               <option value="0" [selected]="true">ReportingManager</option>
-              <option  *ngFor="let group of groupList"   [ngValue]="group.reportingTo">
+              <option  *ngFor="let group of groupList"   [ngValue]="group.teamId">
                 {{group.reportingName}}
 
             </option>

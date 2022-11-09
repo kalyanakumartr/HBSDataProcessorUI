@@ -176,28 +176,31 @@ edit(id: number): void {
 throw new Error('Method not implemented.');
 }
 create() {
-if(this.division){
-  this.addTeam(undefined);
+  if(this.division !="0: 0"){
+    this.addTeam(undefined, this.division);
+  }else{
+    alert("Please Select Department & Divison");
+  }
+}
+
+editTeam(groupId: string, division: string): void {
+  this.addTeam(groupId, division);
+
+}
+
+addTeam(groupId: string, division: string) {
+  if(groupId !="0: 0"){
+    const modalRef = this.modalService.open(TeamCreateComponent, {
+      size: 'xl',
+    });
+    modalRef.componentInstance.groupId = groupId;
+    modalRef.componentInstance.divisionId = division;
+
 }else{
-  alert("Please Select Divison");
+  alert("Please Select Department & Division")
 }
 }
 
-editTeam(teamId: string): void {
-this.addTeam(teamId);
-
-}
-
-addTeam(teamId: string) {
-if(this.division !="0: 0"){
-  const modalRef = this.modalService.open(TeamCreateComponent, {
-    size: 'xl',
-  });
-  modalRef.componentInstance.teamId = teamId;
-}else{
-  alert("please Select division")
-}
-}
 
 delete(id: number) {
 // const modalRef = this.modalService.open(DeleteCustomerModalComponent);

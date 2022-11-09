@@ -13,9 +13,10 @@ import { Project } from '../../auth/_models/project.model';
 import { WorkflowService } from '../../auth/_services/workflow.services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserModel } from '../../auth';
-const EMPTY_PROJECT: Workflow = {
+const EMPTY_WORKFLOW: Workflow = {
 
   id: '',
+  allotmentId:'',
   divisionId: '',
   groupId: '',
   production: '',
@@ -68,18 +69,17 @@ export class CreateWorkflowComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadWorkflow();
     this.getGroupList();
     this.getProductionTeamList();
     this.getQcTeamList();
     this.getQaTeamList();
     this.getDeliveryToClientTeamList();
-    this.loadForm();
   }
   public findInvalidControls() {
     const invalid = [];
     const controls = this.formGroup.controls;
     for (const name in controls) {
-      // console.log(name,"--",controls[name].invalid);
       if (controls[name].invalid) {
         invalid.push(name);
       }
@@ -101,6 +101,30 @@ export class CreateWorkflowComponent implements OnInit {
 
 
   }
+  loadWorkflow() {
+    if (!this.workflowId) {
+      this.workflow = EMPTY_WORKFLOW;
+      this.loadForm();
+    } else {
+      console.log("this.id", this.groupId);
+
+      const sb = this.groupTeamService.getGroupTeam(this.groupId).pipe(
+        first(),
+        catchError((errorMessage) => {
+          console.log("errorMessage", errorMessage);
+          this.modal.dismiss(errorMessage);
+          return of(EMPTY_WORKFLOW);
+        })
+      ).subscribe((workflow:Workflow) => {
+        this.workflow = workflow;
+        console.log(this.workflow);
+        this.loadForm();
+
+        console.log("Check");
+      });
+
+    }
+    }
   loadForm() {
     this.formGroup = this.fb.group({
       groupName: [this.workflow.groupId, Validators.compose([Validators.required])],
@@ -255,6 +279,16 @@ export class CreateWorkflowComponent implements OnInit {
 
 
   create() {
+/*
+  var path ='';
+  var msg="";
+  if(this.workflow.allotmentId!=""){
+    path ="/updateAllocationGroup";
+    msg="Updated";
+  }else{
+    path ="/addAllocationGroup";
+    msg="Created";
+  }*/
     console.log("Add Workflow");
     const sbCreate = this.workflowService.create(this.workflow, "/addAllocationGroup", "formGroup").pipe(
       tap(() => {
