@@ -177,25 +177,25 @@ export class GroupListComponent implements
   }
   create() {
     if(this.division){
-      this.addProject(undefined,undefined,this.division);
+      this.addGroup(undefined);
     }else{
       alert("Please Select Divison");
     }
   }
 
-  editProject(projectId: string, projectName:string, divisionId:string): void {
-    this.addProject(projectId,projectName,divisionId);
+  editGroup(groupId: string): void {
+    this.addGroup(groupId);
 
   }
 
-  addProject(projectId: string, projectName:string,divisionId:string) {
-    if(divisionId !="0: 0"){
+  addGroup(groupId: string) {
+    if(this.division !="0: 0"){
       const modalRef = this.modalService.open(GroupCreateComponent, {
         size: 'xl',
       });
-      modalRef.componentInstance.projectId = projectId;
-      modalRef.componentInstance.projectName = projectName;
-      modalRef.componentInstance.divisionId = divisionId;
+      modalRef.componentInstance.groupId = groupId;
+      modalRef.componentInstance.division = this.division;
+
   }else{
     alert("please Select division")
   }
@@ -261,7 +261,6 @@ export class GroupListComponent implements
     if (position.length > 1) {
       this.division = position[1].toString().trim();
       if (this.division != '0') {
-        this.getProjectForDivision();
         this.groupTeamService.patchState(
           { divisionId: this.division },
           '/searchGroupTeam'
@@ -296,27 +295,6 @@ export class GroupListComponent implements
         this.groupTeamService.patchState({ projectId: this.project }, '/searchGroupTeam');
       }
     }
-  }
-  getProjectForDivision() {
-    this.projectList = [];
-    this.projectService
-      .getProjectList(this.division)
-      .pipe(
-        tap((res: any) => {
-          this.projectList = res;
-          console.log('projectList', this.projectList);
-          setTimeout(() => {
-            this.project = '0: 0';
-          }, 2000);
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of({
-            items: [],
-          });
-        })
-      )
-      .subscribe();
   }
   clearFilter() {
     if (this.isClearFilter) {

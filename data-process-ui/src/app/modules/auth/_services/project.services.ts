@@ -241,7 +241,7 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
     });
     return this.http.post(url, {
       "roleShortNames": roleShortNames,
-      "divisionId":divisionId,
+      "divisionId":divisionId?divisionId:"",
       "searchParam":search
   },{headers: httpHeaders}).pipe(
       catchError(err => {

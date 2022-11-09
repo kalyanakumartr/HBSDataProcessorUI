@@ -8,6 +8,7 @@ import { GroupTeamService } from '../../auth/_services/groupteam.services';
 import { ProjectService } from '../../auth/_services/project.services';
 import { GroupCreateComponent } from '../group-create/group-create.component';
 import { ProjectCreateComponent } from '../project-create/project-create.component';
+import { TeamCreateComponent } from '../team-create/team-create.component';
 
 @Component({
   selector: 'app-team-list',
@@ -38,8 +39,8 @@ departmentList:any[];
 department:any;
 divisionList:any[];
 division:any;
-projectList:any[];
-project:any;
+groupList:any[];
+group:any;
 departmentName:string;
 divisionName:string;
 showDivision:boolean;
@@ -60,7 +61,7 @@ this.groupTeamService.listen().subscribe((m: any) => {
   this.filter();
 });
 this.sel = '0';
-this.projectList=[];
+this.groupList=[];
 this.divisionList=[];
 this.isClearFilter=false;
 this.showDivision=true;
@@ -176,27 +177,25 @@ throw new Error('Method not implemented.');
 }
 create() {
 if(this.division){
-  this.addProject(undefined,undefined,this.division);
+  this.addTeam(undefined);
 }else{
   alert("Please Select Divison");
 }
 }
 
-editProject(projectId: string, projectName:string, divisionId:string): void {
-this.addProject(projectId,projectName,divisionId);
+editTeam(teamId: string): void {
+this.addTeam(teamId);
 
 }
 
-addProject(projectId: string, projectName:string,divisionId:string) {
-if(divisionId !="0: 0"){
-  const modalRef = this.modalService.open(GroupCreateComponent, {
+addTeam(teamId: string) {
+if(this.division !="0: 0"){
+  const modalRef = this.modalService.open(TeamCreateComponent, {
     size: 'xl',
   });
-  modalRef.componentInstance.projectId = projectId;
-  modalRef.componentInstance.projectName = projectName;
-  modalRef.componentInstance.divisionId = divisionId;
+  modalRef.componentInstance.teamId = teamId;
 }else{
-alert("please Select division")
+  alert("please Select division")
 }
 }
 
@@ -260,7 +259,7 @@ var position = value.split(':');
 if (position.length > 1) {
   this.division = position[1].toString().trim();
   if (this.division != '0') {
-    this.getProjectForDivision();
+    this.getGroupForDivision();
     this.groupTeamService.patchState(
       { divisionId: this.division },
       '/searchGroupTeam'
@@ -287,25 +286,25 @@ this.projectService
   )
   .subscribe();
 }
-setProject(value) {
+setGroup(value) {
 var position = value.split(':');
 if (position.length > 1) {
-  this.project = position[1].toString().trim();
-  if (this.project != '0') {
-    this.groupTeamService.patchState({ projectId: this.project }, '/searchGroupTeam');
+  this.group = position[1].toString().trim();
+  if (this.group != '0') {
+    this.groupTeamService.patchState({ groupId: this.group }, '/searchGroupTeam');
   }
 }
 }
-getProjectForDivision() {
-this.projectList = [];
+getGroupForDivision() {
+this.groupList = [];
 this.projectService
-  .getProjectList(this.division)
+  .getGroupList(this.division)
   .pipe(
     tap((res: any) => {
-      this.projectList = res;
-      console.log('projectList', this.projectList);
+      this.groupList = res;
+      console.log('groupList', this.groupList);
       setTimeout(() => {
-        this.project = '0: 0';
+        this.group = '0: 0';
       }, 2000);
     }),
     catchError((err) => {
@@ -321,9 +320,9 @@ clearFilter() {
 if (this.isClearFilter) {
   this.division = '0';
 
-  this.project = '0';
-  if (this.projectList.length > 0) {
-    this.projectList.splice(0, this.projectList.length);
+  this.group = '0';
+  if (this.groupList.length > 0) {
+    this.groupList.splice(0, this.groupList.length);
   }
   if (this.divisionList.length > 0) {
     this.divisionList.splice(0, this.divisionList.length);

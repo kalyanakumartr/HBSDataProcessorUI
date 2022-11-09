@@ -4,7 +4,14 @@
       <h3 class="card-label">Team List</h3>
     </div>
     <div class="card-toolbar">
-      <div class="grid-item" style="cursor: pointer">&nbsp;&nbsp;</div>
+      <div class="grid-item" style="cursor: pointer">
+        &nbsp;&nbsp;
+        <i
+          title="Export Excel"
+          (click)="exportExcel()"
+          class="fas fa-file-excel fa-2x"
+        ></i>
+      </div>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
       <button type="button" class="btn btn-primary" (click)="create()">
@@ -63,6 +70,25 @@
             <span>{{ divisionName }}</span>
           </ng-container>
         </div>
+        <div class="col-lg-2">
+
+            <label>Group</label>
+            <select
+              class="form-control form-control-lg form-control-solid"
+              name="division"
+              [(ngModel)]="group"
+              (change)="setGroup($event.target.value)"
+            >
+              <option [ngValue]="0" [selected]="true">Select Group</option>
+              <option
+                *ngFor="let group of groupList"
+                [ngValue]="group.teamId"
+              >
+                {{ group.teamName }}
+              </option>
+            </select>
+        </div>
+
         <!--        <div  class="col-lg-3">
         <label>&nbsp;</label><br/>
         <button type="button" class="btn btn-primary" (click)="adgroup()">Add Group to Project</button>
@@ -92,8 +118,6 @@
           <th>Project Leader's Name</th>
           <th>Project Manager Name</th>
           <th>Reporting Group Name</th>
-          <th nowrap>Reporting Team Name</th>
-
           <th nowrap>Display Status</th>
         </tr>
       </thead>
@@ -101,13 +125,11 @@
         <tr *ngFor="let group of groupTeamService.items$ | async">
           <td>
             <a
-              title="Edit Project"
+              title="Edit Team"
               class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
               (click)="
-                editProject(
-                  project.departmentId,
-                  project.departmentName,
-                  project.divisionId
+                editTeam(
+                  group.groupId
                 )
               "
             >
@@ -126,13 +148,10 @@
             {{ group.reportingName}}
           </td>
           <td>
-            {{ group.reportingTo }}
+            {{ group.parentReportingTo }}
           </td>
           <td>
             {{ group.groupName}}
-          </td>
-          <td>
-            {{ group.groupId}}
           </td>
           <td>
             {{ group.status?'Active':'Inactive'}}
