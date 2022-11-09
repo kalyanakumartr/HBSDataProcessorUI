@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { tap, catchError, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { GroupingState, ICreateAction, IDeleteAction, IDeleteSelectedAction, IEditAction, IFetchSelectedAction, IFilterView, IGroupingView, ISearchView, ISortView, IUpdateStatusForSelectedAction, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
+import { GroupingState, ICreateAction, IDeleteAction, IDeleteSelectedAction,
+   IEditAction,
+    IFetchSelectedAction, IFilterView, IGroupingView, ISearchView, ISortView, IUpdateStatusForSelectedAction, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
 import { Workflow } from '../../auth/_models/workflow.model';
 import { ProjectService } from '../../auth/_services/project.services';
 import { WorkflowService } from '../../auth/_services/workflow.services';
@@ -16,19 +18,19 @@ import { GroupTeamService } from '../../auth/_services/groupteam.services';
   templateUrl: './assign-team-group.component.html',
   styleUrls: ['./assign-team-group.component.scss']
 })
-export class AssignTeamGroupComponent implements OnInit
-/*OnDestroy,
+export class AssignTeamGroupComponent implements OnInit,
+OnDestroy,
 ICreateAction,
 IEditAction,
 IDeleteAction,
 IDeleteSelectedAction,
 IFetchSelectedAction,
 IUpdateStatusForSelectedAction,
-ISortView,
+//ISortView,
 IFilterView,
 IGroupingView,
 ISearchView,
-IFilterView*/
+IFilterView
  {
   paginator: PaginatorState;
   sorting: SortState;
@@ -107,12 +109,57 @@ IFilterView*/
     }, 5000);
 
   }
+  edit(id: number): void {
+    throw new Error('Method not implemented.');
+  }
   //edit
-  editworkflow(groupId)
+  editworkflow(allotmentId: string,groupName:string,divisionId:string):void
   {
+this.addworkflow(allotmentId,groupName,divisionId);
 
   }
-  // search
+  addworkflow(allotmentId,groupName,divisionId)
+  {
+    if(divisionId !="0: 0"){
+      const modalRef = this.modalService.open(CreateWorkflowComponent, {
+        size: 'xl',
+      });
+      modalRef.componentInstance.projectId = allotmentId;
+      modalRef.componentInstance.projectName = groupName;
+      modalRef.componentInstance.divisionId = divisionId;
+  }else{
+    alert("please Select division")
+  }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((sb) => sb.unsubscribe());
+  }
+
+  delete(id: number) {
+    // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
+    // modalRef.componentInstance.id = id;
+    // modalRef.result.then(() => this.projectService.fetch(), () => { });
+  }
+
+  deleteSelected() {
+    // const modalRef = this.modalService.open(DeleteCustomersModalComponent);
+    // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
+    // modalRef.result.then(() => this.projectService.fetch(), () => { });
+  }
+
+  updateStatusForSelected() {
+    // const modalRef = this.modalService.open(UpdateCustomersStatusModalComponent);
+    // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
+    // modalRef.result.then(() => this.projectService.fetch(), () => { });
+  }
+
+  fetchSelected() {
+    // const modalRef = this.modalService.open(FetchCustomersModalComponent);
+    // modalRef.componentInstance.ids = this.grouping.getSelectedRows();
+    // modalRef.result.then(() => this.projectService.fetch(), () => { });
+  }
+
   searchForm() {
     this.searchGroup = this.fb.group({
       searchTerm: [''],
@@ -220,18 +267,65 @@ IFilterView*/
   }*/
   filter()
   {
-
+    const filter = {};
   }
   filterForm()
   {
+    this.filterGroup = this.fb.group({
+      searchTerm: [''],
+    });
+    this.subscriptions.push(
+      this.filterGroup.controls.status.valueChanges.subscribe(() =>
+        this.filter()
+      )
+    );
+    this.subscriptions.push(
+      this.filterGroup.controls.type.valueChanges.subscribe(() => this.filter())
+    );
 
   }
 
   exportExcel(){
-
+    this.workflowService.exportExcel('/exportToExcelWorkflowRecord', 'Admin').subscribe(
+      (responseObj) => {
+        console.log('report success', responseObj);
+        var downloadURL = window.URL.createObjectURL(responseObj);
+        var link = document.createElement('a');
+        link.href = downloadURL;
+        link.download = 'Wrokflow.xlsx';
+        link.click();
+      },
+      (error) => {
+        console.log('report error', error);
+      }
+    );
   }
-  clearFilter(){
 
+  clearFilter(){
+    if (this.isClearFilter) {
+      this.division = '0';
+
+      this.group = '0';
+      if (this.groupList.length > 0) {
+        this.groupList.splice(0, this.groupList.length);
+      }
+      if (this.divisionList.length > 0) {
+        this.divisionList.splice(0, this.divisionList.length);
+      }
+      if (this.departmentList.length > 0) {
+        this.departmentList.splice(0, this.departmentList.length);
+      }
+      this.getDepartment();
+      (<HTMLInputElement>document.getElementById('searchText')).value = '';
+      this.workflowService.setDefaults();
+      this.workflowService.patchState({}, '/searchGroup');
+      this.grouping = this.workflowService.grouping;
+      this.paginator = this.workflowService.paginator;
+      this.sorting = this.workflowService.sorting;
+      this.department = '0';
+    } else {
+      (<HTMLInputElement>document.getElementById('searchText')).value = '';
+    }
 
   }
   setProject(){

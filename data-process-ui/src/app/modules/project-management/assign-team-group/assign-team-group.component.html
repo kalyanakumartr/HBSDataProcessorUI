@@ -129,14 +129,15 @@
           <tr *ngFor="let workflow of workflowService.items$ | async">
             <td>
               <a
-                title="Edit Project"
+                title="Edit Workflow "
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                 (click)="
                   editworkflow(
-                    workflow.allotmentId
-                    )
-                "
+                    workflow.allotmentId,
+                  workflow.groupName,     workflow.divisionId
+                    )"
               >
+
                 <span
                   [inlineSVG]="
                     './assets/media/svg/icons/Communication/Write.svg'

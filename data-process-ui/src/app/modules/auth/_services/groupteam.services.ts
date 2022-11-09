@@ -79,6 +79,23 @@ export class GroupTeamService extends TableService<Team> implements OnDestroy {
     );
 
   }
+  getTeamListBasedOnSkill(skill, groupId){
+    var paramAdded ="";
+    if(groupId){
+      paramAdded = "/"+groupId;
+    }
+    const url = this.API_URL + "/getTeamList"+"/"+skill+paramAdded;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, { },{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
   getGroupTeam(teamId){
 
     const url =`${this.VIEW_API_URL}/getGroupTeam`;

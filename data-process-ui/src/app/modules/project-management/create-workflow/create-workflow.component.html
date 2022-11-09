@@ -32,22 +32,24 @@
             <label class="form-label"> Group Name</label>
             <select class="form-control form-control-lg"
             name="groupName"
-             [class.is-invalid]="isControlInvalid('groupName')" formControlName="groupName">
+             formControlName="groupName">
              <option value="0" [selected]="true">Group Name</option>
-             <option   *ngFor="let workflow of workflowService.items$ | async">
-              {{workflow.group }}
-                   </option>
+             <!-- <option   *ngFor="let workflow of workflowService.items$ | async">-->
+              <option
+              *ngFor="let group of groupList" [value]="group.teamId">
+              {{group.teamName}}
+            </option>
            </select>
            </div>
           <div class="col-lg-3">
             <label class="form-label">Production Team</label>
             <select class="form-control form-control-lg"
             name="productionTeam"
-             [class.is-invalid]="isControlInvalid('productionTeam')" formControlName="productionTeam">
+              formControlName="productionTeam">
              <option value="0" [selected]="true">Production Team</option>
 
-             <option   *ngFor="let workflow of workflowService.items$ | async">>
-             {{workflow.production}}      </option>
+             <option   *ngFor="let team of productionTeamList" [value]="team.teamId">
+             {{team.teamName}}      </option>
            </select>
           </div>
 
@@ -55,12 +57,13 @@
             <label class="form-label">QC Team</label>
             <select class="form-control form-control-lg"
              name="qcTeam"
-              [class.is-invalid]="isControlInvalid('qcTeam')" formControlName="qcTeam">
+              formControlName="qcTeam">
               <option value="0" [selected]="true">QC Team</option>
-              <option   *ngFor="let workflow of workflowService.items$ | async">
-                {{workflow.qualityControl}}
 
-            </option>
+             <option   *ngFor="let team of qualityControlTeamList" [value]="team.teamId">
+              {{team.teamName}}      </option>
+
+
             </select>
 
         </div>
@@ -69,12 +72,12 @@
           <label class="form-label">QA Team</label>
           <select class="form-control form-control-lg"
            name="qaTeam"
-            [class.is-invalid]="isControlInvalid('qaTeam')" formControlName="qaTeam">
+             formControlName="qaTeam">
             <option value="0" [selected]="true">QA Team</option>
-            <option   *ngFor="let workflow of workflowService.items$ | async">
-              {{workflow.qualityAssurance}}
 
-          </option>
+            <option   *ngFor="let team of qualityAssuranceTeamList" [value]="team.teamId">
+              {{team.teamName}}      </option>
+
           </select>
 
       </div>
@@ -84,12 +87,11 @@
         <div class="col-lg-3">
           <label class="form-label">Delivery To Client</label>
           <select class="form-control form-control-lg" name="dClient"
-                [class.is-invalid]="isControlInvalid('dClient')" formControlName="dClient">
+               formControlName="dClient">
                 <option value="0" [selected]="true">Delivery To Client</option>
-                <option  *ngFor="let workflow of workflowService.items$ | async">
-                    {{workflow.deliveryToClient}}
-                </option>
 
+                <option   *ngFor="let team of deliveryToClientTeamList" [value]="team.teamId">
+                  {{team.teamName}}      </option>
               </select>
         </div>
 
