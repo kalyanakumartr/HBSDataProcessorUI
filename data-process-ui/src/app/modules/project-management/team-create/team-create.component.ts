@@ -130,8 +130,8 @@ this.projectService.getGroupList(this.divisionId).pipe(
       )
       .subscribe();
   }
-  setReportingManager(value) {
-    var position = value.split(':');
+  setReportingManager(val) {
+    var position = val.split(':');
     if (position.length > 1) {
       this.repotingGroup = position[1].toString().trim();
 
