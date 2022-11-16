@@ -19,6 +19,7 @@
       </button>
     </div>
   </div>
+
   <div class="card-body">
     <!-- begin: Filtration form -->
     <div class="form form-label-right">
@@ -88,6 +89,19 @@
               </option>
             </select>
         </div>
+        <div class="col-lg-3" >
+          <label>Search in all fields</label>
+          <div class="grid-container">
+            <div class="grid-item">
+              <input
+                type="search"
+                class="form-control"
+                name="searchText"
+                id="searchText"
+                placeholder="Search"
+                value=""
+                formControlName="searchTerm"
+              />
 
         <!--        <div  class="col-lg-3">
         <label>&nbsp;</label><br/>
@@ -106,7 +120,9 @@
         </div>
       </div>
     </div>
-
+</div>
+</div>
+</div>
   <div class="table-responsive angular-bootstrap-table">
     <table id="tablebox" class="table table-head-custom table-vertical-center">
       <thead>
@@ -168,3 +184,4 @@
     ></app-paginator>
   </div>
 </div>
+

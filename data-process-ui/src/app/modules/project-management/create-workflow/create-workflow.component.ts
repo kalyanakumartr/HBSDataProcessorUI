@@ -40,6 +40,7 @@ export class CreateWorkflowComponent implements OnInit {
   @Input() workflowId: string;
   isLoading$;
   customer: UserModel;
+ // group:Workflow;
   searchGroup: FormGroup;
   formGroup: FormGroup;
   workflow: Workflow;
@@ -87,20 +88,6 @@ export class CreateWorkflowComponent implements OnInit {
     return invalid;
   }
 
-  save() {
-    if (!this.workflow.divisionId) {
-      this.workflow.divisionId = this.divisionId
-    }
-    if (this.workflowId) {
-      this.prepareGroup("Edit");
-      this.edit();
-    } else {
-      this.prepareGroup("Create");
-      this.create();
-    }
-
-
-  }
   loadWorkflow() {
     if (!this.workflowId) {
       this.workflow = EMPTY_WORKFLOW;
@@ -278,7 +265,7 @@ export class CreateWorkflowComponent implements OnInit {
 
 
 
-  create() {
+
 /*
   var path ='';
   var msg="";
@@ -289,7 +276,11 @@ export class CreateWorkflowComponent implements OnInit {
     path ="/addAllocationGroup";
     msg="Created";
   }*/
+  create() {
     console.log("Add Workflow");
+    this.workflow.id=undefined;
+    this.workflow.allotmentId=undefined;
+    this.workflow.readyForDelivery=this.workflow.deliveryToClient;
     const sbCreate = this.workflowService.create(this.workflow, "/addAllocationGroup", "formGroup").pipe(
       tap(() => {
         this.modal.close();
@@ -321,6 +312,57 @@ export class CreateWorkflowComponent implements OnInit {
     }
 
   }
+  save(){
+    if (!this.workflow.divisionId) {
+      this.workflow.divisionId = this.divisionId
+    }
+    if (this.workflowId) {
+      this.prepareGroup("Edit");
+      this.edit();
+    } else {
+      this.prepareGroup("Create");
+      this.create();
+    }
+  }
+
+  /*save() {
+    var workObj : any={groupId:'',production:'',qualityControl:'',qualityAssurance:'',deliveryToClient:''};
+    const formData = this.formGroup.value;
+    workObj.groupId = formData.groupName;
+    /*this.workflow.groupId!=""?this.workflow.groupId:null;
+    //workObj.teamName = formData.groupName;
+    workObj.production=formData.production;
+    workObj.qualityControl=formData.qualityControl;
+    workObj.qualityAssurance=formData.qualityAssurance;
+
+    //workObj.status = formData.dStatus=="Active"?true:false;
+console.log("groupId",this.workflow.allotmentId);
+var path ='';
+  if(this.workflow.allotmentId!=""){
+    path ="/updateAllocationGroup";
+  }else{
+    path ="/addAllocationGroup";
+  }
+    const sbCreate = this.workflowService.updateWorkflowTeam(workObj, this.divisionId,formData, path).pipe(
+      tap(() => {
+        this.modal.close();
+        this.workflowService.filterData("");
+      }),
+      catchError((errorMessage) => {
+        this.openSnackBar(errorMessage, "X");
+        return of(this.workflow);
+      }),
+    ).subscribe(res => this.openSnackBar(res.messageCode ? "Workflow Created Successful" : res, "!!"));
+    }
+      openSnackBar(message: string, action: string) {
+        this.snackBar.open(message, action, {
+          duration: 4000,
+          verticalPosition:"top"
+        });
+
+
+  }*/
+
   isControlValid(controlName: string): boolean {
     const control = this.formGroup.controls[controlName];
     return control.valid && (control.dirty || control.touched);
