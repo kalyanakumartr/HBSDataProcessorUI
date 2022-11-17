@@ -203,4 +203,28 @@ export class ProjectProcessListComponent implements OnInit {
   }
 }
   }
+
+  exportExcel(){
+
+    this.projectService.exportExcel("/exportToExcelProcessReport","Report").subscribe(
+      responseObj => {
+        console.log("Project success", responseObj);
+        var downloadURL = window.URL.createObjectURL(responseObj);
+        var link = document.createElement('a');
+        link.href = downloadURL;
+        link.download = "projectProcessList.xlsx";
+        link.click();
+        (<HTMLInputElement>document.getElementById("exportExcel")).disabled=false;
+        (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = true;
+      },
+      error => {
+        console.log("report error", error);
+        (<HTMLInputElement>document.getElementById("exportExcel")).disabled=false;
+        (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = true;
+
+      }
+    );
+
+  }
+
 }

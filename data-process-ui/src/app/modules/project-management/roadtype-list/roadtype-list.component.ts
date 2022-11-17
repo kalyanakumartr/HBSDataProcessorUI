@@ -381,17 +381,16 @@ this.roadTypeService.patchState({ paginator }, '/searchRoadType');
 }
 
 exportExcel() {
-(<HTMLInputElement>document.getElementById('exportExcel')).disabled = true;
-(<HTMLInputElement>document.getElementById('divSpinnerId')).hidden = false;
+
 this.roadTypeService
-  .exportExcel('/exportToExcelSubCountryList', 'Project')
+  .exportExcel('/exportToExcelBenchMarkReport', 'Report')
   .subscribe(
     (responseObj) => {
-      console.log('Project success', responseObj);
+      console.log('Road Type success', responseObj);
       var downloadURL = window.URL.createObjectURL(responseObj);
       var link = document.createElement('a');
       link.href = downloadURL;
-      link.download = 'projectSubCountryList.xlsx';
+      link.download = 'BenchMarkReport.xlsx';
       link.click();
       (<HTMLInputElement>document.getElementById('exportExcel')).disabled =
         false;

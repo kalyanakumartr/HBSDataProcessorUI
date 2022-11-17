@@ -323,13 +323,13 @@ export class GroupListComponent implements
     }
   }
   exportExcel() {
-    this.groupTeamService.exportExcel('/exportToExcelHRRecord', 'Admin').subscribe(
+    this.groupTeamService.exportExcel('/exportToExcelGroupTeamReport', 'Report').subscribe(
       (responseObj) => {
-        console.log('report success', responseObj);
+        console.log('Group report success', responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);
         var link = document.createElement('a');
         link.href = downloadURL;
-        link.download = 'HRRecords.xlsx';
+        link.download = 'GroupList.xlsx';
         link.click();
       },
       (error) => {

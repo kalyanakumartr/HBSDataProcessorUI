@@ -191,9 +191,8 @@ export class ProjectSubcountryListComponent implements OnInit {
     }
   }
   exportExcel(){
-    (<HTMLInputElement>document.getElementById("exportExcel")).disabled=true;
-    (<HTMLInputElement>document.getElementById("divSpinnerId")).hidden = false;
-    this.projectService.exportExcel("/exportToExcelSubCountryList","Project").subscribe(
+
+    this.projectService.exportExcel("/exportToExcelSubCountryReport","Report").subscribe(
       responseObj => {
         console.log("Project success", responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);

@@ -286,17 +286,17 @@ this.addworkflow(allotmentId,groupName,divisionId);
   }
 
   exportExcel(){
-    this.workflowService.exportExcel('/exportToExcelWorkflowRecord', 'Admin').subscribe(
+    this.workflowService.exportExcel('/exportToExcelAllocationReport', 'Admin').subscribe(
       (responseObj) => {
-        console.log('report success', responseObj);
+        console.log('Allocation Report success', responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);
         var link = document.createElement('a');
         link.href = downloadURL;
-        link.download = 'Wrokflow.xlsx';
+        link.download = 'Allocation.xlsx';
         link.click();
       },
       (error) => {
-        console.log('report error', error);
+        console.log('Allocation report error', error);
       }
     );
   }

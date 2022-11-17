@@ -346,13 +346,13 @@ if (this.isClearFilter) {
 }
 }
 exportExcel() {
-this.groupTeamService.exportExcel('/exportToExcelHRRecord', 'Admin').subscribe(
+this.groupTeamService.exportExcel('/exportToExcelGroupTeamReport', 'Report').subscribe(
   (responseObj) => {
-    console.log('report success', responseObj);
+    console.log('Team List success', responseObj);
     var downloadURL = window.URL.createObjectURL(responseObj);
     var link = document.createElement('a');
     link.href = downloadURL;
-    link.download = 'HRRecords.xlsx';
+    link.download = 'TeamList.xlsx';
     link.click();
   },
   (error) => {

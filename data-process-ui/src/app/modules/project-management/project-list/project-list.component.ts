@@ -367,13 +367,13 @@ export class ProjectListComponent
     }
   }
   exportExcel() {
-    this.projectService.exportExcel('/exportToExcelHRRecord', 'Admin').subscribe(
+    this.projectService.exportExcel('/exportToExcelProjectReport', 'Report').subscribe(
       (responseObj) => {
-        console.log('report success', responseObj);
+        console.log('Project Report success', responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);
         var link = document.createElement('a');
         link.href = downloadURL;
-        link.download = 'HRRecords.xlsx';
+        link.download = 'ProjectReport.xlsx';
         link.click();
       },
       (error) => {
