@@ -113,19 +113,18 @@ IFilterView
     throw new Error('Method not implemented.');
   }
   //edit
-  editworkflow(allotmentId: string,groupName:string,divisionId:string):void
+  editworkflow(allotmentId: string):void
   {
-this.addworkflow(allotmentId,groupName,divisionId);
+  this.addworkflow(allotmentId, this.division);
 
   }
-  addworkflow(allotmentId,groupName,divisionId)
+  addworkflow(allotmentId,divisionId)
   {
     if(divisionId !="0: 0"){
       const modalRef = this.modalService.open(CreateWorkflowComponent, {
         size: 'xl',
       });
-      modalRef.componentInstance.projectId = allotmentId;
-      modalRef.componentInstance.projectName = groupName;
+      modalRef.componentInstance.workflowId = allotmentId;
       modalRef.componentInstance.divisionId = divisionId;
   }else{
     alert("please Select division")
@@ -286,7 +285,7 @@ this.addworkflow(allotmentId,groupName,divisionId);
   }
 
   exportExcel(){
-    this.workflowService.exportExcel('/exportToExcelAllocationReport', 'Admin').subscribe(
+    this.workflowService.exportExcel('/exportToExcelAllocationReport', 'Report').subscribe(
       (responseObj) => {
         console.log('Allocation Report success', responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);
@@ -361,26 +360,12 @@ this.addworkflow(allotmentId,groupName,divisionId);
 
   create(){
     if(this.division){
-      this.addGroup(undefined,undefined,this.division);
+      this.addworkflow(undefined,this.division);
     }else{
       alert("Please Select Divison");
     }
   }
 
-    addGroup(projectId: string, projectName:string,divisionId:string) {
-      if(divisionId !="0: 0"){
-        const modalRef = this.modalService.open(CreateWorkflowComponent, {
-          size: 'xl',
-        });
-        modalRef.componentInstance.projectId = projectId;
-        modalRef.componentInstance.projectName = projectName;
-        modalRef.componentInstance.divisionId = divisionId;
-    }else{
-      alert("please Select division")
-    }
-
-
-  }
   setDepartment(value) {
     var position = value.split(':');
     if (position.length > 1) {

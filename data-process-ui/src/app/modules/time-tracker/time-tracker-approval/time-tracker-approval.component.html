@@ -71,7 +71,19 @@
         <label>{{dailyActivities.shortageHours?dailyActivities.shortageHours:"00:00"}} </label>
       </div>
     </div>
+    <div class="form-group row">
+      <div class="col-lg-2">
+        <label nowrap>Approved OT Hours</label>
+      </div>
+      <div class="col-lg-2">
 
+        <input id="time1" type="time" class="time2" [ngModel]="dailyActivities.overTimeHours"/>
+        <!--type="dailyActivities.overTimeHours"
+         {{dailyActivities.overTimeHours}}/>
+        [overTimeHours]="overTimeHourse"-->
+
+      </div>
+      </div>
     <div class="table-responsive angular-bootstrap-table">
       <table id="tablebox" class="table table-head-custom table-vertical-center ">
         <thead>

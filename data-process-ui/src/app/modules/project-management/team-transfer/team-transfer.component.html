@@ -1,0 +1,233 @@
+<div class="card card-custom gutter-b">
+  <div class="form form-label-right">
+    <div class="card-header">
+          <div class="form-group row">
+               <div class="card-title">
+                     <h3 class="card-label">Team Transfer List</h3>
+               </div>
+               <div class="col-lg-2">
+
+
+                    <label>Team Group</label>
+                    <select
+                class="form-control form-control-lg form-control-solid"
+                name="department"
+                [(ngModel)]="department"
+                (change)="setDepartment($event.target.value)"
+              >
+                <option [ngValue]="0" [selected]="true">Select Team Group</option>
+              </select>
+               </div>
+               <div class="col-lg-2">
+
+                  <label>Team Leader</label>
+                  <select
+                  class="form-control form-control-lg form-control-solid"
+                  name="department"
+                  [(ngModel)]="department"
+                  (change)="setDepartment($event.target.value)"
+                >
+                  <option [ngValue]="0" [selected]="true">Select Team Leader</option>
+
+                </select>
+               </div>
+               <div class="col-lg-2">
+
+                  <label>Team Member</label>
+                  <select
+                  class="form-control form-control-lg form-control-solid"
+                  name="department"
+                  [(ngModel)]="department"
+                  (change)="setDepartment($event.target.value)"
+                >
+                  <option [ngValue]="0" [selected]="true">Select Team Member</option>
+
+                </select>
+               </div>
+
+
+          </div>
+      </div>
+      <div class="card-body">
+      <div class="form-group row" [formGroup]="searchGroup">
+          <div class="col-lg-2">
+            <ng-container *ngIf="showDepartment">
+              <label>Department</label>
+              <select
+                class="form-control form-control-lg form-control-solid"
+                name="department"
+                [(ngModel)]="department"
+                (change)="setDepartment($event.target.value)"
+              >
+                <option [ngValue]="0" [selected]="true">Select Department</option>
+                <option
+                  *ngFor="let department of departmentList"
+                  [ngValue]="department.departmentId"
+                >
+                  {{ department.departmentName }}
+                </option>
+              </select>
+            </ng-container>
+            <ng-container *ngIf="!showDepartment">
+              <label>Department</label><br />
+              <span>{{ departmentName }}</span>
+            </ng-container>
+          </div>
+
+          <div class="col-lg-2">
+            <ng-container *ngIf="showDivision">
+              <label>Division</label>
+              <select
+                class="form-control form-control-lg form-control-solid"
+                name="division"
+                [(ngModel)]="division"
+                (change)="setDivision($event.target.value)"
+              >
+                <option [ngValue]="0" [selected]="true">Select Division</option>
+                <option
+                  *ngFor="let division of divisionList"
+                  [ngValue]="division.divisionId"
+                >
+                  {{ division.divisionName }}
+                </option>
+              </select>
+            </ng-container>
+            <ng-container *ngIf="!showDivision">
+              <label>Division</label><br />
+              <span>{{ divisionName }}</span>
+            </ng-container>
+          </div>
+          <div class="col-lg-2">
+
+              <label>Group</label>
+              <select
+                class="form-control form-control-lg form-control-solid"
+                name="division"
+                [(ngModel)]="group"
+                (change)="setGroup($event.target.value)"
+              >
+                <option [ngValue]="0" [selected]="true">Select Group</option>
+                <option
+                  *ngFor="let group of groupList"
+                  [ngValue]="group.teamId"
+                >
+                  {{ group.teamName }}
+                </option>
+              </select>
+          </div>
+          <div class="col-lg-2">
+
+              <label>Team</label>
+              <select
+                class="form-control form-control-lg form-control-solid"
+                name="division"
+                [(ngModel)]="group"
+                (change)="setGroup($event.target.value)"
+              >
+                <option [ngValue]="0" [selected]="true">Select Team</option>
+                <!-- <option
+                  *ngFor="let group of groupList"
+                  [ngValue]="group.teamId"
+                >
+                  {{ group.teamName }}
+                </option>-->
+              </select>
+          </div>
+          <div class="col-lg-2">
+
+              <label>Designation</label>
+              <select
+                class="form-control form-control-lg form-control-solid"
+                name="division"
+                [(ngModel)]="group"
+                (change)="setGroup($event.target.value)"
+              >
+                <option [ngValue]="0" [selected]="true">Select Designation</option>
+                <!-- <option
+                  *ngFor="let group of groupList"
+                  [ngValue]="group.teamId"
+                >
+                  {{ group.teamName }}
+                </option>-->
+              </select>
+          </div>
+          <div class="col-lg-2" >
+            <label>Search in all fields</label>
+            <div class="grid-container">
+              <div class="grid-item">
+                <input
+                  type="search"
+                  class="form-control"
+                  name="searchText"
+                  id="searchText"
+                  placeholder="Search"
+                  value=""
+                  formControlName="searchTerm"
+                />
+
+          <div class="grid-item" style="cursor: pointer">
+            &nbsp;<br />&nbsp;
+
+            <i
+              title="Clear Filter"
+              (click)="clearFilter()"
+              class="fas fa-filter fa-2x"
+            ></i>
+          </div>
+        </div>
+      </div>
+  </div>
+  </div>
+  </div>
+      </div>
+
+
+      <div class="table-responsive angular-bootstrap-table">
+          <table id="tablebox" class="table table-head-custom table-vertical-center ">
+            <thead>
+              <tr>
+                <ng-container *ngIf="hasCheckbox">
+
+                 <th>
+                    <ng-container *ngIf="!isAssigned">
+                      <input type="checkbox" id="checkAllBox" (change)="checkAll()"/>
+                    </ng-container>
+                    <ng-container *ngIf="isAssigned">
+                      <input type="checkbox" id="checkAllBox" disabled=true/>
+                    </ng-container>
+
+                  </th>
+                </ng-container>
+
+                <th nowrap > <ng-container *ngIf="hasEdit">Edit</ng-container>
+                  Department
+
+                </th>
+
+              <th nowrap >Division </th>
+
+
+              <th nowrap >Group</th>
+              <th nowrap >Team</th>
+              <th nowrap >Designation</th>
+
+              <th  >Team Member Name</th>
+
+              <th  >Reporting
+                  Team Name</th>
+
+
+              <th >Reporting  TL Name
+              </th>
+              <th >Reporting Group Name</th>
+              <th >Reporting Project Leader Name</th>
+
+              <th  >Reporting Manager</th>
+
+
+            </tr>
+            </thead>
+            <tbody></tbody>
+            </table>
+            </div>
+  </div>

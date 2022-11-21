@@ -262,7 +262,7 @@ export abstract class TableService<T> {
         finalize(() => this._isLoading$.next(false))
       );
     }else  if(path.endsWith("AllocationGroup")){
-      return this.http.post<BaseModel>(this.VIEW_API_URL+path, { item},{headers: httpHeaders}).pipe(
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path,  item,{headers: httpHeaders}).pipe(
         catchError(err => {
           this._errorMessage.next(err);
           console.error('Update ITEM', err);

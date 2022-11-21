@@ -33,9 +33,6 @@ const EMPTY_WORKFLOW: Workflow = {
   styleUrls: ['./create-workflow.component.scss']
 })
 export class CreateWorkflowComponent implements OnInit {
-
-  //group:Group;
-  @Input() groupId: string;
   @Input() divisionId: string;
   @Input() workflowId: string;
   isLoading$;
@@ -45,6 +42,7 @@ export class CreateWorkflowComponent implements OnInit {
   formGroup: FormGroup;
   workflow: Workflow;
   groupList: any[];
+  allotmentId: any[];
   productionTeamList: any[];
   qualityAssuranceTeamList: any[];
   qualityControlTeamList: any[];
@@ -93,9 +91,7 @@ export class CreateWorkflowComponent implements OnInit {
       this.workflow = EMPTY_WORKFLOW;
       this.loadForm();
     } else {
-      console.log("this.id", this.groupId);
-
-      const sb = this.groupTeamService.getGroupTeam(this.groupId).pipe(
+      const sb = this.groupTeamService.getAllocationGroup(this.workflowId).pipe(
         first(),
         catchError((errorMessage) => {
           console.log("errorMessage", errorMessage);
@@ -244,6 +240,8 @@ export class CreateWorkflowComponent implements OnInit {
   }
 
   edit() {
+    this.workflow.id=undefined;
+    this.workflow.readyForDelivery=this.workflow.deliveryToClient;
     const sbUpdate = this.workflowService.update(this.workflow, "/updateAllocationGroup", "formGroup").pipe(
       tap(() => {
         this.modal.close();
@@ -253,7 +251,7 @@ export class CreateWorkflowComponent implements OnInit {
         this.modal.dismiss(errorMessage);
         return of(this.customer);
       }),
-    ).subscribe(res => this.openSnackBar(res.messageCode ? "Update Successful" : res, "!!"));
+    ).subscribe(res => this.openSnackBar(res.messageCode ? "Workflow Update Successful" : res, res.messageCode +"!!"));
     //this.subscriptions.push(sbUpdate);
   }
   openSnackBar(message: string, action: string) {
@@ -266,16 +264,6 @@ export class CreateWorkflowComponent implements OnInit {
 
 
 
-/*
-  var path ='';
-  var msg="";
-  if(this.workflow.allotmentId!=""){
-    path ="/updateAllocationGroup";
-    msg="Updated";
-  }else{
-    path ="/addAllocationGroup";
-    msg="Created";
-  }*/
   create() {
     console.log("Add Workflow");
     this.workflow.id=undefined;
@@ -308,7 +296,7 @@ export class CreateWorkflowComponent implements OnInit {
 
 
     if (createEdit == "Edit") {
-      //this.group.groupId=this.groupId;
+      this.workflow.allotmentId=this.workflowId;
     }
 
   }

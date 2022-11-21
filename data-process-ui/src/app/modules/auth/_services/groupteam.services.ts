@@ -10,6 +10,7 @@ import { Project } from '../_models/project.model';
 import { Team } from '../_models/team.model';
 import { SubCountry } from '../_models/sub-country.model';
 import { Process } from '../../time-tracker/modal/process.model';
+import { Workflow } from '../_models/workflow.model';
 
 const DEFAULT_STATE: IGroupTeamTableState = {
   filter: {},
@@ -95,6 +96,13 @@ export class GroupTeamService extends TableService<Team> implements OnDestroy {
         return of({ items: [], total: 0 });
       })
     );
+  }
+  getAllocationGroup(allotmentId){
+    const url =`${this.VIEW_API_URL}/getAllocationGroup`;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<Workflow>(url, {"allotmentId":allotmentId  },{ headers: httpHeaders, });
   }
   getGroupTeam(teamId){
 

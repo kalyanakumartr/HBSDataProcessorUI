@@ -11,6 +11,7 @@ import { ProjectSubcountryListComponent } from './project-subcountry-list/projec
 import { ProjectTemplateComponent } from './project-template/project-template.component';
 import { RoadtypeListComponent } from './roadtype-list/roadtype-list.component';
 import { TeamListComponent } from './team-list/team-list.component';
+import { TeamTransferComponent } from './team-transfer/team-transfer.component';
 
 
 const routes: Routes = [
@@ -58,6 +59,10 @@ const routes: Routes = [
       },{
         path: 'worklow-queue',
         component: AssignTeamGroupComponent,
+      },
+      {
+        path: 'team-transfer',
+        component: TeamTransferComponent,
       },
       { path: '', redirectTo: 'project-list', pathMatch: 'full' },
       { path: '**', redirectTo: 'project-list', pathMatch: 'full' },
