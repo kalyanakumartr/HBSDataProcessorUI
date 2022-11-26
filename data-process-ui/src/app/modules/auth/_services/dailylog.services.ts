@@ -123,14 +123,7 @@ export class DailyLogService  {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post(url, { "timesheetIds":[timesheetId],"approvedOTHours":approvedOTHours},{headers: httpHeaders}).pipe(
-
-      catchError(err => {
-
-        console.error('FIND ITEMS', err);
-        return of({ items: [], total: 0 });
-      })
-    );
+    return this.http.post(url, { "timesheetIds":[timesheetId],"approvedOTHours":approvedOTHours},{headers: httpHeaders});
   }
   deleteDailyLog(id, timesheetId){
 

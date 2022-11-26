@@ -25,16 +25,28 @@ export class ChangeOvertimeComponent implements OnInit {
    this.overTimeHours=this.approvedOTHours;
   }
   update(){
-    alert(this.overTimeHours);
     this.dailyLogService.updateOtHours(this.timesheetId,this.overTimeHours).pipe(
     tap((res: any) => {
+      console.log("res",res);
+
+      this.passBack();
       this.modal.dismiss();
       this.dailyLogService.filterData("");
-      //this.dailyLogService.filterData("");
       console.log("updateOtHours", res);
     }),
     catchError((err) => {
-      console.log(err);
+      console.log("Err",err.error.text);
+
+      if(err.error.text == "Duration should be less than or equal to the raised Over Time Hours."){
+        alert(err.error.text);
+        return;
+      }
+      if(err.error.text == "OT Hours Updated. Please Approve Timesheet for locking OT Hours."){
+        this.passBack();
+        this.modal.dismiss();
+        this.dailyLogService.filterData("");
+        return;
+      }
       return of({
         items: []
       });

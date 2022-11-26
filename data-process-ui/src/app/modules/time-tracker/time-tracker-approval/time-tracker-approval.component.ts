@@ -201,9 +201,7 @@ export class TimeTrackerApprovalComponent implements OnInit {
 
     modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
       console.log("receivedEntry",receivedEntry);
-      if(receivedEntry.indexOf("-")>=0){
         this.timeSheet.approvedOTHours=receivedEntry;
-      }
     })
   }
   changeAttendanceMethod(value){
