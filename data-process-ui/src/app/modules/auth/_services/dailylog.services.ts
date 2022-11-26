@@ -117,6 +117,21 @@ export class DailyLogService  {
       })
     );
   }
+  updateOtHours(timesheetId,approvedOTHours){
+
+    const url = this.TALE_API_URL + "/approveOTHours";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, { "timesheetIds":[timesheetId],"approvedOTHours":approvedOTHours},{headers: httpHeaders}).pipe(
+
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
   deleteDailyLog(id, timesheetId){
 
     const url = this.API_URL + "/deleteDailyLog";

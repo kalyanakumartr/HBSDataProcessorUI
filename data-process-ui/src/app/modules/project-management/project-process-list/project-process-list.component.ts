@@ -206,7 +206,7 @@ export class ProjectProcessListComponent implements OnInit {
 
   exportExcel(){
 
-    this.projectService.exportExcel("/exportToExcelProcessReport","Report").subscribe(
+    this.projectService.exportExcel("/exportToExcelProcessTaskReport","Report").subscribe(
       responseObj => {
         console.log("Project success", responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);

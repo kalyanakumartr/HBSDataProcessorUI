@@ -5,6 +5,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ChangeAttendanceComponent } from '../../attendance/change-attendance/change-attendance.component';
+import { ChangeOvertimeComponent } from '../../attendance/change-overtime/change-overtime.component';
 import { AttendanceModel } from '../../attendance/modal/attendance.model';
 import { DailyLogService } from '../../auth/_services/dailylog.services';
 import { ProjectService } from '../../auth/_services/project.services';
@@ -152,7 +153,7 @@ export class TimeTrackerApprovalComponent implements OnInit {
     }
   }
   approve(){
-  if(this.dailyActivities.totalBillable && this.dailyActivities.shortageHours && parseFloat(this.dailyActivities.total.replace(":","."))>0 && parseFloat(this.dailyActivities.shortageHours.replace(":","."))==0){
+    if(this.dailyActivities.totalBillable && this.dailyActivities.shortageHours && parseFloat(this.dailyActivities.total.replace(":","."))>0 && parseFloat(this.dailyActivities.shortageHours.replace(":","."))==0){
     this.timesheetApprovalReject("Approved");
   }else{
     alert("Hours not Correct");
@@ -192,6 +193,18 @@ export class TimeTrackerApprovalComponent implements OnInit {
       }
       this.getDailyLog();
       })
+  }
+  change1(){
+    const modalRef = this.modalService.open(ChangeOvertimeComponent, { size: 'sm', animation :true });
+    modalRef.componentInstance.timesheetId=this.dailyActivities.timesheetId;
+    modalRef.componentInstance.approvedOTHours=this.timeSheet.approvedOTHours;
+
+    modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
+      console.log("receivedEntry",receivedEntry);
+      if(receivedEntry.indexOf("-")>=0){
+        this.timeSheet.approvedOTHours=receivedEntry;
+      }
+    })
   }
   changeAttendanceMethod(value){
     alert (value);
