@@ -81,8 +81,10 @@ export class ProjectProcessListComponent implements
       this.getDepartment();
       this.division="0: 0";
       this.department="0: 0";
+
     }
-    this.processSerive.patchStateWithoutFetch({ type: 'Process' });
+    this.project = '0: 0';
+
     this.processSerive.fetch('/searchProcess');
     console.log('UserList :', this.subscriptions);
     this.grouping = this.processSerive.grouping;
@@ -103,6 +105,7 @@ export class ProjectProcessListComponent implements
   ngOnDestroy() {
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
+
 
   // filtration
   filterForm() {
@@ -181,8 +184,8 @@ export class ProjectProcessListComponent implements
     throw new Error('Method not implemented.');
   }
   create() {
-    if(this.division !="0: 0"){
-   //   this.addGroup(undefined, this.division);
+    if(this.division){
+     this.addGroup(undefined, this.division);
     }else{
       alert("Please Select Department & Divison");
     }
@@ -192,7 +195,7 @@ export class ProjectProcessListComponent implements
     this.addGroup(groupId, division);
 
   }
-
+*/
   addGroup(groupId: string, division: string) {
     if(groupId !="0: 0"){
       const modalRef = this.modalService.open(GroupCreateComponent, {
@@ -205,7 +208,7 @@ export class ProjectProcessListComponent implements
     alert("Please Select Department & Division")
   }
   }
-*/
+
   delete(id: number) {
     // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
     // modalRef.componentInstance.id = id;
@@ -254,7 +257,7 @@ export class ProjectProcessListComponent implements
       if (this.department != '0') {
         this.isClearFilter = true;
         this.getDivisionForDepartment();
-        this.groupTeamService.patchState(
+        this.processSerive.patchState(
           { departmentId: this.department },
           '/searchProcess'
         );
@@ -266,7 +269,8 @@ export class ProjectProcessListComponent implements
     if (position.length > 1) {
       this.division = position[1].toString().trim();
       if (this.division != '0') {
-        this.groupTeamService.patchState(
+        this.getProjectForDivision();
+        this.processSerive.patchState(
           { divisionId: this.division },
           '/searchProcess'
         );
@@ -292,11 +296,6 @@ export class ProjectProcessListComponent implements
       )
       .subscribe();
   }
-  taskCreate()
-  {
-    const modalRef = this.modalService.open(ProjectProcessCreateComponent, { size: 'xl' });
-  }
-
   setProject(value) {
     var position = value.split(':');
     if (position.length > 1) {
@@ -306,6 +305,42 @@ export class ProjectProcessListComponent implements
       }
     }
   }
+
+
+
+
+  getProjectForDivision() {
+    this.projectList = [];
+    this.projectService
+      .getProjectList(this.division)
+      .pipe(
+        tap((res: any) => {
+          this.projectList = res;
+          console.log('projectList', this.projectList);
+          setTimeout(() => {
+            this.project = '0: 0';
+          }, 2000);
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: [],
+          });
+        })
+      )
+      .subscribe();
+  }
+
+
+
+
+
+  taskCreate()
+  {
+    const modalRef = this.modalService.open(ProjectProcessCreateComponent, { size: 'xl' });
+  }
+
+
   projectAssignTask()
   {
     if(this.project != "0: 0"){
@@ -341,9 +376,8 @@ export class ProjectProcessListComponent implements
     } else {
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
     }
-  }
-  exportExcel() {
-    this.groupTeamService.exportExcel('/exportToExcelGroupTeamReport', 'Report').subscribe(
+  }  exportExcel() {
+    this.processSerive.exportExcel('/exportToExcelGroupTeamReport', 'Report').subscribe(
       (responseObj) => {
         console.log('Process report success', responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);

@@ -90,6 +90,15 @@ export interface IProcessTableState extends ITableState{
   status:any;
   taskStatusList:any
 }
+export interface ISubcountryTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
 export interface IWorkflowTableState extends ITableState{
   employeeId: any,
   queueList:any,

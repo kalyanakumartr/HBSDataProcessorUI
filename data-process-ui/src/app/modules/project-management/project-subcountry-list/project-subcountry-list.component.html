@@ -85,27 +85,51 @@
     </div>
   </div>
   <!-- end: Filtration form -->
-  <div style=" padding: 0px 10px 10px 20px;">
-    <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
+  <div class="table-responsive angular-bootstrap-table">
+    <table
+    id="tablebox"
+    class="table table-head-custom table-vertical-center"
+  >
+
+    <thead>
+      <tr >
+        <th class="sticky-header"> S No </th>
+        <th class="sticky-header">Country Name </th>
+        <th class="sticky-header">Priority </th>
+        <th class="sticky-header"> Display Status </th>
 
 
-      <!-- Position Column -->
+      </tr>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="countryName">
-        <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Country Name </mat-header-cell>
-        <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.countryName}} </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="priority">
-        <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Priority </mat-header-cell>
-        <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.priority}} </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="status">
-        <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Display Status </mat-header-cell>
-        <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.status}} </mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>
-      </div>
+    </thead>
+    <tbody>
+
+
+
+
+    <tr *ngFor="let country of subcountryService.items$ | async">
+      <td>
+        {{country.slNo}}
+      </td>
+      <td>
+          {{country.subCountry.countryName}}
+          </td>
+          <td>
+            {{country.subCountry.priority}}
+          </td>
+          <td>
+            {{country.subCountry.status}}
+          </td>
+
+        </tr>
+    </tbody>
+    </table>
+    </div>
+
+    <app-paginator
+    class="d-flex justify-content-between align-items-center flex-wrap"
+    [paginator]="paginator"
+    [isLoading]="isLoading"
+    (paginate)="paginate($event)"
+  ></app-paginator>
 </div>

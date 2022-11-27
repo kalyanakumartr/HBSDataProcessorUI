@@ -41,6 +41,10 @@ export class SortProcess implements ISortState {
   column = 'processName'; // Id by default
   direction: SortDirection = 'asc'; // asc by default;
 }
+export class SortSubcountry implements ISortState {
+  column = 'subCountry.countryName'; // Id by default
+  direction: SortDirection = 'asc'; // asc by default;
+}
 export class SortTeamTransfer implements ISortState {
   column = 'userName'; // Id by default
   direction: SortDirection = 'asc'; // asc by default;

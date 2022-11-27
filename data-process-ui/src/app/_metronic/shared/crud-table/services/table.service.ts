@@ -160,6 +160,16 @@ export abstract class TableService<T> {
         finalize(() => this._isLoading$.next(false))
       );
     }
+    else if(path.endsWith("Country")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formGroup: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('CREATE ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }
     else if(path.endsWith("AllocationGroup")){
       return this.http.post<BaseModel>(this.VIEW_API_URL+path, item,{headers: httpHeaders}).pipe(
         catchError(err => {
@@ -197,6 +207,8 @@ export abstract class TableService<T> {
     }else if(path.endsWith("Transfer")){
       url = this.VIEW_API_URL + path;//'/searchTransfer';
     }else if(path.endsWith("Process")){
+      url = this.VIEW_API_URL + path;//'/searchProcess';
+    }else if(path.endsWith("Country")){
       url = this.VIEW_API_URL + path;//'/searchProcess';
     }else if(path.endsWith("AllocationGroup")){
       url = this.VIEW_API_URL + path;//'/searchAllocationGroup';
@@ -272,7 +284,19 @@ export abstract class TableService<T> {
         }),
         finalize(() => this._isLoading$.next(false))
       );
-    }else  if(path.endsWith("GroupTeam")){
+    }else  if(path.endsWith("Country")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formRoadType: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('Update ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }
+
+
+    else  if(path.endsWith("GroupTeam")){
       return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formGroup: item},{headers: httpHeaders}).pipe(
         catchError(err => {
           this._errorMessage.next(err);
@@ -406,6 +430,9 @@ export abstract class TableService<T> {
     }else if(serverType == 'Report'){
       url = this.REPORT_API_URL + path;//'/searchUser';
     }else if(serverType == 'Project'){
+      url = this.VIEW_API_URL + path;//'/searchUser';
+    }
+    else if(serverType == 'Country'){
       url = this.VIEW_API_URL + path;//'/searchUser';
     }
 
