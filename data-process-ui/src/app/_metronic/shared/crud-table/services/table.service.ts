@@ -188,6 +188,8 @@ export abstract class TableService<T> {
       url = this.VIEW_API_URL + path;//'/searchRoadType';
     }else if(path.endsWith("GroupTeam")){
       url = this.VIEW_API_URL + path;//'/searchGroupTeam';
+    }else if(path.endsWith("Transfer")){
+      url = this.VIEW_API_URL + path;//'/searchGroupTeam';
     }else if(path.endsWith("AllocationGroup")){
       url = this.VIEW_API_URL + path;//'/searchAllocationGroup';
     }     else{

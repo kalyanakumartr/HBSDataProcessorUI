@@ -37,6 +37,10 @@ export class SortWorkflow implements ISortState {
   column = 'group.groupName'; // Id by default
   direction: SortDirection = 'desc'; // asc by default;
 }
+export class SortTeamTransfer implements ISortState {
+  column = 'userName'; // Id by default
+  direction: SortDirection = 'asc'; // asc by default;
+}
 export interface ISortView {
   sorting: SortState;
   ngOnInit(): void;

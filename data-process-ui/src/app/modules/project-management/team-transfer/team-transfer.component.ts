@@ -2,105 +2,118 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { GroupingState, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
-import { GroupTeamService } from '../../auth/_services/groupteam.services';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  tap,
+} from 'rxjs/operators';
+import {
+  GroupingState,
+  PaginatorState,
+  SortState,
+} from 'src/app/_metronic/shared/crud-table';
 import { ProjectService } from '../../auth/_services/project.services';
+import { TeamTransferService } from '../../auth/_services/teamtransfer.services';
 
 @Component({
   selector: 'app-team-transfer',
   templateUrl: './team-transfer.component.html',
-  styleUrls: ['./team-transfer.component.scss']
+  styleUrls: ['./team-transfer.component.scss'],
 })
 export class TeamTransferComponent implements OnInit {
   paginator: PaginatorState;
-sorting: SortState;
-grouping: GroupingState;
-isLoading: boolean;
+  sorting: SortState;
+  grouping: GroupingState;
+  isLoading: boolean;
 
-  group:any;
+  group: any;
   searchGroup: FormGroup;
-  groupList:any[];
-  divisionName:string;
-  departmentList:any[];
-  showDivision:boolean;
-  departmentName:string;
-  department:any;
-  hasEdit:boolean;
+  groupList: any[];
+  divisionName: string;
+  transferToList: any[];
+  departmentList: any[];
+  showDivision: boolean;
+  departmentName: string;
+  department: any;
+  transferTo: any;
+  hasEdit: boolean;
   hasCheckbox: boolean;
-  isAssigned:boolean;
-divisionList:any[];
-isClearFilter:boolean;
-division:any;
-showDepartment:boolean;
-private subscriptions: Subscription[] = [];
+  isAssigned: boolean;
+  divisionList: any[];
+  isClearFilter: boolean;
+  division: any;
+  type: any;
+  showDepartment: boolean;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
-    public groupTeamService: GroupTeamService,
+    public teamTransferService: TeamTransferService,
     public projectService: ProjectService
-  ) { this.showDepartment=true;
-    this.isClearFilter=false;
-    this.showDivision=true;
-    this.hasEdit=false;
+  ) {
+    this.showDepartment = true;
+    this.isClearFilter = false;
+    this.showDivision = true;
+    this.hasEdit = false;
     this.hasCheckbox = false;
     this.isAssigned = false;
-
-    }
+  }
 
   ngOnInit(): void {
+    this.type="TeamMember";
+    this.setType();
+    this.getTransferUserList();
     this.searchForm();
-if(this.showDivision){
-  this.getDepartment();
-  this.division="0: 0";
-  this.department="0: 0";
-}
+    if (this.showDivision) {
+      this.getDepartment();
+      this.division = '0: 0';
+      this.department = '0: 0';
+    }
   }
-// search
-searchForm() {
-  this.searchGroup = this.fb.group({
-    searchTerm: [''],
-    department: ['0'],
-    division: ['0'],
-    project: ['0'],
-  });
-  const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
-    .pipe(
-      /*
+  // search
+  searchForm() {
+    this.searchGroup = this.fb.group({
+      searchTerm: [''],
+      department: ['0'],
+      division: ['0'],
+      project: ['0'],
+    });
+    const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
+      .pipe(
+        /*
     The user can type quite quickly in the input box, and that could trigger a lot of server requests. With this operator,
     we are limiting the amount of server requests emitted to a maximum of one every 150ms
     */
-      debounceTime(150),
-      distinctUntilChanged()
-    )
-    .subscribe((val) => this.search(val));
-  this.subscriptions.push(searchEvent);
+        debounceTime(150),
+        distinctUntilChanged()
+      )
+      .subscribe((val) => this.search(val));
+    this.subscriptions.push(searchEvent);
   }
 
   search(searchTerm: string) {
-  this.groupTeamService.patchState({ searchTerm }, '/searchGroupTeam');
+    this.teamTransferService.patchState({ searchTerm }, '/searchTransfer');
   }
   //Check All
-  checkAll(){
-
-  }
+  checkAll() {}
   // sorting
   sort(column: string) {
-  const sorting = this.sorting;
-  const isActiveColumn = sorting.column === column;
-  if (!isActiveColumn) {
-    sorting.column = column;
-    sorting.direction = 'asc';
-  } else {
-    sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
-  }
-  this.groupTeamService.patchState({ sorting }, '/searchGroupTeam');
+    const sorting = this.sorting;
+    const isActiveColumn = sorting.column === column;
+    if (!isActiveColumn) {
+      sorting.column = column;
+      sorting.direction = 'asc';
+    } else {
+      sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
+    }
+    this.teamTransferService.patchState({ sorting }, '/searchTransfer');
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-  this.groupTeamService.patchState({ paginator }, '/searchGroupTeam');
+    this.teamTransferService.patchState({ paginator }, '/searchTransfer');
   }
   getDepartment() {
     this.projectService
@@ -119,7 +132,7 @@ searchForm() {
         })
       )
       .subscribe();
-    }
+  }
 
   clearFilter() {
     if (this.isClearFilter) {
@@ -137,16 +150,16 @@ searchForm() {
       }
       this.getDepartment();
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
-      this.groupTeamService.setDefaults();
-      this.groupTeamService.patchState({}, '/searchGroupTeam');
-      this.grouping = this.groupTeamService.grouping;
-      this.paginator = this.groupTeamService.paginator;
-      this.sorting = this.groupTeamService.sorting;
+      this.teamTransferService.setDefaults();
+      this.teamTransferService.patchState({}, '/searchTransfer');
+      this.grouping = this.teamTransferService.grouping;
+      this.paginator = this.teamTransferService.paginator;
+      this.sorting = this.teamTransferService.sorting;
       this.department = '0';
     } else {
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
     }
-    }
+  }
 
   getGroupForDivision() {
     this.groupList = [];
@@ -168,20 +181,20 @@ searchForm() {
         })
       )
       .subscribe();
-    }
+  }
   setDivision(value) {
     var position = value.split(':');
     if (position.length > 1) {
       this.division = position[1].toString().trim();
       if (this.division != '0') {
         this.getGroupForDivision();
-        this.groupTeamService.patchState(
+        this.teamTransferService.patchState(
           { divisionId: this.division },
-          '/searchGroupTeam'
+          '/searchTransfer'
         );
       }
     }
-    }
+  }
   getDivisionForDepartment() {
     this.divisionList = [];
     this.projectService
@@ -190,7 +203,6 @@ searchForm() {
         tap((res: any) => {
           this.divisionList = res;
           console.log('divisionList', this.divisionList);
-
         }),
         catchError((err) => {
           console.log(err);
@@ -200,7 +212,7 @@ searchForm() {
         })
       )
       .subscribe();
-    }
+  }
   setDepartment(value) {
     var position = value.split(':');
     if (position.length > 1) {
@@ -208,20 +220,63 @@ searchForm() {
       if (this.department != '0') {
         this.isClearFilter = true;
         this.getDivisionForDepartment();
-        this.groupTeamService.patchState(
+        this.teamTransferService.patchState(
           { departmentId: this.department },
-          '/searchGroupTeam'
+          '/searchTransfer'
         );
       }
     }
-    }
+  }
   setGroup(value) {
     var position = value.split(':');
     if (position.length > 1) {
       this.group = position[1].toString().trim();
       if (this.group != '0') {
-        this.groupTeamService.patchState({ groupId: this.group }, '/searchGroupTeam');
+        this.teamTransferService.patchState(
+          { groupId: this.group },
+          '/searchTransfer'
+        );
       }
     }
+  }
+  setType() {
+
+        this.teamTransferService.patchState({ type: this.type }, '/searchTransfer' );
+
+  }
+  checkBoxWorkUnit(id) {
+
+
+    if ((<HTMLInputElement>document.getElementById(id)).checked == false) {
+      (<HTMLInputElement>document.getElementById('checkAllBox')).checked =
+        false;
+    }else{
     }
+  }
+
+  getTransferUserList() {
+    var shortNameList=[];
+    if(this.type == "TeamMember"){
+      shortNameList=["TL-Sr","TL-Tr","TL"];
+    }else if(this.type == "Team"){
+
+    }else if(this.type == "Group"){
+
+    }
+    this.teamTransferService.getTransferUserList(shortNameList).pipe(
+        tap((res: any) => {
+          this.transferToList = res;
+          console.log('transferToList', this.transferToList);
+          this.transferTo = '0: 0';
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: [],
+          });
+        })
+      )
+      .subscribe();
+  }
+
 }

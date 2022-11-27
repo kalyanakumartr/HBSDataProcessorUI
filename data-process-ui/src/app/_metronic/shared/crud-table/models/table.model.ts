@@ -100,7 +100,15 @@ export interface IGroupTeamTableState extends ITableState{
   status:any;
   taskStatusList:any
 }
-
+export interface ITeamTransferTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
 
 export interface IRoadTypeTableState extends ITableState{
   employeeId: any,

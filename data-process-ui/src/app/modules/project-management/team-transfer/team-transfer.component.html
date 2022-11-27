@@ -2,52 +2,20 @@
   <div class="form form-label-right">
     <div class="card-header">
           <div class="form-group row">
-               <div class="card-title">
-                     <h3 class="card-label">Team Transfer List</h3>
-               </div>
-               <div class="col-lg-2">
-
-
-                    <label>Team Group</label>
-                    <select
-                class="form-control form-control-lg form-control-solid"
-                name="department"
-                [(ngModel)]="department"
-                (change)="setDepartment($event.target.value)"
-              >
-                <option [ngValue]="0" [selected]="true">Select Team Group</option>
-              </select>
-               </div>
-               <div class="col-lg-2">
-
-                  <label>Team Leader</label>
-                  <select
-                  class="form-control form-control-lg form-control-solid"
-                  name="department"
-                  [(ngModel)]="department"
-                  (change)="setDepartment($event.target.value)"
-                >
-                  <option [ngValue]="0" [selected]="true">Select Team Leader</option>
-
-                </select>
-               </div>
-               <div class="col-lg-2">
-
-                  <label>Team Member</label>
-                  <select
-                  class="form-control form-control-lg form-control-solid"
-                  name="department"
-                  [(ngModel)]="department"
-                  (change)="setDepartment($event.target.value)"
-                >
-                  <option [ngValue]="0" [selected]="true">Select Team Member</option>
-
-                </select>
-               </div>
-
-
+            <div class="card-title">
+              <h3 class="card-label">Team Transfer List</h3>
           </div>
-      </div>
+               <div class="col-lg-2">
+                <label>Select Transfer Type :</label></div>
+                <div class="col-lg-2">
+                   <select [(ngModel)]="type" (change)="setType()">
+                  <option value="Group">Group Transfer</option>
+                  <option value="Team">Team Transfer</option>
+                  <option value="TeamMember">Team Member Transfer</option>
+             </select>
+             </div>
+          </div>
+
       <div class="card-body">
       <div class="form-group row" [formGroup]="searchGroup">
           <div class="col-lg-2">
@@ -186,20 +154,14 @@
           <table id="tablebox" class="table table-head-custom table-vertical-center ">
             <thead>
               <tr>
-                <ng-container *ngIf="hasCheckbox">
 
                  <th>
-                    <ng-container *ngIf="!isAssigned">
+
                       <input type="checkbox" id="checkAllBox" (change)="checkAll()"/>
-                    </ng-container>
-                    <ng-container *ngIf="isAssigned">
-                      <input type="checkbox" id="checkAllBox" disabled=true/>
-                    </ng-container>
 
                   </th>
-                </ng-container>
 
-                <th nowrap > <ng-container *ngIf="hasEdit">Edit</ng-container>
+                <th nowrap >
                   Department
 
                 </th>
@@ -227,7 +189,43 @@
 
             </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+              <tr *ngFor="let task of teamTransferService.items$ | async">
+                  <td>
+                      <input type="checkbox" id="{{task.employeeId}}"  name="workUnits" value="{{ task.employeeId }}"  (change)="checkBoxWorkUnit(task.employeeId)"/>
+                  </td>
+
+                <td  nowrap>
+                  {{ task.departmentName}}
+                  </td>
+                <td>
+
+                  {{ task.divisionName }}</td>
+
+
+                <td>
+                  {{ task.groupName }}
+                </td>
+                <td>
+                  {{ task.teamName }}
+                </td>
+
+                <td>{{ task.roleName}}</td>
+
+                <td>
+                  {{ task.fullName }}
+                </td>
+                <td>
+                  {{ task.teamName }}
+                </td>
+                <td>
+                  {{ task.fullName }}
+                </td>
+                <td>
+                  {{ task.fullName }}
+                </td>
+              </tr>
+            </tbody>
             </table>
             </div>
   </div>
