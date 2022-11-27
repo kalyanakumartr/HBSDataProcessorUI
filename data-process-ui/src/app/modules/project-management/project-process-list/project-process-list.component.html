@@ -96,28 +96,45 @@
     </div>
 
     </div>
-<div style=" padding: 0px 10px 10px 20px;">
-  <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
 
 
     <!-- Position Column -->
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="processName">
-      <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Process Name </mat-header-cell>
-      <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.processName}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="billType">
-      <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> BillType </mat-header-cell>
-      <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.billType}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="status">
-      <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Display Status </mat-header-cell>
-      <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.status}} </mat-cell>
-    </ng-container>
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-    </div>
+    <!-- Name Column --><div class="table-responsive angular-bootstrap-table">
+        <table
+        id="tablebox"
+        class="table table-head-custom table-vertical-center"
+
+      >
+      <!-- </table> #table [dataSource]="dataSource"> -->
+        <thead>
+          <tr >
+            <th class="sticky-header">Process Name </th>
+            <th class="sticky-header">BillType </th>
+            <th class="sticky-header"> Display Status </th>
+          </tr>
+
+        </thead>
+        <tbody>
+
+
+
+
+        <tr *ngFor="let process of processSerive.items$ | async">
+            <td>
+              {{process.processName}}
+              </td>
+              <td>
+                {{process.billType}}
+              </td>
+              <td>
+                {{process.status}}
+              </td>
+
+            </tr>
+        </tbody>
+        </table>
+        </div>
+
 
 </div>

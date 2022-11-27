@@ -9,10 +9,6 @@ import { SortState } from '../models/sort.model';
 import { GroupingState } from '../models/grouping.model';
 import { environment } from '../../../../../environments/environment';
 import { AuthModel } from 'src/app/modules/auth/_models/auth.model';
-import { LeaveModel } from 'src/app/modules/leave-management-system/modal/leave.model';
-import { AttendanceModel } from 'src/app/modules/attendance/modal/attendance.model';
-import { TimeSheetModel } from 'src/app/modules/attendance/modal/timesheet.model';
-import { Project } from 'src/app/modules/auth/_models/project.model';
 
 const DEFAULT_STATE: ITableState = {
   filter: {},
@@ -154,7 +150,17 @@ export abstract class TableService<T> {
         }),
         finalize(() => this._isLoading$.next(false))
       );
-    }else if(path.endsWith("AllocationGroup")){
+    }else if(path.endsWith("Process")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formGroup: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('CREATE ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }
+    else if(path.endsWith("AllocationGroup")){
       return this.http.post<BaseModel>(this.VIEW_API_URL+path, item,{headers: httpHeaders}).pipe(
         catchError(err => {
           this._errorMessage.next(err);
@@ -189,7 +195,9 @@ export abstract class TableService<T> {
     }else if(path.endsWith("GroupTeam")){
       url = this.VIEW_API_URL + path;//'/searchGroupTeam';
     }else if(path.endsWith("Transfer")){
-      url = this.VIEW_API_URL + path;//'/searchGroupTeam';
+      url = this.VIEW_API_URL + path;//'/searchTransfer';
+    }else if(path.endsWith("Process")){
+      url = this.VIEW_API_URL + path;//'/searchProcess';
     }else if(path.endsWith("AllocationGroup")){
       url = this.VIEW_API_URL + path;//'/searchAllocationGroup';
     }     else{
@@ -207,6 +215,7 @@ export abstract class TableService<T> {
       })
     );
   }
+
 
   getItemById(id: string, c?: string): Observable<BaseModel> {
     this._isLoading$.next(true);
@@ -245,7 +254,16 @@ export abstract class TableService<T> {
         }),
         finalize(() => this._isLoading$.next(false))
       );
-    }else  if(path.endsWith("RoadType")){
+    }else  if(path.endsWith("Process")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formProcess: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('Update ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );}
+    else  if(path.endsWith("RoadType")){
       return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formRoadType: item},{headers: httpHeaders}).pipe(
         catchError(err => {
           this._errorMessage.next(err);
