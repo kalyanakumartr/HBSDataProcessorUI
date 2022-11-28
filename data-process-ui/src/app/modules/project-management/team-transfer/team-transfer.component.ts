@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
@@ -8,11 +8,15 @@ import {
   distinctUntilChanged,
   tap,
 } from 'rxjs/operators';
-import {
-  GroupingState,
-  PaginatorState,
-  SortState,
-} from 'src/app/_metronic/shared/crud-table';
+import { GroupingState,
+  ICreateAction,
+  IDeleteAction,
+  IDeleteSelectedAction,
+  IEditAction, IFetchSelectedAction,
+  IFilterView, IGroupingView, ISearchView,
+  ISortView, IUpdateStatusForSelectedAction,
+   PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
+
 import { ProjectService } from '../../auth/_services/project.services';
 import { TeamTransferService } from '../../auth/_services/teamtransfer.services';
 
@@ -21,31 +25,47 @@ import { TeamTransferService } from '../../auth/_services/teamtransfer.services'
   templateUrl: './team-transfer.component.html',
   styleUrls: ['./team-transfer.component.scss'],
 })
-export class TeamTransferComponent implements OnInit {
-  paginator: PaginatorState;
-  sorting: SortState;
-  grouping: GroupingState;
-  isLoading: boolean;
-
-  group: any;
-  searchGroup: FormGroup;
-  groupList: any[];
-  divisionName: string;
-  transferToList: any[];
-  departmentList: any[];
-  showDivision: boolean;
-  departmentName: string;
-  department: any;
-  transferTo: any;
-  hasEdit: boolean;
-  hasCheckbox: boolean;
-  isAssigned: boolean;
-  divisionList: any[];
-  isClearFilter: boolean;
-  division: any;
-  type: any;
-  showDepartment: boolean;
-  private subscriptions: Subscription[] = [];
+export class TeamTransferComponent implements
+  OnInit,
+    OnDestroy,
+   // ICreateAction,
+    IEditAction,
+    IDeleteAction,
+    IDeleteSelectedAction,
+    IFetchSelectedAction,
+    IUpdateStatusForSelectedAction,
+    ISortView,
+    IGroupingView,
+    ISearchView,
+    IFilterView {
+      paginator: PaginatorState;
+      sorting: SortState;
+      grouping: GroupingState;
+      isLoading: boolean;
+      userCount:number;
+      selectedUserIds: string[] = [];
+      group: any;
+      filterGroup: FormGroup;
+      searchGroup: FormGroup;
+      groupList: any[];
+      teamList: any[];
+      team: any;
+      divisionName: string;
+      transferToList: any[];
+      departmentList: any[];
+      showDivision: boolean;
+      departmentName: string;
+      department: any;
+      transferTo: string;
+      hasEdit: boolean;
+      hasCheckbox: boolean;
+      isAssigned: boolean;
+      divisionList: any[];
+      isClearFilter: boolean;
+      division: any;
+      type: any;
+      showDepartment: boolean;
+      private subscriptions: Subscription[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -53,6 +73,10 @@ export class TeamTransferComponent implements OnInit {
     public teamTransferService: TeamTransferService,
     public projectService: ProjectService
   ) {
+    this.teamTransferService.listen().subscribe((m: any) => {
+      console.log('m -- -- --', m);
+      this.filter();
+    });
     this.showDepartment = true;
     this.isClearFilter = false;
     this.showDivision = true;
@@ -71,6 +95,16 @@ export class TeamTransferComponent implements OnInit {
       this.division = '0: 0';
       this.department = '0: 0';
     }
+    this.teamTransferService.fetch('/searchTransfer');
+    console.log('UserList :', this.subscriptions);
+    this.grouping = this.teamTransferService.grouping;
+    this.paginator = this.teamTransferService.paginator;
+    this.sorting = this.teamTransferService.sorting;
+
+    const sb = this.teamTransferService.isLoading$.subscribe(
+      (res) => (this.isLoading = res)
+    );
+    this.subscriptions.push(sb);
   }
   // search
   searchForm() {
@@ -96,8 +130,7 @@ export class TeamTransferComponent implements OnInit {
   search(searchTerm: string) {
     this.teamTransferService.patchState({ searchTerm }, '/searchTransfer');
   }
-  //Check All
-  checkAll() {}
+
   // sorting
   sort(column: string) {
     const sorting = this.sorting;
@@ -142,6 +175,9 @@ export class TeamTransferComponent implements OnInit {
       if (this.groupList.length > 0) {
         this.groupList.splice(0, this.groupList.length);
       }
+      if (this.teamList.length > 0) {
+        this.teamList.splice(0, this.teamList.length);
+      }
       if (this.divisionList.length > 0) {
         this.divisionList.splice(0, this.divisionList.length);
       }
@@ -182,12 +218,35 @@ export class TeamTransferComponent implements OnInit {
       )
       .subscribe();
   }
+
+  getTeamForGroup() {
+    this.teamList = [];
+    this.projectService
+      .getTeamList(this.group)
+      .pipe(
+        tap((res: any) => {
+          this.teamList = res;
+          console.log('teamList', this.teamList);
+          setTimeout(() => {
+            this.team = '0: 0';
+          }, 2000);
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: [],
+          });
+        })
+      )
+      .subscribe();
+  }
   setDivision(value) {
     var position = value.split(':');
     if (position.length > 1) {
       this.division = position[1].toString().trim();
       if (this.division != '0') {
         this.getGroupForDivision();
+        this.getTransferUserList();
         this.teamTransferService.patchState(
           { divisionId: this.division },
           '/searchTransfer'
@@ -220,6 +279,7 @@ export class TeamTransferComponent implements OnInit {
       if (this.department != '0') {
         this.isClearFilter = true;
         this.getDivisionForDepartment();
+        this.getTransferUserList();
         this.teamTransferService.patchState(
           { departmentId: this.department },
           '/searchTransfer'
@@ -239,6 +299,25 @@ export class TeamTransferComponent implements OnInit {
       }
     }
   }
+  setTeam(value) {
+    var position = value.split(':');
+    if (position.length > 1) {
+      this.team = position[1].toString().trim();
+      if (this.team != '0') {
+        this.teamTransferService.patchState(
+          { teamId: this.team },
+          '/searchTransfer'
+        );
+      }
+    }
+  }
+  setTransferTo(value){
+    var position = value.split(':');
+    if (position.length > 1) {
+      this.transferTo = position[1].toString().trim();
+
+    }
+  }
   setType() {
 
         this.teamTransferService.patchState({ type: this.type }, '/searchTransfer' );
@@ -248,22 +327,69 @@ export class TeamTransferComponent implements OnInit {
 
 
     if ((<HTMLInputElement>document.getElementById(id)).checked == false) {
-      (<HTMLInputElement>document.getElementById('checkAllBox')).checked =
-        false;
-    }else{
-    }
-  }
+      //(<HTMLInputElement>document.getElementById('checkAllBox')).checked =  false;
 
+      this.selectedUserIds.forEach((element,index)=>{
+        if(element==id) this.selectedUserIds.splice(index,1);
+     });
+    }else{
+      this.selectedUserIds.push(id);
+    }
+    console.log("Ids",this.selectedUserIds);
+  }
+  checkAll() {
+    var i=0;
+    var checkAllValue = false;
+    if ((<HTMLInputElement>document.getElementById('checkAllBox')).checked) {
+      checkAllValue = true;
+    }
+    this.userCount=0;
+
+    console.log("WU Ids",this.selectedUserIds);
+    /*const that = this;
+    this.allWorkUnitIds.forEach(function (workunit) {
+      console.log('WU', workunit);
+      (<HTMLInputElement>document.getElementById(workunit)).checked =
+        checkAllValue;
+        if(checkAllValue){
+          that.userCount++;
+          that.wuTotalMiles = that.wuTotalMiles + parseFloat(that.allWUMiles.get(workunit));
+        }
+        i++;
+    });*/
+  }
+  transferUserList(){
+    var transferReportees =false;
+    if ((<HTMLInputElement>document.getElementById('transferReportees')).checked) {
+      transferReportees=true;
+    }
+    var transfer = this.transferTo.split('/').join('_');
+    this.teamTransferService.transferUserList(this.selectedUserIds, transferReportees,this.type, transfer).pipe(
+      tap((res: any) => {
+        this.transferToList = res;
+        console.log('transferToList', this.transferToList);
+        this.transferTo = '0: 0';
+        this.filter();
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: [],
+        });
+      })
+    )
+    .subscribe();
+  }
   getTransferUserList() {
     var shortNameList=[];
     if(this.type == "TeamMember"){
       shortNameList=["TL-Sr","TL-Tr","TL"];
     }else if(this.type == "Team"){
-
+      shortNameList=["PL"];
     }else if(this.type == "Group"){
-
+      shortNameList=["Admin","PM","PM-As"];
     }
-    this.teamTransferService.getTransferUserList(shortNameList).pipe(
+    this.teamTransferService.getTransferUserList(shortNameList,this.department,this.division).pipe(
         tap((res: any) => {
           this.transferToList = res;
           console.log('transferToList', this.transferToList);
@@ -277,6 +403,36 @@ export class TeamTransferComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+  delete(id: number) {
+    throw new Error('Method not implemented.');
+  }
+
+  deleteSelected() {
+    throw new Error('Method not implemented.');
+  }
+
+  updateStatusForSelected() {
+    throw new Error('Method not implemented.');
+  }
+
+  fetchSelected() {
+
+    throw new Error('Method not implemented.');
+  }
+  edit(id: number): void {
+    throw new Error('Method not implemented.');
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach((sb) => sb.unsubscribe());
+  }
+
+
+  // filtration
+  filterForm() {}
+  filter() {
+    const filter = {};
+    this.teamTransferService.patchState({ filter }, '/searchTransfer');
   }
 
 }

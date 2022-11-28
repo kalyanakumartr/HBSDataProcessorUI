@@ -60,13 +60,28 @@ export class TeamTransferService extends TableService<TeamTransfer> implements O
     this._tableState$ = this._taskTableState$;
   }
 
-  getTransferUserList(shortNameList){
+  getTransferUserList(shortNameList, department,division){
 
     const url = this.VIEW_API_URL + "/getTransferUserList";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post(url, {roleShortNames : shortNameList },{headers: httpHeaders}).pipe(
+    return this.http.post(url, {roleShortNames : shortNameList, "department":department, "division":division },{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+
+  }
+  transferUserList(userList, transferReportees,type, transferDetail){
+
+    const url = this.VIEW_API_URL + "/transferUsers";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"userList" : userList, "transferReportees":transferReportees, "type":type,"transferDetail":transferDetail },{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);
