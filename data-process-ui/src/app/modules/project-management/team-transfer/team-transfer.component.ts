@@ -292,6 +292,8 @@ export class TeamTransferComponent implements
     if (position.length > 1) {
       this.group = position[1].toString().trim();
       if (this.group != '0') {
+        this.isClearFilter = true;
+        this.getTeamForGroup()
         this.teamTransferService.patchState(
           { groupId: this.group },
           '/searchTransfer'
@@ -321,6 +323,7 @@ export class TeamTransferComponent implements
   setType() {
 
         this.teamTransferService.patchState({ type: this.type }, '/searchTransfer' );
+        this.getTransferUserList();
 
   }
   checkBoxWorkUnit(id) {

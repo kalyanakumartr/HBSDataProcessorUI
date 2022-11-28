@@ -125,6 +125,7 @@ this.subscriptions.forEach((sb) => sb.unsubscribe());
 }
 fetchSelected() {}
 ngOnInit(): void {
+  this.searchForm();
 if (this.showDivision) {
   this.getDepartment();
   this.division = '0: 0';

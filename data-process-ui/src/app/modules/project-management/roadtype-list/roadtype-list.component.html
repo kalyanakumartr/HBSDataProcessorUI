@@ -77,9 +77,21 @@
           </select>
         </div>
 
-        <div class="col-lg-2">
-          <div class="grid-item" style="cursor: pointer">
-            &nbsp;<br />&nbsp;
+
+            <div class="col-lg-3" >
+              <label>Search in all fields</label>
+              <div class="grid-container">
+                <div class="grid-item">
+                  <input
+                    type="search"
+                    class="form-control"
+                    name="searchText"
+                    id="searchText"
+                    placeholder="Search"
+                    value=""
+                    formControlName="searchTerm"
+                  />
+                </div>
 
             <i
               title="Clear Filter"
@@ -88,7 +100,7 @@
             ></i>
           </div>
         </div>
-      </div>
+        </div>
       <!-- end: Filtration form -->
   </div>
       <div class="table-responsive angular-bootstrap-table">

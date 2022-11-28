@@ -164,6 +164,11 @@ export class ProjectTemplateComponent implements OnInit {
         });
       })).subscribe();
   }
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
   clearFilter(){
 
     if(this.isClearFilter){
