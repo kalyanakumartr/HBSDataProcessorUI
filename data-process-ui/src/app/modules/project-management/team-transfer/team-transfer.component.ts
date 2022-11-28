@@ -16,6 +16,7 @@ import { GroupingState,
   IFilterView, IGroupingView, ISearchView,
   ISortView, IUpdateStatusForSelectedAction,
    PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
+import { GroupTeamService } from '../../auth/_services/groupteam.services';
 
 import { ProjectService } from '../../auth/_services/project.services';
 import { TeamTransferService } from '../../auth/_services/teamtransfer.services';
@@ -71,7 +72,9 @@ export class TeamTransferComponent implements
     private fb: FormBuilder,
     private modalService: NgbModal,
     public teamTransferService: TeamTransferService,
-    public projectService: ProjectService
+    public projectService: ProjectService,
+    public groupTeam: GroupTeamService,
+
   ) {
     this.teamTransferService.listen().subscribe((m: any) => {
       console.log('m -- -- --', m);
