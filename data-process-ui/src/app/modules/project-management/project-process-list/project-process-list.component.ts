@@ -337,7 +337,12 @@ export class ProjectProcessListComponent implements
 
   taskCreate()
   {
+    if(this.project != "0: 0"){
     const modalRef = this.modalService.open(ProjectProcessCreateComponent, { size: 'xl' });
+    modalRef.componentInstance.projectId = this.project;
+  }else{
+    alert("Please Select the Project");
+  }
   }
 
 
@@ -377,7 +382,10 @@ export class ProjectProcessListComponent implements
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
     }
   }  exportExcel() {
-    this.processSerive.exportExcel('/exportToExcelGroupTeamReport', 'Report').subscribe(
+    this.processSerive.
+    exportExcel('/exportToExcelBenchMarkReport', 'Report')
+   // exportExcel('/exportToExcelProcessTaskReport', 'Report')
+    .subscribe(
       (responseObj) => {
         console.log('Process report success', responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);
