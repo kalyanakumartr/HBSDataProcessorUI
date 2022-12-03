@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+//import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { Project } from '../../auth/_models/project.model';
 import { ProjectService } from '../../auth/_services/project.services';
 
@@ -33,7 +34,8 @@ export class ProjectTemplateComponent implements OnInit {
   isClearFilter:boolean;
   displayedColumns = [ 'projectName','projectId','templateUploadDate','Action'];
   dataSource = new MatTableDataSource<Project>();
-  constructor(private modalService:NgbModal,public projectService: ProjectService){
+  private subscriptions: Subscription[] = [];
+  constructor(private modalService:NgbModal,public projectService: ProjectService,private fb: FormBuilder,){
     this.projectList=[];
     this.divisionList=[];
     this.isClearFilter=false;
@@ -42,14 +44,43 @@ export class ProjectTemplateComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    this.searchForm();
     if(this.showDivision){
       this.getDepartment();
       this.division="0: 0";
       this.department="0: 0";
     }
-    this.project="0: 0";
+
 
   }
+
+  searchForm() {
+    this.searchGroup = this.fb.group({
+      searchTerm: [''],
+      department: ['0'],
+      division: ['0'],
+
+    });
+    const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
+      .pipe(
+        /*
+      The user can type quite quickly in the input box, and that could trigger a lot of server requests. With this operator,
+      we are limiting the amount of server requests emitted to a maximum of one every 150ms
+      */
+        debounceTime(150),
+        distinctUntilChanged()
+      )
+      .subscribe((val) => this.search(val));
+    this.subscriptions.push(searchEvent);
+  }
+
+  search(searchTerm: string) {
+    this.projectService.patchState({ searchTerm }, '/searchProject');
+  }
+
+
+
+
   downloadTemplate(projectId)
   {
     alert(projectId);
@@ -169,6 +200,34 @@ export class ProjectTemplateComponent implements OnInit {
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     this.dataSource.filter = filterValue;
   }
+  filterForm() {
+    this.filterGroup = this.fb.group({
+      searchTerm: [''],
+    });
+    this.subscriptions.push(
+      this.filterGroup.controls.status.valueChanges.subscribe(() =>
+        this.filter()
+      )
+    );
+    this.subscriptions.push(
+      this.filterGroup.controls.type.valueChanges.subscribe(() => this.filter())
+    );
+  }
+
+  filter() {
+    const filter = {};
+    /*const status = this.filterGroup.get('status').value;
+    if (status) {
+      filter['status'] = status;
+    }
+
+    const type = this.filterGroup.get('type').value;
+    if (type) {
+      filter['type'] = type;
+    }*/
+    this.projectService.patchState({ filter }, '/searchProject');
+  }
+
   clearFilter(){
 
     if(this.isClearFilter){

@@ -29,7 +29,7 @@
       <div class="col-lg-2">
         <ng-container *ngIf="showDepartment">
         <label>Department</label>
-        <select class="form-control form-control-lg form-control-solid" name="department"  [(ngModel)]="department"
+        <select class="form-control form-control-lg" name="department"  [(ngModel)]="department"
             (change)="setDepartment($event.target.value)">
           <option [ngValue]="0" [selected]=true>Select Department</option>
           <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
@@ -45,7 +45,7 @@
       <div class="col-lg-2">
         <ng-container *ngIf="showDivision">
         <label>Division</label>
-        <select class="form-control form-control-lg form-control-solid" name="division"  [(ngModel)]="division"
+        <select class="form-control form-control-lg" name="division"  [(ngModel)]="division"
             (change)="setDivision($event.target.value)">
            <option [ngValue]="0" [selected]=true>Select Division</option>
           <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
@@ -58,9 +58,9 @@
           <span>{{divisionName}}</span>
         </ng-container>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-2">
         <label>Project</label>
-        <select class="form-control form-control-lg form-control-solid" name="project"  [(ngModel)]="project"
+        <select class="form-control form-control-lg" name="project"  [(ngModel)]="project"
             (change)="setProject($event.target.value)">
            <option [ngValue]="0" [selected]=true>Select Project</option>
           <option *ngFor="let project of projectList" [ngValue]="project.projectId">
@@ -69,18 +69,41 @@
         </select>
 
       </div>
-      <div  class="col-lg-3">
-        <label>&nbsp;</label><br/>
-        <button type="button" class="btn btn-primary" (click)="projectAssignSubcountry()">Assign Subcountry to Project</button>
-      </div>
-      <div class="col-lg-2" >
 
-          <div class="grid-item" style="cursor: pointer;">
-            &nbsp;<br/>&nbsp;
 
-          <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
-          </div>
+      <div class="col-lg-2 nowrap">
+        <div class="row">
+          <div class="column"><label>Search </label>
+            <input
+              type="search"
+              class="form-control"
+              name="searchText"
+              id="searchText"
+              placeholder="Search"
+              value=""
+              formControlName="searchTerm"
+            />
         </div>
+
+      </div>
+    </div>
+        <div class="col-lg-2 nowrap">
+          <div class="row">
+          <div class="column" style="cursor: pointer;"><br> &nbsp;
+            <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+          </div>
+
+
+        </div>
+
+    </div>
+
+    <div  class="col-lg-2 ">
+      <!-- <br/> -->
+      <button type="button" class="btn btn-primary nowrap" (click)="projectAssignSubcountry()">Assign Subcountry to Project</button>
+    </div>
+
+
       </div>
     </div>
   </div>

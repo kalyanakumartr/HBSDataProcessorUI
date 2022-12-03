@@ -59,6 +59,8 @@ export class ProjectListComponent
   division:any;
   projectList:any[];
   project:any;
+  client:any;
+  clientList:any[];
   departmentName:string;
   divisionName:string;
   showDivision:boolean;
@@ -134,7 +136,7 @@ export class ProjectListComponent
 
   filter() {
     const filter = {};
-    /*const status = this.filterGroup.get('status').value;
+    const status = this.filterGroup.get('status').value;
     if (status) {
       filter['status'] = status;
     }
@@ -142,7 +144,7 @@ export class ProjectListComponent
     const type = this.filterGroup.get('type').value;
     if (type) {
       filter['type'] = type;
-    }*/
+    }
     this.projectService.patchState({ filter }, '/searchProject');
   }
 

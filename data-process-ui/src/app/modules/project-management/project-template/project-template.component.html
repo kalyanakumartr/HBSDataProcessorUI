@@ -50,13 +50,30 @@
         </ng-container>
       </div>
 
-      <div class="col-lg-2" >
 
-          <div class="grid-item" style="cursor: pointer;">
-            &nbsp;<br/>&nbsp;
 
-          <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+      <div class="col-lg-2 nowrap">
+        <div class="row">
+          <div class="column"><label>Search</label>
+            <input
+              type="search"
+              class="form-control"
+              name="searchText"
+              id="searchText"
+              placeholder="Search"
+              value=""
+              formControlName="searchTerm"
+            />
+        </div>
+      </div>
+    </div>
+        <div class="col-lg-2 nowrap">
+          <div class="row">
+          <div class="column" style="cursor: pointer;"> <br>&nbsp;
+            <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
           </div>
+
+
         </div>
       </div>
     </div>

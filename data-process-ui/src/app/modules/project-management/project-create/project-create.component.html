@@ -88,8 +88,8 @@
 
           <div class="col-lg-3">
             <label>Project Created Date</label>
-            <div class="input-group">
-              <input type="text" name="projectcdate" class="form-control form-control-lg" autocomplete="off"
+            <div class="input-group input-group-solid">
+              <input type="text" name="projectcdate" class="form-control form-control-lg form-control-solid" autocomplete="off"
                 placeholder="dd/mm/yyyy" ngbDatepicker [maxDate]="maxDate"  [class.is-invalid]="isControlInvalid('projectcdate')"
                 [class.is-valid]="isControlValid('projectcdate')" formControlName="projectcdate" readonly="true" /> {{formGroup.value.projectcdate | date: 'dd-MMM-yyyy'}}
 
@@ -114,10 +114,12 @@
 
           <div class="col-lg-3">
             <label>PO Dated</label>
-            <div class="input-group">
-              <input type="text" name="poDate" class="form-control form-control-lg" autocomplete="off"
+            <div class="input-group input-group-solid">
+              <input type="text" name="poDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
                 placeholder="mm/dd/yyyy" ngbDatepicker #d2="ngbDatepicker" [class.is-invalid]="isControlInvalid('poDate')"
-                [class.is-valid]="isControlValid('poDate')" formControlName="poDate" readonly="true" /> {{formGroup.value.poDate | date: 'dd-MMM-yyyy'}}
+                [class.is-valid]="isControlValid('poDate')" formControlName="poDate" readonly="true" />
+                {{formGroup.value.poDate | date: 'dd-MMM-yyyy'}}
+
                <div class="input-group-append" (click)="d2.toggle()">
                 <span class="input-group-text">
                   <i class="text-dark-50 flaticon-calendar"></i>
@@ -132,8 +134,8 @@
         <div class="form-group row">
           <div class="col-lg-3">
             <label>Billing Cycle</label>
-            <div class="input-group">
-              <input type="text" name="bcycle" class="form-control form-control-lg" autocomplete="off"
+            <div class="input-group input-group-solid">
+              <input type="text" name="bcycle" class="form-control form-control-lg form-control-solid" autocomplete="off"
                 placeholder="mm/dd/yyyy" ngbDatepicker #d3="ngbDatepicker" [class.is-invalid]="isControlInvalid('bcycle')"
                 [class.is-valid]="isControlValid('bcycle')" formControlName="bcycle" readonly="true" /> {{formGroup.value.bcycle | date: 'dd-MMM-yyyy'}}
               <div class="input-group-append" (click)="d3.toggle()">
@@ -322,8 +324,8 @@
 
             <div class="col-lg-3">
               <label>BPS Start Date</label>
-              <div class="input-group">
-                <input type="text" name="bpsDate" class="form-control form-control-lg" autocomplete="off"
+              <div class="input-group input-group-solid">
+                <input type="text" name="bpsDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
                   placeholder="mm/dd/yyyy" ngbDatepicker #d4="ngbDatepicker" [class.is-invalid]="isControlInvalid('bpsDate')"
                   [class.is-valid]="isControlValid('bpsDate')" formControlName="bpsDate" readonly="true" /> {{formGroup.value.bpsDate | date: 'dd-MMM-yyyy'}}
                 <div class="input-group-append" (click)="d4.toggle()">
@@ -338,8 +340,8 @@
 
           <div class="col-lg-3">
             <label>BPS Planned Completion Date</label>
-            <div class="input-group">
-              <input type="text" name="bpscDate" class="form-control form-control-lg" autocomplete="off"
+            <div class="input-group input-group-solid">
+              <input type="text" name="bpscDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
                 placeholder="mm/dd/yyyy" ngbDatepicker #d5="ngbDatepicker" [class.is-invalid]="isControlInvalid('bpscDate')"
                 [class.is-valid]="isControlValid('bpscDate')" formControlName="bpscDate" readonly="true" /> {{formGroup.value.bpscDate | date: 'dd-MMM-yyyy'}}
               <div class="input-group-append" (click)="d5.toggle()">
@@ -355,8 +357,8 @@
 
           <div class="col-lg-3">
             <label>Client Expected Completion Date</label>
-            <div class="input-group">
-              <input type="text" name="cecDate" class="form-control form-control-lg" autocomplete="off"
+            <div class="input-group input-group-solid">
+              <input type="text" name="cecDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
                 placeholder="mm/dd/yyyy" ngbDatepicker #d6="ngbDatepicker" [class.is-invalid]="isControlInvalid('cecDate')"
                 [class.is-valid]="isControlValid('cecDate')" formControlName="cecDate" readonly="true" /> {{formGroup.value.cecDate | date: 'dd-MMM-yyyy'}}
               <div class="input-group-append" (click)="d6.toggle()">
@@ -372,8 +374,8 @@
           <div class="form-group row">
           <div class="col-lg-3">
             <label>Project - Actual Completed Date</label>
-            <div class="input-group ">
-              <input type="text" name="pacDate" class="form-control form-control-lg" autocomplete="off"
+            <div class="input-group input-group-solid ">
+              <input type="text" name="pacDate" class="form-control form-control-lg form-control-solid" autocomplete="off"
                 placeholder="mm/dd/yyyy" ngbDatepicker #d7="ngbDatepicker" [class.is-invalid]="isControlInvalid('pacDate')"
                 [class.is-valid]="isControlValid('pacDate')" formControlName="pacDate" readonly="true" /> {{formGroup.value.pacDate | date: 'dd-MMM-yyyy'}}
               <div class="input-group-append" (click)="d7.toggle()">

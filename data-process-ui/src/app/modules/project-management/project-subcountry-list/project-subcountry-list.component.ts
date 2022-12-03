@@ -338,18 +338,32 @@ export class ProjectSubcountryListComponent  implements
       .subscribe();
   }
 
+  addProject(projectId: string, projectName:string,divisionId:string) {
+    if(divisionId !="0: 0"){
+      const modalRef = this.modalService.open(AddSubcountryComponent, { size: 'xl', });
+      //modalRef.componentInstance.projectId = projectId;
+      //modalRef.componentInstance.projectName = projectName;
+      //modalRef.componentInstance.divisionId = divisionId;
 
+  }else{
+    alert("please Select division")
+  }}
 
   subCountry()
   {
-    const modalRef = this.modalService.open(AddSubcountryComponent, { size: 'xl' });
+    if(this.division){
+      this.addProject(undefined,undefined,this.division);
+    }else{
+      alert("Please Select Divison");
+    }
+   // const modalRef = this.modalService.open(AddSubcountryComponent, { size: 'xl' });
   }
 
   projectAssignSubcountry()
   {
     const modalRef = this.modalService.open(ProjectAssignSubcountryComponent, { size: 'xl' });
+    modalRef.componentInstance.projectId = this.project;
   }
-
 
 
   clearFilter() {

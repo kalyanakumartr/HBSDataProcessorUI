@@ -80,10 +80,22 @@ export class ProjectAssignSubcountryComponent implements OnInit {
     //this.confirmed = this.confirmedSubCountry;
   }
   doReset() {
+    this.projectService.getProjectSubCountryList(this.projectId).pipe(
+      tap((res: Array<SubCountry>) => {
+        this.confirmedSubCountry = res;
+        this.useSubCountry();
+        console.log("confirmedSubCountry", this.confirmedSubCountry)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
     this.projectService.getProjectSubCountryList("").pipe(
       tap((res: Array<SubCountry>) => {
         this.sourceSubCountry = res;
-
+        this.useSubCountry();
         console.log("subCountryList", this.sourceSubCountry)
       }),
       catchError((err) => {
@@ -92,19 +104,10 @@ export class ProjectAssignSubcountryComponent implements OnInit {
           items: []
         });
       })).subscribe();
+      // setTimeout(() => {
 
-      this.projectService.getProjectSubCountryList(this.projectId).pipe(
-        tap((res: Array<SubCountry>) => {
-          this.confirmedSubCountry = res;
-          this.useSubCountry();
-          console.log("confirmedSubCountry", this.confirmedSubCountry)
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of({
-            items: []
-          });
-        })).subscribe();
+      // }, 300);
+
   }
 
   filterBtn() {
