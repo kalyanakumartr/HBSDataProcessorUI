@@ -66,12 +66,15 @@ export class ProjectAssignSubcountryComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.doReset();
+    setTimeout(() => {
+      this.doReset();
+    }, 500);
+
   }
 
   private useSubCountry() {
-    this.key = 'country';
-    this.display = 'countryName';
+    this.key = 'value';
+    this.display = 'label';
     this.keepSorted = true;
     this.source = this.sourceSubCountry;
     this.confirmed = this.confirmedSubCountry==undefined?[]:this.confirmedSubCountry;

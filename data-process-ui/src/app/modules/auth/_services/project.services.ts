@@ -220,7 +220,6 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
   }
 
   getProjectSubCountryList(projectId){
-    alert("ProjectId"+projectId);
     const url = this.VIEW_API_URL + "/getSubCountryList";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,

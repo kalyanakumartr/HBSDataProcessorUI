@@ -361,8 +361,13 @@ export class ProjectSubcountryListComponent  implements
 
   projectAssignSubcountry()
   {
-    const modalRef = this.modalService.open(ProjectAssignSubcountryComponent, { size: 'xl' });
-    modalRef.componentInstance.projectId = this.project;
+    if(this.project != "0: 0"){
+      const modalRef = this.modalService.open(ProjectAssignSubcountryComponent, { size: 'xl' });
+      modalRef.componentInstance.projectId = this.project;
+    }else{
+      alert("Please Select Project");
+    }
+
   }
 
 
