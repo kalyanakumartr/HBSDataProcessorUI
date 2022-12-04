@@ -159,7 +159,7 @@ const EMPTY_CUSTOMER: UserModel = {
       divisionId:'',
       divisionName:'',
       status:true,
-      type:'',
+      type:'Team',
       reportingName:'',
       fullName:'',
       reportingTo:''
@@ -173,7 +173,7 @@ const EMPTY_CUSTOMER: UserModel = {
       divisionId:'',
       divisionName:'',
       status:true,
-      type:'',
+      type:'Group',
       reportingName:'',
       fullName:'',
       reportingTo:''
@@ -400,6 +400,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
 
   edit() {
     var test ={"id":this.revId, "userRoless":[{roles:{}}]}
+    this.userOPRModel.project = null;
     const sbUpdate = this.usersService.saveOPR(this.userOPRModel, this.updateRole).pipe(
       tap(() => {
         this.modal.close();

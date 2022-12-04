@@ -83,8 +83,7 @@ export class ProjectTemplateComponent implements OnInit {
 
   downloadTemplate(projectId)
   {
-    alert(projectId);
-    this.projectService.exportExcel("/getProjectTemplate/"+projectId,"Project").subscribe(
+    this.projectService.exportExcel("/downloadProjectTemplate/"+projectId,"Project").subscribe(
       responseObj => {
         console.log("Project template download success", responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);

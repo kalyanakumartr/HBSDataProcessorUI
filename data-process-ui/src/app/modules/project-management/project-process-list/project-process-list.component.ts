@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Process } from '../../time-tracker/modal/process.model';
 import { of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { GroupingState, ICreateAction, IDeleteAction, IDeleteSelectedAction, IEditAction, IFetchSelectedAction, IFilterView, IGroupingView, ISearchView, ISortView, IUpdateStatusForSelectedAction, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
+import { GroupingState, ICreateAction, IDeleteAction, IDeleteSelectedAction, IEditAction, IFetchSelectedAction, IFilterView, IGroupingView, ISearchView, ISortView, IUpdateStatusForSelectedAction, PaginatorState, SortProcess, SortState } from 'src/app/_metronic/shared/crud-table';
 import { GroupTeamService } from '../../auth/_services/groupteam.services';
 import { ProcessService } from '../../auth/_services/process.services';
 import { ProjectService } from '../../auth/_services/project.services';
@@ -34,7 +34,7 @@ export class ProjectProcessListComponent implements
     IFilterView
 {
   paginator: PaginatorState;
-  sorting: SortState;
+  sorting: SortProcess;
   grouping: GroupingState;
   isLoading: boolean;
   filterGroup: FormGroup;

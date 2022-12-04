@@ -38,7 +38,7 @@ export class SortWorkflow implements ISortState {
   direction: SortDirection = 'desc'; // asc by default;
 }
 export class SortProcess implements ISortState {
-  column = 'processName'; // Id by default
+  column = 'process.processName'; // Id by default
   direction: SortDirection = 'asc'; // asc by default;
 }
 export class SortSubcountry implements ISortState {

@@ -67,7 +67,7 @@ export class ProjectAssignProcessComponent implements OnInit {
     this.doReset();
   }
   private useProcess() {
-    this.key = 'process';
+    this.key = 'processId';
     this.display = 'processName';
     this.keepSorted = true;
     this.source = this.sourceProcess
@@ -77,6 +77,7 @@ doReset() {
   this.projectService.getProcessList("").pipe(
     tap((res: Array<Process>) => {
       this.sourceProcess = res;
+      this.useProcess();
       console.log("ProcessList", this.sourceProcess)
     }),
     catchError((err) => {
