@@ -82,7 +82,19 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
     );
   }
 
+  getClientNameList(){
+    const url = this.API_URL + "/getClientNameList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
 
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
   getDeliveryModeList(){
 
     const url = this.VIEW_API_URL + "/getDeliveryModeList";
@@ -308,7 +320,7 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post(url, {"ProcessList":processArray,"projectId":projectId},{headers: httpHeaders}).pipe(
+    return this.http.post(url, {"processIds":processArray,"projectId":projectId},{headers: httpHeaders}).pipe(
       catchError(err => {
         this._errorMsg.next(err);
         console.error('FIND ITEMS', err);

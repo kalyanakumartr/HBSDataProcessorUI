@@ -60,6 +60,7 @@ export class ProjectListComponent
   projectList:any[];
   project:any;
   client:any;
+  projectStatus:string;
   clientList:any[];
   departmentName:string;
   divisionName:string;
@@ -83,6 +84,7 @@ export class ProjectListComponent
     this.sel = '0';
     this.projectList=[];
     this.divisionList=[];
+    this.clientList=[];
     this.isClearFilter=false;
     this.showDivision=true;
     this.showDepartment=true;
@@ -94,6 +96,7 @@ export class ProjectListComponent
     this.searchForm();
     if(this.showDivision){
       this.getDepartment();
+      //this.getClient();
       this.division="0: 0";
       this.department="0: 0";
     }
@@ -155,6 +158,8 @@ export class ProjectListComponent
       department: ['0'],
       division: ['0'],
       project: ['0'],
+      client: ['0'],
+      projectStatus: ['0'],
     });
     const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
       .pipe(
@@ -308,6 +313,24 @@ export class ProjectListComponent
       )
       .subscribe();
   }
+  getClient() {
+    this.clientList = [];
+    this.projectService.getClientNameList()
+      .pipe(
+        tap((res: any) => {
+          this.clientList = res;
+          console.log('clientList', this.clientList);
+
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: [],
+          });
+        })
+      )
+      .subscribe();
+  }
   setProject(value) {
     var position = value.split(':');
     if (position.length > 1) {
@@ -318,7 +341,24 @@ export class ProjectListComponent
     }
   }
 
-
+  setClient(value) {
+    var position = value.split(':');
+    if (position.length > 1) {
+      this.project = position[1].toString().trim();
+      if (this.client != '0') {
+       // this.projectService.patchState({ client: this.client }, '/searchProject');
+      }
+    }
+  }
+  setProjectStatus(value) {
+    var position = value.split(':');
+    if (position.length > 1) {
+      this.project = position[1].toString().trim();
+      if (this.client != '0') {
+        this.projectService.patchState({ status: this.projectStatus }, '/searchProject');
+      }
+    }
+  }
 
 
   getProjectForDivision() {

@@ -44,7 +44,7 @@ export class ProjectAssignProcessComponent implements OnInit {
       console.log("Save confirmedSubProcess", this.confirmed);
       var selectedSubProcess = [];
       this.confirmed.forEach(el=>{
-        selectedSubProcess.push(el.process);
+        selectedSubProcess.push(el.processId);
       })
       const sbCreate = this.projectService.assignProcessToProject(selectedSubProcess,this.projectId, "/mapProcessProject").pipe(
         tap(() => {

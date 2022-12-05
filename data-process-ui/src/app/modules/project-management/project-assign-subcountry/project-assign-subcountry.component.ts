@@ -46,7 +46,7 @@ export class ProjectAssignSubcountryComponent implements OnInit {
     console.log("Save confirmedSubCountry", this.confirmed);
     var selectedSubCountry = [];
     this.confirmed.forEach(el=>{
-      selectedSubCountry.push(el.country);
+      selectedSubCountry.push(el.value);
     })
     const sbCreate = this.projectService.assignSubCountryToProject(selectedSubCountry,this.projectId, "/mapSubCountry").pipe(
       tap(() => {

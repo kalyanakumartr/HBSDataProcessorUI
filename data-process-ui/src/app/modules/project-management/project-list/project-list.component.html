@@ -3,28 +3,6 @@
     <div class="card-title">
          <h3 class="card-label">Project List</h3>
     </div>
-    <div class="col-lg-3 nowrap">
-          <div class="row">
-            <div class="column"><label>Search in all fields</label>
-              <input
-                type="search"
-                class="form-control"
-                name="searchText"
-                id="searchText"
-                placeholder="Search"
-                value=""
-                formControlName="searchTerm"
-              />
-          </div>
-            <div class="column"> <br>&nbsp;
-              <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
-            </div>
-          </div>
-
-
-
-
-        </div>
 
 
 
@@ -110,14 +88,13 @@
             name="client"
             [(ngModel)]="client"
             formControlName="client"
-            (change)="setProject($event.target.value)"
+            (change)="setClient($event.target.value)"
           >
-            <option [ngValue]="0" [selected]="true">Select Client Name</option>
             <option
-              *ngFor="let project of projectList"
-              [ngValue]="project.clientName"
+              *ngFor="let client of clientList"
+              [ngValue]="client.value"
             >
-              {{ project.clientName }}
+              {{ client.label }}
             </option>
           </select>
         </div>
@@ -125,24 +102,22 @@
           <label>Project Status</label>
           <select
             class="form-control form-control-lg form-control-solid"
-            name="client"
-            [(ngModel)]="client"
-            formControlName="client"
-            (change)="setProject($event.target.value)"
+            name="projectStatus"
+            [(ngModel)]="projectStatus"
+            formControlName="projectStatus"
+            (change)="setProjectStatus($event.target.value)"
           >
-            <option [ngValue]="0" [selected]="true">Select Client Name</option>
-            <option
-              *ngFor="let project of projectList"
-              [ngValue]="project.clientName"
-            >
-              {{ project.clientName }}
-            </option>
+            <option [ngValue]="0" [selected]="true">Select Project Status</option>
+            <option selected value="YetToStart">Yet to Start</option>
+            <option value="InProgress">in-progress</option>
+            <option value="Hold">On Hold</option>
+            <option value="Completed">Completed</option>
           </select>
         </div>
 
         <div class="col-lg-2 nowrap">
           <div class="row">
-            <div class="column"><label>Search in all fields</label>
+            <div class="column"><label>Search</label>
               <input
                 type="search"
                 class="form-control"
@@ -153,7 +128,7 @@
                 formControlName="searchTerm"
               />
           </div>
-            <div class="column"> <br>&nbsp;
+            <div class="column" style="cursor: pointer;"> <br>&nbsp;
               <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
             </div>
           </div>
