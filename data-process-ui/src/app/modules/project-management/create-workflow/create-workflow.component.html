@@ -85,12 +85,12 @@
 
       <div class="form-group row">
         <div class="col-lg-3">
-          <label class="form-label">Delivery To Client</label>
-          <select class="form-control form-control-lg" name="dClient"
-               formControlName="dClient">
-                <option value="0" [selected]="true">Delivery To Client</option>
+          <label class="form-label">Delivery</label>
+          <select class="form-control form-control-lg" name="rClient"
+               formControlName="rClient">
+                <option value="0" [selected]="true">Delivery</option>
 
-                <option   *ngFor="let team of deliveryToClientTeamList" [value]="team.teamId">
+                <option   *ngFor="let team of readyForDeliveryTeamList" [value]="team.teamId">
                   {{team.teamName}}      </option>
               </select>
         </div>

@@ -46,7 +46,7 @@ export class CreateWorkflowComponent implements OnInit {
   productionTeamList: any[];
   qualityAssuranceTeamList: any[];
   qualityControlTeamList: any[];
-  deliveryToClientTeamList: any[];
+  readyForDeliveryTeamList: any[];
 
   userList: any[];
   private subscriptions: Subscription[] = [];
@@ -63,7 +63,7 @@ export class CreateWorkflowComponent implements OnInit {
       productionTeam: new FormControl(),
       qcTeam: new FormControl(),
       qaTeam: new FormControl(),
-      dClient: new FormControl()
+      rClient: new FormControl()
     })
   }
 
@@ -73,7 +73,7 @@ export class CreateWorkflowComponent implements OnInit {
     this.getProductionTeamList();
     this.getQcTeamList();
     this.getQaTeamList();
-    this.getDeliveryToClientTeamList();
+    this.getReadyForDeliveryTeamList();
   }
   public findInvalidControls() {
     const invalid = [];
@@ -114,7 +114,7 @@ export class CreateWorkflowComponent implements OnInit {
       productionTeam: [this.workflow.production, Validators.compose([Validators.required])],
       qcTeam: [this.workflow.qualityControl, Validators.compose([Validators.required])],
       qaTeam: [this.workflow.qualityAssurance, Validators.compose([Validators.required])],
-      dClient: [this.workflow.deliveryToClient, Validators.compose([Validators.required])],
+      rClient: [this.workflow.readyForDelivery, Validators.compose([Validators.required])],
 
     })
   }
@@ -166,14 +166,14 @@ export class CreateWorkflowComponent implements OnInit {
 
 
 
-  getDeliveryToClientTeamList() {
+  getReadyForDeliveryTeamList() {
     this.groupList = [];
     this.groupTeamService
-      .getTeamListBasedOnSkill("DeliveryToClient", undefined)
+      .getTeamListBasedOnSkill("ReadyForDelivery", undefined)
       .pipe(
         tap((res: any) => {
-          this.deliveryToClientTeamList = res;
-          console.log('deliveryToClientTeamList', this.deliveryToClientTeamList);
+          this.readyForDeliveryTeamList = res;
+          console.log('readyForDeliveryTeamList', this.readyForDeliveryTeamList);
           //setTimeout(() => {
           //this.project = '0: 0';
           //}, 2000);
@@ -268,7 +268,7 @@ export class CreateWorkflowComponent implements OnInit {
     console.log("Add Workflow");
     this.workflow.id=undefined;
     this.workflow.allotmentId=undefined;
-    this.workflow.readyForDelivery=this.workflow.deliveryToClient;
+    //this.workflow.readyForDelivery=this.workflow.deliveryToClient;
     const sbCreate = this.workflowService.create(this.workflow, "/addAllocationGroup", "formGroup").pipe(
       tap(() => {
         this.modal.close();
@@ -290,8 +290,8 @@ export class CreateWorkflowComponent implements OnInit {
     this.workflow.production = formData.productionTeam;
     this.workflow.qualityControl = formData.qcTeam;
     this.workflow.qualityAssurance = formData.qaTeam;
-    // this.group.readyForDelivery = formData.readyForDelivery;
-    this.workflow.deliveryToClient = formData.dClient;
+    this.workflow.readyForDelivery = formData.rClient;
+    this.workflow.deliveryToClient = formData.rClient;//We have given rClient Purposly
 
 
 

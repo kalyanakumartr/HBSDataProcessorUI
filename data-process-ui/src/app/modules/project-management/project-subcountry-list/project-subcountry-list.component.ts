@@ -397,13 +397,13 @@ export class ProjectSubcountryListComponent  implements
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
     }
   }  exportExcel() {
-    this.subcountryService.exportExcel('/exportToExcelGroupTeamReport', 'Report').subscribe(
+    this.subcountryService.exportExcel('/exportToExcelSubCountryReport', 'Report').subscribe(
       (responseObj) => {
         console.log('Process report success', responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);
         var link = document.createElement('a');
         link.href = downloadURL;
-        link.download = 'Process.xlsx';
+        link.download = 'SubCountry.xlsx';
         link.click();
       },
       (error) => {

@@ -184,23 +184,27 @@
                      <!-- <input type="checkbox" id="checkAllBox" (change)="checkAll()"/>-->
 
                   </th>
-
-                <th nowrap >
-                  Department
-
-                </th>
-
-              <th nowrap >Division </th>
+                  <th  >Team Member Name</th>
+                  <th nowrap >Designation</th>
 
 
-              <th nowrap >Group</th>
-              <th nowrap >Team</th>
-              <th nowrap >Designation</th>
 
-              <th  >Team Member Name</th>
-
+                  <th  >Reporting
+                    Team Name</th>
+                <th  >Reporting
+                  TL Name </th>
               <th  >Reporting
-                  Team Name</th>
+                Group Name </th>
+                <th  >Reporting
+                  Project Leader Name </th>
+                  <th > Reporting Manager</th>
+                  <th nowrap >
+                    Department
+
+                  </th>
+
+                <th nowrap >Division </th>
+
 
 
               <!--<th >Reporting  TL Name
@@ -219,6 +223,29 @@
                       <input type="checkbox" id="{{task.employeeId}}"  name="workUnits" value="{{ task.employeeId }}"  (change)="checkBoxWorkUnit(task.employeeId)"/>
                   </td>
 
+                  <td>
+                    {{ task.fullName }}
+                  </td>
+                  <td>{{ task.roleName}}</td>
+                  <td>
+                    {{ task.teamName }}
+                  </td>
+                  <td>
+                    {{ task.teamUser }}
+                  </td>
+                <td>
+                  {{ task.groupName }}
+                </td>
+                <td>
+                  {{ task.groupUser }}
+                </td>
+                <td>
+                  {{ task.reportingManager }}
+                </td>
+
+
+
+
                 <td  nowrap>
                   {{ task.departmentName}}
                   </td>
@@ -226,22 +253,6 @@
 
                   {{ task.divisionName }}</td>
 
-
-                <td>
-                  {{ task.groupName }}
-                </td>
-                <td>
-                  {{ task.teamName }}
-                </td>
-
-                <td>{{ task.roleName}}</td>
-
-                <td>
-                  {{ task.fullName }}
-                </td>
-                <td>
-                  {{ task.teamName }}
-                </td>
                <!-- <td>
                   {{ task.fullName }}
                 </td>

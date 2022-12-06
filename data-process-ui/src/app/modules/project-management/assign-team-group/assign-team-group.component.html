@@ -114,13 +114,14 @@
         <thead>
           <tr>
             <th class="sticky-header">Edit</th>
+            <th nowrap>SlNo</th>
             <th nowrap>Group Name</th>
             <th class="sticky-header" nowrap>Production Team</th>
 
 
             <th nowrap>QC Team</th>
             <th>QA Team</th>
-            <th>Delivery To Client</th>
+            <th>Delivery</th>
 
 
           </tr>
@@ -146,6 +147,10 @@
                 >
                 </span>
               </a>
+            </td>
+            <td>
+              {{workflow.slNo}}
+
             </td>
             <td>
               {{workflow.groupName}}
