@@ -5,7 +5,9 @@ import { Observable, of, Subscription } from 'rxjs';
 import { catchError, first, tap } from 'rxjs/operators';
 import { AuthService, ConfirmPasswordValidator, UserModel } from '../../auth';
 import { UsersService } from '../../auth/_services/user.service';
-
+import {
+  NgbActiveModal,
+  } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-update-password',
   templateUrl: './update-password.component.html',
@@ -23,7 +25,8 @@ export class UpdatePasswordComponent implements OnInit {
   subscriptions: Subscription[] = [];
   isLoading$: Observable<boolean>;
 
-  constructor( private snackBar: MatSnackBar, private usersService: UsersService, private auth: AuthService,private fb: FormBuilder) {
+  constructor( private snackBar: MatSnackBar, public modal: NgbActiveModal,
+    private usersService: UsersService, private auth: AuthService,private fb: FormBuilder) {
     //this.isLoading$ = this.userService.isLoadingSubject.asObservable();
   }
 
