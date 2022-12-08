@@ -22,6 +22,7 @@ const DEFAULT_STATE: IProjectTableState = {
   groupId:'',
   teamId:'',
   type:'',
+  clientName:'',
   grouping: new GroupingState(),
   entityId: undefined,
   employeeId: '',
@@ -83,7 +84,7 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
   }
 
   getClientNameList(){
-    const url = this.API_URL + "/getClientNameList";
+    const url = this.VIEW_API_URL + "/getClientNameList";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });

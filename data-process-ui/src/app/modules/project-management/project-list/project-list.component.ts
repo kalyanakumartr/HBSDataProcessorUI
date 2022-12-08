@@ -96,7 +96,7 @@ export class ProjectListComponent
     this.searchForm();
     if(this.showDivision){
       this.getDepartment();
-      //this.getClient();
+      this.getClient();
       this.division="0: 0";
       this.department="0: 0";
     }

@@ -20,6 +20,7 @@ const DEFAULT_STATE: IGroupTeamTableState = {
   divisionId: '',
   departmentId: '',
   type:'',
+  clientName:'',
   projectId: '',
   groupId:'',
   teamId:'',

@@ -21,6 +21,7 @@ const DEFAULT_STATE: ITableState = {
   groupId:'',
   teamId:'',
   type:'',
+  clientName:'',
   status:'',
   fromDate: '',
   toDate: '',

@@ -15,6 +15,7 @@ const DEFAULT_STATE: ITeamTransferTableState = {
   divisionId: '',
   departmentId: '',
   type:'',
+  clientName:'',
   projectId: '',
   groupId:'',
   teamId:'',
@@ -60,13 +61,13 @@ export class TeamTransferService extends TableService<TeamTransfer> implements O
     this._tableState$ = this._taskTableState$;
   }
 
-  getTransferUserList(shortNameList, department,division){
+  getTransferUserList(shortNameList, department,division, userListType){
 
     const url = this.VIEW_API_URL + "/getTransferUserList";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post(url, {roleShortNames : shortNameList, "department":department, "division":division },{headers: httpHeaders}).pipe(
+    return this.http.post(url, {roleShortNames : shortNameList, "type" :userListType,"department":department, "division":division },{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);

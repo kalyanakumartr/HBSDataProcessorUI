@@ -25,6 +25,7 @@ const DEFAULT_STATE: IWorkflowTableState = {
   groupId:'',
   teamId:'',
   type:'',
+  clientName:'',
   grouping: new GroupingState(),
   entityId: undefined,
   employeeId: '',

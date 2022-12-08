@@ -18,6 +18,7 @@ const DEFAULT_STATE: ISubcountryTableState = {
   divisionId: '',
   departmentId: '',
   type:'',
+  clientName:'',
   projectId: '',
   groupId:'',
   teamId:'',

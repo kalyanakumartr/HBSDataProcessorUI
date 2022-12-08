@@ -375,7 +375,10 @@ export class TeamTransferComponent implements
         this.transferToList = res;
         console.log('transferToList', this.transferToList);
         this.transferTo = '0: 0';
-        this.filter();
+        this.teamTransferService.listen().subscribe((m: any) => {
+          console.log('m -- -- --', m);
+          this.filter();
+        });
       }),
       catchError((err) => {
         console.log(err);
@@ -388,14 +391,17 @@ export class TeamTransferComponent implements
   }
   getTransferUserList() {
     var shortNameList=[];
+    var userListType='';
     if(this.type == "TeamMember"){
       shortNameList=["TL-Sr","TL-Tr","TL"];
+      userListType="Team";
     }else if(this.type == "Team"){
       shortNameList=["PL"];
+      userListType="Group";
     }else if(this.type == "Group"){
       shortNameList=["Admin","PM","PM-As"];
     }
-    this.teamTransferService.getTransferUserList(shortNameList,this.department,this.division).pipe(
+    this.teamTransferService.getTransferUserList(shortNameList,this.department,this.division, userListType).pipe(
         tap((res: any) => {
           this.transferToList = res;
           console.log('transferToList', this.transferToList);

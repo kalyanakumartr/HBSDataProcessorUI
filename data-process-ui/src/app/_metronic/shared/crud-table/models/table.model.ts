@@ -16,6 +16,7 @@ export interface ITableState {
   fromDate: string;
   toDate: string;
   status: string;
+  clientName:any;
   workUnitId: string;
   startWUMiles:string;
   endWUMiles:string;
@@ -79,7 +80,8 @@ export interface IProjectTableState extends ITableState{
   fromDate:any,
   toDate:any;
   status:any;
-  taskStatusList:any
+  taskStatusList:any;
+  clientName:any;
 }
 export interface IProcessTableState extends ITableState{
   employeeId: any,

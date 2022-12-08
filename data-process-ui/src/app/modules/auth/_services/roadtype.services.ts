@@ -19,6 +19,7 @@ const DEFAULT_STATE: IRoadTypeTableState = {
   groupId:'',
   teamId:'',
   type:'',
+  clientName:'',
   grouping: new GroupingState(),
   entityId: undefined,
   employeeId: '',
