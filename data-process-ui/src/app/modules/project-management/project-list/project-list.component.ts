@@ -344,19 +344,21 @@ export class ProjectListComponent
   setClient(value) {
     var position = value.split(':');
     if (position.length > 1) {
-      this.project = position[1].toString().trim();
+      this.client = position[1].toString().trim();
       if (this.client != '0') {
-       // this.projectService.patchState({ client: this.client }, '/searchProject');
+        this.projectService.patchState({ clientName: this.client }, '/searchProject');
       }
     }
   }
   setProjectStatus(value) {
     var position = value.split(':');
     if (position.length > 1) {
-      this.project = position[1].toString().trim();
-      if (this.client != '0') {
+      this.projectStatus = position[1].toString().trim();
+      if (this.projectStatus != '0') {
         this.projectService.patchState({ status: this.projectStatus }, '/searchProject');
       }
+    }else{
+      this.projectService.patchState({ status: value }, '/searchProject');
     }
   }
 
