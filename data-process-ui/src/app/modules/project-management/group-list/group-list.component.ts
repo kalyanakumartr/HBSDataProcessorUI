@@ -296,7 +296,48 @@ export class GroupListComponent implements
       }
     }
   }
-  clearFilter() {
+  clearFilter(){
+
+    if(this.isClearFilter){
+      if(this.showDivision){
+        this.division="0: 0";
+        if(this.divisionList.length>0){
+          this.divisionList.splice(0, this.divisionList.length);
+        }
+      }
+      if(this.showDepartment){
+        if(this.departmentList.length>0){
+          this.departmentList.splice(0, this.departmentList.length);
+        }
+        this.getDepartment();
+
+        this.project="0: 0";
+        if(this.projectList.length>0){
+          this.projectList.splice(0, this.projectList.length);
+        }
+      }else{
+        this.project="0: 0";
+      }
+
+      (<HTMLInputElement>document.getElementById("searchText")).value="";
+      this.groupTeamService.setDefaults();
+      if(this.showDepartment){
+        this.groupTeamService.patchState({ },"/searchGroupTeam");
+      }else{
+        this.groupTeamService.patchState({ departmentId:this.department,divisionId:this.division},"/searchGroupTeam");
+      }
+      this.grouping = this.groupTeamService.grouping;
+      this.paginator = this.groupTeamService.paginator;
+      this.sorting = this.groupTeamService.sorting;
+      if(this.showDivision){
+        this.department="0: 0";
+      }
+    }else{
+      (<HTMLInputElement>document.getElementById("searchText")).value="";
+    }
+  }
+
+/*  clearFilter() {
     if (this.isClearFilter) {
       this.division = '0';
 
@@ -321,7 +362,7 @@ export class GroupListComponent implements
     } else {
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
     }
-  }
+  }*/
   exportExcel() {
     this.groupTeamService.exportExcel('/exportToExcelGroupTeamReport', 'Report').subscribe(
       (responseObj) => {

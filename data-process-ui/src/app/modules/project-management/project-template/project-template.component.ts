@@ -17,7 +17,7 @@ import { ProjectService } from '../../auth/_services/project.services';
 })
 export class ProjectTemplateComponent implements OnInit {
 
-  @ViewChild(MatPaginator, {static: true}) paginator:MatPaginator;
+  @ViewChild(MatPaginator) paginator:MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   filterGroup: FormGroup;
   searchGroup: FormGroup;
@@ -34,7 +34,7 @@ export class ProjectTemplateComponent implements OnInit {
   isClearFilter:boolean;
   displayedColumns = [ 'projectName','projectId','templateUploadDate','Action'];
   dataSource = new MatTableDataSource<Project>();
-  private subscriptions: Subscription[] = [];
+
   constructor(private modalService:NgbModal,public projectService: ProjectService,private fb: FormBuilder,){
     this.projectList=[];
     this.divisionList=[];
@@ -44,6 +44,10 @@ export class ProjectTemplateComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    this.dataSource.filterPredicate = (data: Project, filter: string) => {
+      return data.projectId == filter;
+     };
+     this.getProjectForDivision();
     this.searchForm();
     if(this.showDivision){
       this.getDepartment();
@@ -71,11 +75,10 @@ export class ProjectTemplateComponent implements OnInit {
         distinctUntilChanged()
       )
       .subscribe((val) => this.search(val));
-    this.subscriptions.push(searchEvent);
-  }
+      }
 
   search(searchTerm: string) {
-    this.projectService.patchState({ searchTerm }, '/searchProject');
+    //this.projectService.patchState({ searchTerm }, '/searchProject');
   }
 
 
@@ -102,8 +105,12 @@ export class ProjectTemplateComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    setTimeout(() => {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }, 2000);
+
+
   }
 
   getDepartment(){
@@ -177,14 +184,11 @@ export class ProjectTemplateComponent implements OnInit {
   }
   getProjectForDivision(){
     this.projectList=[];
-    this.projectService.getProjectList(this.division).pipe(
+    this.projectService.getProjectList(this.division?this.division:"RFDB").pipe(
       tap((res: any) => {
         this.dataSource = res;
         console.log("projectList", this.projectList);
         this.project="0: 0";
-        setTimeout(() => {
-          this.ngAfterViewInit();
-        }, 2000);
 
       }),
       catchError((err) => {
@@ -203,14 +207,7 @@ export class ProjectTemplateComponent implements OnInit {
     this.filterGroup = this.fb.group({
       searchTerm: [''],
     });
-    this.subscriptions.push(
-      this.filterGroup.controls.status.valueChanges.subscribe(() =>
-        this.filter()
-      )
-    );
-    this.subscriptions.push(
-      this.filterGroup.controls.type.valueChanges.subscribe(() => this.filter())
-    );
+
   }
 
   filter() {
@@ -224,7 +221,7 @@ export class ProjectTemplateComponent implements OnInit {
     if (type) {
       filter['type'] = type;
     }*/
-    this.projectService.patchState({ filter }, '/searchProject');
+    //this.projectService.patchState({ filter }, '/searchProject');
   }
 
   clearFilter(){

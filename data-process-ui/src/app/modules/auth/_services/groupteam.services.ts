@@ -65,7 +65,13 @@ export class GroupTeamService extends TableService<Team> implements OnDestroy {
     super(http);
     this._tableState$ = this._taskTableState$;
   }
-
+  public setDefaults() {
+    this.patchStateWithoutFetch({departmentId:'',divisionId:'',searchTerm:''  });
+  }
+  public patchStateWithoutFetch(patch: Partial<IGroupTeamTableState>) {
+    const newState = Object.assign(this._taskTableState$.value, patch);
+    this._taskTableState$.next(newState);
+  }
   getTeamUserList(groupId){
 
     const url = this.VIEW_API_URL + "/getTeamUserList";

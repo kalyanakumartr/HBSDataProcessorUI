@@ -64,6 +64,13 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
     super(http);
     this._tableState$ = this._taskTableState$;
   }
+  public setDefaults() {
+    this.patchStateWithoutFetch({departmentId:'',divisionId:'',searchTerm:'',clientName:'',status:'',projectId:''  });
+  }
+  public patchStateWithoutFetch(patch: Partial<IProjectTableState>) {
+    const newState = Object.assign(this._taskTableState$.value, patch);
+    this._taskTableState$.next(newState);
+  }
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }

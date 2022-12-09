@@ -20,6 +20,7 @@ const EMPTY_PROJECT: Project = {
   projectName: '',
   divisionId: '',
   clientName: '',
+  templateUploadDate:'',
   projectDetail: {
     actualCompletedDate:'',
     billingCycle:'',

@@ -8,4 +8,5 @@ export class Project implements BaseModel{
       projectDetail!:ProjectDetails;
       divisionId:string;
       clientName:string;
+      templateUploadDate:string;
     }

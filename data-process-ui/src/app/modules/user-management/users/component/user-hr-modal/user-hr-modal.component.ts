@@ -195,6 +195,7 @@ const EMPTY_CUSTOMER: UserModel = {
       projectName: '',
       divisionId: '',
       clientName: '',
+      templateUploadDate:'',
       projectDetail:{
         actualCompletedDate:'',
         billingCycle:'',

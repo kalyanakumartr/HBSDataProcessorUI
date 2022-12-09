@@ -399,6 +399,7 @@ export class ProjectListComponent
         this.departmentList.splice(0, this.departmentList.length);
       }
       this.getDepartment();
+      this.projectService.setDefaults();
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
       this.projectService.setDefaults();
       this.projectService.patchState({}, '/searchProject');

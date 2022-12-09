@@ -6,11 +6,9 @@
     <div class="card-toolbar">
       <div class="grid-item" style="cursor: pointer">
         &nbsp;&nbsp;
-        <i
-          title="Export Excel"
-          (click)="exportExcel()"
-          class="fas fa-file-excel fa-2x"
-        ></i>
+        <button type="button" class="btn btn-primary" (click)="exportExcel()">
+          Export Excel
+        </button>
       </div>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <button type="button" class="btn btn-primary" (click)="create()">
@@ -26,9 +24,10 @@
           <ng-container *ngIf="showDepartment">
             <label>Department</label>
             <select
-              class="form-control form-control-lg form-control-solid"
+              class="form-control form-control-lg"
               name="department"
               [(ngModel)]="department"
+              formControlName="department"
               (change)="setDepartment($event.target.value)"
             >
               <option [ngValue]="0" [selected]="true">Select Department</option>
@@ -50,8 +49,9 @@
           <ng-container *ngIf="showDivision">
             <label>Division</label>
             <select
-              class="form-control form-control-lg form-control-solid"
+              class="form-control form-control-lg"
               name="division"
+              formControlName="division"
               [(ngModel)]="division"
               (change)="setDivision($event.target.value)"
             >
@@ -73,8 +73,8 @@
         <label>&nbsp;</label><br/>
         <button type="button" class="btn btn-primary" (click)="adgroup()">Add Group to Project</button>
       </div>-->
-      <div class="col-lg-3" >
-        <label>Search in all fields</label>
+      <!-- <div class="col-lg-3" >
+        <label>Search</label>
         <div class="grid-container">
           <div class="grid-item">
             <input
@@ -97,7 +97,31 @@
           ></i>
         </div>
       </div>
+    </div> -->
+    <div class="col-lg-2 nowrap">
+      <div class="row">
+        <div class="column"><label>Search </label>
+          <input
+            type="search"
+            class="form-control"
+            name="searchText"
+            id="searchText"
+            placeholder="Search"
+            value=""
+            formControlName="searchTerm"
+          />
+      </div>
+
     </div>
+  </div>
+      <div class="col-lg-2 nowrap">
+        <div class="row">
+        <div class="column" style="cursor: pointer;"><br> &nbsp;
+          <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+        </div>
+</div>
+
+  </div>
   </div>
   <div class="table-responsive angular-bootstrap-table">
     <table id="tablebox" class="table table-head-custom table-vertical-center">
