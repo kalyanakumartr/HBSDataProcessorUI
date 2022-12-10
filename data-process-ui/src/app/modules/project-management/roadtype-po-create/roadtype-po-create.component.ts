@@ -30,7 +30,7 @@ import { RoadtypeService } from '../../auth/_services/roadtype.services';
 })
 export class RoadtypePoCreateComponent implements OnInit {
   @Input() poDetailId: string;
-  @Input() projectId: string;
+  @Input() projectName: string;
   @Input() clientName: string;
   isLoading$;
   isAdminRole: boolean;

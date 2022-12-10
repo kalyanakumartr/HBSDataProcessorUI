@@ -64,7 +64,7 @@ export class SubcountryService extends TableService<SubCountry> implements OnDes
     this._tableState$ = this._taskTableState$;
   }
   public setDefaults() {
-    this.patchStateWithoutFetch({departmentId:'',divisionId:'',searchTerm:''  });
+    this.patchStateWithoutFetch({departmentId:'',divisionId:'',searchTerm:'' ,projectId:'' });
   }
   public patchStateWithoutFetch(patch: Partial<ISubcountryTableState>) {
     const newState = Object.assign(this._taskTableState$.value, patch);

@@ -98,7 +98,7 @@ export class RoadtypePoListComponent implements OnInit, OnDestroy, AfterViewInit
       size: 'lg',
     });
     modalRef.componentInstance.poDetailId = this.poDetailId;
-    modalRef.componentInstance.projectId = this.projectId;
+    modalRef.componentInstance.projectName = this.projectName;
     modalRef.componentInstance.clientName = this.clientName;
   }
 
