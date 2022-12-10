@@ -64,7 +64,7 @@ export class RoadtypeService extends TableService<RoadType> implements OnDestroy
 
   }
   public setDefaults() {
-    this.patchStateWithoutFetch({departmentId:'',divisionId:'',searchTerm:''  });
+    this.patchStateWithoutFetch({departmentId:'',divisionId:'',projectId:'',searchTerm:''  });
   }
 
   public patchStateWithoutFetch(patch: Partial<IRoadTypeTableState>) {

@@ -377,7 +377,7 @@ export class ProjectProcessListComponent implements
       this.grouping = this.processSerive.grouping;
       this.paginator = this.processSerive.paginator;
       this.sorting = this.processSerive.sorting;
-      this.department = '0';
+      this.department = '0.0';
     } else {
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
     }

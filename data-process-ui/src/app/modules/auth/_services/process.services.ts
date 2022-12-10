@@ -62,6 +62,13 @@ export class ProcessService extends TableService<Process> implements OnDestroy {
     this._tableState$ = this._taskTableState$;
   }
 
+  public setDefaults() {
+    this.patchStateWithoutFetch({departmentId:'',divisionId:'',projectId:'',searchTerm:''  });
+  }
+  public patchStateWithoutFetch(patch: Partial<IProcessTableState>) {
+    const newState = Object.assign(this._taskTableState$.value, patch);
+    this._taskTableState$.next(newState);
+  }
 //  getTeamList(){
   getProcessList(){
 
