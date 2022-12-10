@@ -373,19 +373,34 @@ export class ProjectSubcountryListComponent  implements
 
   clearFilter() {
     if (this.isClearFilter) {
+      if(this.showDivision){
       this.division = '0';
+      if(this.divisionList.length>0){
+
+        this.divisionList.splice(0, this.divisionList.length);
+      }}
+      if(this.showDepartment){
+        if(this.departmentList.length>0){
+          this.departmentList.splice(0, this.departmentList.length);
+        }
+        this.getDepartment();
+
 
       this.project = '0';
       if (this.projectList.length > 0) {
         this.projectList.splice(0, this.projectList.length);
       }
-      if (this.divisionList.length > 0) {
-        this.divisionList.splice(0, this.divisionList.length);
+      else
+      {
+        this.project="0: 0";
       }
-      if (this.departmentList.length > 0) {
-        this.departmentList.splice(0, this.departmentList.length);
+      // if (this.divisionList.length > 0) {
+      //   this.divisionList.splice(0, this.divisionList.length);
+      // }
+      // if (this.departmentList.length > 0) {
+      //   this.departmentList.splice(0, this.departmentList.length);
       }
-      this.getDepartment();
+      // this.getDepartment();
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
       this.subcountryService.setDefaults();
       this.subcountryService.patchState({}, '/searchSubCountry');

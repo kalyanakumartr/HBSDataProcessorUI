@@ -63,7 +63,13 @@ export class SubcountryService extends TableService<SubCountry> implements OnDes
     super(http);
     this._tableState$ = this._taskTableState$;
   }
-
+  public setDefaults() {
+    this.patchStateWithoutFetch({departmentId:'',divisionId:'',searchTerm:''  });
+  }
+  public patchStateWithoutFetch(patch: Partial<ISubcountryTableState>) {
+    const newState = Object.assign(this._taskTableState$.value, patch);
+    this._taskTableState$.next(newState);
+  }
   getSubcountryList(){
 
     const url = this.VIEW_API_URL + "/searchSubCountry";

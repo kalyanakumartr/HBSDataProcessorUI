@@ -356,6 +356,16 @@ if (this.isClearFilter) {
   }
 
   (<HTMLInputElement>document.getElementById('searchText')).value = '';
+  this.roadTypeService.setDefaults();
+  if(this.showDepartment){
+    this.roadTypeService.patchState({ },"/searchRoadType");
+  }else{
+    this.roadTypeService.patchState({ departmentId:this.department,divisionId:this.division},"/searchRoadType");
+  }
+  this.grouping = this.roadTypeService.grouping;
+  this.paginator = this.roadTypeService.paginator;
+  this.sorting = this.roadTypeService.sorting;
+
 
   if (this.showDivision) {
     this.department = '0: 0';

@@ -60,6 +60,16 @@ export class RoadtypeService extends TableService<RoadType> implements OnDestroy
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
     this._tableState$ = this._taskTableState$;
+
+
+  }
+  public setDefaults() {
+    this.patchStateWithoutFetch({departmentId:'',divisionId:'',searchTerm:''  });
+  }
+
+  public patchStateWithoutFetch(patch: Partial<IRoadTypeTableState>) {
+    const newState = Object.assign(this._taskTableState$.value, patch);
+    this._taskTableState$.next(newState);
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());

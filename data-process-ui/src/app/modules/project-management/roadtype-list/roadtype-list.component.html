@@ -23,7 +23,7 @@
         <div class="col-lg-2">
           <label>Department</label>
           <select
-            class="form-control form-control-lg form-control-solid"
+            class="form-control form-control-lg "
             name="department"
             [(ngModel)]="department"
             formControlName="department"
@@ -41,7 +41,7 @@
         <div class="col-lg-2">
           <label>Division</label>
           <select
-            class="form-control form-control-lg form-control-solid"
+            class="form-control form-control-lg"
             name="division"
             [(ngModel)]="division"
             formControlName="division"
@@ -59,7 +59,7 @@
         <div class="col-lg-3">
           <label>Project</label>
           <select
-            class="form-control form-control-lg form-control-solid"
+            class="form-control form-control-lg"
             name="project"
             [(ngModel)]="project"
             formControlName="project"
@@ -76,7 +76,7 @@
         </div>
 
 
-            <div class="col-lg-3" >
+            <!-- <div class="col-lg-3" >
               <label>Search in all fields</label>
               <div class="grid-container">
                 <div class="grid-item">
@@ -99,7 +99,31 @@
           </div>
         </div>
         </div>
-      <!-- end: Filtration form -->
+      end: Filtration form -->
+      <div class="col-lg-2 nowrap">
+        <div class="row">
+          <div class="column"><label>Search </label>
+            <input
+              type="search"
+              class="form-control"
+              name="searchText"
+              id="searchText"
+              placeholder="Search"
+              value=""
+              formControlName="searchTerm"
+            />
+        </div>
+
+      </div>
+    </div>
+        <div class="col-lg-2 nowrap">
+          <div class="row">
+          <div class="column" style="cursor: pointer;"><br> &nbsp;
+            <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+          </div>
+  </div>
+
+    </div>
   </div>
       <div class="table-responsive angular-bootstrap-table">
         <table
