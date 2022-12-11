@@ -22,4 +22,5 @@ export class ProjectDetails{
       unitsOfMeasurement!:string;
       projectmanagerName!:string;
       createdDate!:string;
+      modifiedDate!:string;
   }

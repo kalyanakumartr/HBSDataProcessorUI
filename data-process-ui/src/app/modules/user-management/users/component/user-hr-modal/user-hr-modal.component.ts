@@ -158,7 +158,7 @@ const EMPTY_CUSTOMER: UserModel = {
       divisionId:'',
       divisionName:'',
       status:true,
-      type:'',
+      type:'Team',
       reportingName:'',
       fullName:'',
       reportingTo:''
@@ -172,7 +172,7 @@ const EMPTY_CUSTOMER: UserModel = {
       divisionId:'',
       divisionName:'',
       status:true,
-      type:'',
+      type:'Group',
       reportingName:'',
       fullName:'',
       reportingTo:''
@@ -219,7 +219,8 @@ const EMPTY_CUSTOMER: UserModel = {
         totalProjectedWorkVolume:'',
         unitsOfMeasurement:'',
         projectmanagerName:'',
-        createdDate:''
+        createdDate:'',
+        modifiedDate:''
       }
 
     },

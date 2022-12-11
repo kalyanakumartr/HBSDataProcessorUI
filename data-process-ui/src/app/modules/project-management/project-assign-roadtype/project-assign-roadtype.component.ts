@@ -73,7 +73,8 @@ const EMPTY_ROADTYPE: RoadType = {
       totalProjectedWorkVolume:'',
       unitsOfMeasurement:'',
       projectmanagerName:'',
-      createdDate:''
+      createdDate:'',
+      modifiedDate:''
     }
   }
 
@@ -204,6 +205,12 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
     });
   }
   edit() {
+    this.roadType.milesPercentSet[0].modifiedDate=undefined;
+    if(this.roadType.milesPercentSet.length>1){
+      this.roadType.milesPercentSet[1]=undefined;
+    }
+
+    this.roadType.project.templateUploadDate=undefined
     const sbUpdate = this.roadtypeService.update(this.roadType,"/updateRoadType","formRoadType").pipe(
       tap(() => {
         this.modal.close();

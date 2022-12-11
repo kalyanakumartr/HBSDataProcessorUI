@@ -161,7 +161,7 @@ const EMPTY_CUSTOMER: UserModel = {
       divisionId:'',
       divisionName:'',
       status:true,
-      type:'',
+      type:'Team',
       reportingName:'',
       fullName:'',
       reportingTo:''
@@ -175,7 +175,7 @@ const EMPTY_CUSTOMER: UserModel = {
       divisionId:'',
       divisionName:'',
       status:true,
-      type:'',
+      type:'Group',
       reportingName:'',
       fullName:'',
       reportingTo:''
@@ -222,7 +222,8 @@ const EMPTY_CUSTOMER: UserModel = {
         totalProjectedWorkVolume:'',
         unitsOfMeasurement:'',
         projectmanagerName:'',
-        createdDate:''
+        createdDate:'',
+        modifiedDate:''
       }
     },
     trainingBatch:'',
@@ -491,6 +492,8 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   create() {
     console.log("Add Employee");
     this.customer.mediaList[0].mediaId=undefined;
+    this.customer.operationalRecord.project=undefined;
+
     const sbCreate = this.usersService.create(this.customer,"/addUser","formUser").pipe(
       tap(() => {
         this.modal.close();

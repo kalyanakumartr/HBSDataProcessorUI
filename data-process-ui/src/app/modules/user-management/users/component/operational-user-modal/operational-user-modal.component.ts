@@ -220,7 +220,8 @@ const EMPTY_CUSTOMER: UserModel = {
         totalProjectedWorkVolume:'',
         unitsOfMeasurement:'',
         projectmanagerName:'',
-        createdDate:''
+        createdDate:'',
+        modifiedDate:''
       }
 
     },

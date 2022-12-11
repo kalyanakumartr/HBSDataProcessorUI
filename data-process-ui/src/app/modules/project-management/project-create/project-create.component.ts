@@ -44,7 +44,8 @@ const EMPTY_PROJECT: Project = {
     totalProjectedWorkVolume:'',
     unitsOfMeasurement:'',
     projectmanagerName:'',
-    createdDate:''
+    createdDate:'',
+    modifiedDate:''
   },
 //  uomDetail:  {
   //  unitId:''
@@ -158,6 +159,9 @@ export class ProjectCreateComponent implements OnInit {
   }
 
   edit() {
+    this.project.projectDetail.createdDate='';
+    this.project.projectDetail.modifiedDate='';
+    this.project.templateUploadDate='';
     const sbUpdate = this.projectService.update(this.project,"/updateProject","formProject").pipe(
       tap(() => {
         this.modal.close();
