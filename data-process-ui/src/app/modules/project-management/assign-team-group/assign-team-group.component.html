@@ -21,7 +21,7 @@
 
     <div class="form form-label-right">
       <div class="form-group row" [formGroup]="searchGroup">
-        <div class="col-lg-3">
+        <div class="col-lg-2">
           <label>Department</label>
           <select
             class="form-control form-control-lg"
@@ -39,7 +39,7 @@
             </option>
           </select>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-2">
           <label>Division</label>
           <select
             class="form-control form-control-lg"
@@ -57,7 +57,7 @@
             </option>
           </select>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-2">
           <label>Group Name</label>
           <select
             class="form-control form-control-lg"
@@ -75,10 +75,11 @@
             </option>
           </select>
         </div>
-       <!-- --> <div class="col-lg-2 nowrap">
-          <label>Search in all fields</label>
-          <div class="grid-container">
-            <div class="grid-item">
+
+
+        <div class="col-lg-2 nowrap">
+          <div class="row">
+            <div class="column"><label>Search </label>
               <input
                 type="search"
                 class="form-control"
@@ -88,17 +89,19 @@
                 value=""
                 formControlName="searchTerm"
               />
-            </div>
-            <div class="grid-item" style="cursor: pointer">
-              &nbsp;&nbsp;
-              <i
-                title="Clear Filter"
-                (click)="clearFilter()"
-                class="fas fa-filter fa-2x"
-              ></i>
-            </div>
           </div>
+
         </div>
+      </div>
+          <div class="col-lg-2 nowrap">
+            <div class="row">
+            <div class="column" style="cursor: pointer;"><br> &nbsp;
+              <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+            </div>
+    </div>
+
+      </div>
+
       </div>
     </div>
     <!-- end: Filtration form -->

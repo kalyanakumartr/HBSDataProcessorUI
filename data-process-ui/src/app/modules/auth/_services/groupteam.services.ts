@@ -66,7 +66,7 @@ export class GroupTeamService extends TableService<Team> implements OnDestroy {
     this._tableState$ = this._taskTableState$;
   }
   public setDefaults() {
-    this.patchStateWithoutFetch({departmentId:'',divisionId:'',searchTerm:''  });
+    this.patchStateWithoutFetch({departmentId:'',divisionId:'',groupId:'', searchTerm:''  });
   }
   public patchStateWithoutFetch(patch: Partial<IGroupTeamTableState>) {
     const newState = Object.assign(this._taskTableState$.value, patch);
