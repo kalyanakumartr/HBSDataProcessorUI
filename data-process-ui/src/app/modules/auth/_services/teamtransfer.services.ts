@@ -61,6 +61,13 @@ export class TeamTransferService extends TableService<TeamTransfer> implements O
     this._tableState$ = this._taskTableState$;
   }
 
+  public setDefaults() {
+    this.patchStateWithoutFetch({departmentId:'',divisionId:'',groupId:'',searchTerm:''  });
+  }
+  public patchStateWithoutFetch(patch: Partial<ITeamTransferTableState>) {
+    const newState = Object.assign(this._taskTableState$.value, patch);
+    this._taskTableState$.next(newState);
+  }
   getTransferUserList(shortNameList, department,division, userListType){
 
     const url = this.VIEW_API_URL + "/getTransferUserList";

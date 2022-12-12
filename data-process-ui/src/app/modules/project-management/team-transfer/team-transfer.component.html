@@ -9,7 +9,7 @@
 
                 <div class="col-lg-2">
                   <label>Transfer Type :</label>
-                   <select class="form-control form-control-lg form-control-solid" [(ngModel)]="type" (change)="setType()">
+                   <select class="form-control form-control-lg" [(ngModel)]="type" (change)="setType()">
                   <option value="Group">Group Transfer</option>
                   <option value="Team">Team Transfer</option>
                   <option value="TeamMember">Team Member Transfer</option>
@@ -18,7 +18,7 @@
 
               <div class="col-lg-2">
                 <label>Assign To :</label>
-                 <select  class="form-control form-control-lg form-control-solid"
+                 <select  class="form-control form-control-lg"
                  name="transferTo"
                  [(ngModel)]="transferTo"
                  (change)="setTransferTo($event.target.value)"
@@ -51,7 +51,7 @@
             <ng-container *ngIf="showDepartment">
               <label>Department</label>
               <select
-                class="form-control form-control-lg form-control-solid"
+                class="form-control form-control-lg"
                 name="department"
                 [(ngModel)]="department"
                 (change)="setDepartment($event.target.value)"
@@ -75,7 +75,7 @@
             <ng-container *ngIf="showDivision">
               <label>Division</label>
               <select
-                class="form-control form-control-lg form-control-solid"
+                class="form-control form-control-lg "
                 name="division"
                 [(ngModel)]="division"
                 (change)="setDivision($event.target.value)"
@@ -98,7 +98,7 @@
 
               <label>Group</label>
               <select
-                class="form-control form-control-lg form-control-solid"
+                class="form-control form-control-lg"
                 name="division"
                 [(ngModel)]="group"
                 (change)="setGroup($event.target.value)"
@@ -116,7 +116,7 @@
 
               <label>Team</label>
               <select
-                class="form-control form-control-lg form-control-solid"
+                class="form-control form-control-lg"
                 name="division"
                 [(ngModel)]="team"
                 (change)="setTeam($event.target.value)"
@@ -144,7 +144,7 @@
               </select>
           </div>-->
           <div class="col-lg-2" >
-            <label>Search in all fields</label>
+            <label>Search</label>
             <div class="grid-container">
               <div class="grid-item">
                 <input
@@ -159,7 +159,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-2">
+          <div class="col-lg-2" style="cursor: pointer">
             &nbsp;<br />&nbsp;
             <i
               title="Clear Filter"
