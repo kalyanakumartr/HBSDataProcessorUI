@@ -259,7 +259,7 @@
               [class.is-invalid]="isControlInvalid('uom')" formControlName="uom">
                             <option
               *ngFor="let uom of uomList"
-              [ngValue]="uom.unitID"
+              [ngValue]="uom.unitId"
             >
               {{ uom.unitName}}
             </option>
