@@ -139,15 +139,7 @@ export class ProjectListComponent
 
   filter() {
     const filter = {};
-    const status = this.filterGroup.get('status').value;
-    if (status) {
-      filter['status'] = status;
-    }
 
-    const type = this.filterGroup.get('type').value;
-    if (type) {
-      filter['type'] = type;
-    }
     this.projectService.patchState({ filter }, '/searchProject');
   }
 

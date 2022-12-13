@@ -267,6 +267,7 @@ IFilterView
   filter()
   {
     const filter = {};
+    this.workflowService.patchState({ filter },"/searchAllocationGroup");
   }
   filterForm()
   {
