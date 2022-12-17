@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
@@ -32,6 +32,7 @@ export class RoadtypePoCreateComponent implements OnInit {
   @Input() poDetailId: string;
   @Input() projectName: string;
   @Input() clientName: string;
+  @Output() passEntry: EventEmitter<any> = new EventEmitter();
   isLoading$;
   isAdminRole: boolean;
   poLimit:POLimit;
@@ -106,4 +107,7 @@ export class RoadtypePoCreateComponent implements OnInit {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
   }
+  passBack() {
+    this.passEntry.emit("Reload");
+    }
 }

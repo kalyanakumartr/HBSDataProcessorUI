@@ -57,11 +57,13 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
     _taskTableState$ = new BehaviorSubject<IProjectTableState>(DEFAULT_STATE);
     isLoadingSubject: BehaviorSubject<boolean>;
     protected http: HttpClient;
+
   API_URL = `${environment.adminApiUrl}`;
   VIEW_API_URL = `${environment.viewApiUrl}`;
   private _errorMsg: any;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
+    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
     this._tableState$ = this._taskTableState$;
   }
   public setDefaults() {

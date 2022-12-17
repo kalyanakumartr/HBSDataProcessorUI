@@ -9,6 +9,9 @@
     <div class="card-toolbar">
       <div class="grid-item" style="cursor: pointer">
         &nbsp;&nbsp;
+        <ng-container *ngIf="isLoading$ | async">
+          <span class="spinner spinner-primary ml-5"></span>
+        </ng-container>
         <button type="button" class="btn btn-primary" (click)="exportExcel()">
           Export Excel
         </button>

@@ -20,6 +20,7 @@ const EMPTY_PROJECT: Project = {
   projectName: '',
   divisionId: '',
   clientName: '',
+  projectManagerId:'',
   templateUploadDate:'',
   projectDetail: {
     actualCompletedDate:'',
@@ -121,11 +122,14 @@ export class ProjectCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadProjectId();
+
     this.getUserListByRoles();
     this.getUomList();
     this.getdeliveryModeList();
     this.getdeliveryModeType();
+    this.loadProjectId();
+    alert(this.project.projectManagerId);
+
   }
   public findInvalidControls() {
     const invalid = [];
@@ -282,7 +286,7 @@ export class ProjectCreateComponent implements OnInit {
     this.project.projectName = formData.projectName;
     this.project.projectDetail.clientName = formData.clientName;
     this.project.projectDetail.projectType = formData.projectType;
-    this.project.projectDetail.projectmanagerName = formData.projectmanagerName;
+    this.project.projectManagerId = formData.projectmanagerName;
     //this.project.projectDetail.createdDate= formData.projectcdate; //projectCreatedDates
     //this.project.projectDetail.mo= formData.projectcdate; //projectCreatedDates
 
@@ -323,7 +327,7 @@ export class ProjectCreateComponent implements OnInit {
       clientName: [this.project.projectDetail.clientName, Validators.compose([ ])],
       projectType: [this.project.projectDetail.projectType, Validators.compose([])],
 
-      projectmanagerName: [this.project.projectDetail.projectmanagerName, Validators.compose([Validators.nullValidator])],
+      projectmanagerName: [this.project.projectManagerId, Validators.compose([Validators.nullValidator])],
       projectcdate: [this.project.projectDetail.createdDate,Validators.compose([Validators.nullValidator])],
       poNumber: [this.project.projectDetail.poNumber, Validators.compose([])],
       poDate: [this.project.projectDetail.poDated, Validators.compose([Validators.nullValidator])],

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -67,7 +67,7 @@ export class ProjectListComponent
   showDivision:boolean;
   showDepartment:boolean;
   isClearFilter:boolean;
-
+  isLoading$: Observable<boolean>;
   userList: any;
   sel: string;
   private subscriptions: Subscription[] = [];
@@ -81,6 +81,7 @@ export class ProjectListComponent
       console.log('m -- -- --', m);
       this.filter();
     });
+    this.isLoading$ = this.projectService.isLoadingSubject;
     this.sel = '0';
     this.projectList=[];
     this.divisionList=[];
@@ -404,6 +405,7 @@ export class ProjectListComponent
     }
   }
   exportExcel() {
+    this.projectService.isLoadingSubject.next(true);
     this.projectService.exportExcel('/exportToExcelProjectReport', 'Report').subscribe(
       (responseObj) => {
         console.log('Project Report success', responseObj);
@@ -412,9 +414,11 @@ export class ProjectListComponent
         link.href = downloadURL;
         link.download = 'ProjectReport.xlsx';
         link.click();
+        this.projectService.isLoadingSubject.next(false);
       },
       (error) => {
         console.log('report error', error);
+        this.projectService.isLoadingSubject.next(false);
       }
     );
   }

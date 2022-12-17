@@ -100,6 +100,10 @@ export class RoadtypePoListComponent implements OnInit, OnDestroy, AfterViewInit
     modalRef.componentInstance.poDetailId = this.poDetailId;
     modalRef.componentInstance.projectName = this.projectName;
     modalRef.componentInstance.clientName = this.clientName;
+    modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
+      console.log(receivedEntry);
+      this.getData(this.poDetailId);
+      })
   }
 
    // pagination
