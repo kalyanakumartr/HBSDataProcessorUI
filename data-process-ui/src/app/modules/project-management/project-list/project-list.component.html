@@ -31,7 +31,7 @@
         <div class="col-lg-2">
           <label>Department</label>
           <select
-            class="form-control form-control-lg form-control-solid"
+            class="form-control form-control-lg"
             name="department"
             [(ngModel)]="department"
             formControlName="department"
@@ -49,7 +49,7 @@
         <div class="col-lg-2">
           <label>Division</label>
           <select
-            class="form-control form-control-lg form-control-solid"
+            class="form-control form-control-lg "
             name="division"
             [(ngModel)]="division"
             formControlName="division"
@@ -67,7 +67,7 @@
         <div class="col-lg-2">
           <label>Project</label>
           <select
-            class="form-control form-control-lg form-control-solid"
+            class="form-control form-control-lg "
             name="project"
             [(ngModel)]="project"
             formControlName="project"
@@ -85,7 +85,7 @@
         <div class="col-lg-2">
           <label>Client Name</label>
           <select
-            class="form-control form-control-lg form-control-solid"
+            class="form-control form-control-lg "
             name="client"
             [(ngModel)]="client"
             formControlName="client"
@@ -102,7 +102,7 @@
         <div class="col-lg-2">
           <label>Project Status</label>
           <select
-            class="form-control form-control-lg form-control-solid"
+            class="form-control form-control-lg "
             name="projectStatus"
             [(ngModel)]="projectStatus"
             formControlName="projectStatus"
@@ -152,10 +152,10 @@
         <thead>
           <tr>
             <th class="sticky-header">Edit</th>
-            <th class="sticky-header" nowrap>Project ID</th>
+            <th class="sticky-header" nowrap>Project Name</th>
             <th class="sticky-header" nowrap>Client Name</th>
 
-            <th nowrap>Project Name</th>
+
             <th nowrap>Project Type</th>
             <th>Project Manager Name</th>
             <th>Project Created Date</th>
@@ -207,15 +207,13 @@
                 </span>
               </a>
             </td>
-            <td>
-              {{ project.projectId }}
-            </td>
-            <td>{{ project.projectDetail.clientName }}</td>
             <td>{{ project.projectName }}</td>
+            <td>{{ project.projectDetail.clientName }}</td>
+
             <td>
               {{ project.projectDetail.projectType }}
             </td>
-            <td>{{ project.projectDetail.projectmanagerName }}</td>
+            <td>{{ project.projectDetail.projectManagerName }}</td>
             <td>{{ project.projectDetail.actualCompletedDate }}</td>
 
             <td>

@@ -44,7 +44,7 @@ const EMPTY_PROJECT: Project = {
     receivedWorkVolume:'',
     totalProjectedWorkVolume:'',
     unitsOfMeasurement:'',
-    projectmanagerName:'',
+    projectManagerName:'',
     createdDate:'',
     modifiedDate:''
   },

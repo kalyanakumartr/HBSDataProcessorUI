@@ -213,8 +213,7 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
   }
 
   getTeamList(groupId){
-
-    const url = this.API_URL + "/getTeamList/"+groupId;
+    const url = this.API_URL + "/getTeamList/ALL/"+groupId;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });

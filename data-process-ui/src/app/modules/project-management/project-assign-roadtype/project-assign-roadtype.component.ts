@@ -73,7 +73,7 @@ const EMPTY_ROADTYPE: RoadType = {
       receivedWorkVolume:'',
       totalProjectedWorkVolume:'',
       unitsOfMeasurement:'',
-      projectmanagerName:'',
+      projectManagerName:'',
       createdDate:'',
       modifiedDate:''
     }

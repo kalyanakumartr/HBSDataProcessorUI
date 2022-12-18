@@ -133,11 +133,9 @@
           <thead>
             <tr>
               <th class="sticky-header">Edit</th>
-              <th class="sticky-header" nowrap>Project ID</th>
-              <th class="sticky-header" nowrap>Client Name</th>
-
-              <th nowrap>Project Name</th>
+              <th class="sticky-header" nowrap>Project Name</th>
               <th>Work Area (Alias Road Type)</th>
+              <th>Client Name</th>
               <th>Benchmark Time (Mainutes)</th>
               <th>Tick for Multy Road Type</th>
               <th>Units</th>
@@ -181,14 +179,12 @@
                 </span>
               </a>
               </td>
-              <td>
-                {{ roadType.project.projectId }}
-              </td>
-              <td>{{ roadType.project.clientName }}</td>
               <td>{{ roadType.project.projectName }}</td>
               <td>
                 {{ roadType.roadName }}
               </td>
+              <td>{{ roadType.project.clientName }}</td>
+
               <td>{{ roadType.milesPercentSet[0].benchMark }}</td>
 
               <td>

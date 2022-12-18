@@ -20,7 +20,7 @@ export class ProjectDetails{
       receivedWorkVolume!: string;
       totalProjectedWorkVolume!:string;
       unitsOfMeasurement!:string;
-      projectmanagerName!:string;
+      projectManagerName!:string;
       createdDate!:string;
       modifiedDate!:string;
   }
