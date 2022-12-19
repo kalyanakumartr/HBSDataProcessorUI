@@ -197,7 +197,7 @@ export class ProjectListComponent
     if(this.division){
       this.addProject(undefined,undefined,this.division);
     }else{
-      alert("Please Select Divison");
+      alert("Please Select Department & Divison");
     }
   }
 
@@ -215,7 +215,7 @@ export class ProjectListComponent
       modalRef.componentInstance.projectName = projectName;
       modalRef.componentInstance.divisionId = divisionId;
   }else{
-    alert("please Select division")
+    alert("Please Select Department & Divison");
   }
   }
 

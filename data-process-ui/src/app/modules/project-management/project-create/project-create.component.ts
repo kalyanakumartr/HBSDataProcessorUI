@@ -128,7 +128,7 @@ export class ProjectCreateComponent implements OnInit {
     this.getdeliveryModeList();
     this.getdeliveryModeType();
     this.loadProjectId();
-    alert(this.project.projectManagerId);
+
 
   }
   public findInvalidControls() {

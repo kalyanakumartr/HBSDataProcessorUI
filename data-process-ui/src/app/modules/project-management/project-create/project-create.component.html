@@ -2,8 +2,19 @@
   <div class="modal-header">
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
       <b><label class="heading">
+        
       <ng-container >
-        <ng-container *ngIf="projectId">Edit Project : {{projectId}} </ng-container>
+        <ng-container *ngIf="projectId">Edit Project : {{projectId}} 
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <!-- <div class="grid-item right"> -->
+                <label center>Project Created Date </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label>
+          {{formGroup.value.projectcdate | date: 'dd-MMM-yyyy'}}</label>
+        <!-- </div> -->
+            
+<!-- </div> -->
+       
+        </ng-container>
         <ng-container *ngIf="!projectId">Create  Project  </ng-container>
      </ng-container>
     </label></b>
@@ -86,7 +97,7 @@
 
             </div>
 
-          <div class="col-lg-3">
+          <!-- <div class="col-lg-3">
             <label>Project Created Date</label>
             <div class="input-group input-group-solid">
               <input type="text" name="projectcdate" class="form-control form-control-lg form-control-solid" autocomplete="off"
@@ -97,6 +108,17 @@
             <div class="valid-feedback" *ngIf="isControlValid('projectcdate')">Date of Birth was entered correct</div>
             <div class="invalid-feedback" *ngIf="controlHasError('required', 'projectcdate')">Please enter <b>Date of Birth</b>
               in 'dd/mm/yyyy' format</div>
+          </div> -->
+
+          <div class="col-lg-3">
+            <label class="form-label">Input Type</label>
+            <input type="text" class="form-control form-control-lg" name="inputType"
+              placeholder="Input Type" autocomplete="off" [class.is-invalid]="isControlInvalid('inputType')" maxlength=50
+              [class.is-valid]="isControlValid('inputType')" formControlName="inputType" />
+                        <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'inputType')">Input Type should have at
+              least 3 symbols</div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'inputType')">Input Type should have
+              maximum 50 characters</div>
           </div>
 
           <div class="col-lg-3">
@@ -159,7 +181,7 @@
               <option value="Completed">Completed</option>
 
             </select>
-            <div class="feedback">Project  <b>Status</b></div>
+            <!-- <div class="feedback">Project  <b>Status</b></div> -->
             </div>
 
             <div class="col-lg-3">
@@ -197,7 +219,7 @@
             {{ moDlist.modeName}}</option>
 
              </select>
-            <div class="feedback">Mode of<b> Delivery</b></div>
+            <!-- <div class="feedback">Mode of<b> Delivery</b></div> -->
               </div>
 
         </div>
@@ -215,19 +237,24 @@
 
 
           </select>
-          <div class="feedback">Input Receiving<b> Mode</b></div>
+          <!-- <div class="feedback">Input Receiving<b> Mode</b></div> -->
         </div>
 
-          <div class="col-lg-3">
-            <label class="form-label">Input Type</label>
-            <input type="text" class="form-control form-control-lg" name="inputType"
-              placeholder="Input Type" autocomplete="off" [class.is-invalid]="isControlInvalid('inputType')" maxlength=50
-              [class.is-valid]="isControlValid('inputType')" formControlName="inputType" />
-                        <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'inputType')">Input Type should have at
-              least 3 symbols</div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'inputType')">Input Type should have
-              maximum 50 characters</div>
-          </div>
+<!-- input-->         
+<div class="col-lg-3">
+  <label class="form-label">Units of Measurement (UOM)</label>
+
+  <select class="form-control form-control-lg"
+   name="uom"
+    [class.is-invalid]="isControlInvalid('uom')" formControlName="uom">
+                  <option
+    *ngFor="let uom of uomList"
+    [ngValue]="uom.unitId"
+  >
+    {{ uom.unitName}}
+  </option>
+  </select>
+  </div>
 
           <div class="col-lg-3">
             <label>Display in Other UI Project List </label>
@@ -237,7 +264,7 @@
               <option value="Inactive">Inactive</option>
 
             </select>
-            <div class="feedback">Display in Other UI <b>Project List</b></div>
+            <!-- <div class="feedback">Display in Other UI <b>Project List</b></div> -->
           </div>
           <div class="col-lg-3">
             <label class="form-label"> Total Projected work volume</label>
@@ -252,20 +279,19 @@
         <div class="form-group row">
 
           <div class="col-lg-3">
-            <label class="form-label">Units of Measurement (UOM)</label>
 
-            <select class="form-control form-control-lg"
-             name="uom"
-              [class.is-invalid]="isControlInvalid('uom')" formControlName="uom">
-                            <option
-              *ngFor="let uom of uomList"
-              [ngValue]="uom.unitId"
-            >
-              {{ uom.unitName}}
-            </option>
-            </select>
-            </div>
+            <label class="form-label">No of Days Requried to complete</label>
+            <input type="text" class="form-control form-control-lg" name="noDays" placeholder="No of Days Requried to complete"
+              autocomplete="off" [class.is-invalid]="isControlInvalid('noDays')" maxlength=15
+              [class.is-valid]="isControlValid('noDays')" formControlName="noDays" />
+              <!--<div class="invalid-feedback" *ngIf="controlHasError('minlength', 'resoueces')">Planned No. of Resources should have at
+                least 10 symbols</div>-->
+              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'noDays')">Planned No. of Resources should not be morethan 13 symbols</div>
 
+
+          </div>
+
+        
 
           <div class="col-lg-3">
             <label class="form-label">Received Work Volume</label>
@@ -307,19 +333,6 @@
 
         </div>
           <div class="form-group row">
-
-            <div class="col-lg-3">
-
-              <label class="form-label">No of Days Requried to complete</label>
-              <input type="text" class="form-control form-control-lg" name="noDays" placeholder="No of Days Requried to complete"
-                autocomplete="off" [class.is-invalid]="isControlInvalid('noDays')" maxlength=15
-                [class.is-valid]="isControlValid('noDays')" formControlName="noDays" />
-                <!--<div class="invalid-feedback" *ngIf="controlHasError('minlength', 'resoueces')">Planned No. of Resources should have at
-                  least 10 symbols</div>-->
-                <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'noDays')">Planned No. of Resources should not be morethan 13 symbols</div>
-
-
-            </div>
 
 
             <div class="col-lg-3">
@@ -370,8 +383,6 @@
 
 
           </div>
-          </div>
-          <div class="form-group row">
           <div class="col-lg-3">
             <label>Project - Actual Completed Date</label>
             <div class="input-group input-group-solid ">
@@ -389,8 +400,8 @@
           </div>
 
 
-
-        </div>
+          </div>
+       
       </form>
     </ng-container>
   </div>

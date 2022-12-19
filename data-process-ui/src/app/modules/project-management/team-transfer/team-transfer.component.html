@@ -53,6 +53,7 @@
               <select
                 class="form-control form-control-lg"
                 name="department"
+                formControlName="department"
                 [(ngModel)]="department"
                 (change)="setDepartment($event.target.value)"
               >
@@ -77,6 +78,7 @@
               <select
                 class="form-control form-control-lg "
                 name="division"
+                formControlName="division"
                 [(ngModel)]="division"
                 (change)="setDivision($event.target.value)"
               >
@@ -99,7 +101,8 @@
               <label>Group</label>
               <select
                 class="form-control form-control-lg"
-                name="division"
+                name="group"
+                formControlName="group"
                 [(ngModel)]="group"
                 (change)="setGroup($event.target.value)"
               >
@@ -117,7 +120,8 @@
               <label>Team</label>
               <select
                 class="form-control form-control-lg"
-                name="division"
+                name="team"
+                formControlName="team"
                 [(ngModel)]="team"
                 (change)="setTeam($event.target.value)"
               >

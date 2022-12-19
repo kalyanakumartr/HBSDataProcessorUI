@@ -117,7 +117,8 @@ export class TeamTransferComponent implements
       searchTerm: [''],
       department: ['0'],
       division: ['0'],
-      project: ['0'],
+      group: ['0'],
+      team: ['0'],
     });
     const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
       .pipe(
@@ -177,16 +178,16 @@ export class TeamTransferComponent implements
       this.division = '0';
 
       this.group = '0';
-      if (this.groupList.length > 0) {
+      if (this.groupList && this.groupList.length > 0) {
         this.groupList.splice(0, this.groupList.length);
       }
-      if (this.teamList.length > 0) {
+      if (this.teamList && this.teamList.length > 0) {
         this.teamList.splice(0, this.teamList.length);
       }
-      if (this.divisionList.length > 0) {
+      if (this.divisionList && this.divisionList.length > 0) {
         this.divisionList.splice(0, this.divisionList.length);
       }
-      if (this.departmentList.length > 0) {
+      if (this.departmentList && this.departmentList.length > 0) {
         this.departmentList.splice(0, this.departmentList.length);
       }
       this.getDepartment();
@@ -374,13 +375,7 @@ export class TeamTransferComponent implements
     var transfer = this.transferTo.split('/').join('_');
     this.teamTransferService.transferUserList(this.selectedUserIds, transferReportees,this.type, transfer).pipe(
       tap((res: any) => {
-        this.transferToList = res;
-        console.log('transferToList', this.transferToList);
-        this.transferTo = '0: 0';
-        this.teamTransferService.listen().subscribe((m: any) => {
-          console.log('m -- -- --', m);
-          this.filter();
-        });
+
       }),
       catchError((err) => {
         console.log(err);
@@ -396,6 +391,9 @@ export class TeamTransferComponent implements
       duration: 4000,
       verticalPosition:"top"
     });
+    this.teamTransferService.patchState({  }, '/searchTransfer');
+    this.transferTo = '0: 0';
+    this.selectedUserIds.splice(0,this.selectedUserIds.length);
   }
   getTransferUserList() {
     var shortNameList=[];
