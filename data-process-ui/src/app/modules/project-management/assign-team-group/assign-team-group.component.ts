@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { tap, catchError, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { GroupingState, ICreateAction, IDeleteAction, IDeleteSelectedAction,
    IEditAction,
@@ -44,7 +44,7 @@ IFilterView
   division:any;
   groupList:any[];
   group:any;
-
+  isLoading$: Observable<boolean>;
     projectList:any[];
   project:any;
   departmentName:string;
@@ -71,6 +71,7 @@ IFilterView
         console.log('m -- -- --', m);
         this.filter();
       });
+      this.isLoading$ = this.workflowService.isLoadingSubject;
       this.sel = '0';
       this.allotmentId=[];
       this.projectList=[];
@@ -286,6 +287,7 @@ IFilterView
   }
 
   exportExcel(){
+    this.workflowService.isLoadingSubject.next(true);
     this.workflowService.exportExcel('/exportToExcelAllocationReport', 'Report').subscribe(
       (responseObj) => {
         console.log('Allocation Report success', responseObj);
@@ -294,9 +296,11 @@ IFilterView
         link.href = downloadURL;
         link.download = 'Allocation.xlsx';
         link.click();
+        this.workflowService.isLoadingSubject.next(false);
       },
       (error) => {
         console.log('Allocation report error', error);
+        this.workflowService.isLoadingSubject.next(false);
       }
     );
   }

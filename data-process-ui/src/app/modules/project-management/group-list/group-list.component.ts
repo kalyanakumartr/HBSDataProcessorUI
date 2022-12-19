@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { GroupingState, ICreateAction, IDeleteAction, IDeleteSelectedAction, IEditAction, IFetchSelectedAction, IFilterView, IGroupingView, ISearchView, ISortView, IUpdateStatusForSelectedAction, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
 import { GroupTeamService } from '../../auth/_services/groupteam.services';
@@ -47,6 +47,8 @@ export class GroupListComponent implements
   showDepartment:boolean;
   isClearFilter:boolean;
 
+  isLoading$: Observable<boolean>;
+
   userList: any;
   sel: string;
   private subscriptions: Subscription[] = [];
@@ -60,6 +62,7 @@ export class GroupListComponent implements
       console.log('m -- -- --', m);
       this.filter();
     });
+    this.isLoading$ = this.groupTeamService.isLoadingSubject;
     this.sel = '0';
     this.projectList=[];
     this.divisionList=[];
@@ -364,6 +367,7 @@ export class GroupListComponent implements
     }
   }*/
   exportExcel() {
+    this.groupTeamService.isLoadingSubject.next(true);
     this.groupTeamService.exportExcel('/exportToExcelGroupTeamReport', 'Report').subscribe(
       (responseObj) => {
         console.log('Group report success', responseObj);
@@ -372,9 +376,11 @@ export class GroupListComponent implements
         link.href = downloadURL;
         link.download = 'GroupList.xlsx';
         link.click();
+        this.groupTeamService.isLoadingSubject.next(false);
       },
       (error) => {
         console.log('report error', error);
+        this.groupTeamService.isLoadingSubject.next(false);
       }
     );
   }

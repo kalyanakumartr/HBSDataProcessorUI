@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import {
@@ -71,6 +72,7 @@ export class TeamTransferComponent implements
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
+    private snackBar: MatSnackBar,
     public teamTransferService: TeamTransferService,
     public projectService: ProjectService,
     public groupTeam: GroupTeamService,
@@ -387,7 +389,13 @@ export class TeamTransferComponent implements
         });
       })
     )
-    .subscribe();
+    .subscribe(res =>this.openSnackBar(res.messageCode?"Team Transfer Successful":res,"!!"));
+  }
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition:"top"
+    });
   }
   getTransferUserList() {
     var shortNameList=[];

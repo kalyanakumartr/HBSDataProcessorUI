@@ -4,6 +4,11 @@
       <h3 class="card-label">Group List</h3>
     </div>
     <div class="card-toolbar">
+      <ng-container *ngIf="isLoading$ | async">
+        <span class="spinner spinner-primary ml-5"></span>
+      </ng-container>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <div class="grid-item" style="cursor: pointer">
         &nbsp;&nbsp;
         <button type="button" class="btn btn-primary" (click)="exportExcel()">

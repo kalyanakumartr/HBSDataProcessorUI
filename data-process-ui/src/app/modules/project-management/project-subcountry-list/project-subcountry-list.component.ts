@@ -10,7 +10,7 @@ import { GroupingState,
    IFilterView, IGroupingView, ISearchView,
    ISortView, IUpdateStatusForSelectedAction,
     PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
-import { of, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 
 import { ProjectService } from '../../auth/_services/project.services';
@@ -56,6 +56,7 @@ export class ProjectSubcountryListComponent  implements
   showDivision:boolean;
   showDepartment:boolean;
   isClearFilter:boolean;
+  isLoading$: Observable<boolean>;
 
   userList: any;
   sel: string;
@@ -72,6 +73,7 @@ export class ProjectSubcountryListComponent  implements
       console.log('m -- -- --', m);
       this.filter();
     });
+    this.isLoading$ = this.subcountryService.isLoadingSubject;
     this.sel = '0';
     this.projectList=[];
     this.divisionList=[];
@@ -411,7 +413,10 @@ export class ProjectSubcountryListComponent  implements
     } else {
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
     }
-  }  exportExcel() {
+  }
+  
+  exportExcel() {
+	this.subcountryService.isLoadingSubject.next(true);
     this.subcountryService.exportExcel('/exportToExcelSubCountryReport', 'Report').subscribe(
       (responseObj) => {
         console.log('Process report success', responseObj);
@@ -420,9 +425,11 @@ export class ProjectSubcountryListComponent  implements
         link.href = downloadURL;
         link.download = 'SubCountry.xlsx';
         link.click();
+        this.subcountryService.isLoadingSubject.next(false);
       },
       (error) => {
         console.log('report error', error);
+        this.subcountryService.isLoadingSubject.next(false);
       }
     );
   }

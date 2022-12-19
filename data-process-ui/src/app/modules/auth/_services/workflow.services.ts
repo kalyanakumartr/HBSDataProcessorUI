@@ -65,6 +65,7 @@ export class WorkflowService extends TableService<Workflow> implements OnDestroy
   private _errorMsg: any;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
+    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
     this._tableState$ = this._taskTableState$;
   }
 

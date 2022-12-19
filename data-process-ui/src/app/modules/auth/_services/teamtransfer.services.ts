@@ -62,7 +62,7 @@ export class TeamTransferService extends TableService<TeamTransfer> implements O
   }
 
   public setDefaults() {
-    this.patchStateWithoutFetch({departmentId:'',divisionId:'',groupId:'',searchTerm:''  });
+    this.patchStateWithoutFetch({departmentId:'',divisionId:'',groupId:'',teamId:'',searchTerm:''  });
   }
   public patchStateWithoutFetch(patch: Partial<ITeamTransferTableState>) {
     const newState = Object.assign(this._taskTableState$.value, patch);

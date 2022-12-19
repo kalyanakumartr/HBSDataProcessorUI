@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -71,6 +71,10 @@ divisionName: string;
 showDivision: boolean;
 showDepartment: boolean;
 isClearFilter: boolean;
+
+
+isLoading$: Observable<boolean>;
+
 userService: any;
 sel: string;
 private subscriptions: Subscription[] = [];
@@ -85,6 +89,7 @@ this.roadTypeService.listen().subscribe((m: any) => {
   console.log('m -- -- --', m);
   this.filter();
 });
+this.isLoading$ = this.roadTypeService.isLoadingSubject;
 this.sel = '0';
 this.projectList = [];
 this.divisionList = [];
@@ -383,6 +388,9 @@ this.roadTypeService.patchState({ paginator }, '/searchRoadType');
 }
 
 exportExcel() {
+  
+  this.roadTypeService.isLoadingSubject.next(true);
+  
 
 this.roadTypeService
   .exportExcel('/exportToExcelBenchMarkReport', 'Report')
@@ -394,6 +402,7 @@ this.roadTypeService
       link.href = downloadURL;
       link.download = 'BenchMarkReport.xlsx';
       link.click();
+      this.roadTypeService.isLoadingSubject.next(false);
       (<HTMLInputElement>document.getElementById('exportExcel')).disabled =
         false;
       (<HTMLInputElement>document.getElementById('divSpinnerId')).hidden =
@@ -405,6 +414,7 @@ this.roadTypeService
         false;
       (<HTMLInputElement>document.getElementById('divSpinnerId')).hidden =
         true;
+        this.roadTypeService.isLoadingSubject.next(false);
     }
   );
 }

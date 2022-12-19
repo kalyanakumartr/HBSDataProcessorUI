@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Process } from '../../time-tracker/modal/process.model';
-import { of, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { GroupingState, ICreateAction, IDeleteAction, IDeleteSelectedAction, IEditAction, IFetchSelectedAction, IFilterView, IGroupingView, ISearchView, ISortView, IUpdateStatusForSelectedAction, PaginatorState, SortProcess, SortState } from 'src/app/_metronic/shared/crud-table';
 import { GroupTeamService } from '../../auth/_services/groupteam.services';
@@ -50,7 +50,7 @@ export class ProjectProcessListComponent implements
   showDivision:boolean;
   showDepartment:boolean;
   isClearFilter:boolean;
-
+  isLoading$: Observable<boolean>;
   userList: any;
   sel: string;
   private subscriptions: Subscription[] = [];
@@ -65,6 +65,7 @@ export class ProjectProcessListComponent implements
       console.log('m -- -- --', m);
       this.filter();
     });
+    this.isLoading$ = this.processSerive.isLoadingSubject;
     this.sel = '0';
     this.projectList=[];
     this.divisionList=[];
@@ -382,6 +383,7 @@ export class ProjectProcessListComponent implements
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
     }
   }  exportExcel() {
+    this.processSerive.isLoadingSubject.next(true);
     this.processSerive.
     exportExcel('/exportToExcelProcessTaskReport', 'Report')
    // exportExcel('/exportToExcelProcessTaskReport', 'Report')
@@ -393,9 +395,11 @@ export class ProjectProcessListComponent implements
         link.href = downloadURL;
         link.download = 'Process.xlsx';
         link.click();
+        this.processSerive.isLoadingSubject.next(false);
       },
       (error) => {
         console.log('report error', error);
+        this.processSerive.isLoadingSubject.next(false);
       }
     );
   }
