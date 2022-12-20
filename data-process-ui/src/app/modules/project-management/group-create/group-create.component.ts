@@ -39,7 +39,6 @@ export class GroupCreateComponent implements OnInit {
   isLoading$;
   formGroup: FormGroup;
   group:Team;
-  repotingGroup:string;
   userList:any[];
   groupList:any[];
   private subscriptions: Subscription[] = [];
@@ -91,7 +90,7 @@ export class GroupCreateComponent implements OnInit {
     }
 loadForm(){
   this.formGroup = this.fb.group({
-    reportingManager: [this.group.reportingName, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(50)])],
+    reportingManager: [this.group.groupId, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(50)])],
     groupName: [this.group.teamName, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)])],
     projectLeaderName: [this.group.reportingTo, Validators.compose([ ])],
     dStatus: [this.group.status?"Active":"Inactive", Validators.compose([])],
@@ -130,13 +129,7 @@ this.projectService.getGroupList("NODIVISION").pipe(
       )
       .subscribe();
   }
-  setReportingManager(value) {
-    var position = value.split(':');
-    if (position.length > 1) {
-      this.repotingGroup = position[1].toString().trim();
 
-    }
-  }
   save(){
     var groupObj : any={teamId:'',teamName:'',type:'',status:'',displayOrder:10};
     const formData = this.formGroup.value;
@@ -151,7 +144,7 @@ var path ='';
   }else{
     path ="/addGroupTeam";
   }
-    const sbCreate = this.groupTeamService.updateGroupTeam(groupObj,this.divisionId,formData.projectLeaderName, this.repotingGroup, path).pipe(
+    const sbCreate = this.groupTeamService.updateGroupTeam(groupObj,this.divisionId,formData.projectLeaderName, formData.reportingManager, path).pipe(
       tap(() => {
           this.modal.close();
           this.groupTeamService.filterData("");

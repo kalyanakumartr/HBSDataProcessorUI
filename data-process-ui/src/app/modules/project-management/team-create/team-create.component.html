@@ -58,9 +58,9 @@
           <div class="col-lg-3">
             <label class="form-label">ReportingManager</label>
             <select class="form-control form-control-lg"
-             name="reportingManager"
-              [class.is-invalid]="isControlInvalid('reportingManager')" formControlName="reportingManager" [(ngModel)]="repotingGroup"
-              (change)="setReportingManager($event.target.value)">
+             name="reportingGroup"
+              [class.is-invalid]="isControlInvalid('reportingGroup')" formControlName="reportingGroup"
+              >
               <option value="0" [selected]="true">ReportingManager</option>
               <option  *ngFor="let group of groupList"   [ngValue]="group.teamId">
                 {{group.reportingName}}

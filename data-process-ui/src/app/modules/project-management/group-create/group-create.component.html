@@ -59,11 +59,11 @@
             <label class="form-label">ReportingManager</label>
             <select class="form-control form-control-lg"
              name="reportingManager"
-              [class.is-invalid]="isControlInvalid('reportingManager')" formControlName="reportingManager" [(ngModel)]="repotingGroup"
-              (change)="setReportingManager($event.target.value)">
+              [class.is-invalid]="isControlInvalid('reportingManager')" formControlName="reportingManager"
+              >
               <option value="0" [selected]="true">ReportingManager</option>
               <option  *ngFor="let group of groupList"   [ngValue]="group.teamId">
-                {{group.reportingName}}
+                {{group.reportingName}} - {{group.teamName}}
 
             </option>
             </select>
