@@ -59,6 +59,7 @@ export class TeamTransferComponent implements
       departmentName: string;
       department: any;
       transferTo: string;
+      transferValue:string;
       hasEdit: boolean;
       hasCheckbox: boolean;
       isAssigned: boolean;
@@ -323,6 +324,11 @@ export class TeamTransferComponent implements
     var position = value.split(':');
     if (position.length > 1) {
       this.transferTo = position[1].toString().trim();
+      for(var obj of this.transferToList){
+        if(this.transferTo == obj.value){
+          this.transferValue =obj.actualValue;
+        }
+      }
 
     }
   }
@@ -372,10 +378,10 @@ export class TeamTransferComponent implements
     if ((<HTMLInputElement>document.getElementById('transferReportees')).checked) {
       transferReportees=true;
     }
-    var transfer = this.transferTo.split('/').join('_');
-    this.teamTransferService.transferUserList(this.selectedUserIds, transferReportees,this.type, transfer).pipe(
+    //var transfer = this.transferValue.split('/').join('_');
+    this.teamTransferService.transferUserList(this.selectedUserIds, transferReportees,this.type, this.transferValue).pipe(
       tap((res: any) => {
-
+        this.transferValue ="";
       }),
       catchError((err) => {
         console.log(err);
