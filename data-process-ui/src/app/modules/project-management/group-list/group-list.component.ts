@@ -180,24 +180,24 @@ export class GroupListComponent implements
   }
   create() {
     if(this.division !="0: 0"){
-      this.addGroup(undefined, this.division);
+      this.addGroup(undefined);
     }else{
       alert("Please Select Department & Divison");
     }
   }
 
-  editGroup(groupId: string, division: string): void {
-    this.addGroup(groupId, division);
+  editGroup(groupId: string): void {
+    this.addGroup(groupId);
 
   }
 
-  addGroup(groupId: string, division: string) {
-    if(groupId !="0: 0"){
+  addGroup(groupId: string) {
+    if(this.division != "0: 0"){
       const modalRef = this.modalService.open(GroupCreateComponent, {
         size: 'xl',
       });
       modalRef.componentInstance.groupId = groupId;
-      modalRef.componentInstance.divisionId = division;
+      modalRef.componentInstance.divisionId = this.division;
 
   }else{
     alert("Please Select Department & Division")
