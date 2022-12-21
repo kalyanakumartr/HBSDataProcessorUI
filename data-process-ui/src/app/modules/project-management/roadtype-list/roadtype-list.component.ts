@@ -203,14 +203,14 @@ const modalRef = this.modalService.open(ProjectAssignRoadtypeComponent, {
 });
 }
 addRoadType(poDetailId:string, projectId: string, projectName: string, divisionId: string,clientName:string, roadType: any) {
-if (divisionId != '0: 0') {
+if (this.division != '0: 0') {
   const modalRef = this.modalService.open(ProjectAssignRoadtypeComponent, {
     size: 'xl',
   });
   modalRef.componentInstance.poDetailId = poDetailId;
   modalRef.componentInstance.projectId = projectId;
   modalRef.componentInstance.projectName = projectName;
-  modalRef.componentInstance.divisionId = divisionId;
+  modalRef.componentInstance.divisionId = this.division;
   modalRef.componentInstance.clientName = clientName;
   modalRef.componentInstance.roadTypeObj = roadType;
 } else {
@@ -388,9 +388,9 @@ this.roadTypeService.patchState({ paginator }, '/searchRoadType');
 }
 
 exportExcel() {
-  
+
   this.roadTypeService.isLoadingSubject.next(true);
-  
+
 
 this.roadTypeService
   .exportExcel('/exportToExcelBenchMarkReport', 'Report')

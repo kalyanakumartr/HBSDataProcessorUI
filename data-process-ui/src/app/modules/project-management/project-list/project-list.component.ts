@@ -205,19 +205,19 @@ export class ProjectListComponent
     this.addProject(projectId,projectName,divisionId);
 
   }
-
   addProject(projectId: string, projectName:string,divisionId:string) {
-    if(divisionId !="0: 0"){
+    if(this.division !="0: 0"){
       const modalRef = this.modalService.open(ProjectCreateComponent, {
         size: 'xl',
       });
       modalRef.componentInstance.projectId = projectId;
       modalRef.componentInstance.projectName = projectName;
-      modalRef.componentInstance.divisionId = divisionId;
+      modalRef.componentInstance.divisionId = this.division;
   }else{
     alert("Please Select Department & Divison");
   }
   }
+
 
   delete(id: number) {
     // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
@@ -406,6 +406,7 @@ export class ProjectListComponent
   }
   exportExcel() {
     this.projectService.isLoadingSubject.next(true);
+    //this.btndisabled.next(true);
     this.projectService.exportExcel('/exportToExcelProjectReport', 'Report').subscribe(
       (responseObj) => {
         console.log('Project Report success', responseObj);
