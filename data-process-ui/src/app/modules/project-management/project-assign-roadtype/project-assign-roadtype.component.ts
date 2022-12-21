@@ -208,7 +208,7 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
   edit() {
     this.roadType.milesPercentSet[0].modifiedDate=undefined;
     if(this.roadType.milesPercentSet.length>1){
-      this.roadType.milesPercentSet[1]=undefined;
+      this.roadType.milesPercentSet.splice(1,this.roadType.milesPercentSet.length);
     }
 
     this.roadType.project.templateUploadDate=undefined
