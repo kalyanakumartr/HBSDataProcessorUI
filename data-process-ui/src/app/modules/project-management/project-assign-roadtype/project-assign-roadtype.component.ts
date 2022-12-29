@@ -193,6 +193,7 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
     milesPercent.qualityControl =formData.qualityControl;
     milesPercent.qualityAssurance =0;
     milesPercent.benchMark =formData.benchMark;
+    this.roadType.milesPercentSet.splice(0,this.roadType.milesPercentSet.length);
     this.roadType.milesPercentSet.push(milesPercent);
     this.roadType.project.projectId=this.projectId;
 
