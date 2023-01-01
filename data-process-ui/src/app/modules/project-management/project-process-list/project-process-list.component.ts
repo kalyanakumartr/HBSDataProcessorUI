@@ -8,8 +8,6 @@ import { GroupingState, ICreateAction, IDeleteAction, IDeleteSelectedAction, IEd
 import { GroupTeamService } from '../../auth/_services/groupteam.services';
 import { ProcessService } from '../../auth/_services/process.services';
 import { ProjectService } from '../../auth/_services/project.services';
-import { GroupCreateComponent } from '../group-create/group-create.component';
-import { ProjectCreateComponent } from '../project-create/project-create.component';
 import { ProjectProcessCreateComponent } from '../project-process-create/project-process-create.component';
 import { ProjectAssignProcessComponent } from '../project-assign-process/project-assign-process.component';
 
@@ -72,6 +70,9 @@ export class ProjectProcessListComponent implements
     this.isClearFilter=false;
     this.showDivision=true;
     this.showDepartment=true;
+  }
+  create(): void {
+    throw new Error('Method not implemented.');
   }
 
 
@@ -189,31 +190,13 @@ export class ProjectProcessListComponent implements
   edit(id: number): void {
     throw new Error('Method not implemented.');
   }
-  create() {
-    if(this.division){
-     this.addGroup(undefined, this.division);
-    }else{
-      alert("Please Select Department & Divison");
-    }
-  }
 
   /*editGroup(groupId: string, division: string): void {
     this.addGroup(groupId, division);
 
   }
 */
-  addGroup(groupId: string, division: string) {
-    if(groupId !="0: 0"){
-      const modalRef = this.modalService.open(GroupCreateComponent, {
-        size: 'xl',
-      });
-      modalRef.componentInstance.groupId = groupId;
-      modalRef.componentInstance.divisionId = division;
 
-  }else{
-    alert("Please Select Department & Division")
-  }
-  }
 
   delete(id: number) {
     // const modalRef = this.modalService.open(DeleteCustomerModalComponent);

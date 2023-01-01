@@ -3,8 +3,9 @@
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
       <b><label class="heading">
       <ng-container >
+        <ng-container  *ngIf="!isEdit">Create SubCountry </ng-container>
+        <ng-container  *ngIf="isEdit">Edit SubCountry </ng-container>
 
-        <ng-container >Create  SubCountry List</ng-container>
       </ng-container>
     </label></b>
     </div>
@@ -28,19 +29,14 @@
             <div class="col-lg-3">
               <label class="form-label">SubCountry Name</label>
               <input type="text" class="form-control form-control-lg form-control-solid" name="countryName"
-                placeholder="SubCountry Name" autocomplete="off" [class.is-invalid]="isControlInvalid('countryName')" maxlength=50
-                [class.is-valid]="isControlValid('countryName')" formControlName="countryName" />
-              <div class="invalid-feedback" *ngIf="controlHasError('required', 'countryName')">SubCountry Name is required</div>
-              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'countryName')">SubCountry Name should have at
-                least 3 symbols</div>
-              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'countryName')">SubCountry Name should have
-                maximum 50 characters</div>
+                placeholder="SubCountry Name" autocomplete="off" formControlName="countryName" />
+
             </div>
 
             <div class="col-lg-3">
               <label class="form-label">Priority</label>
               <select class="form-control form-control-lg form-control-solid" name="priority"
-                [class.is-invalid]="isControlInvalid('priority')" formControlName="priority">
+                 formControlName="priority">
                 <option value="High">High</option>
                 <option value="Medium">Medium</option>
                 <option value="Low">Low</option>
@@ -50,12 +46,12 @@
               <div class="col-lg-3">
                 <label>Display Status </label>
                 <select class="form-control form-control-lg form-control-solid" name="displayStatus"
-                  [class.is-invalid]="isControlInvalid('dStatus')" formControlName="dStatus">
+                   formControlName="dStatus">
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
 
                 </select>
-                <div class="feedback">Display <b>Status</b></div>
+
               </div>
 
 

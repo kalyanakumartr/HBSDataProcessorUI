@@ -3,7 +3,7 @@ export class SubCountry {
   countryName: string;
   displayOrder: number;
   priority: string;
-  status:string;
+  status:boolean;
   value:string;
   label:string;
 }

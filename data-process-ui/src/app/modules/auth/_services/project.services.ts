@@ -272,7 +272,20 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
       })
     );
   }
-  createSubCountry(subCountry, path, ){
+  updateSubCountry(subCountry, path ): Observable<any>{
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, subCountry,{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  createSubCountry(subCountry, path ): Observable<any>{
     const url = this.VIEW_API_URL + path;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,

@@ -17,6 +17,7 @@ import { ProjectService } from '../../auth/_services/project.services';
 import { AddSubcountryComponent } from '../add-subcountry/add-subcountry.component';
 import { SubcountryService } from '../../auth/_services/subcountry.services';
 import { ProjectAssignSubcountryComponent } from '../project-assign-subcountry/project-assign-subcountry.component';
+import { SubCountry } from '../../auth/_models/sub-country.model';
 
 
 @Component({
@@ -340,27 +341,21 @@ export class ProjectSubcountryListComponent  implements
       .subscribe();
   }
 
-  addProject(projectId: string, projectName:string,divisionId:string) {
-    if(divisionId !="0: 0"){
+  addProject(subCountry) {
+
       const modalRef = this.modalService.open(AddSubcountryComponent, { size: 'xl', });
-      //modalRef.componentInstance.projectId = projectId;
-      //modalRef.componentInstance.projectName = projectName;
-      //modalRef.componentInstance.divisionId = divisionId;
+      modalRef.componentInstance.subCountry = subCountry.subCountry;
+      modalRef.componentInstance.subCountryId= subCountry.subCountry.country;
 
-  }else{
-    alert("please Select division")
-  }}
+}
 
-  subCountry()
+  addSubCountry(subcountry)
   {
-    if(this.division){
-      this.addProject(undefined,undefined,this.division);
-    }else{
-      alert("Please Select Divison");
-    }
-   // const modalRef = this.modalService.open(AddSubcountryComponent, { size: 'xl' });
+      this.addProject(subcountry);
   }
-
+  editSubCountry(subcountry){
+    this.addProject(subcountry);
+  }
   projectAssignSubcountry()
   {
     if(this.project != "0: 0"){
@@ -414,7 +409,7 @@ export class ProjectSubcountryListComponent  implements
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
     }
   }
-  
+
   exportExcel() {
 	this.subcountryService.isLoadingSubject.next(true);
     this.subcountryService.exportExcel('/exportToExcelSubCountryReport', 'Report').subscribe(
