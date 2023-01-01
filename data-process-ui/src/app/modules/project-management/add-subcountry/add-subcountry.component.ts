@@ -78,7 +78,7 @@ export class AddSubcountryComponent implements OnInit {
 
   }
   loadProcessId() {
-    alert(this.subCountryId)
+
     if (!this.subCountryId) {
       this.subCountry = EMPTY_SUBCOUNTRY;
     }else{
