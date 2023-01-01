@@ -17,7 +17,7 @@
      <div class="grid-item" style="cursor: pointer;">
         &nbsp;&nbsp;
      </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <button type="button" class="btn btn-primary" (click)="taskCreate()">Create Process</button>
+      <button type="button" class="btn btn-primary" (click)="taskCreate('')">Create Process</button>
     </div>
   </div>
   <div class="card-body">
@@ -119,6 +119,7 @@
       <!-- </table> #table [dataSource]="dataSource"> -->
         <thead>
           <tr >
+            <th class="sticky-header">Edit</th>
             <th class="sticky-header">S No </th>
             <th class="sticky-header">Process Name </th>
             <th class="sticky-header">BillType </th>
@@ -132,6 +133,28 @@
 
 
         <tr *ngFor="let process of processSerive.items$ | async">
+
+            <td>
+              <a
+              title="Edit Project"
+              class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              (click)="
+                editProcess(
+                 process
+                )
+              "
+            >
+              <span
+                [inlineSVG]="
+                  './assets/media/svg/icons/Communication/Write.svg'
+                "
+                cacheSVG="true"
+                class="svg-icon svg-icon-md svg-icon-primary"
+              >
+              </span>
+            </a>
+</td>
+
           <td>
             {{process.sNo}}
           </td>
@@ -142,7 +165,7 @@
                 {{process.billType}}
               </td>
               <td>
-                {{process.status}}
+                {{process.status?'Active':'Inactive'}}
               </td>
 
             </tr>

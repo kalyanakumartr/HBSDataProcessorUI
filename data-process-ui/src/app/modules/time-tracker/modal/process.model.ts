@@ -1,4 +1,7 @@
-export class Process {
+import { BaseModel } from "src/app/_metronic/shared/crud-table";
+
+export class Process implements BaseModel {
+  id:string;
   processId: string;
   process: string;
   processName: string;

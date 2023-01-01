@@ -8,7 +8,7 @@
         <ng-container *ngIf="isLoading$ | async">
           <span class="spinner spinner-primary ml-5"></span>
         </ng-container>
-  
+
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <button type="button" class="btn btn-primary" (click)="exportExcel()">
           Export Excel
@@ -162,8 +162,9 @@
 
 
           <th nowrap>Team Name</th>
-          <th>Project Leader's Name</th>
-          <th>Project Manager Name</th>
+          <th nowrap>Team Id</th>
+          <th>Team Leader Name</th>
+          <th>Project Leader Name</th>
           <th>Reporting Group Name</th>
           <th nowrap>Display Status</th>
         </tr>
@@ -190,6 +191,9 @@
           </td>
               <td>
             {{ group.teamName }}
+          </td>
+          <td>
+            {{ group.teamId }}
           </td>
           <td>
             {{ group.reportingName}}

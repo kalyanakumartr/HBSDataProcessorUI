@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormsModule, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormsModule, FormBuilder, FormControl ,Validators} from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectSubcountryListComponent } from '../project-subcountry-list/project-subcountry-list.component';
 import { AuthService, UserModel } from '../../auth';
@@ -14,8 +14,10 @@ import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Process } from '../../time-tracker/modal/process.model';
+import { ProcessService } from '../../auth/_services/process.services';
 
 const EMPTY_SUBPROCESS: Process = {
+  id:'',
   processId: '',
   process: '',
   processName: '',
@@ -26,7 +28,10 @@ const EMPTY_SUBPROCESS: Process = {
   entryType: "Manual",
   minutes: 0,
   skillSet: "",
-  description: "This is a description"
+  description: "This is a description",
+// project:{
+  // division:''
+// }
 }
 @Component({
   selector: 'app-project-process-create',
@@ -34,14 +39,24 @@ const EMPTY_SUBPROCESS: Process = {
   styleUrls: ['./project-process-create.component.scss']
 })
 export class ProjectProcessCreateComponent implements OnInit {
-  @Input() id: string;
+  @Input() processId: string;
+  @Input() process: Process;
+  isEdit:boolean;
+
+
+
   isLoading$;
   formGroup: FormGroup;
-  process: Process;
+  // process: ;
+
 
   constructor(private projectService: ProjectService,
+    public processSerive:ProcessService,
     private snackBar: MatSnackBar,
-    public modal: NgbActiveModal) {
+    private fb:FormBuilder,
+        public modal: NgbActiveModal)
+    {
+      this.isEdit=false;
 
     this.formGroup = new FormGroup({
 
@@ -50,32 +65,94 @@ export class ProjectProcessCreateComponent implements OnInit {
       displayStatus: new FormControl(),
       displayOrder: new FormControl()
 
+      // division: new FormControl(),
+      // projectId: new FormControl(),
+
+
 
     });
   }
 
   ngOnInit(): void {
-    this.process = EMPTY_SUBPROCESS;
+    // this.process = EMPTY_SUBPROCESS;
+    this.loadProcessId();
   }
+  loadForm() {
+    this.formGroup = this.fb.group({
+      processName: [this.process?this.process.processName:'', Validators.compose([])],
+      billType: [this.process?this.process.billType:'', Validators.compose([])],
+      displayStatus: [this.process?(this.process.status==true?"Active":"Inactive"):'', Validators.compose([])],
+     });
+  }
+
   findInvalidControls() { }
-  save() {
+  save()
+  {
+    if (this.processId ) {
+      this.prepareProcess("Edit");
+      this.edit();
+    } else {
+      this.prepareProcess("Create");
+      this.create();
+    }
+  }
+
+  private prepareProcess(createEdit) {
     const formData = this.formGroup.value;
 
-    this.process.processName = formData.processName;
-    this.process.billType = formData.billType;
-    //this.process.displayOrder = formData.displayOrder;
-    this.process.status = formData.displayStatus=="Active"?true:false;
-    this.process.displayOrder = formData.displayOrder ? formData.displayOrder : 101;
+      this.process = new Process;
+      this.process.entryType="Manual";
+    if(createEdit == "Edit")    {
+      this.process.processId=this.processId
+    }
 
-    const sbCreate = this.projectService.createProcess(this.process, "/addProcess").pipe(
+  this.process.processName = formData.processName;
+     this.process.billType = formData.billType;
+     this.process.displayOrder = formData.displayOrder?formData.displayOrder:120;
+   this.process.status = formData.displayStatus=="Active"?true:false;
+  }
+
+
+  loadProcessId() {
+    if (!this.process) {
+      this.process = EMPTY_SUBPROCESS;
+
+    }else{
+    this.isEdit=true;
+    }
+    this.loadForm();
+
+  }
+
+  edit()
+  {
+
+
+    const sbUpdate = this.processSerive.update(this.process,"/updateProcess","formProcess").pipe(
       tap(() => {
         this.modal.close();
+        this.processSerive.filterData("");
+      }),
+      catchError((errorMessage) => {
+        this.modal.dismiss(errorMessage);
+        return of(this.process);
+      }),
+      ).subscribe(res =>this.openSnackBar(res.messageCode?"Update Edit Successful":res,"!!"));
+
+  }
+  create()
+  {
+
+    const sbCreate = this.processSerive.create(this.process, "/addProcess","formProcess").pipe(
+      tap(() => {
+        this.modal.close();
+        this.processSerive.filterData("");
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
         return of(errorMessage);
       }),
-    ).subscribe(res => this.openSnackBar(res.messageCode ? "Update Successful" : res, "!!"));
+    ).subscribe(res => this.openSnackBar(res.messageCode ? "Update Add Successful" : res, "!!"));
 
   }
   openSnackBar(message: string, action: string) {

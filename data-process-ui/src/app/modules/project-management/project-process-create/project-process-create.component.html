@@ -4,7 +4,8 @@
       <b><label class="heading">
       <ng-container >
 
-        <ng-container >Create Process </ng-container>
+        <ng-container  *ngIf="!isEdit">Create Process </ng-container>
+        <ng-container  *ngIf="isEdit">Edit Process </ng-container>
       </ng-container>
     </label></b>
     </div>
@@ -53,7 +54,7 @@
                   <option value="Inactive">Inactive</option>
 
                 </select>
-                <div class="feedback">Display <b>Status</b></div>
+
               </div>
 
 

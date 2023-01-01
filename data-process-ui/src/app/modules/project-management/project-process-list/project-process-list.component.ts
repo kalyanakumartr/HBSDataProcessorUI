@@ -107,6 +107,11 @@ export class ProjectProcessListComponent implements
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
 
+  editProcess(process)  {
+      this.taskCreate(process);
+    }
+
+
 
   // filtration
   filterForm() {
@@ -336,15 +341,15 @@ export class ProjectProcessListComponent implements
 
 
 
-  taskCreate()
+  taskCreate(process)
   {
-    if(this.project != "0: 0"){
+    // if(this.project != "0: 0"){
     const modalRef = this.modalService.open(ProjectProcessCreateComponent, { size: 'xl' });
-    modalRef.componentInstance.projectId = this.project;
-  }else{
-    alert("Please Select the Project");
+    modalRef.componentInstance.processId= process.processId;
+    modalRef.componentInstance.process= process;
+
   }
-  }
+
 
 
   projectAssignTask()
