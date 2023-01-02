@@ -1,5 +1,6 @@
 export class SubCountry {
   country: string;
+  countryId: string;
   countryName: string;
   displayOrder: number;
   priority: string;

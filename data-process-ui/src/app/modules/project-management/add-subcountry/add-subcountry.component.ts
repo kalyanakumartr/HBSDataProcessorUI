@@ -1,12 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup,FormsModule,FormBuilder,FormControl, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProjectSubcountryListComponent } from '../project-subcountry-list/project-subcountry-list.component';
-import { AuthService, UserModel } from '../../auth';
 import {
   NgbActiveModal,
-  NgbDatepickerConfig,
-  NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectService } from '../../auth/_services/project.services';
 import { SubCountry } from '../../auth/_models/sub-country.model';
@@ -16,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubcountryService } from '../../auth/_services/subcountry.services';
 const EMPTY_SUBCOUNTRY: SubCountry = {
   country: '',
+  countryId: '',
   countryName: '',
   displayOrder: 0,
   priority: '',
@@ -34,9 +30,6 @@ export class AddSubcountryComponent implements OnInit {
   isLoading$;
   isEdit:boolean;
   formGroup: FormGroup;
-
-
-
   constructor(
     private projectService: ProjectService,
     private subCountryService: SubcountryService,
@@ -83,6 +76,7 @@ export class AddSubcountryComponent implements OnInit {
       this.subCountry = EMPTY_SUBCOUNTRY;
     }else{
       this.isEdit=true;
+      this.subCountry.countryId=this.subCountryId;
     }
     this.loadForm();
 

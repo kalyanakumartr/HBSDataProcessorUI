@@ -65,9 +65,7 @@ export class ProjectSubcountryListComponent  implements
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
-  //  public groupTeamService: GroupTeamService,
     public projectService: ProjectService,
-    //public processSerive:ProcessService
     public subcountryService:SubcountryService
   ) {
     this.subcountryService.listen().subscribe((m: any) => {
