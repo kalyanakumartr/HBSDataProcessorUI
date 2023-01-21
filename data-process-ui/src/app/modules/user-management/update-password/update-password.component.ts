@@ -67,6 +67,7 @@ export class UpdatePasswordComponent implements OnInit {
 
     const sbUpdate = this.usersService.changePassword(this.id, this.password).pipe(
       tap(() => {
+        this.modal.close();
       }),
       catchError((errorMessage) => {
         this.openSnackBar(errorMessage,"X");

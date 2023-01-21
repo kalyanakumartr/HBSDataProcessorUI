@@ -75,6 +75,21 @@ export class RoadtypeService extends TableService<RoadType> implements OnDestroy
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
+  getRoadTypeList(projecId){
+
+    const url = this.VIEW_API_URL + "/getRoadTypeList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"projectId":projecId},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+
+  }
   getPOList(id){
     const auth = this.getAuthFromLocalStorage();
     if (!auth || !auth.access_token) {

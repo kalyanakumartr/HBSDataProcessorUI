@@ -15,5 +15,6 @@ export class RoadType implements BaseModel  {
   multiRoadNames: string;
   poDetail: PoDetail;
   displayOrder:number;
+  roadTypeList:any[];
 
 }

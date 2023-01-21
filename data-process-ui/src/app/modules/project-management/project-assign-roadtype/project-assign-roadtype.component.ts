@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EventManager } from '@angular/platform-browser';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   NgbActiveModal,
@@ -33,6 +34,10 @@ const EMPTY_ROADTYPE: RoadType = {
   milesPercentSet: [],
   multiRoadNames: '',
   displayOrder:0,
+  // roadTyp:[]
+  // roadTypeListArray:[]
+  roadTypeList:[],
+  // roadTyp:any,
   poDetail:{
     approvedLimit: 0,
     deliveredWork: 0,
@@ -77,6 +82,7 @@ const EMPTY_ROADTYPE: RoadType = {
       createdDate:'',
       modifiedDate:''
     }
+
   }
 
   }
@@ -97,10 +103,20 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
   @Input() divisionId: string;
   @Input() clientName: string;
   @Input() roadTypeObj: any;
+
+  confirmed: Array<RoadType>=[];
   isLoading$;
+   checked:false;
+  value="";
   roadType: RoadType;
   formGroup: FormGroup;
   actionBtn:string="save";
+  roadTypeList:any[];
+  roadList:any;
+
+  roadTyp:string;
+  // roadType:any;
+  roadName:string;
   private subscriptions: Subscription[] = [];
 
   constructor(private modalService: NgbModal,
@@ -117,8 +133,9 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
         division: new FormControl(),
         projectId: new FormControl(),
         clientName: new FormControl(),
-        multiRoadNames: new FormControl(),
-        roadId: new FormControl(),
+         multiRoadNames: new FormControl(),
+         roadId: new FormControl(),
+
         roadName: new FormControl(),
         benchMark: new FormControl(),
         multiType: new FormControl(),
@@ -126,22 +143,50 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
         dStatus: new FormControl(),
         production:new FormControl(),
         qualityControl:new FormControl(),
-        modifiedDate:new FormControl()
+        roadTypeList:new FormControl(),
+        roadTyp:new FormControl()
+        // modifiedDate:new FormControl()
       });
 
     }
   ngOnInit(): void {
+    this.getRoadList();
+
     if(this.roadTypeObj){
       this.roadType = this.roadTypeObj;
       this.projectName = this.roadType.project.projectName;
     }
+
     this.loadRoadTypeId();
+
+
   }
   ngAfterViewInit() {
 
 
   }
+  getRoadList()
+  {
+    this.roadTypeList=[];
+       this.roadtypeService.getRoadTypeList(this.projectId)
+         .pipe(
+          tap((res: any) => {
+            this.roadTypeList = res;
+            console.log('roadTypeList', this.roadTypeList);
+          }),
+          catchError((err) => {
+            console.log(err);
+            return of({
+              items: [],
+            });
+          })
+        )
+        .subscribe();
+      }
+
+
   save(){
+
     if(!this.roadType.project.divisionId){
       this.roadType.project.divisionId=this.divisionId;
     }
@@ -161,18 +206,23 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
   }
 
   loadForm() {
+    // var d;
+    // this.value=d.indexOf("Multi");
+  // d
+  this.value=this.roadType?this.roadType.roadName:'';
     this.formGroup = this.fb.group({
       projectName: [this.roadType?this.roadType.project.projectName:'', Validators.compose([])],
       roadName: [this.roadType?this.roadType.roadName:'', Validators.compose([])],
       roadId: [this.roadType?this.roadType.roadId:'', Validators.compose([])],
       multiType:[this.roadType?this.roadType.multiType:'', Validators.compose([])],
-      modifiedDate:[this.roadType?this.roadType.milesPercentSet[0].modifiedDate:'', Validators.compose([])],
+      // modifiedDate:[this.roadType?this.roadType.milesPercentSet[0].modifiedDate:'', Validators.compose([])],
       clientName: [this.roadType?this.roadType.project.clientName:'', Validators.compose([])],
       benchMark: [this.roadType?this.roadType.milesPercentSet[0].benchMark:'', Validators.compose([])],
       dStatus: [this.roadType?(this.roadType.milesPercentSet[0].status==true?"Active":"Inactive"):'', Validators.compose([])],
       units: [this.roadType?this.roadType.milesPercentSet[0].units:'', Validators.compose([])],
       production: [this.roadType?this.roadType.milesPercentSet[0].production:'', Validators.compose([])],
       qualityControl: [this.roadType?this.roadType.milesPercentSet[0].qualityControl:'', Validators.compose([])],
+      // confirmed:[this.roadType?this.roadType.roadTypeListArray:'',Validators.compose([])]
     });
   }
 
@@ -196,6 +246,15 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
     this.roadType.milesPercentSet.splice(0,this.roadType.milesPercentSet.length);
     this.roadType.milesPercentSet.push(milesPercent);
     this.roadType.project.projectId=this.projectId;
+    this.roadType.roadTypeList=[];
+
+    var strArray =this.roadTyp.toString().split(",");
+
+    for(var str in strArray){
+      alert(this.roadTypeList[str]);
+
+      this.roadType.roadTypeList.push(this.roadTypeList[str]);
+    }
 
   }
 
@@ -224,6 +283,29 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
       }),
       ).subscribe(res =>this.openSnackBar(res.messageCode?"Update Successful":res,"!!"));
     //this.subscriptions.push(sbUpdate);
+  }
+
+  public multi(event:any)
+  {
+    if(event.target.checked)
+    {
+      // alert(this.value.indexOf("abc"));
+     // alert(JSON.stringify(this.value.indexOf("Mutti")));
+      if(this.value.indexOf("Multi")==-1)
+      {
+
+       this.value="Multi_"+this.value;
+      }
+      // else
+      // {
+
+      // }
+    }
+    else
+    {
+      this.value=this.value.replace("Multi_","")
+
+    }
   }
   create() {
     console.log("Add Road Type");

@@ -43,7 +43,7 @@ IFilterView {
     }
   ngOnInit(): void {
     this.fromDate='01/01/2022';
-    this.toDate='31/12/2022';
+    this.toDate='31/12/2024';
     this.search('');
   }
   openSnackBar(message: string, action: string) {
