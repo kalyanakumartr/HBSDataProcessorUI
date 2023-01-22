@@ -18,9 +18,12 @@ export class AttendanceService  extends TableAttendanceService<AttendanceModel> 
     private _errorMsg = new BehaviorSubject<string>('');
     protected http: HttpClient;
     API_ADMIN_URL = `${environment.adminApiUrl}`;
+    TALE_API_URL = `${environment.taleApi}`;
+
 
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
+    this.API_URL = `${environment.taleApi}`;
   }
   ngOnDestroy() {
     this.subscriptions.forEach(sb => sb.unsubscribe());
@@ -32,7 +35,7 @@ export class AttendanceService  extends TableAttendanceService<AttendanceModel> 
     }
 
     console.log("Inside get Attendance");
-    const url = this.API_ADMIN_URL + '/getAttendance';
+    const url = this.TALE_API_URL + '/getAttendance';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -52,7 +55,7 @@ export class AttendanceService  extends TableAttendanceService<AttendanceModel> 
     }
 
     console.log("Inside mark attendance");
-    const url = this.API_ADMIN_URL + '/markAttendance';
+    const url = this.TALE_API_URL + '/markAttendance';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -66,7 +69,7 @@ export class AttendanceService  extends TableAttendanceService<AttendanceModel> 
     }
 
     console.log("Inside mark Attendance On Behalf");
-    const url = this.API_ADMIN_URL + '/markAttendanceOnBehalf';
+    const url = this.TALE_API_URL + '/markAttendanceOnBehalf';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -80,7 +83,7 @@ export class AttendanceService  extends TableAttendanceService<AttendanceModel> 
     }
 
     console.log("Inside mark attendance");
-    const url = this.API_ADMIN_URL + '/searchAttendance';
+    const url = this.TALE_API_URL + '/searchAttendance';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -100,7 +103,7 @@ export class AttendanceService  extends TableAttendanceService<AttendanceModel> 
     }
 
     console.log("Inside mark attendance");
-    const url = this.API_URL + '/markAttendance';
+    const url = this.TALE_API_URL + '/markAttendance';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -120,7 +123,7 @@ export class AttendanceService  extends TableAttendanceService<AttendanceModel> 
     }
 
     console.log("Inside getAttendanceComboList");
-    const url = this.API_URL + '/getAttendanceComboList';
+    const url = this.TALE_API_URL + '/getAttendanceComboList';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -140,7 +143,7 @@ export class AttendanceService  extends TableAttendanceService<AttendanceModel> 
     }
 
     console.log("Inside getDateRange");
-    const url = this.API_URL + '/getDateRange';
+    const url = this.TALE_API_URL + '/getDateRange';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });

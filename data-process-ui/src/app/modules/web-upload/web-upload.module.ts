@@ -18,11 +18,13 @@ import { GeneralModule } from 'src/app/_metronic/partials/content/general/genera
 import { WorkUnitEditComponent } from './work-unit-edit/work-unit-edit.component';
 import { ModalPopup } from './modal-popup/modal-popup.component';
 import { MatIconModule } from '@angular/material/icon';
+import { WorkUnitSearchComponent } from './work-unit-search/work-unit-search.component';
+
 
 
 @NgModule({
-  declarations: [WebUploadComponent,FileUploadComponent, UploadFilesComponent,MyWorkComponent, WorkUnitModalComponent, WorkUnitEditComponent,ModalPopup],
-  imports: [CommonModule, WebUploadRoutingModule,   CommonModule,   HttpClientModule, CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatButtonModule,MatSnackBarModule, MatIconModule,GeneralModule],
+  declarations: [WebUploadComponent,FileUploadComponent, UploadFilesComponent,MyWorkComponent, WorkUnitModalComponent, WorkUnitEditComponent,ModalPopup, WorkUnitSearchComponent],
+  imports: [CommonModule, WebUploadRoutingModule,    CommonModule,   HttpClientModule, CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatButtonModule,MatSnackBarModule, MatIconModule,GeneralModule],
 })
 
 export class WebUploadModule { }

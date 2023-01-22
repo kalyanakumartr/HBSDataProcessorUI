@@ -33,6 +33,10 @@ const routes: Routes = [
         path: 'email-settings',
         component: EmailSettingsComponent
       },
+      {
+        path: 'change-password',
+        component: ChangePasswordComponent
+      },
 
       {
         path: 'saved-credic-cards',

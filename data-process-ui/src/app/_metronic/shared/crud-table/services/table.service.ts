@@ -18,9 +18,28 @@ const DEFAULT_STATE: ITableState = {
   divisionId: '',
   departmentId: '',
   projectId: '',
+  groupId:'',
+  teamId:'',
+  type:'',
+  clientName:'',
   status:'',
   fromDate: '',
   toDate: '',
+  workUnitId:  '',
+  startWUMiles: '',
+  endWUMiles: '',
+  reasonId: '',
+  roadTypeMapId: '',
+  startAssignedDate: '',
+  startProcessedDate: '',
+  receivedDate: '',
+  endAssignedDate: '',
+  endProcessedDate: '',
+  endReceivedDate: '',
+  teamName: '',
+  subCountryId: '',
+  isAdvanceSearch:false,
+  isDirectReport:true,
   grouping: new GroupingState(),
   entityId: undefined
 };
@@ -87,33 +106,116 @@ export abstract class TableService<T> {
   protected http: HttpClient;
   // API URL has to be overrided
   API_URL = `${environment.adminApiUrl}`;
+  REPORT_API_URL = `${environment.reportsApi}`;
+  VIEW_API_URL = `${environment.viewApiUrl}`;
   constructor(http: HttpClient) {
+    // if(this instanceof LeaveModel || this instanceof AttendanceModel || this instanceof TimeSheetModel){
+    //  this.API_URL = `${environment.taleApi}`;
+    // }
     this.http = http;
   }
 
   // CREATE
   // server should return the object with ID
   create(item: BaseModel,path: string, formUser:string): Observable<any> {
+
     this._isLoading$.next(true);
     this._errorMessage.next('');
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post<BaseModel>(this.API_URL+path, {formUser: item},{headers: httpHeaders}).pipe(
-      catchError(err => {
-        this._errorMessage.next(err);
-        console.error('CREATE ITEM', err);
-        return of({ id: undefined });
-      }),
-      finalize(() => this._isLoading$.next(false))
-    );
+    if(path.endsWith("Project")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formProject: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('CREATE ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }else if(path.endsWith("RoadType")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formRoadType: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('CREATE ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }else if(path.endsWith("GroupTeam")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formGroup: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('CREATE ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }else if(path.endsWith("Process")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formProcess: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('CREATE ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }
+    else if(path.endsWith("Country")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formGroup: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('CREATE ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }
+    else if(path.endsWith("AllocationGroup")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, item,{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('CREATE ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }else{
+      return this.http.post<BaseModel>(this.API_URL+path, {formUser: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('CREATE ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }
+
   }
 
   // READ (Returning filtered list of entities)
   find(tableState: ITableState ,path: string): Observable<TableResponseModel<T>> {
     console.log("Inside find >>>");
-
-    const url = this.API_URL + path;//'/searchUser';
+    var url ='';
+    if(path.endsWith("Report")){
+      url = this.REPORT_API_URL + path;//'/searchUser';
+    }else if(path.endsWith("Project")){
+      url = this.VIEW_API_URL + path;//'/searchProject';
+    }else if(path.endsWith("RoadType")){
+      url = this.VIEW_API_URL + path;//'/searchRoadType';
+    }else if(path.endsWith("GroupTeam")){
+      url = this.VIEW_API_URL + path;//'/searchGroupTeam';
+    }else if(path.endsWith("Transfer")){
+      url = this.VIEW_API_URL + path;//'/searchTransfer';
+    }else if(path.endsWith("Process")){
+      url = this.VIEW_API_URL + path;//'/searchProcess';
+    }else if(path.endsWith("Country")){
+      url = this.VIEW_API_URL + path;//'/searchProcess';
+    }else if(path.endsWith("AllocationGroup")){
+      url = this.VIEW_API_URL + path;//'/searchAllocationGroup';
+    }     else{
+       url = this.API_URL + path;//'/searchUser';
+    }
     this._errorMessage.next('');
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
@@ -127,10 +229,14 @@ export abstract class TableService<T> {
     );
   }
 
-  getItemById(id: string): Observable<BaseModel> {
+
+  getItemById(id: string, c?: string): Observable<BaseModel> {
     this._isLoading$.next(true);
-    this._errorMessage.next('');
-    const url = `${this.API_URL}/${id}`;
+
+    var url = `${this.API_URL}/${id}`;
+    if (typeof c !== 'undefined') {
+      url = `${this.VIEW_API_URL}/getProject/${id}`;
+    }
     return this.http.get<BaseModel>(url).pipe(
       catchError(err => {
         this._errorMessage.next(err);
@@ -143,20 +249,83 @@ export abstract class TableService<T> {
 
   // UPDATE
   update(item: BaseModel,path: string, formUser:string): Observable<any> {
-    const url = `${this.API_URL}/${item.id}`;
+    var url = `${this.API_URL}`;
+    if(path.endsWith("Project")){
+      url = `${this.VIEW_API_URL}`;
+    }
     this._isLoading$.next(true);
     this._errorMessage.next('');
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post<BaseModel>(this.API_URL+path, {formUser: item},{headers: httpHeaders}).pipe(
-      catchError(err => {
-        this._errorMessage.next(err);
-        console.error('Update ITEM', err);
-        return of({ id: undefined });
-      }),
-      finalize(() => this._isLoading$.next(false))
-    );
+    if(path.endsWith("Project")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formProject: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('Update ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }else  if(path.endsWith("Process")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formProcess: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('Update ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );}
+    else  if(path.endsWith("RoadType")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formRoadType: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('Update ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }else  if(path.endsWith("Country")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formRoadType: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('Update ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }
+
+
+    else  if(path.endsWith("GroupTeam")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path, {formGroup: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('Update ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }else  if(path.endsWith("AllocationGroup")){
+      return this.http.post<BaseModel>(this.VIEW_API_URL+path,  item,{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('Update ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }else{
+      return this.http.post<BaseModel>(this.API_URL+path, {formUser: item},{headers: httpHeaders}).pipe(
+        catchError(err => {
+          this._errorMessage.next(err);
+          console.error('Update ITEM', err);
+          return of({ id: undefined });
+        }),
+        finalize(() => this._isLoading$.next(false))
+      );
+    }
+
   }
 
   // UPDATE Status
@@ -248,6 +417,34 @@ export abstract class TableService<T> {
       .subscribe();
     this._subscriptions.push(request);
   }
+  public exportExcel(path:string,serverType:string) {
+    console.log("Inside exportExcel Path is >>>>" , path);
+    if(path==""){
+      path="/exportToExcelOperRecord"
+    }
+   // this._isLoading$.next(true);
+   this._tableState$.value.paginator.pageSize=100;
+    this._errorMessage.next('');
+    var url ='';
+    if(serverType == 'Admin'){
+      url = this.API_URL + path;//'/searchUser';
+    }else if(serverType == 'Report'){
+      url = this.REPORT_API_URL + path;//'/searchUser';
+    }else if(serverType == 'Project'){
+      url = this.VIEW_API_URL + path;//'/searchUser';
+    }
+    else if(serverType == 'Country'){
+      url = this.VIEW_API_URL + path;//'/searchUser';
+    }
+
+    this._errorMessage.next('');
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+
+    });
+    return this.http.post(url, this._tableState$.value,{headers: httpHeaders,responseType: 'blob'});
+
+  }
 
   public setDefaults() {
     this.patchStateWithoutFetch({ filter: {} });
@@ -257,6 +454,19 @@ export abstract class TableService<T> {
     this.patchStateWithoutFetch({ divisionId: '' });
     this.patchStateWithoutFetch({ departmentId: '' });
     this.patchStateWithoutFetch({ projectId: '' });
+    this.patchStateWithoutFetch({ workUnitId: '' });
+    this.patchStateWithoutFetch({ startWUMiles: '' });
+    this.patchStateWithoutFetch({ endWUMiles: '' });
+    this.patchStateWithoutFetch({ reasonId: '' });
+    this.patchStateWithoutFetch({ roadTypeMapId: '' });
+    this.patchStateWithoutFetch({ startAssignedDate: '' });
+    this.patchStateWithoutFetch({ startProcessedDate: '' });
+    this.patchStateWithoutFetch({ receivedDate: '' });
+    this.patchStateWithoutFetch({ endAssignedDate: '' });
+    this.patchStateWithoutFetch({ endProcessedDate: '' });
+    this.patchStateWithoutFetch({ endReceivedDate: '' });
+    this.patchStateWithoutFetch({ teamName: '' });
+    this.patchStateWithoutFetch({ subCountryId: '' });
     this.patchStateWithoutFetch({
       paginator: new PaginatorState()
     });

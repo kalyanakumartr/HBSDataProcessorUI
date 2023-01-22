@@ -131,7 +131,7 @@
             <td>{{dailyLog.remarks }}</td>
             <td>
               <ng-container *ngIf="dailyLog.entryType == 'Manual'">
-                <button type="button" id="log" mat-mini-fab color="warn" (click)= "deleteDailyLog(dailyLog.autoId)">
+                <button type="button" id="log" mat-mini-fab color="warn" (click)= "deleteDailyLog(dailyLog.autoId, dailyActivities.timesheetId)">
                   <mat-icon >delete</mat-icon>
                 </button>
               </ng-container>

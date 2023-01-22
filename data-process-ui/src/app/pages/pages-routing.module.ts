@@ -26,6 +26,27 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'project-management',
+        loadChildren: () =>
+          import('../modules/project-management/project-management.module').then(
+            (m) => m.ProjectManagementModule
+          ),
+      },
+      {
+        path: 'profile-overview',
+        loadChildren: () =>
+          import('../modules/user-profile/user-profile.module').then(
+            (m) => m.UserProfileModule
+          ),
+      },
+      {
+        path: 'report',
+        loadChildren: () =>
+          import('../modules/reports/reports.module').then(
+            (m) => m.ReportsModule
+          ),
+      },
+      {
         path: 'leave-management',
         loadChildren: () =>
           import('../modules/leave-management-system/leave-management-system.module').then(

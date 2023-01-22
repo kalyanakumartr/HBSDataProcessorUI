@@ -12,12 +12,31 @@ const DEFAULT_STATE: ITaskTableState = {
   divisionId: '',
   departmentId: '',
   projectId: '',
+  groupId:'',
+  teamId:'',
+  type:'',
+  clientName:'',
   grouping: new GroupingState(),
   entityId: undefined,
   employeeId: '',
   fromDate: '',
   toDate: '',
   status: '',
+  workUnitId:  '',
+  startWUMiles: '',
+  endWUMiles: '',
+  reasonId: '',
+  roadTypeMapId: '',
+  startAssignedDate: '',
+  startProcessedDate: '',
+  receivedDate: '',
+  endAssignedDate: '',
+  endProcessedDate: '',
+  endReceivedDate: '',
+  teamName: '',
+  subCountryId: '',
+  isAdvanceSearch:false,
+  isDirectReport:true,
   queueList:[],
   taskStatusList:[]
 
@@ -54,7 +73,18 @@ export class TableTaskService<WorkUnitModel> extends TableService<WorkUnitModel>
 
     this.patchStateWithoutFetch({ employeeId: empId });
     this.patchStateWithoutFetch({ queueList: [queue]});
-    this.patchStateWithoutFetch({ taskStatusList: [status] });
+    const statusList: string[] = status.split(',');
+      if(statusList.length>0){
+
+        this.patchStateWithoutFetch({
+          taskStatusList: statusList,
+      });
+      }
+      else{
+        this.patchStateWithoutFetch({
+          taskStatusList: [status],
+      });
+      }
 
   }
 }

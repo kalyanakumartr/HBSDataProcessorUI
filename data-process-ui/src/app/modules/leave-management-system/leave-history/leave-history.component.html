@@ -31,6 +31,8 @@
                 <th style="text-align: center;">Sl No.</th>
                 <th style="text-align: center;">From Date</th>
                 <th style="text-align: center;">To Date</th>
+                <th style="text-align: center;">Days Applied</th>
+                <th style="text-align: center;">Detected Leaves</th>
                 <th style="text-align: center;">Leave Type</th>
                 <th style="text-align: center;">Created On</th>
                 <th style="text-align: center;">Approved On</th>
@@ -45,6 +47,8 @@
                 <td noWrap style="text-align: center;">{{ leave.slNo}} </td>
                 <td noWrap style="text-align: center;">{{ leave.fromDate}} </td>
                 <td noWrap style="text-align: center;">{{ leave.toDate}} </td>
+                <td noWrap style="text-align: center;">{{ leave.noOfDays}} </td>
+                <td noWrap style="text-align: center;">{{ leave.detectedLeave}} </td>
                 <td noWrap style="text-align: center;">{{ leave.symbol=='P4'?"Half Day":leave.symbol}} </td>
                 <td noWrap style="text-align: center;">{{ leave.createdDate}} </td>
                 <td noWrap style="text-align: center;">{{ leave.modifiedDate}} </td>

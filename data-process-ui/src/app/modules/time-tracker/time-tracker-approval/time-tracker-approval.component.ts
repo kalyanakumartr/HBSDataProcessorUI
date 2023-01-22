@@ -5,6 +5,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ChangeAttendanceComponent } from '../../attendance/change-attendance/change-attendance.component';
+import { ChangeOvertimeComponent } from '../../attendance/change-overtime/change-overtime.component';
 import { AttendanceModel } from '../../attendance/modal/attendance.model';
 import { DailyLogService } from '../../auth/_services/dailylog.services';
 import { ProjectService } from '../../auth/_services/project.services';
@@ -120,20 +121,7 @@ export class TimeTrackerApprovalComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
-  deleteDailyLog(id){
-    this.dailyLogService.deleteDailyLog(id).pipe(
-      tap((res: any) => {
-        this.dailyActivities = res;
-        this.getDailyLog();
-        console.log("DailyActivities", this.dailyActivities)
-      }),
-      catchError((err) => {
-        console.log(err);
-        return of({
-          items: []
-        });
-      })).subscribe();
-  }
+
   // helpers for View
   isControlValid(controlName: string): boolean {
     const control = this.formGroup.controls[controlName];
@@ -155,7 +143,7 @@ export class TimeTrackerApprovalComponent implements OnInit {
     return control.dirty || control.touched;
   }
   changeDate(date){
-    return date.replace("-Jan-","/01/").replace("-Feb-","/02/").replace("-Mar-","/03/").replace("-Apr-","/04/").replace("-May-","/06/").replace("-Jun-","/06/").replace("-Jul-","/07/").replace("-Aug-","/08/").replace("-Sep-","/09/").replace("-Oct-","/10/").replace("-Nov-","/11/").replace("-Dec-","/12/");
+    return date.replace("-Jan-","/01/").replace("-Feb-","/02/").replace("-Mar-","/03/").replace("-Apr-","/04/").replace("-May-","/05/").replace("-Jun-","/06/").replace("-Jul-","/07/").replace("-Aug-","/08/").replace("-Sep-","/09/").replace("-Oct-","/10/").replace("-Nov-","/11/").replace("-Dec-","/12/");
   }
   rejected(){
     if(this.dailyActivities.totalBillable && this.dailyActivities.shortageHours && parseFloat(this.dailyActivities.total.replace(":","."))>0 && parseFloat(this.dailyActivities.shortageHours.replace(":","."))==0){
@@ -165,7 +153,7 @@ export class TimeTrackerApprovalComponent implements OnInit {
     }
   }
   approve(){
-  if(this.dailyActivities.totalBillable && this.dailyActivities.shortageHours && parseFloat(this.dailyActivities.total.replace(":","."))>0 && parseFloat(this.dailyActivities.shortageHours.replace(":","."))==0){
+    if(this.dailyActivities.totalBillable && this.dailyActivities.shortageHours && parseFloat(this.dailyActivities.total.replace(":","."))>0 && parseFloat(this.dailyActivities.shortageHours.replace(":","."))==0){
     this.timesheetApprovalReject("Approved");
   }else{
     alert("Hours not Correct");
@@ -205,6 +193,16 @@ export class TimeTrackerApprovalComponent implements OnInit {
       }
       this.getDailyLog();
       })
+  }
+  change1(){
+    const modalRef = this.modalService.open(ChangeOvertimeComponent, { size: 'sm', animation :true });
+    modalRef.componentInstance.timesheetId=this.dailyActivities.timesheetId;
+    modalRef.componentInstance.approvedOTHours=this.timeSheet.approvedOTHours;
+
+    modalRef.componentInstance.passEntry.subscribe((receivedEntry) => {
+      console.log("receivedEntry",receivedEntry);
+        this.timeSheet.approvedOTHours=receivedEntry;
+    })
   }
   changeAttendanceMethod(value){
     alert (value);

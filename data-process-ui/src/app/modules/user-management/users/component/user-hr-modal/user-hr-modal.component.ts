@@ -157,6 +157,11 @@ const EMPTY_CUSTOMER: UserModel = {
       employeeId:'',
       divisionId:'',
       divisionName:'',
+      status:true,
+      type:'Team',
+      reportingName:'',
+      fullName:'',
+      reportingTo:''
     },
     group:{
       teamId: 'GRP9999',
@@ -166,6 +171,11 @@ const EMPTY_CUSTOMER: UserModel = {
       employeeId:'',
       divisionId:'',
       divisionName:'',
+      status:true,
+      type:'Group',
+      reportingName:'',
+      fullName:'',
+      reportingTo:''
     },
     deploy:{
       deploymentId: 'DLP0001',
@@ -180,8 +190,40 @@ const EMPTY_CUSTOMER: UserModel = {
       divisionName: ''
     },
     project:{
-      projectId: 'CSAV1CM',
-      projectName: ''
+      id:'',
+      projectId: '',
+      projectName: '',
+      divisionId: '',
+      clientName: '',
+      projectManagerId:'',
+      templateUploadDate:'',
+      projectDetail:{
+        actualCompletedDate:'',
+        billingCycle:'',
+        bpsPlannedCompletionDate:'',
+        bpsStartDate:'',
+        clientExpectedCompletionDate:'',
+        clientName:'',
+        deliverables:'',
+        displayInOtherUIProjectList:'',
+        estimatedTotalHours:'',
+        inputReceivingMode:'',
+        inputType:'',
+        modeOfDelivery:'',
+        noOfDaysRequiredToComplete:'',
+        plannedNoOfResources:'',
+        poDated:'',
+        poNumber:'',
+        projectStatus:'',
+        projectType:'',
+        receivedWorkVolume:'',
+        totalProjectedWorkVolume:'',
+        unitsOfMeasurement:'',
+        projectManagerName:'',
+        createdDate:'',
+        modifiedDate:''
+      }
+
     },
     trainingBatch:'',
     reportingTo:'',

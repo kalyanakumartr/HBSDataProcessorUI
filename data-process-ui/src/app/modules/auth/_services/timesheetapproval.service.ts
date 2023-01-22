@@ -17,9 +17,12 @@ export class TimeSheetApprovalService  extends TableApprovalService<Approval> im
     private _errorMsg = new BehaviorSubject<string>('');
     protected http: HttpClient;
     API_ADMIN_URL = `${environment.adminApiUrl}`;
+    TALE_API_URL = `${environment.taleApi}`;
 
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
+    this.API_URL = `${environment.taleApi}`;
+
   }
   ngOnDestroy() {
     this.subscriptions.forEach(sb => sb.unsubscribe());
@@ -32,7 +35,7 @@ export class TimeSheetApprovalService  extends TableApprovalService<Approval> im
     }
 
     console.log("Inside Search approval TimeSheet");
-    const url = this.API_ADMIN_URL + '/searchApprovalTimesheet';
+    const url = this.TALE_API_URL + '/searchApprovalTimesheet';
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -44,6 +47,24 @@ export class TimeSheetApprovalService  extends TableApprovalService<Approval> im
         return of("Error in Search TimeSheet");
       })
     );
+  }
+  getUserList(divisionId){
+    const url = this.API_ADMIN_URL + '/getUserList';
+    const auth = this.getAuthFromLocalStorage();
+    if (!auth || !auth.access_token) {
+      return of(undefined);
+    }
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${auth.access_token}`,
+    });
+    //this.isLoadingSubject.next(true);
+    console.log("Inside get Hold Reason");
+    return this.http.post(url, {
+      "divisionId":divisionId,
+      "searchParam":"",
+    },{
+      headers: httpHeaders,
+    });
   }
   private _listners = new Subject<any>();
   listen(): Observable<any>{

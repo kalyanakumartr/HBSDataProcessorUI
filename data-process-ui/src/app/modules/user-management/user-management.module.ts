@@ -31,9 +31,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { ITItemListComponent } from './it-item-list/it-item-list.component';
 import { ITItemModalComponent } from './users/component/it-item-modal/it-item-modal.component';
+import { UpdatePasswordComponent } from './update-password/update-password.component';
 
 @NgModule({
-  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent,HrUserObjListComponent, ITUserObjListComponent, ITItemListComponent, SkillSetMatrixObjListComponent,EditUserModalComponent, UserITModalComponent, UserHRModalComponent,OperationalUserModalComponent, ChangePasswordComponent,ITItemModalComponent],
+  declarations: [UsersComponent, RolesComponent, UserManagementComponent, UserListComponent,HrUserObjListComponent, ITUserObjListComponent, ITItemListComponent, SkillSetMatrixObjListComponent,EditUserModalComponent, UserITModalComponent, UserHRModalComponent,OperationalUserModalComponent, ChangePasswordComponent,ITItemModalComponent, UpdatePasswordComponent],
   imports: [CommonModule, UserManagementRoutingModule,   CommonModule,   HttpClientModule,
      CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatPaginatorModule, MatTableModule,MatSortModule, MatDividerModule, MatExpansionModule,MatDatepickerModule,MatNativeDateModule, MatFormFieldModule,MatInputModule],
   providers: [MatDatepickerModule, MatNativeDateModule],

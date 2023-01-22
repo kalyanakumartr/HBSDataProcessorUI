@@ -1,0 +1,190 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Workflow List</h3>
+    </div>
+    <div class="card-toolbar">
+      <div class="grid-item" style="cursor: pointer">
+        <ng-container *ngIf="isLoading$ | async">
+          <span class="spinner spinner-primary ml-5"></span>
+        </ng-container>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-primary" (click)="exportExcel()">
+          Export Excel
+        </button>
+      </div>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary" (click)="create()">
+        Create WokFlow
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
+    <!-- begin: Filtration form -->
+
+    <div class="form form-label-right">
+      <div class="form-group row" [formGroup]="searchGroup">
+        <div class="col-lg-2">
+          <label>Department</label>
+          <select
+            class="form-control form-control-lg"
+            name="department"
+            [(ngModel)]="department"
+            formControlName="department"
+            (change)="setDepartment($event.target.value)"
+          >
+            <option [ngValue]="0" [selected]="true">Select Department</option>
+            <option
+              *ngFor="let department of departmentList"
+              [ngValue]="department.departmentId"
+            >
+              {{ department.departmentName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-lg-2">
+          <label>Division</label>
+          <select
+            class="form-control form-control-lg"
+            name="division"
+            [(ngModel)]="division"
+            formControlName="division"
+            (change)="setDivision($event.target.value)"
+          >
+            <option [ngValue]="0" [selected]="true">Select Division</option>
+            <option
+              *ngFor="let division of divisionList"
+              [ngValue]="division.divisionId"
+            >
+              {{ division.divisionName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-lg-2">
+          <label>Group Name</label>
+          <select
+            class="form-control form-control-lg"
+            name="project"
+            [(ngModel)]="group"
+            formControlName="group"
+            (change)="setGroup($event.target.value)"
+          >
+            <option [ngValue]="0" [selected]="true">Select Group</option>
+            <option
+            *ngFor="let group of groupList"
+            [ngValue]="group.teamId"
+            >
+              {{group.teamName}}
+            </option>
+          </select>
+        </div>
+
+
+        <div class="col-lg-2 nowrap">
+          <div class="row">
+            <div class="column"><label>Search </label>
+              <input
+                type="search"
+                class="form-control"
+                name="searchText"
+                id="searchText"
+                placeholder="Search"
+                value=""
+                formControlName="searchTerm"
+              />
+          </div>
+
+        </div>
+      </div>
+          <div class="col-lg-2 nowrap">
+            <div class="row">
+            <div class="column" style="cursor: pointer;"><br> &nbsp;
+              <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+            </div>
+    </div>
+
+      </div>
+
+      </div>
+    </div>
+    <!-- end: Filtration form -->
+
+    <!-- begin:Table -->
+    <div class="table-responsive angular-bootstrap-table">
+      <table
+        id="tablebox"
+        class="table table-head-custom table-vertical-center"
+      >
+        <thead>
+          <tr>
+            <th class="sticky-header">Edit</th>
+            <th nowrap>SlNo</th>
+            <th nowrap>Group Name</th>
+            <th class="sticky-header" nowrap>Production Team</th>
+
+
+            <th nowrap>QC Team</th>
+            <th>QA Team</th>
+            <th>Delivery</th>
+
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let workflow of workflowService.items$ | async">
+            <td>
+              <a
+                title="Edit Workflow "
+                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                (click)="
+                  editworkflow(
+                    workflow.allotmentId
+                    )"
+              >
+
+                <span
+                  [inlineSVG]="
+                    './assets/media/svg/icons/Communication/Write.svg'
+                  "
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                >
+                </span>
+              </a>
+            </td>
+            <td>
+              {{workflow.slNo}}
+
+            </td>
+            <td>
+              {{workflow.groupName}}
+
+            </td>
+
+            <td>
+              {{workflow.production}}
+
+            </td>
+            <td>{{ workflow.qualityControl}}</td>
+
+            <td>
+              {{workflow.qualityAssurance}}
+            </td>
+      <td>{{workflow.readyForDelivery}}</td>
+
+
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end: Table -->
+    <app-paginator
+      class="d-flex justify-content-between align-items-center flex-wrap"
+      [paginator]="paginator"
+      [isLoading]="isLoading"
+      (paginate)="paginate($event)"
+    ></app-paginator>
+  </div>
+</div>

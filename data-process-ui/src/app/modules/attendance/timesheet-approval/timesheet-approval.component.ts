@@ -48,6 +48,9 @@ IFilterView {
   employeeSymbolList:LabelValueModel[];
   private subscriptions: Subscription[] = [];
   isClearFilter:boolean;
+  isDirectReport:boolean;
+  selectedUser:string;
+  userList:any;
   constructor(
     private fb: FormBuilder,
     public modalService: NgbModal,
@@ -69,12 +72,31 @@ IFilterView {
     this.getData();
     this.getDateRange();
     this.isClearFilter=false;
-
+    this.isDirectReport=true;
     const sb = this.timeSheetService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
     //this.monthWeeklyList=[{"value":"31/01/2022 - 06/02/2022","label":"31st Jan to 06th Feb 2022"},{"value":"07/02/2022 - 13/02/2022","label":"07th Feb to 13th Feb 2022"},{"value":"14/02/2022 - 20/02/2022","label":"14th Feb to 20th Feb 2022"},{"value":"21/02/2022 - 27/02/2022","label":"21st Feb to 27th Feb 2022"},{"value":"28/02/2022 - 01/03/2022","label":"28th Feb to 06th Mar 2022"}]
     //this.timeSheetService.getApprovalTimeSheet();
     //this.search("");
+    this.getUserList();
+  }
+  getUserList(){
+    this.userList=[];
+    this.timeSheetService.getUserList("").pipe(
+      tap((res: any) => {
+        this.userList = res;
+        if(this.userList.length>0){
+          this.filterGroup.patchValue({
+            selectedUser : "0"
+          });
+        }
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
   }
   refresh(){
     if(this.fromDate){
@@ -84,6 +106,15 @@ IFilterView {
     }else{
       alert("Select Valid Month")
     }
+  }
+  setDirectReporting(){
+    if(this.isDirectReport){
+      this.isDirectReport=false;
+    }else{
+      this.isDirectReport=true;
+    }
+    this.timeSheetService.patchStateWithoutFetch({isDirectReport:this.isDirectReport});
+    this.timeSheetService.patchState({  },"/searchApprovalTimesheet");
   }
   private getData() {
     this.attendanceService.getAttendanceComboList().pipe(
@@ -138,6 +169,7 @@ IFilterView {
     filterForm() {
       this.filterGroup = this.fb.group({
         searchTerm: [''],
+        selectedUser:[''],
       });
       this.subscriptions.push(
         this.filterGroup.controls.status.valueChanges.subscribe(() =>
@@ -218,6 +250,16 @@ IFilterView {
       }else{
         alert("Select Valid Month")
       }
+    }
+    setEmployeeId(value){
+
+        var searchTerm='';
+        if(value == "My Team"){
+          value="";
+        }
+        this.timeSheetService.patchStateWithoutFetch({employeeId:value});
+        this.timeSheetService.patchState({ searchTerm },"/searchApprovalTimesheet");
+
     }
     searchDates(){
       alert(this.fromDate);

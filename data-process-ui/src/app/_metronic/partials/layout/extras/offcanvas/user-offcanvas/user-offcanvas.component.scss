@@ -1,3 +1,12 @@
 .nowrap{
   white-space: nowrap;
 }
+.grid-container {
+  display: grid;
+  padding-top: 5px;
+  grid-template-columns: auto auto;
+}
+.right{
+  justify-content: right;
+  text-align: right;
+}

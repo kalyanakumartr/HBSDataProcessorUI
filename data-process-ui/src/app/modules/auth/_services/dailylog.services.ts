@@ -26,6 +26,7 @@ export class DailyLogService  {
     protected http: HttpClient;
   API_URL = `${environment.viewApiUrl}`;
   API_ADMIN_URL = `${environment.adminApiUrl}`;
+  TALE_API_URL = `${environment.taleApi}`;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     this.http=http;
   }
@@ -63,7 +64,7 @@ export class DailyLogService  {
   }
   timesheetApprovalReject(date,timesheetId, status, comments){
 
-    const url = this.API_ADMIN_URL + "/approveTimesheet";
+    const url = this.TALE_API_URL + "/approveTimesheet";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -116,13 +117,21 @@ export class DailyLogService  {
       })
     );
   }
-  deleteDailyLog(id){
+  updateOtHours(timesheetId,approvedOTHours){
+
+    const url = this.TALE_API_URL + "/approveOTHours";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, { "timesheetIds":[timesheetId],"approvedOTHours":approvedOTHours},{headers: httpHeaders});
+  }
+  deleteDailyLog(id, timesheetId){
 
     const url = this.API_URL + "/deleteDailyLog";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
-    return this.http.post(url, {"autoId":id },{headers: httpHeaders}).pipe(
+    return this.http.post(url, {"autoId":id, "timesheetId":timesheetId},{headers: httpHeaders}).pipe(
       catchError(err => {
 
         console.error('FIND ITEMS', err);

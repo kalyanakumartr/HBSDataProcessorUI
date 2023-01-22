@@ -1,24 +1,44 @@
 
 
 
-<div class="card card-custom gutter-b">
+<div class="card card-custom gutter-b" [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': isLoading}">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Approve TimeSheet </h3>
-      <select class="form-control form-control-lg form-control-solid" name="monthYear" (change)="setMonth($event.target.value)">
-        <option [ngValue]="0" [selected]=true>Select Week</option>
-        <option *ngFor="let week of monthWeeklyList" [value]="week.value">
-          {{ week.label }}
-        </option>
-      </select>
-      &nbsp;&nbsp;
-      <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "refresh()">
-        <mat-icon >refresh</mat-icon>
-      </button>
-    </div>
+      <div class="form-group row">
+        <div class="col-md-2" >
+          <h3 class="card-label">Approve TimeSheet </h3>
+      </div>
+          <div class="col-md-3" >
 
-      <!-- begin: Filtration form -->
-      <div class="form form-label-right">
+          <select class="form-control form-control-lg " name="monthYear" (change)="setMonth($event.target.value)">
+            <option [ngValue]="0" [selected]=true>Select Week</option>
+            <option *ngFor="let week of monthWeeklyList" [value]="week.value">
+              {{ week.label }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-1">
+          <button type="button" id="TimeSheet" mat-mini-fab color="primary" (click)= "refresh()">
+            <mat-icon >refresh</mat-icon>
+          </button>
+      </div>
+      <div class="col-md-2">
+        <select class="form-control form-control-lg " name="monthYear" (change)="setEmployeeId($event.target.value)">
+          <option [ngValue]="0" [selected]=true>My Team</option>
+          <option *ngFor="let user of userList" [value]="user.employeeId">
+            {{ user.fullName }}
+          </option>
+        </select>
+      </div>
+        <div class="col-md-2" >
+          &nbsp;<br/>
+          <span>
+
+            <input type="checkbox" id="directReporing"  name="directReporing" value="true"  [checked]="true" (change)="setDirectReporting()"/>
+            Direct Report &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span>
+        </div>
+      <div class="col-md-2 form form-label-right">
         <div class="form-group row" [formGroup]="searchGroup">
 
             <div class="grid-container">
@@ -31,44 +51,9 @@
 
               </div>
 
-<!--
-      <div class="form-group row">
-
-      <div class="col-lg-1">
-      OR
+            </div>
+          </div>
       </div>
-      <div class="col-lg-3">
-      <label>From Date</label>
-      <div class="input-group input-group-solid">
-        <input type="text" name="fromDate"  class="form-control form-control-lg form-control-solid" autocomplete="off"
-          placeholder="mm/dd/yyyy" ngbDatepicker  #fromDate="ngbDatepicker" formControlName="fromDate" readonly="true" (onChange)="setFromDate($event.target.value)" />
-        <div class="input-group-append" (click)="fromDate.toggle()">
-          <span class="input-group-text">
-            <i class="text-dark-50 flaticon-calendar"></i>
-          </span>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3">
-      <label>To Date</label>
-      <div class="input-group input-group-solid">
-        <input type="text" name="toDate"  class="form-control form-control-lg form-control-solid" autocomplete="off"
-          placeholder="mm/dd/yyyy" ngbDatepicker  #toDate="ngbDatepicker" formControlName="toDate" readonly="true" (ngModel)="toDate" (onChange)="setToDate($event.target.value)"/>
-        <div class="input-group-append" (click)="toDate.toggle()">
-          <span class="input-group-text">
-            <i class="text-dark-50 flaticon-calendar"></i>
-          </span>
-        </div>
-      </div>
-      </div>
-      <div class="col-lg-2">
-        <label> &nbsp;</label>
-        <button type="button" class="btn btn-primary btn-elevate" (click)="searchDates()" >Search</button>
-      </div>
-    </div>
--->
-  </div>
-</div>
 </div>
     <!-- end: Filtration form -->
 
@@ -111,5 +96,6 @@
       </table>
     </div>
     <!-- end: Table -->
+
   </div>
 

@@ -8,6 +8,7 @@ import { HrUserObjListComponent } from './hr-user-obj-list/hr-user-obj-list.comp
 import { ITUserObjListComponent } from './it-user-obj-list/it-user-obj-list.component';
 import { ChangePasswordComponent } from '../user-profile/change-password/change-password.component';
 import { SkillSetMatrixObjListComponent } from './skillset-marix-obj-list/skillset-marix-obj-list.component';
+import { UpdatePasswordComponent } from './update-password/update-password.component';
 
 
 const routes: Routes = [
@@ -40,9 +41,14 @@ const routes: Routes = [
         component:ITUserObjListComponent
       },
       {
-        path: 'change-password',
-        component: ChangePasswordComponent
+        path:'update-password',
+        component:UpdatePasswordComponent
       },
+      {
+        path:'change-password',
+        component:ChangePasswordComponent
+      },
+
       { path: '', redirectTo: 'users', pathMatch: 'full' },
       { path: '**', redirectTo: 'users', pathMatch: 'full' },
     ],

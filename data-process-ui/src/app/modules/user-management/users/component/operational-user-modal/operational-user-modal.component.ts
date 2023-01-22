@@ -158,6 +158,11 @@ const EMPTY_CUSTOMER: UserModel = {
       employeeId:'',
       divisionId:'',
       divisionName:'',
+      status:true,
+      type:'Team',
+      reportingName:'',
+      fullName:'',
+      reportingTo:''
     },
     group:{
       teamId: '',
@@ -167,6 +172,11 @@ const EMPTY_CUSTOMER: UserModel = {
       employeeId:'',
       divisionId:'',
       divisionName:'',
+      status:true,
+      type:'Group',
+      reportingName:'',
+      fullName:'',
+      reportingTo:''
     },
     deploy:{
       deploymentId: '',
@@ -181,8 +191,40 @@ const EMPTY_CUSTOMER: UserModel = {
       departmentName: ''
     },
     project:{
+      id:'',
       projectId: '',
-      projectName: ''
+      projectName: '',
+      divisionId: '',
+      clientName: '',
+      projectManagerId:'',
+      templateUploadDate:'',
+      projectDetail:{
+        actualCompletedDate:'',
+        billingCycle:'',
+        bpsPlannedCompletionDate:'',
+        bpsStartDate:'',
+        clientExpectedCompletionDate:'',
+        clientName:'',
+        deliverables:'',
+        displayInOtherUIProjectList:'',
+        estimatedTotalHours:'',
+        inputReceivingMode:'',
+        inputType:'',
+        modeOfDelivery:'',
+        noOfDaysRequiredToComplete:'',
+        plannedNoOfResources:'',
+        poDated:'',
+        poNumber:'',
+        projectStatus:'',
+        projectType:'',
+        receivedWorkVolume:'',
+        totalProjectedWorkVolume:'',
+        unitsOfMeasurement:'',
+        projectManagerName:'',
+        createdDate:'',
+        modifiedDate:''
+      }
+
     },
     trainingBatch:'',
     reportingTo:'',
@@ -361,6 +403,7 @@ export class OperationalUserModalComponent implements OnInit, OnDestroy {
 
   edit() {
     var test ={"id":this.revId, "userRoless":[{roles:{}}]}
+    this.userOPRModel.project = null;
     const sbUpdate = this.usersService.saveOPR(this.userOPRModel, this.updateRole).pipe(
       tap(() => {
         this.modal.close();

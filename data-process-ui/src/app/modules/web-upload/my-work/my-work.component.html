@@ -2,15 +2,25 @@
   <div class="form form-label-right">
     <div class="card-header">
     <div class="form-group row">
-      <div class="col-lg-4">
+      <div class="col-sm-2"></div>
+          <div class="col-sm-4">
+          <label><b>Selected WU Count: {{wuCount}} </b></label>
+          </div>
+          <div class="col-sm-6">
+            <label><b>Selected WU Total Miles : {{wuTotalMiles}} </b></label>
+          </div>
+      </div>
+      <div class="form-group row">
+
+      <div class="col-sm-2">
           <div class="card-title">
             <h3 class="card-label">My {{selectedQueue}} Task List</h3>
           </div>
 
        </div>
-       <div class="col-lg-2">
-          <label>Project</label>
-          <select class="form-control form-control-lg form-control-solid" name="project" [(ngModel)]="project"
+       <div class="col-sm-2">
+          <label><b>Select Project </b></label>
+          <select class="form-control  " name="project" [(ngModel)]="project"
              formControlName="project" (change)="setProject($event.target.value)">
              <option [ngValue]="0" [selected]=true>Select Project</option>
             <option *ngFor="let project of projectList" [ngValue]="project.projectId">
@@ -19,9 +29,9 @@
           </select>
 
         </div>
-        <div class="col-lg-2">
-          <label>Work Allocation</label>
-          <select class="form-control form-control-lg form-control-solid" name="selectedQueue" (change)="selectQueue($event.target.value)"
+        <div class="col-sm-2">
+          <label><b>Work Allocation</b></label>
+          <select class="form-control  " name="selectedQueue" (change)="selectQueue($event.target.value)"
              formControlName="selectedQueue">
             <option *ngFor="let queue of queueList" [ngValue]="queue.queueId">
               {{ queue.queueName }}
@@ -30,9 +40,9 @@
 
 
         </div>
-        <div class="col-lg-2">
+        <div class="col-sm-2">
           <label>Status</label>
-          <select class="form-control form-control-lg form-control-solid" name="selectedStatus" (change)="selectTask($event.target.value)"
+          <select class="form-control  " name="selectedStatus" (change)="selectTask($event.target.value)"
              formControlName="selectedStatus">
             <option *ngFor="let status of statusList" [ngValue]="status.statusId">
               {{ status.statusName }}
@@ -40,74 +50,93 @@
           </select>
 
         </div>
-        <div class="col-lg-2" [formGroup]="searchGroup">
-          <small class="form-text text-muted"><b>Search</b> in all fields</small>
-          <input type="search" class="form-control" name="searchText" placeholder="Search" value=""  formControlName="searchTerm" />
 
+        <!-- begin: Filtration form -->
+        <div class="col-sm-2">
+
+
+          <ng-container *ngIf="hasCheckbox && !hasDeliverToClient">
+
+            <label>Assign to</label>
+            <ng-container *ngIf="hasGroup">
+            <select class="form-control  " name="selectedUser" (change)="selectUser($event.target.value)"
+              formControlName="selectedUser">
+              <option [ngValue]="0" [selected]=true>Select User</option>
+              <option *ngFor="let user of assignedToUserGroupList" [ngValue]="user.allotmentId">
+                {{ user.displayName }}
+              </option>
+            </select>
+            </ng-container>
+            <ng-container *ngIf="!hasGroup">
+            <select class="form-control  " name="selectedUser" (change)="selectUser($event.target.value)"
+              formControlName="selectedUser">
+              <option [ngValue]="0" [selected]=true>Select User</option>
+              <option *ngFor="let user of assignedToUserList" [ngValue]="user.employeeId">
+                {{ user.fullName }}
+              </option>
+            </select>
+            </ng-container>
+
+
+        </ng-container>
+      </div>
+          <div class="col-lg-1" >
+            <label>&nbsp;</label>
+            <br>
+
+            <ng-container *ngIf="hasCheckbox">
+              <button type="submit" class="btn btn-primary btn-elevate" (click)="assignWorkUnits()" >
+                <ng-container *ngIf="!hasDeliverToClient">
+                  Assign
+                </ng-container>
+                <ng-container *ngIf="hasDeliverToClient">
+                  Deliver To Client
+                </ng-container>
+              </button>
+            </ng-container>
+          </div>
+          <ng-container *ngIf="hasBatch">
+            <div class="col-lg-2">
+              <label>Batch</label>
+              <select class="form-control  " name="batch"  (change)="setBatch($event.target.value)"
+                formControlName="batch">
+                <option [ngValue]="0" >Select Batch</option>
+                <option [ngValue]="new" [selected]=true>New Batch</option>
+                <option *ngFor="let batch of batchList" [ngValue]="batch.value">
+                  {{ batch.label }}
+                </option>
+              </select>
+
+          </div>
+        </ng-container>
+        <div class="col-lg-1">
+
+            <br>
+
+        <div class="topbar-item">
+          <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2"
+            id="kt_quick_user_toggle" (click)="advanceSearch(2)">
+            <span class="svg-icon svg-icon-4x svg-icon-primary">
+              <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <rect x="0" y="0" width="24" height="24"></rect>
+                  <rect fill="#000000" x="4" y="4" width="7" height="7" rx="1.5"></rect>
+                  <path d="M5.5,13 L9.5,13 C10.3284271,13 11,13.6715729 11,14.5 L11,18.5 C11,19.3284271 10.3284271,20 9.5,20 L5.5,20 C4.67157288,20 4,19.3284271 4,18.5 L4,14.5 C4,13.6715729 4.67157288,13 5.5,13 Z M14.5,4 L18.5,4 C19.3284271,4 20,4.67157288 20,5.5 L20,9.5 C20,10.3284271 19.3284271,11 18.5,11 L14.5,11 C13.6715729,11 13,10.3284271 13,9.5 L13,5.5 C13,4.67157288 13.6715729,4 14.5,4 Z M14.5,13 L18.5,13 C19.3284271,13 20,13.6715729 20,14.5 L20,18.5 C20,19.3284271 19.3284271,20 18.5,20 L14.5,20 C13.6715729,20 13,19.3284271 13,18.5 L13,14.5 C13,13.6715729 13.6715729,13 14.5,13 Z" fill="#000000" opacity="0.3"></path>
+                </g>
+              </svg>
+              <!--end::Svg Icon-->
+            </span>
+          </div>
         </div>
       </div>
+  </div>
+    <!-- end: Filtration form -->
+
     </div>
   </div>
   <div class="card-body">
-    <!-- begin: Filtration form -->
-    <div class="form form-label-right">
-      <div class="form-group row">
 
-      <ng-container *ngIf="hasCheckbox && !hasDeliverToClient">
-      <div class="col-lg-3">
-        <label>Assign to</label>
-        <ng-container *ngIf="hasGroup">
-        <select class="form-control form-control-lg form-control-solid" name="selectedUser" (change)="selectUser($event.target.value)"
-           formControlName="selectedUser">
-           <option [ngValue]="0" [selected]=true>Select User</option>
-          <option *ngFor="let user of assignedToUserGroupList" [ngValue]="user.allotmentId">
-            {{ user.displayName }}
-          </option>
-        </select>
-        </ng-container>
-        <ng-container *ngIf="!hasGroup">
-        <select class="form-control form-control-lg form-control-solid" name="selectedUser" (change)="selectUser($event.target.value)"
-           formControlName="selectedUser">
-           <option [ngValue]="0" [selected]=true>Select User</option>
-          <option *ngFor="let user of assignedToUserList" [ngValue]="user.employeeId">
-            {{ user.fullName }}
-          </option>
-        </select>
-        </ng-container>
-        <div class="feedback">Selected Work Units will be  <b>Assigned to</b></div>
-      </div>
-    </ng-container>
-      <div class="col-lg-2" >
-
-        <ng-container *ngIf="hasCheckbox">
-          <button type="submit" class="btn btn-primary btn-elevate" (click)="assignWorkUnits()" >
-            <ng-container *ngIf="!hasDeliverToClient">
-              Assign
-            </ng-container>
-            <ng-container *ngIf="hasDeliverToClient">
-              Deliver To Client
-            </ng-container>
-          </button>
-        </ng-container>
-      </div>
-      <ng-container *ngIf="hasBatch">
-        <div class="col-lg-2">
-          <label>Batch</label>
-          <select class="form-control form-control-lg form-control-solid" name="batch"  (change)="setBatch($event.target.value)"
-            formControlName="batch">
-            <option [ngValue]="0" >Select Batch</option>
-            <option [ngValue]="new" [selected]=true>New Batch</option>
-            <option *ngFor="let batch of batchList" [ngValue]="batch.value">
-              {{ batch.label }}
-            </option>
-          </select>
-
-      </div>
-    </ng-container>
-    </div>
-
-  </div>
-    <!-- end: Filtration form -->
 
 
     <!-- begin:Table -->

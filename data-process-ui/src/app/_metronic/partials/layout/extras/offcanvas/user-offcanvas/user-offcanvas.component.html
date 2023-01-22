@@ -46,12 +46,18 @@
                 }}</span>
               </span>
             </a>
-
-            <a class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5 cursor-pointer" (click)="logout()">Sign
-              Out</a>
           </div>
         </div>
       </div>
+      <div class="grid-container">
+        <div class="grid-item">
+          <a class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5 cursor-pointer" (click)="changePassword()">Change Password</a>
+        </div>
+        <div class="grid-item right">
+          <a class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5 cursor-pointer" (click)="logout()">Sign Out</a>
+        </div>
+      </div>
+
       <!--end::Header-->
       <div class="card-body">
         <ul class="nav nav-tabs nav-tabs-line" role="tablist">

@@ -1,0 +1,116 @@
+<!-- begin::User Panel-->
+
+  <div id="kt_advance_search" class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title h4" id="example-modal-sizes-title-lg">
+          <b><label class="heading">
+
+         Advance Search </label></b>
+
+      </div>
+      <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+      <ng-container *ngIf="isLoading$ | async">
+        <div class="overlay-layer bg-transparent">
+          <div class="spinner spinner-lg spinner-success"></div>
+        </div>
+      </ng-container>
+
+
+        <form action="#" name="timeTrackerForm" id="assetForm" class="form form-label-right" [formGroup]="formGroup">
+          <div class="form-group row">
+            <div class="col-lg-12">
+              <input type="text" class="form-control" name="workUnits" id ="workUnits" placeholder="workUnits" value=""
+                formControlName="workUnits" />
+              </div>
+
+          </div>
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <input type="text" class="form-control" name="wuMinMiles" id ="wuMinMiles" placeholder="WU Min Miles" value=""
+              formControlName="wuMinMiles" />
+            </div>
+            <div class="col-lg-6">
+                <input type="text" class="form-control" name="wuMaxMiles" id ="wuMaxMiles" placeholder="WU Max Miles" value=""
+                formControlName="wuMaxMiles" />
+              </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-lg-12">
+              <select class="form-control form-control-lg form-control-solid" name="subCountry"
+                [class.is-invalid]="isControlInvalid('subCountry')" formControlName="subCountry" >
+                <option  value ="0" [selected]=true>Select Sub Country</option>
+                <option *ngFor="let subCountry of subCountryList " [value] ="subCountry.label">
+                  {{ subCountry.value }}
+                </option>
+              </select>
+            </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-12">
+
+                <select class="form-control form-control-lg form-control-solid" name="roadType"
+                  [class.is-invalid]="isControlInvalid('roadType')" formControlName="roadType" >
+                  <option  value ="0" [selected]=true>Select Road Type</option>
+                  <option *ngFor="let roadType of roadTypeList " [value] ="roadType.value">
+                    {{ roadType.label }}
+                  </option>
+                </select>
+              </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-lg-12">
+                  <select class="form-control form-control-lg form-control-solid" name="holdReason"
+                    [class.is-invalid]="isControlInvalid('holdReason')" formControlName="holdReason" >
+                    <option  value ="0" [selected]=true>Select Hold Reason</option>
+                    <option *ngFor="let holdReason of holdReasonList " [value] ="holdReason.value">
+                      {{ holdReason.label }}
+                    </option>
+                  </select>
+                </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <select class="form-control form-control-lg form-control-solid" name="team"
+                      [class.is-invalid]="isControlInvalid('team')" formControlName="team" >
+                      <option  value ="0" [selected]=true>Select Team</option>
+                      <option *ngFor="let team of teamList " [value] ="team.teamId">
+                        {{ team.teamName }}
+                      </option>
+                    </select>
+                  </div>
+                  </div>
+            <div class="form-group row">
+
+              <div class="col-lg-12">
+                <div class="input-group input-group-solid">
+                  <div class="col-lg-12">
+                    <select class="form-control form-control-lg form-control-solid" name="receivedDate"
+                      [class.is-invalid]="isControlInvalid('team')" formControlName="receivedDate" >
+                      <option  value ="0" [selected]=true>Select Received Date</option>
+                      <option *ngFor="let receivedDate of receivedDateList " [value] ="receivedDate.value">
+                        {{ receivedDate.label }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+
+        </form>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+
+        <button type="submit" class="btn btn-primary btn-elevate" (click)="advanceSearch()"
+          [disabled]="formGroup.invalid">Search</button>
+    </div>
+  </div>
+

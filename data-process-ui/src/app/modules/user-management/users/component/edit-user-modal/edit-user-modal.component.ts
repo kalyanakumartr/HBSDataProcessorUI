@@ -160,6 +160,11 @@ const EMPTY_CUSTOMER: UserModel = {
       employeeId:'',
       divisionId:'',
       divisionName:'',
+      status:true,
+      type:'Team',
+      reportingName:'',
+      fullName:'',
+      reportingTo:''
     },
     group:{
       teamId: 'NoTeam',
@@ -169,6 +174,11 @@ const EMPTY_CUSTOMER: UserModel = {
       employeeId:'',
       divisionId:'',
       divisionName:'',
+      status:true,
+      type:'Group',
+      reportingName:'',
+      fullName:'',
+      reportingTo:''
     },
     deploy:{
       deploymentId: 'DLP0001',
@@ -183,8 +193,39 @@ const EMPTY_CUSTOMER: UserModel = {
       departmentName: ''
     },
     project:{
-      projectId: 'CSAV1CM',
-      projectName: ''
+      id: '',
+      projectId: '',
+      projectName: '',
+      clientName: '',
+      projectManagerId:'',
+      divisionId: '',
+      templateUploadDate:'',
+      projectDetail:{
+        actualCompletedDate:'',
+        billingCycle:'',
+        bpsPlannedCompletionDate:'',
+        bpsStartDate:'',
+        clientExpectedCompletionDate:'',
+        clientName:'',
+        deliverables:'',
+        displayInOtherUIProjectList:'',
+        estimatedTotalHours:'',
+        inputReceivingMode:'',
+        inputType:'',
+        modeOfDelivery:'',
+        noOfDaysRequiredToComplete:'',
+        plannedNoOfResources:'',
+        poDated:'',
+        poNumber:'',
+        projectStatus:'',
+        projectType:'',
+        receivedWorkVolume:'',
+        totalProjectedWorkVolume:'',
+        unitsOfMeasurement:'',
+        projectManagerName:'',
+        createdDate:'',
+        modifiedDate:''
+      }
     },
     trainingBatch:'',
     reportingTo:'',
@@ -452,6 +493,8 @@ export class EditUserModalComponent implements OnInit, OnDestroy {
   create() {
     console.log("Add Employee");
     this.customer.mediaList[0].mediaId=undefined;
+    this.customer.operationalRecord.project=undefined;
+
     const sbCreate = this.usersService.create(this.customer,"/addUser","formUser").pipe(
       tap(() => {
         this.modal.close();

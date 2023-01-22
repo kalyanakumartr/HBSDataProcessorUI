@@ -348,6 +348,24 @@ authModel:AuthModel;
       (<HTMLInputElement>document.getElementById("searchText")).value="";
     }
   }
+  exportExcel(){
+    this.userService.exportExcel("/exportToExcelOperRecord","Admin").subscribe(
+      responseObj => {
+        console.log("report success", responseObj);
+        var downloadURL = window.URL.createObjectURL(responseObj);
+        var link = document.createElement('a');
+        link.href = downloadURL;
+        link.download = "OperationalRecords.xlsx";
+        link.click();
 
+      },
+      error => {
+        console.log("report error", error);
+
+
+      }
+    );
+
+  }
 
 }

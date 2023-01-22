@@ -10,9 +10,28 @@ export interface ITableState {
   divisionId:string;
   departmentId: string;
   projectId: string;
+  groupId:string;
+  teamId:string;
+  type:string;//Group or Team
   fromDate: string;
   toDate: string;
   status: string;
+  clientName:any;
+  workUnitId: string;
+  startWUMiles:string;
+  endWUMiles:string;
+  reasonId:string;
+  roadTypeMapId:string;
+  startAssignedDate:string;
+  startProcessedDate:string;
+  receivedDate:string;
+  endAssignedDate:string;
+  endProcessedDate:string;
+  endReceivedDate:string;
+  teamName:string;
+  subCountryId:string;
+  isAdvanceSearch:boolean;
+  isDirectReport:boolean;
   grouping: GroupingState;
   entityId: number | undefined;
 }
@@ -46,6 +65,71 @@ export interface ILeaveTableState extends ITableState{
 }
 
 export interface IApprovalTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+export interface IProjectTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any;
+  clientName:any;
+}
+export interface IProcessTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+export interface ISubcountryTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+export interface IWorkflowTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+export interface IGroupTeamTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+export interface ITeamTransferTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+
+export interface IRoadTypeTableState extends ITableState{
   employeeId: any,
   queueList:any,
   projectId:any,
