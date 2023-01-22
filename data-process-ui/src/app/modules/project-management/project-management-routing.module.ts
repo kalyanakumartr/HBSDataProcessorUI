@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AddSubcountryComponent } from './add-subcountry/add-subcountry.component';
+import { AssignTeamGroupComponent } from './assign-team-group/assign-team-group.component';
+import { GroupListComponent } from './group-list/group-list.component';
 import { ProjectCreateComponent } from './project-create/project-create.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectManagementComponent } from './project-management.component';
-import { ProjectRoadtypeComponent } from './project-roadtype/project-roadtype.component';
+import { ProjectProcessListComponent } from './project-process-list/project-process-list.component';
 import { ProjectSubcountryListComponent } from './project-subcountry-list/project-subcountry-list.component';
-import { ProjectTaskListComponent } from './project-task-list/project-task-list.component';
 import { ProjectTemplateComponent } from './project-template/project-template.component';
-import { RoadtypeCreateComponent } from './roadtype-create/roadtype-create.component';
+import { RoadtypeListComponent } from './roadtype-list/roadtype-list.component';
+import { TeamListComponent } from './team-list/team-list.component';
+import { TeamTransferComponent } from './team-transfer/team-transfer.component';
 
 
 const routes: Routes = [
@@ -26,12 +29,10 @@ const routes: Routes = [
       },
       {
         path: 'project-road-type-list',
-        component: ProjectRoadtypeComponent,
+
+        component: RoadtypeListComponent,
       },
-      {
-        path: 'road-type',
-        component: RoadtypeCreateComponent,
-      },
+
       {
         path: 'project-subcountry-List',
         component: ProjectSubcountryListComponent,
@@ -42,11 +43,26 @@ const routes: Routes = [
       },
       {
         path: 'project-task-List',
-        component: ProjectTaskListComponent,
+        component: ProjectProcessListComponent,
       },
       {
         path: 'project-template',
         component: ProjectTemplateComponent,
+      },
+      {
+        path: 'project-group',
+        component: GroupListComponent,
+      },
+      {
+        path: 'project-team',
+        component: TeamListComponent,
+      },{
+        path: 'worklow-queue',
+        component: AssignTeamGroupComponent,
+      },
+      {
+        path: 'team-transfer',
+        component: TeamTransferComponent,
       },
       { path: '', redirectTo: 'project-list', pathMatch: 'full' },
       { path: '**', redirectTo: 'project-list', pathMatch: 'full' },

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -53,16 +53,23 @@ export class ProjectListComponent
   isLoading: boolean;
   filterGroup: FormGroup;
   searchGroup: FormGroup;
+  departmentList:any[];
+  department:any;
+  divisionList:any[];
+  division:any;
+  projectList:any[];
+  project:any;
+  client:any;
+  projectStatus:string;
+  clientList:any[];
+  departmentName:string;
+  divisionName:string;
+  showDivision:boolean;
+  showDepartment:boolean;
+  isClearFilter:boolean;
+  isLoading$: Observable<boolean>;
   userList: any;
   sel: string;
-  departmentList: any[];
-  department: any;
-  divisionList: any[];
-  division: any;
-  projectList: any[];
-  project: any;
-  isClearFilter: boolean;
-
   private subscriptions: Subscription[] = [];
   constructor(
     private fb: FormBuilder,
@@ -74,17 +81,27 @@ export class ProjectListComponent
       console.log('m -- -- --', m);
       this.filter();
     });
-    this.projectList = [];
-    this.divisionList = [];
+    this.isLoading$ = this.projectService.isLoadingSubject;
     this.sel = '0';
-    this.isClearFilter = false;
+    this.projectList=[];
+    this.divisionList=[];
+    this.clientList=[];
+    this.isClearFilter=false;
+    this.showDivision=true;
+    this.showDepartment=true;
   }
 
 
   ngOnInit(): void {
     //this.filterForm();
     this.searchForm();
-
+    if(this.showDivision){
+      this.getDepartment();
+      this.getClient();
+      this.division="0: 0";
+      this.department="0: 0";
+    }
+    this.project="0: 0";
     this.projectService.fetch('/searchProject');
     console.log('UserList :', this.subscriptions);
     this.grouping = this.projectService.grouping;
@@ -96,11 +113,9 @@ export class ProjectListComponent
     );
     this.subscriptions.push(sb);
     this.getDepartment();
-    /* setTimeout(() => {
-      this.division="0";
+     setTimeout(() => {
       this.department="0: 0";
-      this.project="0";
-    }, 5000);*/
+    }, 5000);
   }
   ngAfterViewInit() {}
 
@@ -125,15 +140,7 @@ export class ProjectListComponent
 
   filter() {
     const filter = {};
-    /*const status = this.filterGroup.get('status').value;
-    if (status) {
-      filter['status'] = status;
-    }
 
-    const type = this.filterGroup.get('type').value;
-    if (type) {
-      filter['type'] = type;
-    }*/
     this.projectService.patchState({ filter }, '/searchProject');
   }
 
@@ -144,6 +151,8 @@ export class ProjectListComponent
       department: ['0'],
       division: ['0'],
       project: ['0'],
+      client: ['0'],
+      projectStatus: ['0'],
     });
     const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
       .pipe(
@@ -185,21 +194,30 @@ export class ProjectListComponent
     throw new Error('Method not implemented.');
   }
   create() {
-    this.addProject(undefined,undefined);
+    if(this.division){
+      this.addProject(undefined,undefined,this.division);
+    }else{
+      alert("Please Select Department & Divison");
+    }
   }
 
-  editProject(projectId: string, projectName:string): void {
-    this.addProject(projectId,projectName);
+  editProject(projectId: string, projectName:string, divisionId:string): void {
+    this.addProject(projectId,projectName,divisionId);
 
   }
-
-  addProject(projectId: string, projectName:string) {
-    const modalRef = this.modalService.open(ProjectCreateComponent, {
-      size: 'xl',
-    });
-    modalRef.componentInstance.projectId = projectId;
-    modalRef.componentInstance.projectName = projectName;
+  addProject(projectId: string, projectName:string,divisionId:string) {
+    if(this.division !="0: 0"){
+      const modalRef = this.modalService.open(ProjectCreateComponent, {
+        size: 'xl',
+      });
+      modalRef.componentInstance.projectId = projectId;
+      modalRef.componentInstance.projectName = projectName;
+      modalRef.componentInstance.divisionId = this.division;
+  }else{
+    alert("Please Select Department & Divison");
   }
+  }
+
 
   delete(id: number) {
     // const modalRef = this.modalService.open(DeleteCustomerModalComponent);
@@ -277,9 +295,25 @@ export class ProjectListComponent
         tap((res: any) => {
           this.divisionList = res;
           console.log('divisionList', this.divisionList);
-          setTimeout(() => {
-            this.division = '0: 0';
-          }, 2000);
+
+        }),
+        catchError((err) => {
+          console.log(err);
+          return of({
+            items: [],
+          });
+        })
+      )
+      .subscribe();
+  }
+  getClient() {
+    this.clientList = [];
+    this.projectService.getClientNameList()
+      .pipe(
+        tap((res: any) => {
+          this.clientList = res;
+          console.log('clientList', this.clientList);
+
         }),
         catchError((err) => {
           console.log(err);
@@ -299,6 +333,29 @@ export class ProjectListComponent
       }
     }
   }
+
+  setClient(value) {
+    var position = value.split(':');
+    if (position.length > 1) {
+      this.client = position[1].toString().trim();
+      if (this.client != '0') {
+        this.projectService.patchState({ clientName: this.client }, '/searchProject');
+      }
+    }
+  }
+  setProjectStatus(value) {
+    var position = value.split(':');
+    if (position.length > 1) {
+      this.projectStatus = position[1].toString().trim();
+      if (this.projectStatus != '0') {
+        this.projectService.patchState({ status: this.projectStatus }, '/searchProject');
+      }
+    }else{
+      this.projectService.patchState({ status: value }, '/searchProject');
+    }
+  }
+
+
   getProjectForDivision() {
     this.projectList = [];
     this.projectService
@@ -335,6 +392,7 @@ export class ProjectListComponent
         this.departmentList.splice(0, this.departmentList.length);
       }
       this.getDepartment();
+      this.projectService.setDefaults();
       (<HTMLInputElement>document.getElementById('searchText')).value = '';
       this.projectService.setDefaults();
       this.projectService.patchState({}, '/searchProject');
@@ -347,17 +405,21 @@ export class ProjectListComponent
     }
   }
   exportExcel() {
-    this.projectService.exportExcel('/exportToExcelHRRecord', 'Admin').subscribe(
+    this.projectService.isLoadingSubject.next(true);
+    //this.btndisabled.next(true);
+    this.projectService.exportExcel('/exportToExcelProjectReport', 'Report').subscribe(
       (responseObj) => {
-        console.log('report success', responseObj);
+        console.log('Project Report success', responseObj);
         var downloadURL = window.URL.createObjectURL(responseObj);
         var link = document.createElement('a');
         link.href = downloadURL;
-        link.download = 'HRRecords.xlsx';
+        link.download = 'ProjectReport.xlsx';
         link.click();
+        this.projectService.isLoadingSubject.next(false);
       },
       (error) => {
         console.log('report error', error);
+        this.projectService.isLoadingSubject.next(false);
       }
     );
   }

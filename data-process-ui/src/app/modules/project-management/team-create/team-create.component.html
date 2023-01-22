@@ -1,0 +1,97 @@
+<div class="modal-content">
+  <div class="progress progress-modal">
+    <div
+      class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+      role="progressbar"         style="width: 100%"
+      aria-valuenow="100"           aria-valuemin="0"
+      aria-valuemax="100"
+    ></div>
+  </div>
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">
+      <b><label class="heading">
+      <ng-container >
+        <ng-container *ngIf="groupId">Edit Team : {{group.groupName}} </ng-container>
+        <ng-container *ngIf="!groupId">Create Team  </ng-container>
+     </ng-container>
+    </label></b>
+    </div>
+    <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+    <ng-container *ngIf="isLoading$ | async">
+      <div class="overlay-layer bg-transparent">
+        <div class="spinner spinner-lg spinner-success"></div>
+      </div>
+    </ng-container>
+
+    <ng-container >
+      <form action="#" class="form form-label-right" [formGroup]="formGroup">
+        <div class="form-group row">
+          <div class="col-lg-3">
+            <label class="form-label"> Team Name</label>
+            <input type="text" class="form-control form-control-lg" name="groupName"
+            placeholder="Team Name" autocomplete="off" [class.is-invalid]="isControlInvalid('groupName')" maxlength=50
+            [class.is-valid]="isControlValid('groupName')" formControlName="groupName" />
+
+          <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'groupName')">Team Name should have at
+            least 3 symbols</div>
+          <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'groupName')">Team Name should have
+            maximum 50 characters</div>
+          </div>
+
+          <div class="col-lg-3">
+            <label class="form-label">Project Leader Name</label>
+            <select class="form-control form-control-lg"
+            name="projectLeaderName"
+             [class.is-invalid]="isControlInvalid('projectLeaderName')" formControlName="projectLeaderName" >
+             <option value="0" [selected]="true">Select Leader</option>
+             <option
+             *ngFor="let user of userList"
+             [ngValue]="user.employeeId"
+           >
+             {{ user.fullName }}
+                   </option>
+           </select>
+          </div>
+
+          <div class="col-lg-3">
+            <label class="form-label">ReportingManager</label>
+            <select class="form-control form-control-lg"
+             name="reportingGroup"
+              [class.is-invalid]="isControlInvalid('reportingGroup')" formControlName="reportingGroup"
+              >
+              <option value="0" [selected]="true">ReportingManager</option>
+              <option  *ngFor="let group of groupList"   [ngValue]="group.teamId">
+                {{group.reportingName}}
+
+            </option>
+            </select>
+
+        </div>
+        <div class="col-lg-3">
+          <label class="form-label">Display Status</label>
+          <select class="form-control form-control-lg form-control-solid" name="dStatus"
+                [class.is-invalid]="isControlInvalid('dStatus')" formControlName="dStatus">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+
+              </select>
+        </div>
+
+        </div>
+      </form>
+  </ng-container>
+      </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+        >Save</button>
+
+  </div>
+</div>
+
+

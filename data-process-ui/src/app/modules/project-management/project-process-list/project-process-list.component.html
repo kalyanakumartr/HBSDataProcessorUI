@@ -1,0 +1,182 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Project Process List</h3>
+    </div>
+    <div class="card-toolbar">
+      <div class="grid-item" style="cursor: pointer">
+        <ng-container *ngIf="isLoading$ | async">
+          <span class="spinner spinner-primary ml-5"></span>
+        </ng-container>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-primary" (click)="exportExcel()">
+          Export Excel
+        </button>
+      </div>
+     <div class="grid-item" style="cursor: pointer;">
+        &nbsp;&nbsp;
+     </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary" (click)="taskCreate('')">Create Process</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <!-- begin: Filtration form -->
+    <div class="form form-label-right">
+      <div class="form-group row" [formGroup]="searchGroup">
+
+
+        <div class="col-lg-2">
+          <ng-container *ngIf="showDepartment">
+          <label>Department</label>
+          <select class="form-control form-control-lg" name="department"  [(ngModel)]="department"
+              (change)="setDepartment($event.target.value)">
+            <option [ngValue]="0" [selected]=true>Select Department</option>
+            <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
+              {{ department.departmentName }}
+            </option>
+          </select>
+        </ng-container>
+        <ng-container *ngIf="!showDepartment">
+          <label>Department</label><br/>
+          <span>{{departmentName}}</span>
+        </ng-container>
+        </div>
+        <div class="col-lg-2">
+          <ng-container *ngIf="showDivision">
+          <label>Division</label>
+          <select class="form-control form-control-lg" name="division"  [(ngModel)]="division"
+              (change)="setDivision($event.target.value)">
+             <option [ngValue]="0" [selected]=true>Select Division</option>
+            <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
+              {{ division.divisionName }}
+            </option>
+          </select>
+          </ng-container>
+          <ng-container *ngIf="!showDivision">
+            <label>Division</label><br/>
+            <span>{{divisionName}}</span>
+          </ng-container>
+        </div>
+        <div class="col-lg-2">
+          <label>Project</label>
+          <select class="form-control form-control-lg" name="project"  [(ngModel)]="project"
+              (change)="setProject($event.target.value)">
+             <option [ngValue]="0" [selected]=true>Select Project</option>
+            <option *ngFor="let project of projectList" [ngValue]="project.projectId">
+              {{ project.projectName }}
+            </option>
+          </select>
+
+        </div>
+
+
+        <div class="col-lg-2 nowrap">
+          <div class="row">
+            <div class="column"><label>Search </label>
+              <input
+                type="search"
+                class="form-control"
+                name="searchText"
+                id="searchText"
+                placeholder="Search"
+                value=""
+                formControlName="searchTerm"
+              />
+          </div>
+
+        </div>
+      </div>
+          <div class="col-lg-2 nowrap">
+            <div class="row">
+            <div class="column" style="cursor: pointer;"><br> &nbsp;
+              <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+            </div>
+
+
+          </div>
+
+      </div>
+
+      <div  class="col-lg-2 ">
+        <!-- <br/> -->
+        <button type="button" class="btn btn-primary nowrap" (click)="projectAssignTask()">Assign Process to Project</button>
+      </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Position Column -->
+
+    <!-- Name Column --><div class="table-responsive angular-bootstrap-table">
+        <table
+        id="tablebox"
+        class="table table-head-custom table-vertical-center"
+
+      >
+      <!-- </table> #table [dataSource]="dataSource"> -->
+        <thead>
+          <tr >
+            <th class="sticky-header">Edit</th>
+            <th class="sticky-header">S No </th>
+            <th class="sticky-header">Process Name </th>
+            <th class="sticky-header">BillType </th>
+            <th class="sticky-header"> Display Status </th>
+          </tr>
+
+        </thead>
+        <tbody>
+
+
+
+
+        <tr *ngFor="let process of processSerive.items$ | async">
+
+            <td>
+              <a
+              title="Edit Project"
+              class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              (click)="
+                editProcess(
+                 process
+                )
+              "
+            >
+              <span
+                [inlineSVG]="
+                  './assets/media/svg/icons/Communication/Write.svg'
+                "
+                cacheSVG="true"
+                class="svg-icon svg-icon-md svg-icon-primary"
+              >
+              </span>
+            </a>
+</td>
+
+          <td>
+            {{process.sNo}}
+          </td>
+            <td>
+              {{process.processName}}
+              </td>
+              <td>
+                {{process.billType}}
+              </td>
+              <td>
+                {{process.status?'Active':'Inactive'}}
+              </td>
+
+            </tr>
+        </tbody>
+        </table>
+        </div>
+        <app-paginator
+        class="d-flex justify-content-between align-items-center flex-wrap"
+        [paginator]="paginator"
+        [isLoading]="isLoading"
+        (paginate)="paginate($event)"
+      ></app-paginator>
+
+</div>

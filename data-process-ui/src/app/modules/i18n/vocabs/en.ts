@@ -48,6 +48,10 @@ export const locale = {
       PASSWORDUPDATE:'Password Update',
       TASKLIST:'Task Creation List',
       PROJECTTEMPLATE:'Project Template',
+      GROUP: 'Group List',
+      TEAM: 'Team List',
+      GROUPTEAMTRANSFER:'Group Team Transfer',
+      WORKFLOWQUEUE:'Workflow Queue',
       ROLES:'Roles',
       'SKILLSET MATRIX':'SkillSet Matrix'
 

@@ -1,0 +1,29 @@
+<form>
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title h4" id="example-modal-sizes-title-lg">
+
+
+          <b><label class="heading">
+
+              Approved OT Hours </label></b>
+
+      </div>
+      <button type="button" #closebutton class="close" data-dismiss="modal" (click)="modal.dismiss()">&times;</button>
+    </div>
+    <div class="form-group row" style="text-align: center">
+      <div class="col-lg-8 " style="text-align: center" >
+      <input  type="time" name="overTimeHours" [(ngModel)]="overTimeHours"/>
+
+    </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light btn-elevate mr-3" (click)="modal.dismiss()">Cancel</button>
+
+
+        <button type="submit" class="btn btn-primary " (click)="update()"  >Update</button>
+    </div>
+
+    </form>
+

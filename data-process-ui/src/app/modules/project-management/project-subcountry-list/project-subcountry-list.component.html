@@ -4,22 +4,175 @@
       <h3 class="card-label">Project Sub Country List</h3>
     </div>
     <div class="card-toolbar">
+      <div class="grid-item" style="cursor: pointer">
+        <ng-container *ngIf="isLoading$ | async">
+          <span class="spinner spinner-primary ml-5"></span>
+        </ng-container>
 
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-primary" (click)="exportExcel()" >
+          Export Excel
+        </button>
+      </div>
       <div class="grid-item" style="cursor: pointer;">
         &nbsp;&nbsp;
 
       </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <button type="button" class="btn btn-primary" (click)="projectAssignSubcountry()">Assign Subcountry</button>
-      <button type="button" class="btn btn-primary" (click)="subCountry()">Add SUBCOUNTRY LIST</button>
+
+      <button type="button" class="btn btn-primary" (click)="addSubCountry('')">Add SUBCOUNTRY LIST</button>
     </div>
   </div>
   <div class="card-body">
+  <!-- begin: Filtration form -->
+  <div class="form form-label-right">
+    <div class="form-group row" [formGroup]="searchGroup">
 
-    <div class="form form-label-right">
+
+      <div class="col-lg-2">
+        <ng-container *ngIf="showDepartment">
+        <label>Department</label>
+        <select class="form-control form-control-lg" name="department"  [(ngModel)]="department"
+            (change)="setDepartment($event.target.value)">
+          <option [ngValue]="0" [selected]=true>Select Department</option>
+          <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
+            {{ department.departmentName }}
+          </option>
+        </select>
+      </ng-container>
+      <ng-container *ngIf="!showDepartment">
+        <label>Department</label><br/>
+        <span>{{departmentName}}</span>
+      </ng-container>
+      </div>
+      <div class="col-lg-2">
+        <ng-container *ngIf="showDivision">
+        <label>Division</label>
+        <select class="form-control form-control-lg" name="division"  [(ngModel)]="division"
+            (change)="setDivision($event.target.value)">
+           <option [ngValue]="0" [selected]=true>Select Division</option>
+          <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
+            {{ division.divisionName }}
+          </option>
+        </select>
+        </ng-container>
+        <ng-container *ngIf="!showDivision">
+          <label>Division</label><br/>
+          <span>{{divisionName}}</span>
+        </ng-container>
+      </div>
+      <div class="col-lg-2">
+        <label>Project</label>
+        <select class="form-control form-control-lg" name="project"  [(ngModel)]="project"
+            (change)="setProject($event.target.value)">
+           <option [ngValue]="0" [selected]=true>Select Project</option>
+          <option *ngFor="let project of projectList" [ngValue]="project.projectId">
+            {{ project.projectName }}
+          </option>
+        </select>
+
+      </div>
+
+
+      <div class="col-lg-2 nowrap">
+        <div class="row">
+          <div class="column"><label>Search </label>
+            <input
+              type="search"
+              class="form-control"
+              name="searchText"
+              id="searchText"
+              placeholder="Search"
+              value=""
+              formControlName="searchTerm"
+            />
+        </div>
+
+      </div>
+    </div>
+        <div class="col-lg-2 nowrap">
+          <div class="row">
+          <div class="column" style="cursor: pointer;"><br> &nbsp;
+            <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+          </div>
+
+
+        </div>
 
     </div>
 
+    <div  class="col-lg-2 ">
+      <!-- <br/> -->
+      <button type="button" class="btn btn-primary nowrap" (click)="projectAssignSubcountry()">Assign Subcountry to Project</button>
+    </div>
 
 
+      </div>
+    </div>
   </div>
+  <!-- end: Filtration form -->
+  <div class="table-responsive angular-bootstrap-table">
+    <table
+    id="tablebox"
+    class="table table-head-custom table-vertical-center"
+  >
+
+    <thead>
+      <tr >
+
+        <th class="sticky-header"> S No </th>
+        <th class="sticky-header">Country Name </th>
+        <th class="sticky-header">Priority </th>
+        <th class="sticky-header"> Display Status </th>
+        <th class="sticky-header">Edit</th>
+
+      </tr>
+
+    </thead>
+    <tbody>
+
+
+
+
+    <tr *ngFor="let country of subcountryService.items$ | async">
+
+
+      <td>
+        {{country.slNo}}
+      </td>
+      <td>
+          {{country.subCountry.countryName}}
+          </td>
+          <td>
+            {{country.subCountry.priority}}
+          </td>
+          <td>
+            {{country.subCountry.status?"Active":"InActive"}}
+          </td>
+          <td>
+            <a
+            title="Edit Project"
+            class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+            (click)="editSubCountry(country)"
+          >
+            <span
+              [inlineSVG]="
+                './assets/media/svg/icons/Communication/Write.svg'
+              "
+              cacheSVG="true"
+              class="svg-icon svg-icon-md svg-icon-primary"
+            >
+            </span>
+          </a>
+    </td>
+        </tr>
+    </tbody>
+    </table>
+    </div>
+
+    <app-paginator
+    class="d-flex justify-content-between align-items-center flex-wrap"
+    [paginator]="paginator"
+    [isLoading]="isLoading"
+    (paginate)="paginate($event)"
+  ></app-paginator>
 </div>

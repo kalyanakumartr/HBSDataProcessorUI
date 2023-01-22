@@ -1,1 +1,115 @@
-<p>project-template works!</p>
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Web Upload Page Creation</h3>
+    </div>
+    <div class="card-toolbar">
+
+      <div class="grid-item" style="cursor: pointer;">
+        &nbsp;&nbsp;
+
+      </div>&nbsp;
+    </div>
+  </div>
+  <div class="card-body">
+  <!-- begin: Filtration form -->
+  <div class="form form-label-right">
+    <div class="form-group row" [formGroup]="searchGroup">
+
+
+      <div class="col-lg-2">
+        <ng-container *ngIf="showDepartment">
+        <label>Department</label>
+        <select class="form-control form-control-lg form-control-solid" name="department"  [(ngModel)]="department"
+           formControlName="department" (change)="setDepartment($event.target.value)">
+          <option [ngValue]="0" [selected]=true>Select Department</option>
+          <option *ngFor="let department of departmentList" [ngValue]="department.departmentId">
+            {{ department.departmentName }}
+          </option>
+        </select>
+      </ng-container>
+      <ng-container *ngIf="!showDepartment">
+        <label>Department</label><br/>
+        <span>{{departmentName}}</span>
+      </ng-container>
+      </div>
+      <div class="col-lg-2">
+        <ng-container *ngIf="showDivision">
+        <label>Division</label>
+        <select class="form-control form-control-lg form-control-solid" name="division"  [(ngModel)]="division"
+           formControlName="division" (change)="setDivision($event.target.value)">
+           <option [ngValue]="0" [selected]=true>Select Division</option>
+          <option *ngFor="let division of divisionList" [ngValue]="division.divisionId">
+            {{ division.divisionName }}
+          </option>
+        </select>
+        </ng-container>
+        <ng-container *ngIf="!showDivision">
+          <label>Division</label><br/>
+          <span>{{divisionName}}</span>
+        </ng-container>
+      </div>
+
+
+
+      <div class="col-lg-2 nowrap">
+        <div class="row">
+          <div class="column"><label>Search</label>
+            <input
+              type="search"
+              class="form-control"
+              name="searchText"
+              id="searchText"
+              placeholder="Search"
+              value=""
+              formControlName="searchTerm"
+            />
+        </div>
+      </div>
+    </div>
+        <div class="col-lg-2 nowrap">
+          <div class="row">
+          <div class="column" style="cursor: pointer;"> <br>&nbsp;
+            <i title="Clear Filter" (click)="clearFilter()" class="fas fa-filter fa-2x"></i>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end: Filtration form -->
+  <div style=" padding: 0px 10px 10px 20px;">
+    <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8" >
+
+
+      <!-- Position Column -->
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="projectName">
+        <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Project Name </mat-header-cell>
+        <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.projectName}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="projectId">
+        <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Client Name </mat-header-cell>
+        <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.projectId}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="templateUploadDate">
+        <mat-header-cell style="justify-content:left; flex: 0 0 15% !important;" *matHeaderCellDef mat-sort-header left> Template Upload Date </mat-header-cell>
+        <mat-cell style="justify-content:left; flex: 0 0 15% !important;" *matCellDef="let element"> {{element.templateUploadDate}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell *matCellDef="let element"> <button type="button" class="btn btn-primary btn-elevate" (click)="downloadTemplate(element.projectId)" >Download</button> </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginator
+      [pageSize]="10"
+      [pageSizeOptions]="[5, 10, 20]"
+      [showFirstLastButtons]="true">
+    </mat-paginator>
+      </div>
+</div>

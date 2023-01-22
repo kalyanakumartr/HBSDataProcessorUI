@@ -1,9 +1,9 @@
 export class ProjectDetails{
-      actualCompletedDate!:string;
-      billingCycle!:string;
-      bpsPlannedCompletionDate!: string;
-      bpsStartDate!: string;
-      clientExpectedCompletionDate!: string;
+      actualCompletedDate!:any;
+      billingCycle!:any;
+      bpsPlannedCompletionDate!: any;
+      bpsStartDate!: any;
+      clientExpectedCompletionDate!: any;
       clientName!: string;
       deliverables!: string;
       displayInOtherUIProjectList!: string;
@@ -13,12 +13,14 @@ export class ProjectDetails{
       modeOfDelivery!: string;
       noOfDaysRequiredToComplete!: string;
       plannedNoOfResources!: string;
-      poDated: string;
+      poDated: any;
       poNumber!:string;
       projectStatus!: string;
       projectType!:string;
       receivedWorkVolume!: string;
       totalProjectedWorkVolume!:string;
       unitsOfMeasurement!:string;
-      projectmanagerName!:string;
+      projectManagerName!:string;
+      createdDate!:string;
+      modifiedDate!:string;
   }

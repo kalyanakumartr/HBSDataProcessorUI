@@ -9,6 +9,7 @@ import { Department } from '../_models/department.model';
 import { Project } from '../_models/project.model';
 import { Team } from '../_models/team.model';
 import { SubCountry } from '../_models/sub-country.model';
+import { Process } from '../../time-tracker/modal/process.model';
 
 const DEFAULT_STATE: IProjectTableState = {
   filter: {},
@@ -20,6 +21,8 @@ const DEFAULT_STATE: IProjectTableState = {
   projectId: '',
   groupId:'',
   teamId:'',
+  type:'',
+  clientName:'',
   grouping: new GroupingState(),
   entityId: undefined,
   employeeId: '',
@@ -54,11 +57,21 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
     _taskTableState$ = new BehaviorSubject<IProjectTableState>(DEFAULT_STATE);
     isLoadingSubject: BehaviorSubject<boolean>;
     protected http: HttpClient;
+
   API_URL = `${environment.adminApiUrl}`;
   VIEW_API_URL = `${environment.viewApiUrl}`;
+  private _errorMsg: any;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
+    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
     this._tableState$ = this._taskTableState$;
+  }
+  public setDefaults() {
+    this.patchStateWithoutFetch({departmentId:'',divisionId:'',searchTerm:'',clientName:'',status:'',projectId:''  });
+  }
+  public patchStateWithoutFetch(patch: Partial<IProjectTableState>) {
+    const newState = Object.assign(this._taskTableState$.value, patch);
+    this._taskTableState$.next(newState);
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());
@@ -78,6 +91,75 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
       })
     );
   }
+
+  getClientNameList(){
+    const url = this.VIEW_API_URL + "/getClientNameList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  getDeliveryModeList(){
+
+    const url = this.VIEW_API_URL + "/getDeliveryModeList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    //withmodel
+    //return this.http.post<UomDetail[]>(url, {},{headers: httpHeaders}).pipe(
+      //without Model
+      return this.http.post(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+
+  getUomList(){
+
+    const url = this.VIEW_API_URL + "/getUnitMeasurementList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    //withmodel
+    //return this.http.post<UomDetail[]>(url, {},{headers: httpHeaders}).pipe(
+      //without Model
+      return this.http.post(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+
+  getDeliveryTypeList(){
+
+    const url = this.VIEW_API_URL + "/getDeliveryTypeList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    //withmodel
+    //return this.http.post<UomDetail[]>(url, {},{headers: httpHeaders}).pipe(
+      //without Model
+      return this.http.post(url, {},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+
+
   getDivisionList(department){
 
     const url = this.API_URL + "/getDivisionList"+"/"+department;
@@ -94,7 +176,7 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
   }
   getProjectList(division){
 
-    const url = this.API_URL + "/getProjectList"+"/"+division;
+    const url = this.VIEW_API_URL + "/getProjectList"+"/"+division;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -105,6 +187,14 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
         return of({ items: [], total: 0 });
       })
     );
+  }
+  getProjectById(id: string): Observable<Project> {
+
+    const url =`${this.VIEW_API_URL}/getProject/${id}`;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<Project>(url, {  },{ headers: httpHeaders, });
   }
 
   getGroupList(division){
@@ -123,8 +213,7 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
   }
 
   getTeamList(groupId){
-
-    const url = this.API_URL + "/getTeamList/"+groupId;
+    const url = this.API_URL + "/getTeamList/ALL/"+groupId;
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -152,7 +241,7 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
   }
 
   getProjectSubCountryList(projectId){
-    const url = this.VIEW_API_URL + "/getProjectSubCountryList";
+    const url = this.VIEW_API_URL + "/getSubCountryList";
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
     });
@@ -165,7 +254,102 @@ export class ProjectService extends TableService<Project> implements OnDestroy {
     );
   }
 
+  getUserListByRoles(divisionId, roleShortNames,search){
 
+    const url = this.API_URL + "/getUserListByRoles";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {
+      "roleShortNames": roleShortNames,
+      "divisionId":divisionId?divisionId:"",
+      "searchParam":search
+  },{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  updateSubCountry(subCountry, path ): Observable<any>{
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, subCountry,{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  createSubCountry(subCountry, path ): Observable<any>{
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, subCountry,{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  assignSubCountryToProject(subCountryArray, projectId, path, ){
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"countryList":subCountryArray,"projectId":projectId},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  getProcessList(projectId){
+    const url = this.VIEW_API_URL + "/getProcessList";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post<Array<Process>>(url, {"projectId":projectId},{headers: httpHeaders}).pipe(
+      catchError(err => {
+
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  createProcess(process, path, ){
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url,{"formProcess": process},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
+  assignProcessToProject(processArray, projectId, path, ){
+    const url = this.VIEW_API_URL + path;
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, {"processIds":processArray,"projectId":projectId},{headers: httpHeaders}).pipe(
+      catchError(err => {
+        this._errorMsg.next(err);
+        console.error('FIND ITEMS', err);
+        return of({ items: [], total: 0 });
+      })
+    );
+  }
   private _listners = new Subject<any>();
   listen(): Observable<any>{
     return this._listners.asObservable();

@@ -1,4 +1,5 @@
 import { Component, Input, IterableDiffers, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DualListComponent } from 'angular-dual-listbox';
 import { of } from 'rxjs';
@@ -35,22 +36,45 @@ export class ProjectAssignSubcountryComponent implements OnInit {
 
   constructor(
     private projectService: ProjectService,
+    private snackBar: MatSnackBar,
     public modal: NgbActiveModal
   ) {
 
   }
 
   save(){
-    console.log("Save confirmedSubCountry", this.confirmedSubCountry);
-  }
+    console.log("Save confirmedSubCountry", this.confirmed);
+    var selectedSubCountry = [];
+    this.confirmed.forEach(el=>{
+      selectedSubCountry.push(el.value);
+    })
+    const sbCreate = this.projectService.assignSubCountryToProject(selectedSubCountry,this.projectId, "/mapSubCountry").pipe(
+      tap(() => {
+         this.modal.close();
+       }),
+       catchError((errorMessage) => {
+         this.modal.dismiss(errorMessage);
+         return of(errorMessage);
+       }),
+     ).subscribe(res =>this.openSnackBar(res.messageCode?"SubCountry mapped Successfully":res,"!!"));
 
+  }
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 4000,
+      verticalPosition:"top"
+    });
+  }
   ngOnInit(): void {
-    this.doReset();
+    setTimeout(() => {
+      this.doReset();
+    }, 500);
+
   }
 
   private useSubCountry() {
-    this.key = 'country';
-    this.display = 'countryName';
+    this.key = 'value';
+    this.display = 'label';
     this.keepSorted = true;
     this.source = this.sourceSubCountry;
     this.confirmed = this.confirmedSubCountry==undefined?[]:this.confirmedSubCountry;
@@ -59,6 +83,18 @@ export class ProjectAssignSubcountryComponent implements OnInit {
     //this.confirmed = this.confirmedSubCountry;
   }
   doReset() {
+    this.projectService.getProjectSubCountryList(this.projectId).pipe(
+      tap((res: Array<SubCountry>) => {
+        this.confirmedSubCountry = res;
+        this.useSubCountry();
+        console.log("confirmedSubCountry", this.confirmedSubCountry)
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of({
+          items: []
+        });
+      })).subscribe();
     this.projectService.getProjectSubCountryList("").pipe(
       tap((res: Array<SubCountry>) => {
         this.sourceSubCountry = res;
@@ -71,19 +107,10 @@ export class ProjectAssignSubcountryComponent implements OnInit {
           items: []
         });
       })).subscribe();
+      // setTimeout(() => {
 
-      this.projectService.getProjectSubCountryList(this.projectId).pipe(
-        tap((res: Array<SubCountry>) => {
-          this.confirmedSubCountry = res;
-          //this.useSubCountry();
-          console.log("confirmedSubCountry", this.confirmedSubCountry)
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of({
-            items: []
-          });
-        })).subscribe();
+      // }, 300);
+
   }
 
   filterBtn() {

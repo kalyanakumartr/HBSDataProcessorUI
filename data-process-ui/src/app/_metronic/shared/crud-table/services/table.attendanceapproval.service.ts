@@ -14,6 +14,8 @@ const DEFAULT_STATE: IApprovalTableState = {
   projectId: '',
   groupId:'',
   teamId:'',
+  type:'',
+  clientName:'',
   grouping: new GroupingState(),
   entityId: undefined,
   employeeId: '',

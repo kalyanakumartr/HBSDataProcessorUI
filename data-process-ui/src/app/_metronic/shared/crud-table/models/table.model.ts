@@ -12,9 +12,11 @@ export interface ITableState {
   projectId: string;
   groupId:string;
   teamId:string;
+  type:string;//Group or Team
   fromDate: string;
   toDate: string;
   status: string;
+  clientName:any;
   workUnitId: string;
   startWUMiles:string;
   endWUMiles:string;
@@ -72,6 +74,62 @@ export interface IApprovalTableState extends ITableState{
   taskStatusList:any
 }
 export interface IProjectTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any;
+  clientName:any;
+}
+export interface IProcessTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+export interface ISubcountryTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+export interface IWorkflowTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+export interface IGroupTeamTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+export interface ITeamTransferTableState extends ITableState{
+  employeeId: any,
+  queueList:any,
+  projectId:any,
+  fromDate:any,
+  toDate:any;
+  status:any;
+  taskStatusList:any
+}
+
+export interface IRoadTypeTableState extends ITableState{
   employeeId: any,
   queueList:any,
   projectId:any,

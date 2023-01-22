@@ -3,8 +3,9 @@
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
       <b><label class="heading">
       <ng-container >
+        <ng-container  *ngIf="!isEdit">Create SubCountry </ng-container>
+        <ng-container  *ngIf="isEdit">Edit SubCountry </ng-container>
 
-        <ng-container >Create  SubCountry List</ng-container>
       </ng-container>
     </label></b>
     </div>
@@ -19,50 +20,23 @@
       </ng-container>
 
 
-      <ng-container *ngIf="customer">
+      <ng-container *ngIf="subCountry">
         <form action="#" class="form form-label-right" [formGroup]="formGroup">
 
 
 
           <div class="form-group row">
             <div class="col-lg-3">
-              <label class="form-label"> SubCountry ID</label>
-              <ng-container *ngIf="customer.userId">
-                <input type="text" class="form-control form-control-lg form-control-solid" name="projectId" readonly
-                placeholder="Sub Country ID" autocomplete="off" [class.is-invalid]="isControlInvalid('projectId')" maxlength=20
-                [class.is-valid]="isControlValid('projectId')" formControlName="projectId" />
-                 </ng-container>
-                 <ng-container *ngIf="!customer.id">
-                  <input type="text" class="form-control form-control-lg form-control-solid" name="subCountryId"
-                    placeholder="Sub Country ID" autocomplete="off" [class.is-invalid]="isControlInvalid('subCountryId')" maxlength=20
-                    [class.is-valid]="isControlValid('subCountryId')" formControlName="subCountryId" />
-                  <div class="invalid-feedback" *ngIf="controlHasError('required', 'subCountryId')">Project Id is required</div>
-                </ng-container>
-            </div>
-
-
-
-
-
-
-
-
-            <div class="col-lg-3">
               <label class="form-label">SubCountry Name</label>
-              <input type="text" class="form-control form-control-lg form-control-solid" name="SubCountryname"
-                placeholder="SubCountry Name" autocomplete="off" [class.is-invalid]="isControlInvalid('SubCountryname')" maxlength=50
-                [class.is-valid]="isControlValid('SubCountryname')" formControlName="SubCountryname" />
-              <div class="invalid-feedback" *ngIf="controlHasError('required', 'SubCountryname')">SubCountry Name is required</div>
-              <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'SubCountryname')">SubCountry Name should have at
-                least 3 symbols</div>
-              <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'SubCountryname')">SubCountry Name should have
-                maximum 50 characters</div>
+              <input type="text" class="form-control form-control-lg form-control-solid" name="countryName"
+                placeholder="SubCountry Name" autocomplete="off" formControlName="countryName" />
+
             </div>
 
             <div class="col-lg-3">
               <label class="form-label">Priority</label>
-              <select class="form-control form-control-lg form-control-solid" name="Priority"
-                [class.is-invalid]="isControlInvalid('Priority')" formControlName="Priority">
+              <select class="form-control form-control-lg form-control-solid" name="priority"
+                 formControlName="priority">
                 <option value="High">High</option>
                 <option value="Medium">Medium</option>
                 <option value="Low">Low</option>
@@ -72,12 +46,12 @@
               <div class="col-lg-3">
                 <label>Display Status </label>
                 <select class="form-control form-control-lg form-control-solid" name="displayStatus"
-                  [class.is-invalid]="isControlInvalid('dStatus')" formControlName="dStatus">
+                   formControlName="dStatus">
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
 
                 </select>
-                <div class="feedback">Display <b>Status</b></div>
+
               </div>
 
 
@@ -87,7 +61,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
-          <ng-container *ngIf="customer">
+          <ng-container *ngIf="subCountry">
 
             <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
               >Save</button>

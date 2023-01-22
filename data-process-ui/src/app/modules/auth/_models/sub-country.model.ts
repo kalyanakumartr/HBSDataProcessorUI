@@ -1,9 +1,10 @@
 export class SubCountry {
   country: string;
+  countryId: string;
   countryName: string;
-  displayOrder: string;
+  displayOrder: number;
   priority: string;
-  status:string;
+  status:boolean;
   value:string;
   label:string;
 }

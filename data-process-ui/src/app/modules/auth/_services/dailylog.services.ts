@@ -117,6 +117,14 @@ export class DailyLogService  {
       })
     );
   }
+  updateOtHours(timesheetId,approvedOTHours){
+
+    const url = this.TALE_API_URL + "/approveOTHours";
+    const httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${this.getAuthFromLocalStorage().access_token}`,
+    });
+    return this.http.post(url, { "timesheetIds":[timesheetId],"approvedOTHours":approvedOTHours},{headers: httpHeaders});
+  }
   deleteDailyLog(id, timesheetId){
 
     const url = this.API_URL + "/deleteDailyLog";

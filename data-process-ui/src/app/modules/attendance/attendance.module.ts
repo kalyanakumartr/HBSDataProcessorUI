@@ -13,11 +13,12 @@ import { GroupAttendanceComponent } from './group-attendance/group-attendance.co
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimesheetApprovalComponent } from './timesheet-approval/timesheet-approval.component';
 import { ChangeAttendanceComponent } from './change-attendance/change-attendance.component';
+import { ChangeOvertimeComponent } from './change-overtime/change-overtime.component';
 
 
 
 @NgModule({
-  declarations: [MarkAttendanceComponent, AttendanceComponent, IndividualAttendanceComponent, GroupAttendanceComponent, TimesheetApprovalComponent,ChangeAttendanceComponent],
+  declarations: [MarkAttendanceComponent, AttendanceComponent, IndividualAttendanceComponent, GroupAttendanceComponent, TimesheetApprovalComponent,ChangeAttendanceComponent, ChangeOvertimeComponent],
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,AttendanceRoutingModule,NgbModalModule, MatSnackBarModule, MatButtonModule,MatIconModule,GeneralModule, NgbDatepickerModule
   ],

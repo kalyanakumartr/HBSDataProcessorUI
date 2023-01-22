@@ -25,6 +25,30 @@ export class SortStateProject implements ISortState {
   column = 'projectDetail.modifiedDate'; // Id by default
   direction: SortDirection = 'desc'; // asc by default;
 }
+export class SortGroupTeam implements ISortState {
+  column = 'groupName'; // Id by default
+  direction: SortDirection = 'asc'; // asc by default;
+}
+export class SortStateRoadType implements ISortState {
+  column = 'roadName'; // Id by default
+  direction: SortDirection = 'desc'; // asc by default;
+}
+export class SortWorkflow implements ISortState {
+  column = 'group.groupName'; // Id by default
+  direction: SortDirection = 'desc'; // asc by default;
+}
+export class SortProcess implements ISortState {
+  column = 'process.processName'; // Id by default
+  direction: SortDirection = 'asc'; // asc by default;
+}
+export class SortSubcountry implements ISortState {
+  column = 'subCountry.countryName'; // Id by default
+  direction: SortDirection = 'asc'; // asc by default;
+}
+export class SortTeamTransfer implements ISortState {
+  column = 'userName'; // Id by default
+  direction: SortDirection = 'asc'; // asc by default;
+}
 export interface ISortView {
   sorting: SortState;
   ngOnInit(): void;
