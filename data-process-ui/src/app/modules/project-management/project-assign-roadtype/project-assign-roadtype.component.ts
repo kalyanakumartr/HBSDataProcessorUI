@@ -106,7 +106,7 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
 
   confirmed: Array<RoadType>=[];
   isLoading$;
-   checked:false;
+  multiChecked:boolean = false;
   value="";
   roadType: RoadType;
   formGroup: FormGroup;
@@ -165,6 +165,9 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
 
 
   }
+  roadTypeSelect(){
+    alert(this.roadTyp);
+  }
   getRoadList()
   {
     this.roadTypeList=[];
@@ -206,10 +209,16 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
   }
 
   loadForm() {
-    // var d;
-    // this.value=d.indexOf("Multi");
-  // d
-  this.value=this.roadType?this.roadType.roadName:'';
+
+  if(this.roadType){
+      this.multiChecked=this.roadType.roadName.indexOf("Multi_")==-1?(this.roadType.roadName.indexOf("Multy")== -1?false:true):true;
+      this.value=this.roadType.roadName;
+      if(this.multiChecked){
+        this.roadTyp="";
+      }
+  }else{
+    this.value='';
+  }
     this.formGroup = this.fb.group({
       projectName: [this.roadType?this.roadType.project.projectName:'', Validators.compose([])],
       roadName: [this.roadType?this.roadType.roadName:'', Validators.compose([])],
@@ -247,10 +256,11 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
     this.roadType.milesPercentSet.push(milesPercent);
     this.roadType.project.projectId=this.projectId;
     this.roadType.roadTypeList=[];
-
+alert(this.roadTyp.toString());
     var strArray =this.roadTyp.toString().split(",");
 
     for(var str in strArray){
+      alert(str);
       alert(this.roadTypeList[str]);
 
       this.roadType.roadTypeList.push(this.roadTypeList[str]);
@@ -291,19 +301,16 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
     {
       // alert(this.value.indexOf("abc"));
      // alert(JSON.stringify(this.value.indexOf("Mutti")));
-      if(this.value.indexOf("Multi")==-1)
+      if(this.value.indexOf("Multi_")==-1 && this.value.indexOf("Multy")==-1)
       {
 
        this.value="Multi_"+this.value;
       }
-      // else
-      // {
 
-      // }
     }
     else
     {
-      this.value=this.value.replace("Multi_","")
+      this.value=this.value.replace("Multi_","").replace("Multy","");
 
     }
   }

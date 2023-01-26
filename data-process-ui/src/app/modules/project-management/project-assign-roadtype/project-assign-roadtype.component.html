@@ -79,8 +79,8 @@
               maxlength="50"
               [class.is-valid]="isControlValid('roadName')"
               formControlName="roadName"
-              [(ngModel)]="value" 
-              
+              [(ngModel)]="value"
+
             />
             <div
               class="invalid-feedback"
@@ -111,12 +111,12 @@
               name="benchMark"
               placeholder="Benchmark Time"
               autocomplete="off"
-       
+
               maxlength="50"
-       
+
               formControlName="benchMark"
             />
-       
+
           </div>
 
 
@@ -152,8 +152,8 @@
             <ng-container >
             <label>Multy Road Type</label>
             <div>
-            <input type="checkbox" class="form-control" name="multiType" 
-            [(ngModel)]="checked" formControlName="multiType"  id="multiType"
+            <input type="checkbox" class="form-control" name="multiType"
+            [(ngModel)]="multiChecked" formControlName="multiType"  id="multiType"
             (click)="multi($event)"
              />
           </div>
@@ -209,17 +209,17 @@
 
           <div class="col-lg-3">
           <ng-container>
-          <ng-container *ngIf="checked">
+          <ng-container *ngIf="multiChecked">
             <label class="form-label"> Road Type List</label>
-            <select class="form-control" name="roadTyp" 
-            [(ngModel)]="roadTyp" 
-            formControlName="roadTyp" multiple  >
+            <select class="form-control" name="roadTyp"
+            [(ngModel)]="roadTyp"
+            multiple (click)="roadTypeSelect();" >
               <option  *ngFor="let roadTyp of  roadTypeList" [ngValue]="roadTyp.roadId">
                 {{roadTyp.roadName}}
               </option>
             </select>
             </ng-container>
-            <ng-container *ngIf="!checked"></ng-container>
+            <ng-container *ngIf="!multiChecked"></ng-container>
           </ng-container>
           </div>
         </div>
