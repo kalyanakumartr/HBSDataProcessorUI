@@ -41,10 +41,12 @@ import { ProjectProcessCreateComponent } from './project-process-create/project-
 import { ProjectProcessListComponent } from './project-process-list/project-process-list.component';
 import { CreateWorkflowComponent } from './create-workflow/create-workflow.component';
 import { TeamTransferComponent } from './team-transfer/team-transfer.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 @NgModule({
   declarations: [ProjectCreateComponent, ProjectManagementComponent, RoadtypePoCreateComponent, AddSubcountryComponent, ProjectTemplateComponent, ProjectListComponent, ProjectSubcountryListComponent, ProjectAssignSubcountryComponent, ProjectAssignRoadtypeComponent, RoadtypePoListComponent,  RoadtypeListComponent, GroupListComponent, TeamListComponent, GroupCreateComponent, TeamCreateComponent, AssignTeamGroupComponent, GroupTeamAssignComponent, TeamTeammemberAssignComponent, ProjectAssignProcessComponent, ProjectProcessCreateComponent, ProjectProcessListComponent, CreateWorkflowComponent, TeamTransferComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule,ProjectManagementRoutingModule,NgbModalModule, CommonModule,   HttpClientModule,
-    CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatPaginatorModule, MatTableModule,MatSortModule, MatDividerModule, MatExpansionModule,MatDatepickerModule,MatNativeDateModule, MatFormFieldModule,MatInputModule,AngularDualListBoxModule],
+    CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatPaginatorModule, MatTableModule,MatSortModule, MatDividerModule, MatExpansionModule,MatDatepickerModule,MatNativeDateModule, MatFormFieldModule,MatInputModule,AngularDualListBoxModule, NgMultiSelectDropDownModule],
   providers: [MatDatepickerModule, MatNativeDateModule],
 
 })

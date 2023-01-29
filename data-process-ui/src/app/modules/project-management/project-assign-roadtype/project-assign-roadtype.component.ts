@@ -17,6 +17,7 @@ import { Project } from '../../auth/_models/project.model';
 import { RoadType } from '../../auth/_models/road-type.model';
 import { ProjectService } from '../../auth/_services/project.services';
 import { RoadtypeService } from '../../auth/_services/roadtype.services';
+import {IDropdownSettings} from 'ng-multiselect-dropdown';
 
 
 //const EMPTY_PROJECT: Project = {
@@ -81,6 +82,7 @@ const EMPTY_ROADTYPE: RoadType = {
       projectManagerName:'',
       createdDate:'',
       modifiedDate:''
+
     }
 
   }
@@ -106,7 +108,7 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
 
   confirmed: Array<RoadType>=[];
   isLoading$;
-  multiChecked:boolean = false;
+   checked:false;
   value="";
   roadType: RoadType;
   formGroup: FormGroup;
@@ -117,6 +119,13 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
   roadTyp:string;
   // roadType:any;
   roadName:string;
+
+dropdownList:Array<any> =[];
+selectedItems:any =[];
+dropdownSetting:any ={};
+
+
+
   private subscriptions: Subscription[] = [];
 
   constructor(private modalService: NgbModal,
@@ -151,22 +160,32 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
     }
   ngOnInit(): void {
     this.getRoadList();
+    this.dropdownSetting = {
+      singleSelection: false,
+      idField: 'roadId',
+      textField: 'roadName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
 
     if(this.roadTypeObj){
       this.roadType = this.roadTypeObj;
       this.projectName = this.roadType.project.projectName;
     }
 
-    this.loadRoadTypeId();
+    // this.dropdownList=[this.roadTypeList]
 
+    this.loadRoadTypeId();
+// this.dropdownSetting={
+//   singleSelection:false;
+// };
 
   }
   ngAfterViewInit() {
 
 
-  }
-  roadTypeSelect(){
-    alert(this.roadTyp);
   }
   getRoadList()
   {
@@ -209,16 +228,10 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
   }
 
   loadForm() {
-
-  if(this.roadType){
-      this.multiChecked=this.roadType.roadName.indexOf("Multi_")==-1?(this.roadType.roadName.indexOf("Multy")== -1?false:true):true;
-      this.value=this.roadType.roadName;
-      if(this.multiChecked){
-        this.roadTyp="";
-      }
-  }else{
-    this.value='';
-  }
+    // var d;
+    // this.value=d.indexOf("Multi");
+  // d
+  this.value=this.roadType?this.roadType.roadName:'';
     this.formGroup = this.fb.group({
       projectName: [this.roadType?this.roadType.project.projectName:'', Validators.compose([])],
       roadName: [this.roadType?this.roadType.roadName:'', Validators.compose([])],
@@ -256,11 +269,10 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
     this.roadType.milesPercentSet.push(milesPercent);
     this.roadType.project.projectId=this.projectId;
     this.roadType.roadTypeList=[];
-alert(this.roadTyp.toString());
+
     var strArray =this.roadTyp.toString().split(",");
 
     for(var str in strArray){
-      alert(str);
       alert(this.roadTypeList[str]);
 
       this.roadType.roadTypeList.push(this.roadTypeList[str]);
@@ -301,16 +313,19 @@ alert(this.roadTyp.toString());
     {
       // alert(this.value.indexOf("abc"));
      // alert(JSON.stringify(this.value.indexOf("Mutti")));
-      if(this.value.indexOf("Multi_")==-1 && this.value.indexOf("Multy")==-1)
+      if(this.value.indexOf("Multi")==-1)
       {
 
        this.value="Multi_"+this.value;
       }
+      // else
+      // {
 
+      // }
     }
     else
     {
-      this.value=this.value.replace("Multi_","").replace("Multy","");
+      this.value=this.value.replace("Multi_","")
 
     }
   }
