@@ -108,7 +108,7 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
 
   confirmed: Array<RoadType>=[];
   isLoading$;
-   checked:false;
+  multiChecked:boolean = false;
   value="";
   roadType: RoadType;
   formGroup: FormGroup;
@@ -187,6 +187,9 @@ dropdownSetting:any ={};
 
 
   }
+  roadTypeSelect(){
+    alert(this.roadTyp);
+  }
   getRoadList()
   {
     this.roadTypeList=[];
@@ -228,10 +231,15 @@ dropdownSetting:any ={};
   }
 
   loadForm() {
-    // var d;
-    // this.value=d.indexOf("Multi");
-  // d
-  this.value=this.roadType?this.roadType.roadName:'';
+    if(this.roadType){
+      this.multiChecked=this.roadType.roadName.indexOf("Multi_")==-1?(this.roadType.roadName.indexOf("Multy")== -1?false:true):true;
+      this.value=this.roadType.roadName;
+      if(this.multiChecked){
+        this.roadTyp="";
+      }
+    }else{
+      this.value='';
+    }
     this.formGroup = this.fb.group({
       projectName: [this.roadType?this.roadType.project.projectName:'', Validators.compose([])],
       roadName: [this.roadType?this.roadType.roadName:'', Validators.compose([])],
@@ -311,22 +319,15 @@ dropdownSetting:any ={};
   {
     if(event.target.checked)
     {
-      // alert(this.value.indexOf("abc"));
-     // alert(JSON.stringify(this.value.indexOf("Mutti")));
-      if(this.value.indexOf("Multi")==-1)
+      if(this.value.indexOf("Multi_")==-1 && this.value.indexOf("Multy")==-1)
       {
 
        this.value="Multi_"+this.value;
       }
-      // else
-      // {
-
-      // }
     }
     else
     {
-      this.value=this.value.replace("Multi_","")
-
+      this.value=this.value.replace("Multi_","").replace("Multy","");
     }
   }
   create() {

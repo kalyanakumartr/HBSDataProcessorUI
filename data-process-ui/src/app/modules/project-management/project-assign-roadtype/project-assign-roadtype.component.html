@@ -153,7 +153,7 @@
             <label>Multy Road Type</label>
             <div>
             <input type="checkbox" class="form-control" name="multiType"
-            [(ngModel)]="checked" formControlName="multiType"  id="multiType"
+            [(ngModel)]="multiChecked" formControlName="multiType"  id="multiType"
             (click)="multi($event)"
              />
           </div>
@@ -209,7 +209,7 @@
 
           <div class="col-lg-3">
           <ng-container>
-          <ng-container *ngIf="checked">
+          <ng-container *ngIf="multiChecked">
             <label class="form-label"> Road Type List</label>
 
             <ng-multiselect-dropdown
@@ -232,7 +232,7 @@
               </option>
             </select> -->
             </ng-container>
-            <ng-container *ngIf="!checked"></ng-container>
+            <ng-container *ngIf="!multiChecked"></ng-container>
           </ng-container>
           </div>
         </div>
