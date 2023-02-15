@@ -17,7 +17,7 @@ import { Project } from '../../auth/_models/project.model';
 import { RoadType } from '../../auth/_models/road-type.model';
 import { ProjectService } from '../../auth/_services/project.services';
 import { RoadtypeService } from '../../auth/_services/roadtype.services';
-import {IDropdownSettings} from 'ng-multiselect-dropdown';
+import {IDropdownSettings, MultiSelectComponent } from 'ng-multiselect-dropdown';
 
 
 //const EMPTY_PROJECT: Project = {
@@ -113,16 +113,15 @@ export class ProjectAssignRoadtypeComponent  implements MatSlideToggleModule, On
   roadType: RoadType;
   formGroup: FormGroup;
   actionBtn:string="save";
-  roadTypeList:any[];
+  roadTypeList=[];
   roadList:any;
 
   roadTyp:string;
   // roadType:any;
   roadName:string;
 
-dropdownList:Array<any> =[];
-selectedItems:any =[];
-dropdownSetting:any ={};
+selectedItems=[];
+dropdownSettings:IDropdownSettings ;
 
 
 
@@ -160,13 +159,15 @@ dropdownSetting:any ={};
     }
   ngOnInit(): void {
     this.getRoadList();
-    this.dropdownSetting = {
+    this.dropdownSettings  = {
       singleSelection: false,
       idField: 'roadId',
       textField: 'roadName',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      enableCheckAll:false,
       itemsShowLimit: 3,
+      limitSelection:4,
       allowSearchFilter: true
     };
 
@@ -187,9 +188,7 @@ dropdownSetting:any ={};
 
 
   }
-  roadTypeSelect(){
-    alert(this.roadTyp);
-  }
+
   getRoadList()
   {
     this.roadTypeList=[];
@@ -235,7 +234,7 @@ dropdownSetting:any ={};
       this.multiChecked=this.roadType.roadName.indexOf("Multi_")==-1?(this.roadType.roadName.indexOf("Multy")== -1?false:true):true;
       this.value=this.roadType.roadName;
       if(this.multiChecked){
-        this.roadTyp="";
+        //this.selectedItems.push(this.roadType.roadTypeList)
       }
     }else{
       this.value='';
@@ -278,9 +277,9 @@ dropdownSetting:any ={};
     this.roadType.project.projectId=this.projectId;
     this.roadType.roadTypeList=[];
 
-    var strArray =this.roadTyp.toString().split(",");
+    //var strArray =this.roadTyp.toString().split(",");
 
-    for(var str in strArray){
+    for(var str in this.selectedItems){
       alert(this.roadTypeList[str]);
 
       this.roadType.roadTypeList.push(this.roadTypeList[str]);
@@ -364,5 +363,32 @@ dropdownSetting:any ={};
   isControlTouched(controlName): boolean {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
+  }
+
+  onItemSelect(item: any) {
+    console.log(item, this.selectedItems);
+    this.selectedItems.push(item);
+
+  }
+  onSelectAll(items: any) {
+    console.log(items, this.selectedItems);
+    //this.isAllItemsSelected()
+    //this.selectedItems.push(items);
+  }
+  onItemDeSelect(item: any){
+    console.log(item, this.selectedItems, this.selectedItems.indexOf(item));
+    var index =-1;
+    this.selectedItems.forEach((selItem, ind) => {
+      if(selItem.roadId === item.roadId){
+        index =ind;
+      }
+    });
+    if (index > -1) {
+      this.selectedItems.splice(index, 1);
+   }
+  }
+
+  onItemDeSelectAll(items: any){
+    console.log(items, this.selectedItems);
   }
 }

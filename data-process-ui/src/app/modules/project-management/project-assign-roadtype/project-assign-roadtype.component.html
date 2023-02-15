@@ -214,15 +214,14 @@
 
             <ng-multiselect-dropdown
             [placeholder]="'Select RoadType'"
-             [settings]="dropdownSetting"
+            [settings]="dropdownSettings"
             [data]="roadTypeList"
-            [(ngModel)]="roadTyp"
+            [(ngModel)]="selectedItems"
+            (onSelect)="onItemSelect($event)"
+            (onSelectAll)="onSelectAll($event)"
+            (onDeSelect)="onItemDeSelect($event)"
+            (onDeSelectAll)="onItemDeSelect($event)"
             >
-
-            <!-- <option  *ngFor="let roadTyp of  roadTypeList" [ngValue]="roadTyp.roadId">
-              {{roadTyp.roadName}}
-            </option> -->
-
             </ng-multiselect-dropdown>
             <!-- <select class="form-control" name="roadTyp"
             [(ngModel)]="roadTyp"

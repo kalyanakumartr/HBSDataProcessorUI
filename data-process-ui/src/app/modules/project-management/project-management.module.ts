@@ -46,7 +46,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 @NgModule({
   declarations: [ProjectCreateComponent, ProjectManagementComponent, RoadtypePoCreateComponent, AddSubcountryComponent, ProjectTemplateComponent, ProjectListComponent, ProjectSubcountryListComponent, ProjectAssignSubcountryComponent, ProjectAssignRoadtypeComponent, RoadtypePoListComponent,  RoadtypeListComponent, GroupListComponent, TeamListComponent, GroupCreateComponent, TeamCreateComponent, AssignTeamGroupComponent, GroupTeamAssignComponent, TeamTeammemberAssignComponent, ProjectAssignProcessComponent, ProjectProcessCreateComponent, ProjectProcessListComponent, CreateWorkflowComponent, TeamTransferComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule,ProjectManagementRoutingModule,NgbModalModule, CommonModule,   HttpClientModule,
-    CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatPaginatorModule, MatTableModule,MatSortModule, MatDividerModule, MatExpansionModule,MatDatepickerModule,MatNativeDateModule, MatFormFieldModule,MatInputModule,AngularDualListBoxModule, NgMultiSelectDropDownModule],
+    CRUDTableModule,    FormsModule,    ReactiveFormsModule, InlineSVGModule, NgbDatepickerModule, NgbModalModule, MatSnackBarModule, MatPaginatorModule, MatTableModule,MatSortModule, MatDividerModule, MatExpansionModule,MatDatepickerModule,MatNativeDateModule, MatFormFieldModule,MatInputModule,AngularDualListBoxModule, NgMultiSelectDropDownModule.forRoot()],
   providers: [MatDatepickerModule, MatNativeDateModule],
 
 })
