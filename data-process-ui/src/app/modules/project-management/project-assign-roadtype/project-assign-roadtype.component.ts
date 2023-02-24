@@ -18,6 +18,7 @@ import { RoadType } from '../../auth/_models/road-type.model';
 import { ProjectService } from '../../auth/_services/project.services';
 import { RoadtypeService } from '../../auth/_services/roadtype.services';
 import {IDropdownSettings, MultiSelectComponent } from 'ng-multiselect-dropdown';
+import { RoadTypeForm } from '../../auth/_models/road-type-form';
 
 
 //const EMPTY_PROJECT: Project = {
@@ -279,10 +280,14 @@ dropdownSettings:IDropdownSettings ;
 
     //var strArray =this.roadTyp.toString().split(",");
 
-    for(var str in this.selectedItems){
-      alert(this.roadTypeList[str]);
-
-      this.roadType.roadTypeList.push(this.roadTypeList[str]);
+    for(var str of this.selectedItems){
+      alert(str.roadId);
+      for(var roadType of this.roadTypeList){
+        if(roadType.roadId === str.roadId){
+          this.roadType.roadTypeList.push();
+          break;
+        }
+     }
     }
 
   }
@@ -295,13 +300,21 @@ dropdownSettings:IDropdownSettings ;
     });
   }
   edit() {
+    var roadTypeForm:RoadTypeForm = {
+      id:1,
+      formRoadType:EMPTY_ROADTYPE,
+      roadTypeList:[]
+    };
+
     this.roadType.milesPercentSet[0].modifiedDate=undefined;
     if(this.roadType.milesPercentSet.length>1){
       this.roadType.milesPercentSet.splice(1,this.roadType.milesPercentSet.length);
     }
 
     this.roadType.project.templateUploadDate=undefined
-    const sbUpdate = this.roadtypeService.update(this.roadType,"/updateRoadType","formRoadType").pipe(
+    roadTypeForm.formRoadType= this.roadType;
+    roadTypeForm.roadTypeList=this.roadType.roadTypeList
+    const sbUpdate = this.roadtypeService.update(roadTypeForm,"/updateRoadType","formRoadType").pipe(
       tap(() => {
         this.modal.close();
         this.roadtypeService.filterData("");
