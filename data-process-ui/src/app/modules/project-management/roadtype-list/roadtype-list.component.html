@@ -9,9 +9,9 @@
         <ng-container *ngIf="isLoading$ | async">
           <span class="spinner spinner-primary ml-5"></span>
         </ng-container>
-  
+
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      
+
         <button type="button" class="btn btn-primary" (click)="exportExcel()">
           Export Excel
         </button>
@@ -191,24 +191,24 @@
               </td>
               <td>{{ roadType.project.clientName }}</td>
 
-              <td>{{ roadType.milesPercentSet[0].benchMark }}</td>
+              <td>{{ roadType.milesPercentSet != null?roadType.milesPercentSet[0].benchMark :""}}</td>
 
               <td>
                 {{ roadType.multiType }}
               </td>
               <td>
-                {{ roadType.milesPercentSet[0].units }}
+                {{ roadType.milesPercentSet != null?roadType.milesPercentSet[0].units :"" }}
               </td>
               <td>
-                {{ roadType.milesPercentSet[0].status?"Active":"Inactive" }}
+                {{ roadType.milesPercentSet != null?roadType.milesPercentSet[0].status?"Active":"Inactive" :"" }}
               </td>
               <td>
-                {{ roadType.milesPercentSet[0].production }}
+                {{ roadType.milesPercentSet != null?roadType.milesPercentSet[0].production :""}}
               </td>
-              <td>{{ roadType.milesPercentSet[0].qualityControl }}</td>
+              <td>{{ roadType.milesPercentSet != null?roadType.milesPercentSet[0].qualityControl:"" }}</td>
               <td>
                 {{
-                  roadType.milesPercentSet[0].modifiedDate
+                  roadType.milesPercentSet != null? roadType.milesPercentSet[0].modifiedDate:""
                 }}
               </td>
               <td>

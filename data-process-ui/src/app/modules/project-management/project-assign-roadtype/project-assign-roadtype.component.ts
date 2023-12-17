@@ -279,12 +279,13 @@ dropdownSettings:IDropdownSettings ;
     this.roadType.roadTypeList=[];
 
     //var strArray =this.roadTyp.toString().split(",");
-
+    if(this.multiChecked){
+      this.roadType.milesPercentSet =[];
+    }
     for(var str of this.selectedItems){
-      alert(str.roadId);
       for(var roadType of this.roadTypeList){
         if(roadType.roadId === str.roadId){
-          this.roadType.roadTypeList.push();
+          this.roadType.roadTypeList.push(roadType);
           break;
         }
      }
@@ -306,7 +307,7 @@ dropdownSettings:IDropdownSettings ;
       roadTypeList:[]
     };
 
-    this.roadType.milesPercentSet[0].modifiedDate=undefined;
+    //this.roadType.milesPercentSet[0].modifiedDate=undefined;
     if(this.roadType.milesPercentSet.length>1){
       this.roadType.milesPercentSet.splice(1,this.roadType.milesPercentSet.length);
     }
@@ -344,7 +345,15 @@ dropdownSettings:IDropdownSettings ;
   }
   create() {
     console.log("Add Road Type");
-    const sbCreate = this.roadtypeService.create(this.roadType,"/addRoadType","formRoadType").pipe(
+    var roadTypeForm:RoadTypeForm = {
+      id:1,
+      formRoadType:EMPTY_ROADTYPE,
+      roadTypeList:[]
+    };
+    roadTypeForm.formRoadType= this.roadType;
+    roadTypeForm.roadTypeList=this.roadType.roadTypeList;
+    this.roadType.roadTypeList=[];
+    const sbCreate = this.roadtypeService.create(roadTypeForm,"/addRoadType","formRoadType").pipe(
       tap(() => {
         this.modal.close();
         this.projectService.filterData("");
