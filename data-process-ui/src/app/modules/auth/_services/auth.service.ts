@@ -122,6 +122,7 @@ export class AuthService implements OnDestroy {
       return true;
     }
     return false;
+    console.log(localStorage);
   }
 
   private getAuthFromLocalStorage(): AuthModel {

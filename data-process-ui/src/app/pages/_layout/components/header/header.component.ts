@@ -93,11 +93,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     let result = 'logo-light.png';
 
     if (this.headerSelfTheme && this.headerSelfTheme === 'light') {
-      result = 'edrLogo_topnav.jpg';
+      result = 'edrLogo_topnav.png';
     }
 
     if (this.headerSelfTheme && this.headerSelfTheme === 'dark') {
-      result = 'edrLogo_topnav.jpg';
+      result = 'edrLogo_topnav.png';
     }
 
     return `./assets/media/logos/${result}`;
