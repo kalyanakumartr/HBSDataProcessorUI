@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
 import { GroupingState, IDeleteAction, IDeleteSelectedAction, IFetchSelectedAction, IFilterView, IGroupingView, ISearchView, ISortView, IUpdateStatusForSelectedAction, PaginatorState, SortState, SortStateAttendance } from 'src/app/_metronic/shared/crud-table';
@@ -42,6 +42,7 @@ IFilterView {
   approverMonthList:LabelValueModel[];
   adminSymbolList:LabelValueModel[];
   employeeSymbolList:LabelValueModel[];
+  isLoading$: Observable<boolean>;
   private subscriptions: Subscription[] = [];
   constructor(
     private fb: FormBuilder,
@@ -50,6 +51,7 @@ IFilterView {
     private _router: Router,
     public attendanceService: AttendanceService,
     public timeSheetService: TimeSheetService) {
+      this.isLoading$ = this.timeSheetService.isLoadingSubject;
       this.timeSheetService.listen().subscribe((m:any)=>{
         console.log("m -- -- --",m);
         this.filter();
@@ -61,6 +63,9 @@ IFilterView {
     // this.fromDate="01/01/2022";
     // this.toDate="31/01/2022";
     this.getData();
+    
+    const sb = this.timeSheetService.isLoading$.subscribe(res => this.isLoading = res);
+    this.subscriptions.push(sb);
     //this.search("");
   }
   private getData() {
@@ -168,6 +173,8 @@ IFilterView {
     }
     // form actions
     setMonth(value){
+      this.timeSheetService.isLoadingSubject.next(true);  
+
       var position =value.split(" - ");
       if(position.length>1){
         this.fromDate=position[0];
@@ -175,8 +182,10 @@ IFilterView {
         var searchTerm='';
         this.timeSheetService.patchStateWithoutFetch({fromDate:this.fromDate,toDate:this.toDate});
         this.timeSheetService.patchState({ searchTerm },"/searchTimesheet");
+        this.timeSheetService.isLoadingSubject.next(false);  
       }else{
         alert("Select Valid Month")
+        this.timeSheetService.isLoadingSubject.next(false);  
       }
     }
     refresh(){

@@ -67,7 +67,8 @@ isLoading$: Observable<boolean>;
 private subscriptions: Subscription[] = [];
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
-    private modalService: NgbModal, public userService: UsersService,    private authService: AuthService,public projectService: ProjectService) {
+    private modalService: NgbModal, public userService: UsersService,    private authService: AuthService,public projectService: ProjectService) 
+    {
       this.isLoading$ = this.userService.isLoadingSubject;
       this.userService.listen().subscribe((m:any)=>{
         console.log("m -- -- --",m);
