@@ -7,6 +7,13 @@
 
       <div class="grid-item" style="cursor: pointer;">
         &nbsp;&nbsp;
+        <ng-container *ngIf="isLoading$ | async">
+          <span class="spinner spinner-primary ml-5"></span>
+        </ng-container>
+        <ng-container *ngIf="isLoading$ | async">
+          <span class="spinner spinner-primary ml-5"></span>
+        </ng-container>
+
         <i title="Export Excel" (click)="exportExcel()" class="fas fa-file-excel fa-2x"></i>
       </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 

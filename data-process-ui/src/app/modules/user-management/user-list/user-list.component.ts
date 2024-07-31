@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { of, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -63,11 +63,12 @@ divisionName:string;
 showDivision:boolean;
 showDepartment:boolean;
 
-isLoading$;
+isLoading$: Observable<boolean>;
 private subscriptions: Subscription[] = [];
 authModel:AuthModel;
   constructor(private fb: FormBuilder,
     private modalService: NgbModal, public userService: UsersService,    private authService: AuthService,public projectService: ProjectService) {
+      this.isLoading$ = this.userService.isLoadingSubject;
       this.userService.listen().subscribe((m:any)=>{
         console.log("m -- -- --",m);
         this.filter();
@@ -349,6 +350,8 @@ authModel:AuthModel;
     }
   }
   exportExcel(){
+    this.userService.isLoadingSubject.next(true);
+
     this.userService.exportExcel("/exportToExcelOperRecord","Admin").subscribe(
       responseObj => {
         console.log("report success", responseObj);
@@ -357,11 +360,11 @@ authModel:AuthModel;
         link.href = downloadURL;
         link.download = "OperationalRecords.xlsx";
         link.click();
-
+        this.userService.isLoadingSubject.next(false);
       },
       error => {
         console.log("report error", error);
-
+        this.userService.isLoadingSubject.next(false);
 
       }
     );

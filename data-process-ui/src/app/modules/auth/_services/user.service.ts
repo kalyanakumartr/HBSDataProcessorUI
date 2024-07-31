@@ -25,6 +25,7 @@ export class UsersService extends TableService<UserModel> implements OnDestroy {
   API_URL = `${environment.adminApiUrl}`;
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
+    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
   }
 
   ngOnDestroy() {
