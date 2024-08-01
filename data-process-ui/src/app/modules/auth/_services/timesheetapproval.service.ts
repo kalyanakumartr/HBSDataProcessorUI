@@ -22,6 +22,7 @@ export class TimeSheetApprovalService  extends TableApprovalService<Approval> im
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
     this.API_URL = `${environment.taleApi}`;
+    finalize(() => this.isLoadingSubject.next(false))
 
   }
   ngOnDestroy() {

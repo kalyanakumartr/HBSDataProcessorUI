@@ -23,6 +23,7 @@ export class TimeSheetService  extends TableAttendanceService<TimeSheetModel> im
   constructor(@Inject(HttpClient) http, private authHttpService: AuthHTTPService,) {
     super(http);
     this.API_URL = `${environment.taleApi}`;
+    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
   }
   ngOnDestroy() {
     this.subscriptions.forEach(sb => sb.unsubscribe());
@@ -34,6 +35,7 @@ export class TimeSheetService  extends TableAttendanceService<TimeSheetModel> im
       return of(undefined);
     }
 
+    this.isLoadingSubject.next(true);
     console.log("Inside Search TimeSheet");
     const url = this.TALE_API_URL + '/searchTimesheet';
     const httpHeaders = new HttpHeaders({
@@ -45,7 +47,8 @@ export class TimeSheetService  extends TableAttendanceService<TimeSheetModel> im
         this._errorMsg.next(err);
         console.error('Error in Search TimeSheet', err);
         return of("Error in Search TimeSheet");
-      })
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
     );
   }
   getApprovalTimeSheet(){
@@ -65,7 +68,9 @@ export class TimeSheetService  extends TableAttendanceService<TimeSheetModel> im
         this._errorMsg.next(err);
         console.error('Error in Search TimeSheet', err);
         return of("Error in Search TimeSheet");
-      })
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
+
     );
   }
   private _listners = new Subject<any>();
