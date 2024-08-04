@@ -1,7 +1,7 @@
 //
 // Apexcharts
 //
-
+// style="color: #4CAF50;"
 // Text
 .apexcharts-text,
 .apexcharts-title-text,
@@ -38,6 +38,8 @@
 
 		&:hover{
 			background-color: $hover-bg !important;
+
+			// background-color: $hover-bg !important;
 		}
 	}
 }
@@ -58,6 +60,7 @@
 
 	.apexcharts-tooltip-title {
 		padding: 0.5rem 1rem;
+		
 	}
 
 	.apexcharts-tooltip-series-group {

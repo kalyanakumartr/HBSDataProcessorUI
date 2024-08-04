@@ -1,7 +1,8 @@
 <div class="card card-custom bg-gray-100 card-stretch gutter-b">
   <!-- Header -->
-  <div class="card-header border-0 bg-danger py-5" style="background-color: #357493 !important;"
+  <div class="card-header border-0 bg-primary py-5" 
   >
+  <!-- style="background-color: #357493 !important;" -->
     <h3 class="card-title font-weight-bolder text-white">My Performance</h3>
     <div class="card-toolbar">
 
@@ -33,7 +34,10 @@
             [plotOptions]="chartOptionsRB.plotOptions"
           ></apx-chart>
         </div>
-        <span class="text-muted font-weight-bold mt-2">Last 7 days Performance</span>
+        <!-- i remove text-muted-->
+        <!-- <span class="text-muted font-weight-bold mt-2">Last 7 days Performance</span> -->
+        <span class=" font-weight-bold mt-2" style="color:green ;">Last 7 days Performance</span>
+
       </div>
     </div>
     <!--begin::Chart-->
