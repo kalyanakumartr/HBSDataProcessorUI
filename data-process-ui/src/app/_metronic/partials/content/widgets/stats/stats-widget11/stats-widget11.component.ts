@@ -8,7 +8,8 @@ import { LayoutService } from '../../../../../core';
 export class StatsWidget11Component implements OnInit {
   @Input() cssClass;
   @Input() symbolShape;
-  @Input() baseColor;
+ @Input() baseColor;
+ 
   chartOptions: any = {};
   chartOptionsRB: any = {};
   fontFamily = '';
@@ -29,10 +30,12 @@ export class StatsWidget11Component implements OnInit {
    this.colorsGrayGray100 = this.layout.getProp('js.colors.gray.gray100');
   this.colorsGrayGray700 = this.layout.getProp('js.colors.gray.gray700');
   this.colorsThemeBaseSuccess = this.layout.getProp(
-    'js.colors.theme.base.success'
+      'js.colors.theme.base.success'
+    
   );
   this.colorsThemeLightSuccess = this.layout.getProp(
-    'js.colors.theme.light.success'
+     'js.colors.theme.light.success'
+     
   );
   this.fontFamily = this.layout.getProp('js.fontFamily'); }
 
@@ -44,10 +47,11 @@ export class StatsWidget11Component implements OnInit {
     this.colorsThemeBase = this.layout.getProp(
       `js.colors.theme.base.${this.baseColor}`
     );
-
+    
     this.colorsThemeLight = this.layout.getProp(
       `js.colors.theme.light.${this.baseColor}`
     );
+    
   }
 
   ngOnInit(): void {
@@ -183,7 +187,7 @@ export class StatsWidget11Component implements OnInit {
       colors: [this.colorsThemeLight],
       markers: {
         colors: [this.colorsThemeLight],
-        strokeColor: [this.colorsThemeBase],
+        strokeColor: ["this.colorsThemeBase"],
         strokeWidth: 3
       }
     };
