@@ -14,7 +14,7 @@ export class SortStateTable implements ISortState {
   direction: SortDirection = 'desc'; // asc by default;
 }
 export class SortStateAttendance implements ISortState {
-  column = 'attendance.date'; // Id by default
+  column = 'timesheetId'; // Id by default
   direction: SortDirection = 'asc'; // asc by default;
 }
 export class SortStateLeave implements ISortState {
