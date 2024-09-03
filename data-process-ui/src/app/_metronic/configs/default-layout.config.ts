@@ -148,7 +148,7 @@ export const DefaultLayoutConfig = {
 
     footer: {
       self: {
-        display: false,
+        display: true,
       },
     },
 
@@ -171,7 +171,7 @@ export const DefaultLayoutConfig = {
 
   // Footer
   footer: {
-    display: false,
+    display: true,
     width: 'fluid',
     fixed: true,
   },
